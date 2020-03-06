@@ -1,0 +1,83 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+library(thematic)
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "70%",
+  fig.align = 'center',
+  fig.width = 6,
+  fig.asp = 0.618,  # 1 / phi
+  fig.show = "hold"
+)
+```
+
+# thematic
+
+<!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/thematic)](https://CRAN.R-project.org/package=thematic)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+<!-- badges: end -->
+
+Theme **ggplot2**, **lattice**, and **base** graphics based on a few simple settings.
+
+## Installation
+
+**thematic** is not yet available on [CRAN](https://CRAN.R-project.org), but you can install it now with:
+
+``` r
+remotes::install_github("cpsievert/thematic")
+library(thematic)
+```
+
+## Getting started
+
+### Main colors
+
+```{r}
+library(ggplot2)
+p <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
+  geom_raster(aes(fill = density)) + 
+  geom_contour()
+```
+
+```{r}
+thematic_begin(bg = "darkblue", fg = "skyblue", accent = "orange")
+p
+```
+
+```{r}
+thematic_begin("#444444", "#e4e4e4", "#749886")
+p
+```
+
+```{r}
+lattice::show.settings()
+```
+
+```{r}
+image(volcano)
+image(volcano, col = thematic_current("sequential"))
+```
+
+
+```{r}
+thematic_end()
+p
+```
+
+
+### Fonts 
+
+Coming soon?
+
+## Caveats
+
+1. To ensure **thematic** works properly in **knitr**/**rmarkdown**, you currently need to put `library(thematic)` (or `knitr::opts_knit$set("global.par" = TRUE)`) in a code chunk *before other code chunks* that call `thematic_begin()`.
+2. **thematic** currently works best with the development version of **ggplot2**, so you may want to consider installing `remotes::install_github("tidyverse/ggplot2")`.
