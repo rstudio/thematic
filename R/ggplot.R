@@ -57,13 +57,18 @@ ggtheme_auto <- function(bg, fg) {
 
 ggplot_print_set <- function(theme) {
   if (missing_package("ggplot2")) return(NULL)
-  .globals$ggplot_print <- getFromNamespace("print.ggplot", "ggplot2")
-  assignInNamespace("print.ggplot", custom_print.ggplot(theme), "ggplot2")
+  .globals$ggplot_print <- tryCatch(
+    utils::getS3method("print", "ggplot"),
+    error = function(e) utils::getFromNamespace("print.ggplot", "ggplot2")
+  )
+  registerS3method("print", "ggplot", custom_print.ggplot(theme))
 }
+
+
 
 ggplot_print_restore <- function() {
   if (is.null(.globals$ggplot_print)) return()
-  assignInNamespace("print.ggplot", .globals$ggplot_print, "ggplot2")
+  registerS3method("print", "ggplot", .globals$ggplot_print)
   rm("ggplot_print", envir = .globals)
 }
 
