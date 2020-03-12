@@ -36,7 +36,7 @@ p <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
 ```
 
 ``` r
-thematic_begin("darkblue", "skyblue", "orange")
+thematic_begin(bg = "darkblue", fg = "skyblue", accent = "orange")
 p
 ```
 
@@ -57,21 +57,36 @@ lattice::show.settings()
 
 ``` r
 image(volcano)
-image(volcano, col = theme_current("sequential"))
+image(volcano, col = thematic_current("sequential"))
 ```
 
 <img src="man/figures/README-unnamed-chunk-6-1.png" width="70%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-6-2.png" width="70%" style="display: block; margin: auto;" />
+
+### Fonts
+
+There are two main controls for fonts currently: `family` and `scale`.
+`scale` (defaults to 1) is multiplied against all relevant font sizes.
+If `family` references a font that doesn’t exist on the system, but the
+font is available on [Google Fonts](https://fonts.google.com/),
+**thematic** will try to download and register the font files for you
+(as long as `register = TRUE`). Moreover, if you have the **showtext**
+package installed (prior to calling `thematic_begin()`), then the fonts
+should “just work”.
+
+``` r
+font <- font_spec(family = "Oxanium", scale = 1.25, register = TRUE)
+thematic_begin("black", "white", font = font)
+p
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.png" width="70%" style="display: block; margin: auto;" />
 
 ``` r
 thematic_end()
 p
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="70%" style="display: block; margin: auto;" />
-
-### Fonts
-
-Coming soon?
+<img src="man/figures/README-unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" />
 
 ## Caveats
 

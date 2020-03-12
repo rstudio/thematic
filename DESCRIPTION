@@ -6,18 +6,19 @@ Authors@R: c(
   )
 Description: Theme ggplot2, lattice, and base graphics based on a few simple settings
 Imports:
-  utils,
-  graphics,
-  grDevices,
-  farver,
-  scales,
-  rlang
+    utils,
+    graphics,
+    grDevices,
+    systemfonts,
+    ragg,
+    farver,
+    scales,
+    rlang
 Suggests:
     ggplot2,
     grid,
     lattice,
-    Cairo,
-    ragg,
+    showtext,
     rmarkdown,
     shiny,
     htmltools,
