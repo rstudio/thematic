@@ -25,19 +25,32 @@ mix_colors <- function(bg, fg, amount) {
   scales::colour_ramp(c(bg, fg), alpha = TRUE)(amount)
 }
 
-default_device <- function() {
-  if (capabilities("aqua")) {
-    grDevices::png
+# x should be of length 1
+parse_any_color <- function(x) {
+  y <- tryCatch(
+    col2rgb(x),
+    error = function(e) {
+      y <- htmltools::parseCssColors(x, mustWork = FALSE)
+      if (is.na(y)) stop("Invalid color specification '", x, "'.", call. = FALSE)
+      y
+    }
+  )
+  if (is.character(y)) y else x
+}
+
+is_rstudio_device <- function() {
+  dev <- grDevices::dev.cur()
+  if (identical("RStudioGD", names(dev))) {
+    return(TRUE)
   }
-  else if (has_package("ragg")) {
-    ragg::agg_png
+  if (identical("null device", names(dev)) && is_rstudio()) {
+    return(TRUE)
   }
-  else if (has_package("Cairo")) {
-    Cairo::CairoPNG
-  }
-  else {
-    grDevices::png
-  }
+  FALSE
+}
+
+is_rstudio <- function() {
+  identical("1", Sys.getenv("RSTUDIO", NA))
 }
 
 has_package <- function(pkg) {
@@ -46,4 +59,12 @@ has_package <- function(pkg) {
 
 missing_package <- function(pkg) {
   system.file(package = pkg) == ""
+}
+
+tryGet <- function(...) {
+  tryCatch(get(...), error = function(e) NULL)
+}
+
+"%||%" <- function(x, y) {
+  if (!length(x)) y else x
 }

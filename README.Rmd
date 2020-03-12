@@ -1,5 +1,7 @@
 ---
-output: github_document
+output: 
+  github_document:
+    keep_html: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -67,15 +69,20 @@ image(volcano, col = thematic_current("sequential"))
 ```
 
 
+### Fonts 
+
+There are two main controls for fonts currently: `family` and `scale`. `scale` (defaults to 1) is multiplied against all relevant font sizes. If `family` references a font that doesn't exist on the system, but the font is available on [Google Fonts](https://fonts.google.com/), **thematic** will try to download and register the font files for you (as long as `register = TRUE`). Moreover, if you have the **showtext** package installed (prior to calling `thematic_begin()`), then the fonts should "just work". 
+
+```{r}
+font <- font_spec(family = "Oxanium", scale = 1.25, register = TRUE)
+thematic_begin("black", "white", font = font)
+p
+```
+
 ```{r}
 thematic_end()
 p
 ```
-
-
-### Fonts 
-
-Coming soon?
 
 ## Caveats
 

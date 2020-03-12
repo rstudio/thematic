@@ -41,41 +41,76 @@
 #'
 #' thematic_begin("darkblue", "skyblue", "orange")
 #' image(volcano)
-#' image(volcano, col = theme_current("sequential"))
+#' image(volcano, col = thematic_current("sequential"))
 #' lattice::show.settings()
 #' thematic_end()
 #'
 thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
-                        qualitative = okabe_ito(),
-                        sequential = sequential_gradient(fg, accent, bg)) {
+                           qualitative = okabe_ito(),
+                           sequential = sequential_gradient(fg, accent, bg),
+                           font = font_spec()) {
+
+  if (is_rstudio_device() && !is_default_family(font$family)) {
+    message(
+      "If you encounter 'font not found' errors, ",
+      "try wrapping your plotting code in thematic_with_device()."
+    )
+  }
+
   # Destroy the previous changes before starting new changes
   thematic_end()
   theme <- theme_create(
     bg = bg, fg = fg, accent = accent,
-    qualitative = qualitative, sequential = sequential
+    qualitative = qualitative, sequential = sequential,
+    font = font
   )
   .globals$theme <- theme
-  base_params_set(theme)
+  # These functions modify global state in a way that is
+  # (hopefully) independent of the graphics device state
   base_palette_set(theme)
-  grid_params_set(theme)
-  lattice_params_set(theme)
   ggplot_theme_set(theme)
   ggplot_print_set(theme)
+  lattice_print_set(theme)
+
+  # Set base graphical parameters now, and also the next time
+  # plot.new() is called, which is necessary because each device
+  # has it's own set of graphical parameters, and opening a new device
+  # modifies the global state of said parameters
+  base_params_set(theme)
+  base_params_set_hook()
+
   invisible(theme)
 }
 
 
+#' @rdname thematic_begin
+#' @param family font family.
+#' @param scale numerical constant applied to font sizes.
+#' @param register whether or not to attempt automatically downloading and registering
+#' fonts not found on the system. Currently any font on Google Fonts is supported.
+#' @export
+font_spec <- function(family = "", scale = 1, register = TRUE) {
+  list(family = family, scale = scale, register = register)
+}
+
+is_default_family <- function(family) {
+  identical(family, "")
+}
 
 #' @rdname thematic_begin
 #' @export
 thematic_end <- function() {
-  if (!is.null(.globals$theme)) rm("theme", envir = .globals)
-  base_params_restore()
+  if (!is.null(.globals$theme)) {
+    rm("theme", envir = .globals)
+  }
   base_palette_restore()
-  grid_params_restore()
-  lattice_params_restore()
   ggplot_theme_restore()
   ggplot_print_restore()
+  base_params_restore()
+  base_params_restore_hook()
+  #lattice_params_restore()
+  #lattice_params_restore_hook()
+  lattice_print_restore()
   invisible()
 }
 
@@ -87,32 +122,139 @@ thematic_current <- function(which = "all") {
   if (identical("all", which)) .globals$theme else .globals$theme[[which]]
 }
 
-# TODO:
-# 1. Use a class?
-# 2. Try to parse with col2rgb, and if it fails, try again with htmltools::parseCssColors()?
-theme_create <- function(bg, fg, accent, qualitative, sequential) {
-  theme <- list(
-    bg = bg, fg = fg, accent = accent,
-    qualitative = qualitative, sequential = sequential
-  )
-  lapply(theme, function(x) {
-    if (identical(x, NA)) return(x)
-    vapply(x, validate_color, character(1), USE.NAMES = FALSE)
+
+#' @rdname thematic_begin
+#' @param expr an expression that produces a plot.
+#' @param device a graphics device to use for capturing the plot
+#' @param width
+#' @param height
+#' @param ... arguments to the graphics `device`.
+#' @inheritParams thematic_begin
+#' @export
+#' @examples
+#'
+#' library(thematic)
+#' font <- font_spec(family = "Rock Salt", scale = 1.25, register = TRUE)
+#' thematic_begin("black", "white", font = font)
+#' file <- thematic_with_device(plot(1:10), res = 144)
+#' if (interactive()) browseURL(file)
+thematic_with_device <- function(expr, device = safe_device(),
+                                 filename = tempfile(fileext = ".png"),
+                                 width = 640, height = 480, ...) {
+  # N.B. implementation is quite similar to htmltools::capturePlot
+  if (!is.function(device)) {
+    stop(call. = FALSE, "The `device` argument should be a function, e.g. `ragg::agg_png`")
+  }
+
+  # collect user and device arguments
+  args <- rlang::list2(filename = filename, width = width, height = height, ...)
+  device_args <- names(formals(device))
+
+  # do our best to find the background color arg
+  bg_arg <- grep("^background$|^bg$", device_args, value = TRUE)
+  if (!length(bg_arg)) {
+    stop(
+      "Wasn't able to detect the background color argument for the given device, ",
+      "so thematic won't automatically set it for you, but you can also set it yourself ",
+      "by doing `thematic_with_device(expr, bg_color_arg = thematic_current('bg'))`",
+      call. = FALSE
+    )
+  }
+
+  if (!is.null(args[[bg_arg]])) {
+    warning(
+      "Did you intend to specify the background color? ",
+      "Thematic will set the background for you based on the current theme.",
+      call. = FALSE
+    )
+  } else {
+    args[[bg_arg]] <- thematic_current("bg") %||% "white"
+  }
+
+  # Device management
+  do.call(device, args)
+  dev <- grDevices::dev.cur()
+  on.exit(grDevices::dev.off(dev), add = TRUE, after = FALSE)
+  op <- graphics::par(mar = rep(0, 4))
+  grDevices::devAskNewPage(FALSE)
+  tryCatch(graphics::plot.new(), finally = graphics::par(op))
+
+  # Evaluate the expression
+  expr <- rlang::enquo(expr)
+  tryCatch({
+    result <- withVisible(rlang::eval_tidy(expr))
+    if (result$visible) {
+      capture.output(print(result$value))
+    }
+    filename
+  }, error = function(e) {
+    try({
+      # i.e., if we _know_ this is a tempfile remove it before throwing
+      if (missing(filename) && file.exists(filename))
+        unlink(filename)
+    })
+    stop(e)
   })
 }
 
-# x should be of length 1
-validate_color <- function(x) {
-  y <- tryCatch(
-    col2rgb(x),
-    error = function(e) {
-      y <- htmltools::parseCssColors(x, mustWork = FALSE)
-      if (is.na(y)) stop("Invalid color specification '", x, "'.", call. = FALSE)
-      y
-    }
+safe_device <- function(type = c("png", "tiff", "ppm")) {
+  type <- match.arg(type)
+  switch(
+    type,
+    png = ragg::agg_png,
+    tiff = ragg::agg_tiff,
+    ppm = ragg::agg_ppm,
+    stop("Device type '", type, "' not currently supported", call. = FALSE)
   )
-  if (is.character(y)) y else x
 }
+
+
+# TODO: Use a class?
+theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
+  colors <- list(
+    bg = bg, fg = fg, accent = accent,
+    qualitative = qualitative, sequential = sequential
+  )
+  theme <- lapply(colors, function(x) {
+    if (identical(x, NA)) return(x)
+    vapply(x, parse_any_color, character(1), USE.NAMES = FALSE)
+  })
+  theme$font <- font
+
+  # Default font family doesn't require any special handling
+  if (is_default_family(font$family)) {
+    return(theme)
+  }
+
+  # If the specified family is the same as the resolved family,
+  # then it should be available on the system
+  family <- resolve_family(font$family)
+  if (identical(family, font$family)) {
+    return(theme)
+  }
+
+  # It's possible this font is available in thematic's font cache,
+  # but not yet registered with systemfonts/sysfonts
+  if (has_google_font(family)) {
+    register_google_fonts()
+    return(theme)
+  }
+
+  # Currently only google fonts registration is supported
+  if (isTRUE(font$register) && font$family %in% google_fonts$family) {
+    # TODO: show progress? Or at least spinning wheel?
+    download_google_font(font$family)
+    return(theme)
+  }
+
+  stop(
+    "The font family '", font$family, "' is not available. ",
+    "Consider downloading font files of interest and using sysfonts::font_add() ",
+    "and/or systemfonts::register_font() to register the fonts.",
+    call. = FALSE
+  )
+}
+
 
 #' Okabe Ito colorscale
 #'
@@ -125,7 +267,7 @@ okabe_ito <- function(n = NULL) {
   if (is.null(n)) okabeIto else okabeIto[seq_len(n)]
 }
 
-
+# TODO: export?
 sequential_gradient <- function(fg, accent, bg, n = 30) {
   if (anyNA(c(fg, accent, bg))) return(NA)
 

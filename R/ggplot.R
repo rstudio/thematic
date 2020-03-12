@@ -4,7 +4,7 @@
 
 ggplot_theme_set <- function(theme) {
   if (missing_package("ggplot2")) return(NULL)
-  .globals$ggplot_theme <- ggplot2::theme_set(ggtheme_auto(theme$bg, theme$fg))
+  .globals$ggplot_theme <- ggplot2::theme_set(ggtheme_auto(theme))
 }
 
 ggplot_theme_restore <- function() {
@@ -13,10 +13,19 @@ ggplot_theme_restore <- function() {
   rm("ggplot_theme", envir = .globals)
 }
 
-ggtheme_auto <- function(bg, fg) {
-  text <- ggplot2::element_text(colour = fg)
-  line <- ggplot2::element_line(colour = fg)
+ggtheme_auto <- function(theme) {
+  fg <- theme$fg
+  bg <- theme$bg
+  font <- theme$font
+
   themeGray <- ggplot2::theme_gray()
+
+  text <- ggplot2::element_text(
+    colour = fg,
+    family = font$family,
+    size = themeGray$text$size * font$scale
+  )
+  line <- ggplot2::element_line(colour = fg)
 
   themeGray + ggplot2::theme(
     line = line,
@@ -44,7 +53,6 @@ ggtheme_auto <- function(bg, fg) {
   )
 }
 
-
 # -----------------------------------------------------------------------------------
 # Print management
 #
@@ -63,7 +71,6 @@ ggplot_print_set <- function(theme) {
   )
   registerS3method("print", "ggplot", custom_print.ggplot(theme))
 }
-
 
 
 ggplot_print_restore <- function() {
@@ -202,9 +209,7 @@ ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_bui
   ggplot_build(p)
 }
 
-tryGet <- function(...) {
-  tryCatch(get(...), error = function(e) NULL)
-}
+
 
 restore_scale <- function(name, x, envir) {
   if (is.null(x)) rm(name, envir = envir) else assign(name, x, envir = envir)
@@ -212,4 +217,14 @@ restore_scale <- function(name, x, envir) {
 
 has_proper_ggplot_scale_defaults <- function() {
   utils::packageVersion("ggplot2") > "3.3.0"
+}
+
+qualitative_pal <- function(codes) {
+  function(n) {
+    if (n <= length(codes)) {
+      codes[seq_len(n)]
+    } else {
+      scales::hue_pal()(n)
+    }
+  }
 }
