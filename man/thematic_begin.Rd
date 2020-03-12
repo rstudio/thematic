@@ -3,7 +3,7 @@
 \name{thematic_begin}
 \alias{thematic_begin}
 \alias{thematic_end}
-\alias{theme_current}
+\alias{thematic_current}
 \title{Theme static plots based on a few colors}
 \usage{
 thematic_begin(
@@ -16,7 +16,7 @@ thematic_begin(
 
 thematic_end()
 
-theme_current(which = "all")
+thematic_current(which = "all")
 }
 \arguments{
 \item{bg}{a background color.}
@@ -44,7 +44,7 @@ state (e.g., sets relevant options in \code{\link[graphics:par]{graphics::par()}
 \code{\link[lattice:trellis.par.set]{lattice::trellis.par.set()}}, \code{\link[ggplot2:theme_set]{ggplot2::theme_set()}}, etc). To restore
 global state to the state before \code{\link[=thematic_begin]{thematic_begin()}} was called,
 use \code{\link[=thematic_end]{thematic_end()}}. To inspect the current thematic state, use
-\code{\link[=theme_current]{theme_current()}} (this can be particularly useful for routing the
+\code{\link[=thematic_current]{thematic_current()}} (this can be particularly useful for routing the
 sequential color palette to base/lattice graphics).
 }
 \examples{
