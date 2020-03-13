@@ -9,10 +9,14 @@
 status](https://www.r-pkg.org/badges/version/thematic)](https://CRAN.R-project.org/package=thematic)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build
+status](https://travis-ci.org/rstudio/thematic.svg?branch=master)](https://travis-ci.org/rstudio/thematic)
+[![Codecov test
+coverage](https://codecov.io/gh/rstudio/thematic/branch/master/graph/badge.svg)](https://codecov.io/gh/rstudio/thematic?branch=master)
 <!-- badges: end -->
 
-Theme **ggplot2**, **lattice**, and **base** graphics based on a few
-simple settings.
+Simple and automatic theming of **ggplot2**, **lattice**, and **base**
+graphics.
 
 ## Installation
 
@@ -69,12 +73,10 @@ There are two main controls for fonts currently: `family` and `scale`.
 If `family` references a font that doesn’t exist on the system, but the
 font is available on [Google Fonts](https://fonts.google.com/),
 **thematic** will try to download and register the font files for you
-(as long as `register = TRUE`). Moreover, if you have the **showtext**
-package installed (prior to calling `thematic_begin()`), then the fonts
-should “just work”.
+(as long as `auto_install = TRUE`).
 
 ``` r
-font <- font_spec(family = "Oxanium", scale = 1.25, register = TRUE)
+font <- font_spec(family = "Oxanium", scale = 1.25, auto_install = TRUE)
 thematic_begin("black", "white", font = font)
 p
 ```
@@ -88,12 +90,30 @@ p
 
 <img src="man/figures/README-unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" />
 
-## Caveats
+## With shiny auto-theming
 
-1.  To ensure **thematic** works properly in **knitr**/**rmarkdown**,
-    you currently need to put `library(thematic)` (or
-    `knitr::opts_knit$set("global.par" = TRUE)`) in a code chunk *before
-    other code chunks* that call `thematic_begin()`.
-2.  **thematic** currently works best with the development version of
-    **ggplot2**, so you may want to consider installing
-    `remotes::install_github("tidyverse/ggplot2")`.
+**shiny** uses **thematic**’s functionality to implement it’s
+auto-theming feature.
+
+TODO: an example of overriding auto-theming defaults
+
+## Known issues
+
+  - Auto-installed fonts currently don’t work at all with the RStudio
+    graphics device. They should generally work with other graphics
+    devices (i.e., **rmarkdown**/**knitr**) *if* you have the
+    **showtext** package installed. In the case you don’t want to take a
+    dependency on **showtext**, you can use `thematic_with_device()`,
+    which will (with `device = safe_device()`), which
+
+<!-- end list -->
+
+``` r
+font <- font_spec(family = "Caveat", scale = 1.25)
+thematic_begin("black", "white", font = font)
+file <- thematic_with_device(plot(1), res = 144)
+```
+
+If you’re in RStudio, you can preview the resulting `file` with
+`file.show(file)`. Moreover, to embed the `file` in
+**rmarkdown**/**knitr**, do `knitr::include_graphics(file)`.

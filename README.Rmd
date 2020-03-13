@@ -25,9 +25,11 @@ knitr::opts_chunk$set(
 <!-- badges: start -->
 [![CRAN status](https://www.r-pkg.org/badges/version/thematic)](https://CRAN.R-project.org/package=thematic)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build status](https://travis-ci.org/rstudio/thematic.svg?branch=master)](https://travis-ci.org/rstudio/thematic)
+[![Codecov test coverage](https://codecov.io/gh/rstudio/thematic/branch/master/graph/badge.svg)](https://codecov.io/gh/rstudio/thematic?branch=master)
 <!-- badges: end -->
 
-Theme **ggplot2**, **lattice**, and **base** graphics based on a few simple settings.
+Simple and automatic theming of **ggplot2**, **lattice**, and **base** graphics.
 
 ## Installation
 
@@ -40,41 +42,51 @@ library(thematic)
 
 ## Getting started
 
-### Main colors
+**thematic** provides a single entry point to controling the main colors and fonts of **ggplot2**, **lattice**, and **base** graphics. To start a (global) theme, give `thematic_begin()` background/foreground/accent colors and a `font_spec()`. All of these arguments are optional, but **thematic** works best if you specify at least `bg`/`fg`/`accent`.
+
+```{r}
+library(thematic)
+thematic_begin(
+  bg = "#444444", fg = "#e4e4e4", accent = "#749886", 
+  font = font_spec(family = "Oxanium", scale = 1.25, auto_install = TRUE)
+)
+```
+
+As you'll see in the examples below, **thematic** uses these colors to inform consistent defaults not only for the plot's overall theme (e.g., plot/panel background, text color, etc), but also for `accent`ed graphical markers (e.g., **ggplot2** geom defaults), as well as `sequential` and `qualitative` color scales (these scaling defaults can also be controlled via `thematic_begin()`). `thematic_begin()` works by modifying global state in such a way that all your future plots "just work" (with [some exceptions]()), so best practice is to call `thematic_end()` when you're done using **thematic**.
+
+## ggplot2
 
 ```{r}
 library(ggplot2)
-p <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
+ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
   geom_raster(aes(fill = density)) + 
   geom_contour()
 ```
 
-```{r}
-thematic_begin(bg = "darkblue", fg = "skyblue", accent = "orange")
-p
-```
+See the ggplot2 article for more examples and explanation.
 
-```{r}
-thematic_begin("#444444", "#e4e4e4", "#749886")
-p
-```
+### Base
 
-```{r}
-lattice::show.settings()
-```
+Base R graphics don't have a "global" notion of `sequential` colorscales (i.e., they must be implemented as a part of each plotting call); but in most cases, you can provide the current sequential colorscale by doing something like `col = thematic_current("sequential")`:
 
 ```{r}
 image(volcano)
 image(volcano, col = thematic_current("sequential"))
 ```
-
-
-### Fonts 
-
-There are two main controls for fonts currently: `family` and `scale`. `scale` (defaults to 1) is multiplied against all relevant font sizes. If `family` references a font that doesn't exist on the system, but the font is available on [Google Fonts](https://fonts.google.com/), **thematic** will try to download and register the font files for you (as long as `register = TRUE`). Moreover, if you have the **showtext** package installed (prior to calling `thematic_begin()`), then the fonts should "just work". 
+ 
+## Lattice
 
 ```{r}
-font <- font_spec(family = "Oxanium", scale = 1.25, register = TRUE)
+lattice::show.settings()
+```
+
+
+## Google fonts
+
+There are two main controls for fonts currently: `family` and `scale`. `scale` (defaults to 1) is multiplied against all relevant font sizes. If `family` references a font that doesn't exist on the system, but the font is available on [Google Fonts](https://fonts.google.com/), **thematic** will try to download and register the font files for you (as long as `auto_install = TRUE`).
+
+```{r}
+font <- font_spec(family = "Oxanium", scale = 1.25, auto_install = TRUE)
 thematic_begin("black", "white", font = font)
 p
 ```
@@ -84,7 +96,20 @@ thematic_end()
 p
 ```
 
-## Caveats
+## With shiny auto-theming
 
-1. To ensure **thematic** works properly in **knitr**/**rmarkdown**, you currently need to put `library(thematic)` (or `knitr::opts_knit$set("global.par" = TRUE)`) in a code chunk *before other code chunks* that call `thematic_begin()`.
-2. **thematic** currently works best with the development version of **ggplot2**, so you may want to consider installing `remotes::install_github("tidyverse/ggplot2")`.
+**shiny** uses **thematic**'s functionality to implement it's auto-theming feature. 
+
+TODO: an example of overriding auto-theming defaults
+
+## Known issues
+
+* Auto-installed fonts currently don't work at all with the RStudio graphics device. They should generally work with other graphics devices (i.e., **rmarkdown**/**knitr**) _if_ you have the **showtext** package installed. In the case you don't want to take a dependency on **showtext**, you can use `thematic_with_device()`, which will  (with `device = safe_device()`), which 
+
+```r
+font <- font_spec(family = "Caveat", scale = 1.25)
+thematic_begin("black", "white", font = font)
+file <- thematic_with_device(plot(1), res = 144)
+```
+
+If you're in RStudio, you can preview the resulting `file` with `file.show(file)`. Moreover, to embed the `file` in **rmarkdown**/**knitr**, do `knitr::include_graphics(file)`.

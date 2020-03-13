@@ -49,21 +49,13 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
                            qualitative = okabe_ito(),
                            sequential = sequential_gradient(fg, accent, bg),
                            font = font_spec()) {
-
-  if (is_rstudio_device() && !is_default_family(font$family)) {
-    message(
-      "If you encounter 'font not found' errors, ",
-      "try wrapping your plotting code in thematic_with_device()."
-    )
-  }
-
   # Destroy the previous changes before starting new changes
-  thematic_end()
   theme <- theme_create(
     bg = bg, fg = fg, accent = accent,
     qualitative = qualitative, sequential = sequential,
     font = font
   )
+  thematic_end()
   .globals$theme <- theme
   # These functions modify global state in a way that is
   # (hopefully) independent of the graphics device state
@@ -71,14 +63,14 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
   ggplot_theme_set(theme)
   ggplot_print_set(theme)
   lattice_print_set(theme)
-
   # Set base graphical parameters now, and also the next time
-  # plot.new() is called, which is necessary because each device
-  # has it's own set of graphical parameters, and opening a new device
-  # modifies the global state of said parameters
+  # plot.new()/grid.newpage() is called, which is necessary because
+  # each device has it's own set of graphical parameters,
+  # and opening a new device modifies the global state of said parameters
   base_params_set(theme)
-  base_params_set_hook()
-
+  set_hooks()
+  # For getting auto-installed fonts to render in non-ragg devices
+  if (has_package("showtext")) showtext::showtext_auto()
   invisible(theme)
 }
 
@@ -86,11 +78,11 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
 #' @rdname thematic_begin
 #' @param family font family.
 #' @param scale numerical constant applied to font sizes.
-#' @param register whether or not to attempt automatically downloading and registering
+#' @param auto_install whether or not to attempt automatically downloading and registering
 #' fonts not found on the system. Currently any font on Google Fonts is supported.
 #' @export
-font_spec <- function(family = "", scale = 1, register = TRUE) {
-  list(family = family, scale = scale, register = register)
+font_spec <- function(family = "", scale = 1, auto_install = TRUE) {
+  list(family = family, scale = scale, auto_install = auto_install)
 }
 
 is_default_family <- function(family) {
@@ -100,17 +92,14 @@ is_default_family <- function(family) {
 #' @rdname thematic_begin
 #' @export
 thematic_end <- function() {
-  if (!is.null(.globals$theme)) {
-    rm("theme", envir = .globals)
-  }
   base_palette_restore()
   ggplot_theme_restore()
   ggplot_print_restore()
-  base_params_restore()
-  base_params_restore_hook()
-  #lattice_params_restore()
-  #lattice_params_restore_hook()
   lattice_print_restore()
+  base_params_restore()
+  restore_hooks()
+  if (has_package("showtext")) showtext::showtext_auto(FALSE)
+  if (!is.null(.globals$theme)) rm("theme", envir = .globals)
   invisible()
 }
 
@@ -134,7 +123,7 @@ thematic_current <- function(which = "all") {
 #' @examples
 #'
 #' library(thematic)
-#' font <- font_spec(family = "Rock Salt", scale = 1.25, register = TRUE)
+#' font <- font_spec(family = "Rock Salt", scale = 1.25)
 #' thematic_begin("black", "white", font = font)
 #' file <- thematic_with_device(plot(1:10), res = 144)
 #' if (interactive()) browseURL(file)
@@ -226,33 +215,73 @@ theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
     return(theme)
   }
 
-  # If the specified family is the same as the resolved family,
-  # then it should be available on the system
-  family <- resolve_family(font$family)
-  if (identical(family, font$family)) {
-    return(theme)
+  if (has_gfont_cache(font$family)) register_cache_gfonts()
+
+  # If the family is generally *not* available, this code
+  # should produce a warning with the font family name
+  has_family <- TRUE && suppressWarnings(tryCatch(
+    thematic_with_device(
+      graphics::plot(1, family = font$family),
+      device = grDevices::png
+    ),
+    warning = function(w) {
+      !grepl(
+        font$family,
+        paste(w$message, collapse = "\n"),
+        fixed = TRUE
+      )
+    }
+  ))
+
+  if (has_family) return(theme)
+
+  # Auto-installed fonts are registered via systemfonts (& sysfonts),
+  # which guarantees that they'll work with ragg (& other devices, thanks
+  # to showtext), but not necessarily other devices (especially RStudioGD)
+  if (is_rstudio_device() || !has_package("showtext")) {
+    message(
+      "If you encounter font rendering issues, ",
+      "try wrapping your plotting code in `thematic_with_device()` ",
+      "and/or installing the showtext package."
+    )
   }
 
-  # It's possible this font is available in thematic's font cache,
-  # but not yet registered with systemfonts/sysfonts
-  if (has_google_font(family)) {
-    register_google_fonts()
-    return(theme)
+  if (isTRUE(font$auto_install)) {
+    if (has_package("curl") && !curl::has_internet()) {
+      warning(
+        "Auto-installation of fonts requires internet access ",
+        "(the font family '", font$family, "' wasn't not found). ",
+        "To by-pass this error, either choose an already available ",
+        "font family, or set font_spec(auto_install = F), or run again ",
+        "after you have internet access.",
+        call. = FALSE
+      )
+    }
+
+    # First, search in the list of gfonts shipped with package
+    if (!is.na(match(font$family, google_fonts$family))) {
+      download_google_font(font$family)
+      return(theme)
+    }
+
+    # Next, look up the most current set of gfonts
+    # TODO: make sure this works
+    google_fonts <<- get_google_fonts()
+    if (!is.na(match(font$family, google_fonts$family))) {
+      download_google_font(font$family)
+      return(theme)
+    }
+
   }
 
-  # Currently only google fonts registration is supported
-  if (isTRUE(font$register) && font$family %in% google_fonts$family) {
-    # TODO: show progress? Or at least spinning wheel?
-    download_google_font(font$family)
-    return(theme)
-  }
 
-  stop(
-    "The font family '", font$family, "' is not available. ",
+  warning(
+    "Font family '", font$family, "' doesn't seem to be available. ",
     "Consider downloading font files of interest and using sysfonts::font_add() ",
     "and/or systemfonts::register_font() to register the fonts.",
     call. = FALSE
   )
+  theme
 }
 
 
