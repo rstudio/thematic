@@ -1,8 +1,10 @@
 Package: thematic
-Title: Theme ggplot2, lattice, and base graphics based on a few simple settings
+Title: Simple and automatic theming of ggplot2, lattice, and base graphics
 Version: 0.0.1
 Authors@R: c(
-  person("Carson", "Sievert", role = c("aut", "cre"), email = "cpsievert1@gmail.com", comment = c(ORCID = "0000-0002-4958-2844"))
+  person("Carson", "Sievert", role = c("aut", "cre"), email = "carson@rstudio.com", comment = c(ORCID = "0000-0002-4958-2844")),
+  person("Joe", "Cheng", role = "aut", email = "joe@rstudio.com"),
+  person(family = "RStudio", role = "cph")
   )
 Description: Theme ggplot2, lattice, and base graphics based on a few simple settings
 Imports:
@@ -10,20 +12,23 @@ Imports:
     graphics,
     grDevices,
     systemfonts,
-    ragg,
     farver,
-    scales,
-    rlang
+    ragg,
+    rlang,
+    scales
 Suggests:
     ggplot2,
     grid,
     lattice,
-    showtext,
+    knitr,
     rmarkdown,
     shiny,
+    showtext,
     htmltools,
     testthat (>= 2.1.0),
-    vdiffr
+    vdiffr,
+    curl,
+    covr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

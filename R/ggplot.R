@@ -85,6 +85,7 @@ ggplot_print_restore <- function() {
 # we can and should avoid overriding the print method
 custom_print.ggplot <- function(theme = list()) {
   function(x) {
+    ggplot2::set_last_plot(x)
     build <- ggplot_build_with_theme(x, theme)
     gtable <- ggplot2::ggplot_gtable(build)
     grid::grid.draw(gtable)

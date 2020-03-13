@@ -13,6 +13,7 @@ base_params_set <- function(theme) {
   params <- list()
   bg <- theme$bg
   if (length(bg)) {
+    # message("set: ", bg)
     params <- c(params, graphics::par(bg = bg))
   }
   fg <- theme$fg
@@ -40,21 +41,7 @@ base_params_set <- function(theme) {
 
 base_params_restore <- function() {
   if (is.null(.globals$base_params)) return()
+  # message("restore: ", .globals$base_params$bg)
   do.call(graphics::par, .globals$base_params)
   rm("base_params", envir = .globals)
 }
-
-base_params_set_hook <- function() {
-  setHook("plot.new", base_params_hook)
-}
-
-base_params_restore_hook <- function() {
-  plot_hooks <- getHook("plot.new")
-  is_thematic_hook <- vapply(plot_hooks, function(x) identical(x, base_params_hook), logical(1))
-  setHook("plot.new", plot_hooks[!is_thematic_hook], "replace")
-}
-
-base_params_hook <- structure(
-  function() base_params_set(.globals$theme),
-  thematic_base_params_hook = TRUE
-)
