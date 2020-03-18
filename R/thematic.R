@@ -128,15 +128,16 @@ thematic_current <- function(which = "all") {
 #' file <- thematic_with_device(plot(1:10), res = 144)
 #' if (interactive()) browseURL(file)
 thematic_with_device <- function(expr, device = safe_device(),
-                                 filename = tempfile(fileext = ".png"),
-                                 width = 640, height = 480, ...) {
+                                 filename = tempfile(fileext = ".png"), ...) {
   # N.B. implementation is quite similar to htmltools::capturePlot
   if (!is.function(device)) {
     stop(call. = FALSE, "The `device` argument should be a function, e.g. `ragg::agg_png`")
   }
 
+  isTempFile <- missing(filename)
+
   # collect user and device arguments
-  args <- rlang::list2(filename = filename, width = width, height = height, ...)
+  args <- rlang::list2(filename = filename, ...)
   device_args <- names(formals(device))
 
   # do our best to find the background color arg
@@ -160,13 +161,25 @@ thematic_with_device <- function(expr, device = safe_device(),
     args[[bg_arg]] <- thematic_current("bg") %||% "white"
   }
 
+  # Handle the case where device wants `file` instead of `filename`
+  # (e.g., svglite::svglite)
+  if (!"filename" %in% device_args && "file" %in% device_args) {
+    args$file <- args$filename
+    args$filename <- NULL
+  }
+
   # Device management
   do.call(device, args)
   dev <- grDevices::dev.cur()
-  on.exit(grDevices::dev.off(dev), add = TRUE, after = FALSE)
-  op <- graphics::par(mar = rep(0, 4))
-  grDevices::devAskNewPage(FALSE)
-  tryCatch(graphics::plot.new(), finally = graphics::par(op))
+  on.exit(grDevices::dev.off(dev), add = TRUE)
+
+  # make svglite happy (it doesn't support multiple pages and
+  # it's convenient to support it for our own testing purposes
+  if (!identical(device, svglite::svglite)) {
+    op <- graphics::par(mar = rep(0, 4))
+    grDevices::devAskNewPage(FALSE)
+    tryCatch(graphics::plot.new(), finally = graphics::par(op))
+  }
 
   # Evaluate the expression
   expr <- rlang::enquo(expr)
@@ -179,7 +192,7 @@ thematic_with_device <- function(expr, device = safe_device(),
   }, error = function(e) {
     try({
       # i.e., if we _know_ this is a tempfile remove it before throwing
-      if (missing(filename) && file.exists(filename))
+      if (isTempFile && file.exists(filename))
         unlink(filename)
     })
     stop(e)
