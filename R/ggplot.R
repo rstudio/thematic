@@ -121,28 +121,29 @@ ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_bui
   )
 
   # Remember defaults
-  default_colours <- lapply(geoms, function(geom) geom$default_aes$colour)
-  default_fills <- lapply(geoms, function(geom) geom$default_aes$fill)
+  user_defaults <- lapply(geoms, function(geom) geom$default_aes)
 
   # Modify defaults
-  Map(function(geom, default_color, default_fill) {
+  Map(function(geom, user_default) {
     colour <- geom$default_aes$colour
     fill <- geom$default_aes$fill
     # To avoid the possibility of modifying twice
-    if (identical(colour, default_color)) {
+    if (identical(colour, user_default$colour)) {
       geom$default_aes$colour <- adjust_color(colour, bg, fg, accent)
     }
-    if (identical(fill, default_fill)) {
+    if (identical(fill, user_default$fill)) {
       geom$default_aes$fill <- adjust_color(fill, bg, fg, accent)
     }
-  }, geoms, default_colours, default_fills)
+    # i.e., GeomText/GeomLabel
+    if ("family" %in% names(geom$default_aes)) {
+      geom$default_aes$family <- theme$font$family
+      geom$default_aes$size <- geom$default_aes$size * theme$font$scale
+    }
+  }, geoms, user_defaults)
 
-  # Restore defaults
+  # Restore users defaults on exit
   on.exit({
-    Map(function(geom, colour, fill) {
-      geom$default_aes$colour <- colour
-      geom$default_aes$fill <- fill
-    }, geoms, default_colours, default_fills)
+    Map(function(x, y) { x$default_aes <- y }, geoms, user_defaults)
   }, add = TRUE)
 
   # Modify scaling defaults
