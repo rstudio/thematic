@@ -1,8 +1,12 @@
-# https://github.com/dreamRs/gfonts
-google_fonts <- gfonts::get_all_fonts()
-usethis::use_data(google_fonts, overwrite = TRUE, internal = TRUE)
+devtools::load_all()
 
-# The above essentially does this....
-#api_url <- "https://google-webfonts-helper.herokuapp.com/api/fonts"
-#fonts <- curl::curl_download(api_url, "fonts.json")
-#fonts <- jsonlite::fromJSON(fonts)
+# Download the current set of fonts
+tmpfile <- tempfile(fileext = ".json")
+download.file(gfont_url(), tmpfile)
+google_fonts <- jsonlite::fromJSON(tmpfile)
+unlink(tmpfile, recursive = TRUE)
+
+# Save the content-length as an attribute (used for caching requests)
+attr(google_fonts, "content-length") <- httr::HEAD(gfont_url())$headers$`content-length`
+
+usethis::use_data(google_fonts, overwrite = TRUE, internal = TRUE)
