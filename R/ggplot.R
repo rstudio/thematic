@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------
 
 ggplot_theme_set <- function(theme) {
-  if (missing_package("ggplot2")) return(NULL)
+  if (!rlang::is_installed("ggplot2")) return(NULL)
   .globals$ggplot_theme <- ggplot2::theme_set(ggtheme_auto(theme))
 }
 
@@ -64,7 +64,7 @@ ggtheme_auto <- function(theme) {
 # -----------------------------------------------------------------------------------
 
 ggplot_print_set <- function(theme) {
-  if (missing_package("ggplot2")) return(NULL)
+  if (!rlang::is_installed("ggplot2")) return(NULL)
   .globals$ggplot_print <- tryCatch(
     utils::getS3method("print", "ggplot"),
     error = function(e) utils::getFromNamespace("print.ggplot", "ggplot2")

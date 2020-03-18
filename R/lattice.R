@@ -8,7 +8,7 @@
 #> settings to a "trellis" object.
 
 lattice_print_set <- function(theme) {
-  if (missing_package("lattice")) return(NULL)
+  if (!rlang::is_installed("lattice")) return(NULL)
   print_function <- lattice::lattice.getOption("print.function")
   .globals$lattice_print <- print_function
   lattice::lattice.options(

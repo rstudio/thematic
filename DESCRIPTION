@@ -11,24 +11,25 @@ Imports:
     utils,
     graphics,
     grDevices,
-    systemfonts,
     farver,
-    ragg,
     rlang,
     scales
 Suggests:
+    systemfonts,
+    ragg,
+    showtext,
     ggplot2,
     grid,
     lattice,
     knitr,
     rmarkdown,
     shiny,
-    showtext,
     htmltools,
     testthat (>= 2.1.0),
     vdiffr,
-    curl,
-    covr
+    covr,
+    jsonlite,
+    httr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

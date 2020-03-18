@@ -30,28 +30,58 @@ library(thematic)
 
 ## Getting started
 
-### Main colors
+**thematic** provides a single entry point to controling the main colors
+and fonts of **ggplot2**, **lattice**, and **base** graphics. To start a
+(global) theme, give `thematic_begin()` background/foreground/accent
+colors and a `font_spec()`. All of these arguments are optional, but
+**thematic** works best if you specify at least `bg`/`fg`/`accent`.
+
+``` r
+library(thematic)
+thematic_begin(
+  bg = "#444444", fg = "#e4e4e4", accent = "#749886", 
+  font = font_spec(family = "Oxanium", scale = 1.25, auto_install = TRUE)
+)
+```
+
+As you’ll see in the examples below, **thematic** uses these colors to
+inform consistent defaults not only for the plot’s overall theme (e.g.,
+plot/panel background, text color, etc), but also for `accent`ed
+graphical markers (e.g., **ggplot2** geom defaults), as well as
+`sequential` and `qualitative` color scales (these scaling defaults can
+also be controlled via `thematic_begin()`). `thematic_begin()` works by
+modifying global state in such a way that all your future plots “just
+work” (with [some exceptions]()), so best practice is to call
+`thematic_end()` when you’re done using **thematic**.
+
+## ggplot2
 
 ``` r
 library(ggplot2)
-p <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
+ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
   geom_raster(aes(fill = density)) + 
   geom_contour()
 ```
 
-``` r
-thematic_begin(bg = "darkblue", fg = "skyblue", accent = "orange")
-p
-```
-
 <img src="man/figures/README-unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;" />
 
+See the ggplot2 article for more examples and explanation.
+
+### Base
+
+Base R graphics don’t have a “global” notion of `sequential` colorscales
+(i.e., they must be implemented as a part of each plotting call); but in
+most cases, you can provide the current sequential colorscale by doing
+something like `col = thematic_current("sequential")`:
+
 ``` r
-thematic_begin("#444444", "#e4e4e4", "#749886")
-p
+image(volcano)
+image(volcano, col = thematic_current("sequential"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-4-2.png" width="70%" style="display: block; margin: auto;" />
+
+## Lattice
 
 ``` r
 lattice::show.settings()
@@ -59,14 +89,7 @@ lattice::show.settings()
 
 <img src="man/figures/README-unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;" />
 
-``` r
-image(volcano)
-image(volcano, col = thematic_current("sequential"))
-```
-
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="70%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-6-2.png" width="70%" style="display: block; margin: auto;" />
-
-### Fonts
+## Google fonts
 
 There are two main controls for fonts currently: `family` and `scale`.
 `scale` (defaults to 1) is multiplied against all relevant font sizes.
@@ -81,15 +104,6 @@ thematic_begin("black", "white", font = font)
 p
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="70%" style="display: block; margin: auto;" />
-
-``` r
-thematic_end()
-p
-```
-
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" />
-
 ## With shiny auto-theming
 
 **shiny** uses **thematic**’s functionality to implement it’s
@@ -99,21 +113,27 @@ TODO: an example of overriding auto-theming defaults
 
 ## Known issues
 
-  - Auto-installed fonts currently don’t work at all with the RStudio
-    graphics device. They should generally work with other graphics
-    devices (i.e., **rmarkdown**/**knitr**) *if* you have the
-    **showtext** package installed. In the case you don’t want to take a
-    dependency on **showtext**, you can use `thematic_with_device()`,
-    which will (with `device = safe_device()`), which
-
-<!-- end list -->
+Auto-installed fonts (i.e., custom fonts downloaded from Google Fonts)
+currently don’t work at all with the RStudio graphics device. *If* you
+have the **showtext** package installed, they should work with
+**rmarkdown**/**knitr** as well as with the default `device` in
+`thematic_with_device()` (the latter will also work if you have **ragg**
+instead of **showtext** installed):
 
 ``` r
-font <- font_spec(family = "Caveat", scale = 1.25)
-thematic_begin("black", "white", font = font)
 file <- thematic_with_device(plot(1), res = 144)
 ```
 
 If you’re in RStudio, you can preview the resulting `file` with
 `file.show(file)`. Moreover, to embed the `file` in
 **rmarkdown**/**knitr**, do `knitr::include_graphics(file)`.
+
+### Manually installing fonts
+
+If you want to use custom font(s) that aren’t Google Font(s), you’ll
+need to manually download and install/register them with R. Since
+**thematic** has implicit **ragg** and **showtext** integration, after
+downloading the font files, you can use `systemfonts::register_font()`
+and `sysfonts::font_add()` to register them. Another, more expensive,
+but permanent way to make custom fonts available to R is with
+`extrafont::import_font()` and `extrafont::loadfonts()`.

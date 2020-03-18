@@ -53,13 +53,6 @@ is_rstudio <- function() {
   identical("1", Sys.getenv("RSTUDIO", NA))
 }
 
-has_package <- function(pkg) {
-  !missing_package(pkg)
-}
-
-missing_package <- function(pkg) {
-  system.file(package = pkg) == ""
-}
 
 tryGet <- function(...) {
   tryCatch(get(...), error = function(e) NULL)

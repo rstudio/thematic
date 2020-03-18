@@ -14,8 +14,12 @@
     }
   )
 
-  if (!has_package("knitr")) return()
-  if (has_package("showtext")) {
+  # Try to get the most recent set of google fonts and fallback
+  # to the set shipped with the package
+  .globals$google_fonts <- get_google_fonts()
+
+  if (!rlang::is_installed("knitr")) return()
+  if (rlang::is_installed("showtext")) {
     knitr::opts_chunk$set("fig.showtext" = TRUE)
   } else if (isTRUE(getOption("knitr.in.progress"))) {
     warning(
@@ -24,4 +28,24 @@
       call. = FALSE
     )
   }
+}
+
+
+get_google_fonts <- function() {
+  tmpfile <- tempfile(fileext = ".json")
+  on.exit(unlink(tmpfile, recursive = TRUE), add = TRUE)
+  tryCatch(
+    {
+      new_content_length <- httr::HEAD(gfont_url())$headers$`content-length`
+      if (!identical(new_content_length, attr(google_fonts, "content-length"))) {
+        message(
+          "Google Fonts has updated since thematic was last updated.",
+          "Attempting to update the set of known fonts..."
+        )
+        download.file(gfont_url(), tmpfile)
+        jsonlite::fromJSON(tmpfile)
+      }
+    },
+    error = function(e) google_fonts
+  )
 }
