@@ -14,17 +14,12 @@ font_cache_dir_get <- function() {
 #' @rdname font_cache
 #' @export
 font_cache_dir_set <- function(path) {
+  # TODO: if users can set/add this, we need probably need to export a registration function?
   Sys.getenv("THEMATIC_FONT_CACHE_DIR", path)
 }
 
-
-has_gfont_cache <- function(family) {
-  font_info <- google_fonts[match(family, google_fonts$family), ]
-  has_font_cache(font_info$id)
-}
-
-has_font_cache <- function(font_id) {
-  dir.exists(font_cache(font_id))
+font_cache_clear <- function() {
+  unlink(font_cache_dir_get(), recursive = TRUE)
 }
 
 font_cache <- function(font_id = NULL) {
@@ -66,15 +61,17 @@ register_cache_gfont <- function(info) {
   files$italic <- font_variant("italic") %||% font_variant("300italic") %||% files$regular
   files$bolditalic <- font_variant("700italic") %||% files$bold
 
-  systemfonts::register_font(
-    info$family,
-    files$regular,
-    bold = files$bold,
-    italic = files$italic,
-    bolditalic = files$bolditalic
-  )
+  if (rlang::is_installed("systemfonts")) {
+    systemfonts::register_font(
+      info$family,
+      files$regular,
+      bold = files$bold,
+      italic = files$italic,
+      bolditalic = files$bolditalic
+    )
+  }
 
-  if (has_package("sysfonts")) {
+  if (rlang::is_installed("sysfonts")) {
     getFromNamespace("font_add", "sysfonts")(
       info$family,
       files$regular,
@@ -83,41 +80,112 @@ register_cache_gfont <- function(info) {
       bolditalic = files$bolditalic
     )
   }
-  # TODO: worth doing?
-  #if (has_package("extrafont")) {
-  #  extrafont::font_import(
-  #    paths = dirname(files$regular),
-  #    prompt = FALSE
-  #  )
-  #}
+
 }
 
 
+resolve_font_families <- function(families, auto_install) {
+  if (!length(families)) return(families)
 
-download_google_font <- function(family) {
-  font_info <- google_fonts[match(family, google_fonts$family), ]
+  for (i in seq_along(families)) {
+    family <- families[[i]]
+    if (is_registered(family)) {
+      break
+    }
+    if (isTRUE(auto_install)) {
+      success <- try_download_and_register_gfont(family)
+      if (success) {
+        # Auto-installed fonts are registered via systemfonts (& sysfonts),
+        # which guarantees that they'll work with ragg (& other devices, thanks
+        # to showtext), but not necessarily other devices (especially RStudioGD)
+        if (is_rstudio_device()) {
+          message(
+            "If you encounter font rendering issues, ",
+            "try wrapping your plotting code in `thematic_with_device()` ",
+            "and/or installing the showtext package."
+          )
+        }
 
-  target <- font_cache(font_info$id)
-  # Has this family already been downloaded?
-  if (dir.exists(target))  {
-    font_files <- list.dirs(target)
-  } else {
-    url <- paste0(
-      file.path(gfont_url(), font_info$id),
-      paste0("?download=zip&formats=", gfont_format)
-    )
-    tmpzip <- tempfile(fileext = ".zip")
-    # TODO: show progress? Or at least spinning wheel?
-    download.file(url, tmpzip)
-    font_files <- unzip(tmpzip, exdir = target)
+        break
+      }
+    }
   }
 
-  register_cache_gfont(font_info)
+  family
 }
 
-get_google_fonts <- function() {
-  # TODO: remove dependency
-  gfonts::get_all_fonts()
+is_registered <- function(family) {
+  # If this family resolves to a path other than one of
+  # the generic fonts, then consider this family available
+  if (rlang::is_installed("ragg")) {
+    f <- systemfonts::match_font(family)
+    is_available <- !identical(f, systemfonts::match_font("sans")) &&
+      !identical(f, systemfonts::match_font("serif")) &&
+      !identical(f, systemfonts::match_font("mono"))
+    return(is_available)
+  }
+
+  # If the family is generally *not* available, this code
+  # should produce a warning with the font family name.
+  # (BTW, if the family is not available as a system font,
+  # but has been registered with sysfonts::font_add(), then
+  # this will not throw a warning (which is good :)
+  suppressWarnings(tryCatch(
+    thematic_with_device(
+      graphics::plot(1, family = family),
+      device = grDevices::png
+    ),
+    warning = function(w) {
+      !grepl(
+        font$family,
+        paste(w$message, collapse = "\n"),
+        fixed = TRUE
+      )
+    }
+  ))
+}
+
+
+try_download_and_register_gfont <- function(family) {
+  family_idx <- match(family, google_fonts$family)
+  if (is.na(family_idx)) {
+    warning(call. = FALSE,
+      "The font family '", family, "' doesn't appear to be available as a ",
+      "Google Font. Try manually downloading and installing it on your system. ",
+      "For more info, visit https://github.com/rstudio/thematic#fonts"
+    )
+    return(FALSE)
+  }
+
+  # Check for cache hit
+  font_info <- google_fonts[family_idx, ]
+  target <- font_cache(font_info$id)
+  if (dir.exists(target)) {
+    return(TRUE)
+  }
+
+  # Attempt download and register
+  url <- paste0(
+    file.path(gfont_url(), font_info$id),
+    paste0("?download=zip&formats=", gfont_format)
+  )
+  tmpzip <- tempfile(fileext = ".zip")
+  on.exit(unlink(tmpzip, recursive = TRUE), add = TRUE)
+  res <- tryCatch(
+    # TODO: show progress? Or at least spinning wheel?
+    download.file(url, tmpzip),
+    error = function(e) {
+      warning(
+        "Failed to download and register the following Google Font family: '",
+        family, "'. ", call. = FALSE
+      )
+      FALSE
+    },
+    finally = {
+      unzip(tmpzip, exdir = target)
+      register_cache_gfont(font_info)
+    }
+  )
 }
 
 gfont_url <- function() {

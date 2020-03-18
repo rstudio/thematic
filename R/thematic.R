@@ -70,7 +70,7 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
   base_params_set(theme)
   set_hooks()
   # For getting auto-installed fonts to render in non-ragg devices
-  if (has_package("showtext")) showtext::showtext_auto()
+  if (rlang::is_installed("showtext")) showtext::showtext_auto()
   invisible(theme)
 }
 
@@ -78,10 +78,10 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
 #' @rdname thematic_begin
 #' @param family font family.
 #' @param scale numerical constant applied to font sizes.
-#' @param auto_install whether or not to attempt automatically downloading and registering
-#' fonts not found on the system. Currently any font on Google Fonts is supported.
+#' @param auto_install whether or not to attempt automatic download and registration
+#' of fonts not found on the system. Currently any font on Google Fonts is supported.
 #' @export
-font_spec <- function(family = "", scale = 1, auto_install = TRUE) {
+font_spec <- function(family = "", scale = 1, auto_install = rlang::is_installed("ragg") || rlang::is_installed("showtext")) {
   list(family = family, scale = scale, auto_install = auto_install)
 }
 
@@ -98,7 +98,7 @@ thematic_end <- function() {
   lattice_print_restore()
   base_params_restore()
   restore_hooks()
-  if (has_package("showtext")) showtext::showtext_auto(FALSE)
+  if (rlang::is_installed("showtext")) showtext::showtext_auto(FALSE)
   if (!is.null(.globals$theme)) rm("theme", envir = .globals)
   invisible()
 }
@@ -201,12 +201,26 @@ thematic_with_device <- function(expr, device = safe_device(),
 
 safe_device <- function(type = c("png", "tiff", "ppm")) {
   type <- match.arg(type)
+
+  if (rlang::is_installed("ragg")) {
+    dev <- switch(
+      type,
+      png = ragg::agg_png,
+      tiff = ragg::agg_tiff,
+      ppm = ragg::agg_ppm
+    )
+    return(dev)
+  }
+
+  if (!rlang::is_installed("showtext")) {
+    message("Auto-installation of custom fonts requires either the showtext or ragg package.")
+  }
+
   switch(
     type,
-    png = ragg::agg_png,
-    tiff = ragg::agg_tiff,
-    ppm = ragg::agg_ppm,
-    stop("Device type '", type, "' not currently supported", call. = FALSE)
+    png = grDevices::png,
+    tiff = grDevices::tiff,
+    stop("'", type, "' graphics device not available.", call. = )
   )
 }
 
@@ -228,72 +242,13 @@ theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
     return(theme)
   }
 
-  if (has_gfont_cache(font$family)) register_cache_gfonts()
+  # Register gfont cache with ragg and showtext (if available)
+  register_cache_gfonts()
 
-  # If the family is generally *not* available, this code
-  # should produce a warning with the font family name
-  has_family <- TRUE && suppressWarnings(tryCatch(
-    thematic_with_device(
-      graphics::plot(1, family = font$family),
-      device = grDevices::png
-    ),
-    warning = function(w) {
-      !grepl(
-        font$family,
-        paste(w$message, collapse = "\n"),
-        fixed = TRUE
-      )
-    }
-  ))
+  # Use the first font family that's available
+  # (If none are, returns last one and emits messages)
+  theme$font$family <- resolve_font_families(font$family, font$auto_install)
 
-  if (has_family) return(theme)
-
-  # Auto-installed fonts are registered via systemfonts (& sysfonts),
-  # which guarantees that they'll work with ragg (& other devices, thanks
-  # to showtext), but not necessarily other devices (especially RStudioGD)
-  if (is_rstudio_device() || !has_package("showtext")) {
-    message(
-      "If you encounter font rendering issues, ",
-      "try wrapping your plotting code in `thematic_with_device()` ",
-      "and/or installing the showtext package."
-    )
-  }
-
-  if (isTRUE(font$auto_install)) {
-    if (has_package("curl") && !curl::has_internet()) {
-      warning(
-        "Auto-installation of fonts requires internet access ",
-        "(the font family '", font$family, "' wasn't not found). ",
-        "To by-pass this error, either choose an already available ",
-        "font family, or set font_spec(auto_install = F), or run again ",
-        "after you have internet access.",
-        call. = FALSE
-      )
-    }
-
-    # First, search in the list of gfonts shipped with package
-    if (!is.na(match(font$family, google_fonts$family))) {
-      download_google_font(font$family)
-      return(theme)
-    }
-
-    # Next, look up the most current set of gfonts
-    # TODO: make sure this works
-    google_fonts <<- get_google_fonts()
-    if (!is.na(match(font$family, google_fonts$family))) {
-      download_google_font(font$family)
-      return(theme)
-    }
-
-  }
-
-
-  warning(
-    "Font family '", font$family, "' doesn't seem to be available. ",
-    "Consider downloading font files of interest and using sysfonts::font_add() ",
-    "and/or systemfonts::register_font() to register the fonts.",
-    call. = FALSE
-  )
   theme
 }
 

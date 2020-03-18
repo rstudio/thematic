@@ -85,14 +85,9 @@ lattice::show.settings()
 
 There are two main controls for fonts currently: `family` and `scale`. `scale` (defaults to 1) is multiplied against all relevant font sizes. If `family` references a font that doesn't exist on the system, but the font is available on [Google Fonts](https://fonts.google.com/), **thematic** will try to download and register the font files for you (as long as `auto_install = TRUE`).
 
-```{r}
+```r
 font <- font_spec(family = "Oxanium", scale = 1.25, auto_install = TRUE)
 thematic_begin("black", "white", font = font)
-p
-```
-
-```{r}
-thematic_end()
 p
 ```
 
@@ -104,12 +99,14 @@ TODO: an example of overriding auto-theming defaults
 
 ## Known issues
 
-* Auto-installed fonts currently don't work at all with the RStudio graphics device. They should generally work with other graphics devices (i.e., **rmarkdown**/**knitr**) _if_ you have the **showtext** package installed. In the case you don't want to take a dependency on **showtext**, you can use `thematic_with_device()`, which will  (with `device = safe_device()`), which 
+Auto-installed fonts (i.e., custom fonts downloaded from Google Fonts) currently don't work at all with the RStudio graphics device. *If* you have the **showtext** package installed, they should work with **rmarkdown**/**knitr** as well as with the default `device` in `thematic_with_device()` (the latter will also work if you have **ragg** instead of **showtext** installed):
 
 ```r
-font <- font_spec(family = "Caveat", scale = 1.25)
-thematic_begin("black", "white", font = font)
 file <- thematic_with_device(plot(1), res = 144)
 ```
 
 If you're in RStudio, you can preview the resulting `file` with `file.show(file)`. Moreover, to embed the `file` in **rmarkdown**/**knitr**, do `knitr::include_graphics(file)`.
+
+### Manually installing fonts {#fonts}
+
+If you want to use custom font(s) that aren't Google Font(s), you'll need to manually download and install/register them with R. Since **thematic** has implicit **ragg** and **showtext** integration, after downloading the font files, you can use `systemfonts::register_font()` and `sysfonts::font_add()` to register them. Another, more expensive, but permanent way to make custom fonts available to R is with `extrafont::import_font()` and `extrafont::loadfonts()`.
