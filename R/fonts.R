@@ -1,120 +1,40 @@
-#' File path to thematic's font cache
-#'
-#' Set the absolute path to be used for managing thematic's font caching.
-#'
-#' @rdname font_cache
-#' @export
-font_cache_dir_get <- function() {
-  Sys.getenv(
-    "THEMATIC_FONT_CACHE_DIR",
-    file.path(cache_dir(), "thematic_font_cache")
-  )
-}
-
-#' @rdname font_cache
-#' @export
-font_cache_dir_set <- function(path) {
-  # TODO: if users can set/add this, we need probably need to export a registration function?
-  Sys.getenv("THEMATIC_FONT_CACHE_DIR", path)
-}
-
-font_cache_clear <- function() {
-  unlink(font_cache_dir_get(), recursive = TRUE)
-}
-
-font_cache <- function(font_id = NULL) {
-  cache_dir <- font_cache_dir_get()
-  if (is.null(font_id)) {
-    dir(cache_dir, full.names = TRUE)
-  } else {
-    file.path(cache_dir, font_id)
-  }
-}
-
-
-register_cache_gfonts <- function() {
-  font_ids <- basename(font_cache())
-  font_info <- google_fonts[google_fonts$id %in% font_ids, ]
-
-  for (i in seq_len(nrow(font_info))) {
-    register_cache_gfont(font_info[i, ])
-  }
-}
-
-register_cache_gfont <- function(info) {
-  # Return the path to a font family variant, if it exists
-  font_variant <- function(variant) {
-    variant <- paste(
-      sep = "-",
-      info$id,
-      info$version,
-      info$defSubset,
-      paste0(variant, ".", gfont_format)
-    )
-    variant <- file.path(font_cache(info$id), variant)
-    if (file.exists(variant)) variant else NULL
-  }
-
-  files <- list()
-  files$regular <- font_variant("regular") %||% font_variant("300")
-  files$bold <- font_variant("700") %||% files$regular
-  files$italic <- font_variant("italic") %||% font_variant("300italic") %||% files$regular
-  files$bolditalic <- font_variant("700italic") %||% files$bold
-
-  if (rlang::is_installed("systemfonts")) {
-    systemfonts::register_font(
-      info$family,
-      files$regular,
-      bold = files$bold,
-      italic = files$italic,
-      bolditalic = files$bolditalic
-    )
-  }
-
-  if (rlang::is_installed("sysfonts")) {
-    getFromNamespace("font_add", "sysfonts")(
-      info$family,
-      files$regular,
-      bold = files$bold,
-      italic = files$italic,
-      bolditalic = files$bolditalic
-    )
-  }
-
-}
-
-
+# MAIN IDEA: Use the first font family that we know we can render,
+# and if `auto_install = T`, try download->register->cache it
+# from Google Fonts before trying to the next font
 resolve_font_families <- function(families, auto_install) {
   if (!length(families)) return(families)
 
   for (i in seq_along(families)) {
     family <- families[[i]]
-    if (is_registered(family)) {
+    # First, check if generally available to R
+    if (can_render(family)) {
       break
     }
+    # Next, register any cache with sysfonts/systemfonts
+    if (has_gfont_cache(family)) {
+      register_gfont_cache(family)
+      throw_device_conditions(family)
+      break
+    }
+    # Next, try downloading and registering
     if (isTRUE(auto_install)) {
-      success <- try_download_and_register_gfont(family)
+      success <- try_gfont_download(family)
       if (success) {
-        # Auto-installed fonts are registered via systemfonts (& sysfonts),
-        # which guarantees that they'll work with ragg (& other devices, thanks
-        # to showtext), but not necessarily other devices (especially RStudioGD)
-        if (is_rstudio_device()) {
-          message(
-            "If you encounter font rendering issues, ",
-            "try wrapping your plotting code in `thematic_with_device()` ",
-            "and/or installing the showtext package."
-          )
-        }
-
+        register_gfont_cache(family)
+        message(
+          "Font family '", family, "' successfully downloaded and registered."
+        )
+        throw_device_conditions(family)
         break
       }
     }
   }
-
   family
 }
 
-is_registered <- function(family) {
+# Returns TRUE if we already have the capabilities to render
+# the font (without any additional registration)
+can_render <- function(family) {
   # If this family resolves to a path other than one of
   # the generic fonts, then consider this family available
   if (rlang::is_installed("ragg")) {
@@ -137,7 +57,7 @@ is_registered <- function(family) {
     ),
     warning = function(w) {
       !grepl(
-        font$family,
+        family,
         paste(w$message, collapse = "\n"),
         fixed = TRUE
       )
@@ -145,8 +65,32 @@ is_registered <- function(family) {
   ))
 }
 
+has_gfont_cache <- function(family) {
+  family_idx <- match(family, google_fonts$family)
+  if (is.na(family_idx)) return(FALSE)
+  font_info <- google_fonts[family_idx, ]
+  dir.exists(font_cache_family(font_info$id))
+}
 
-try_download_and_register_gfont <- function(family) {
+throw_device_conditions <- function(family) {
+  if (is_rstudio_device()) {
+    message(
+      "Rendering of auto-installed font families (e.g., ", family, ") ",
+      "doesn't work at all with the RStudio graphics device. ",
+      "Use `thematic_with_device()` to render these fonts correctly."
+    )
+  }
+  if (rlang::is_installed("ragg")) return()
+  if (rlang::is_installed("showtext")) return()
+  warning(
+    "Rendering of auto-installed font families (e.g., ", family, ") ",
+    "requires either the showtext or ragg package to be installed. ",
+    "Please install one of these packages, restart R, and call thematic_begin() again.",
+    call. = FALSE
+  )
+}
+
+try_gfont_download <- function(family) {
   family_idx <- match(family, google_fonts$family)
   if (is.na(family_idx)) {
     warning(call. = FALSE,
@@ -157,12 +101,9 @@ try_download_and_register_gfont <- function(family) {
     return(FALSE)
   }
 
-  # Check for cache hit
+  # Important: same target as has_gfont_cache()
   font_info <- google_fonts[family_idx, ]
-  target <- font_cache(font_info$id)
-  if (dir.exists(target)) {
-    return(TRUE)
-  }
+  target <- font_cache_family(font_info$id)
 
   # Attempt download and register
   url <- paste0(
@@ -171,22 +112,68 @@ try_download_and_register_gfont <- function(family) {
   )
   tmpzip <- tempfile(fileext = ".zip")
   on.exit(unlink(tmpzip, recursive = TRUE), add = TRUE)
-  res <- tryCatch(
-    # TODO: show progress? Or at least spinning wheel?
-    download.file(url, tmpzip),
+  tryCatch(
+    {
+      download.file(url, tmpzip)
+      unzip(tmpzip, exdir = target)
+      TRUE
+    },
     error = function(e) {
       warning(
-        "Failed to download and register the following Google Font family: '",
-        family, "'. ", call. = FALSE
+        "Failed to download the following Google Font family: ",
+        family, call. = FALSE
       )
       FALSE
-    },
-    finally = {
-      unzip(tmpzip, exdir = target)
-      register_cache_gfont(font_info)
     }
   )
+
 }
+
+register_gfont_cache <- function(family) {
+  family_idx <- match(family, google_fonts$family)
+  if (is.na(family_idx)) return()
+  font_info <- google_fonts[family_idx, ]
+
+  # Return the path to a font family variant, if it exists
+  font_file <- function(variant) {
+    variant <- paste(
+      sep = "-",
+      font_info$id,
+      font_info$version,
+      font_info$defSubset,
+      paste0(variant, ".", gfont_format)
+    )
+    variant <- file.path(font_cache_family(font_info$id), variant)
+    if (file.exists(variant)) variant else NULL
+  }
+
+  files <- list()
+  files$regular <- font_file("regular") %||% font_file("300")
+  files$bold <- font_file("700") %||% files$regular
+  files$italic <- font_file("italic") %||% font_file("300italic") %||% files$regular
+  files$bolditalic <- font_file("700italic") %||% files$bold
+
+  if (rlang::is_installed("systemfonts")) {
+    systemfonts::register_font(
+      family,
+      files$regular,
+      bold = files$bold,
+      italic = files$italic,
+      bolditalic = files$bolditalic
+    )
+  }
+
+  if (rlang::is_installed("sysfonts")) {
+    getFromNamespace("font_add", "sysfonts")(
+      family,
+      files$regular,
+      bold = files$bold,
+      italic = files$italic,
+      bolditalic = files$bolditalic
+    )
+  }
+}
+
 
 gfont_url <- function() {
   getOption("gfonts.url", "https://google-webfonts-helper.herokuapp.com/api/fonts")

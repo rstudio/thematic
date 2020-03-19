@@ -175,7 +175,7 @@ thematic_with_device <- function(expr, device = safe_device(),
 
   # make svglite happy (it doesn't support multiple pages and
   # it's convenient to support it for our own testing purposes
-  if (!identical(device, svglite::svglite)) {
+  if (!identical(device, getFromNamespace("svglite", "svglite"))) {
     op <- graphics::par(mar = rep(0, 4))
     grDevices::devAskNewPage(FALSE)
     tryCatch(graphics::plot.new(), finally = graphics::par(op))
@@ -238,16 +238,9 @@ theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
   theme$font <- font
 
   # Default font family doesn't require any special handling
-  if (is_default_family(font$family)) {
-    return(theme)
+  if (!is_default_family(font$family)) {
+    theme$font$family <- resolve_font_families(font$family, font$auto_install)
   }
-
-  # Register gfont cache with ragg and showtext (if available)
-  register_cache_gfonts()
-
-  # Use the first font family that's available
-  # (If none are, returns last one and emits messages)
-  theme$font$family <- resolve_font_families(font$family, font$auto_install)
 
   theme
 }

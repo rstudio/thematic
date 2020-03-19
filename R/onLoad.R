@@ -4,13 +4,7 @@
   # https://github.com/rstudio/rsconnect/pull/295/files
   options(
     rsconnect.pre.deploy = function(app_dir) {
-      cache_dir <- font_cache()
-      font_files <- dir(cache_dir, recursive = TRUE)
-      file.copy(
-        file.path(cache_dir, font_files),
-        file.path(app_dir, font_files)
-      )
-      Sys.setenv("THEMATIC_FONT_CACHE_DIR" = app_dir)
+      font_cache_dir_set(app_dir)
     }
   )
 

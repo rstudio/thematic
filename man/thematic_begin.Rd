@@ -17,7 +17,11 @@ thematic_begin(
   font = font_spec()
 )
 
-font_spec(family = "", scale = 1, register = TRUE)
+font_spec(
+  family = "",
+  scale = 1,
+  auto_install = rlang::is_installed("ragg") || rlang::is_installed("showtext")
+)
 
 thematic_end()
 
@@ -27,8 +31,6 @@ thematic_with_device(
   expr,
   device = safe_device(),
   filename = tempfile(fileext = ".png"),
-  width = 640,
-  height = 480,
   ...
 )
 }
@@ -52,8 +54,8 @@ Defaults to a gradient based on \code{accent} color.}
 
 \item{scale}{numerical constant applied to font sizes.}
 
-\item{register}{whether or not to attempt automatically downloading and registering
-fonts not found on the system. Currently any font on Google Fonts is supported.}
+\item{auto_install}{whether or not to attempt automatic download and registration
+of fonts not found on the system. Currently any font on Google Fonts is supported.}
 
 \item{which}{which theme element (i.e., which argument of \code{\link[=thematic_begin]{thematic_begin()}}?).
 Defaults to all theme elements.}
@@ -100,7 +102,7 @@ thematic_end()
 
 
 library(thematic)
-font <- font_spec(family = "Rock Salt", scale = 1.25, register = TRUE)
+font <- font_spec(family = "Rock Salt", scale = 1.25)
 thematic_begin("black", "white", font = font)
 file <- thematic_with_device(plot(1:10), res = 144)
 if (interactive()) browseURL(file)
