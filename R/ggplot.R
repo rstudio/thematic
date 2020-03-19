@@ -84,9 +84,9 @@ ggplot_print_restore <- function() {
 # If and when ggplot2 get proper scale/geom default mechanisms
 # we can and should avoid overriding the print method
 custom_print.ggplot <- function(theme = list()) {
-  function(x) {
+  function(x, newpage = is.null(vp), vp = NULL, ...) {
     ggplot2::set_last_plot(x)
-    build <- ggplot_build_with_theme(x, theme)
+    build <- ggplot_build_with_theme(x, theme, newpage = newpage)
     gtable <- ggplot2::ggplot_gtable(build)
     grid::grid.draw(gtable)
 
@@ -97,9 +97,29 @@ custom_print.ggplot <- function(theme = list()) {
   }
 }
 
+# Also override ggplot2::ggplotGrob() to get default overriding
+# working with things like gridExtra and patchwork that don't
+# necessarily call ggplot2:::print.ggplot
+# TODO: do we need something similar for ggplot_gtable()?
+ggplot_grob_set <- function(theme) {
+  if (!rlang::is_installed("ggplot2")) return(NULL)
+  .globals$ggplot_grob <- utils::getFromNamespace("ggplotGrob", "ggplot2")
+  utils::assignInNamespace(
+    "ggplotGrob",
+    function(x) ggplot_gtable(ggplot_build_with_theme(x, theme, newpage = FALSE)),
+    "ggplot2"
+  )
+}
+
+ggplot_grob_restore <- function() {
+  if (is.null(.globals$ggplot_grob)) return()
+  utils::assignInNamespace("ggplotGrob", .globals$ggplot_grob, "ggplot2")
+  rm("ggplot_grob", envir = .globals)
+}
+
 
 # This is currently needed to
-ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_build, newpage = TRUE) {
+ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_build, newpage = FALSE) {
   if (newpage) grid::grid.newpage()
   if (!length(theme)) return(ggplot_build(p))
   fg <- theme$fg

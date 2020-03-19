@@ -62,6 +62,7 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
   base_palette_set(theme)
   ggplot_theme_set(theme)
   ggplot_print_set(theme)
+  ggplot_grob_set(theme)
   lattice_print_set(theme)
   # Set base graphical parameters now, and also the next time
   # plot.new()/grid.newpage() is called, which is necessary because
@@ -95,6 +96,7 @@ thematic_end <- function() {
   base_palette_restore()
   ggplot_theme_restore()
   ggplot_print_restore()
+  ggplot_grob_restore()
   lattice_print_restore()
   base_params_restore()
   restore_hooks()
