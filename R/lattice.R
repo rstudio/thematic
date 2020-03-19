@@ -72,7 +72,7 @@ lattice_par <- function(theme) {
   qualitative <- theme$qualitative
   if (sum(is.na(qualitative)) == 0) {
     # I'm not in love with the idea of this; but alas, it's consistent with lattice's default
-    region_pal <- grDevices::colorRampPalette(c(qualitative[[1]], "white", qualitative[[2]]))
+    region_pal <- grDevices::colorRampPalette(c(qualitative[[1]], bg, qualitative[[2]]))
     params$strip.shingle$col <-     qualitative
     params$regions$col <-           region_pal(100)
     params$superpose.line$col <-    qualitative
