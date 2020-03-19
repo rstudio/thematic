@@ -125,19 +125,12 @@ ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_bui
 
   # Modify defaults
   Map(function(geom, user_default) {
-    colour <- geom$default_aes$colour
-    fill <- geom$default_aes$fill
-    # To avoid the possibility of modifying twice
-    if (identical(colour, user_default$colour)) {
-      geom$default_aes$colour <- adjust_color(colour, bg, fg, accent)
-    }
-    if (identical(fill, user_default$fill)) {
-      geom$default_aes$fill <- adjust_color(fill, bg, fg, accent)
-    }
+    geom$default_aes$colour <- adjust_color(user_default$colour, bg, fg, accent)
+    geom$default_aes$fill <- adjust_color(user_default$fill, bg, fg, accent)
     # i.e., GeomText/GeomLabel
     if ("family" %in% names(geom$default_aes)) {
       geom$default_aes$family <- theme$font$family
-      geom$default_aes$size <- geom$default_aes$size * theme$font$scale
+      geom$default_aes$size <- user_default$size * theme$font$scale
     }
   }, geoms, user_defaults)
 
@@ -168,9 +161,6 @@ ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_bui
   }
 
   # If we have modern ggplot2, use the official scale default APIs.
-  # TODO: update version depending on when these PRs are merged.
-  # https://github.com/tidyverse/ggplot2/pull/3828
-  # https://github.com/tidyverse/ggplot2/pull/3833
   if (has_proper_ggplot_scale_defaults()) {
     old_scales <- do.call(options, scale_defaults)
     on.exit({options(old_scales)}, add = TRUE)
@@ -217,8 +207,12 @@ restore_scale <- function(name, x, envir) {
   if (is.null(x)) rm(name, envir = envir) else assign(name, x, envir = envir)
 }
 
+# Intentionally refers to a version that doesn't exist (yet).
+# TODO: update version when these PRs land.
+# https://github.com/tidyverse/ggplot2/pull/3828
+# https://github.com/tidyverse/ggplot2/pull/3833
 has_proper_ggplot_scale_defaults <- function() {
-  utils::packageVersion("ggplot2") > "3.3.0"
+  utils::packageVersion("ggplot2") > "4.0.0"
 }
 
 qualitative_pal <- function(codes) {
