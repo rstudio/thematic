@@ -2,8 +2,9 @@
 # Theme management
 # ---------------------------------------------------------------
 
-ggplot_theme_set <- function(theme) {
+ggplot_theme_set <- function(theme = .globals$theme) {
   if (!rlang::is_installed("ggplot2")) return(NULL)
+  ggplot_theme_restore()
   .globals$ggplot_theme <- ggplot2::theme_set(ggtheme_auto(theme))
 }
 
@@ -13,7 +14,7 @@ ggplot_theme_restore <- function() {
   rm("ggplot_theme", envir = .globals)
 }
 
-ggtheme_auto <- function(theme) {
+ggtheme_auto <- function(theme = .globals$theme) {
   fg <- theme$fg
   bg <- theme$bg
   font <- theme$font
@@ -63,13 +64,13 @@ ggtheme_auto <- function(theme) {
 # for Geoms (this PR might do it, but it might not https://github.com/tidyverse/ggplot2/pull/2749)
 # -----------------------------------------------------------------------------------
 
-ggplot_print_set <- function(theme) {
+ggplot_print_set <- function() {
   if (!rlang::is_installed("ggplot2")) return(NULL)
   .globals$ggplot_print <- tryCatch(
     utils::getS3method("print", "ggplot"),
     error = function(e) utils::getFromNamespace("print.ggplot", "ggplot2")
   )
-  registerS3method("print", "ggplot", custom_print.ggplot(theme))
+  registerS3method("print", "ggplot", custom_print.ggplot)
 }
 
 
@@ -83,30 +84,28 @@ ggplot_print_restore <- function() {
 # shiny needs the build/gtable returned from the print method
 # If and when ggplot2 get proper scale/geom default mechanisms
 # we can and should avoid overriding the print method
-custom_print.ggplot <- function(theme = list()) {
-  function(x, newpage = is.null(vp), vp = NULL, ...) {
-    ggplot2::set_last_plot(x)
-    build <- ggplot_build_with_theme(x, theme, newpage = newpage)
-    gtable <- ggplot2::ggplot_gtable(build)
-    grid::grid.draw(gtable)
+custom_print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
+  ggplot2::set_last_plot(x)
+  build <- ggplot_build_with_theme(x, .globals$theme, newpage = newpage)
+  gtable <- ggplot2::ggplot_gtable(build)
+  grid::grid.draw(gtable)
 
-    structure(list(
-      build = build,
-      gtable = gtable
-    ), class = "ggplot_build_gtable")
-  }
+  structure(list(
+    build = build,
+    gtable = gtable
+  ), class = "ggplot_build_gtable")
 }
 
 # Also override ggplot2::ggplotGrob() to get default overriding
 # working with things like gridExtra and patchwork that don't
 # necessarily call ggplot2:::print.ggplot
 # TODO: do we need something similar for ggplot_gtable()?
-ggplot_grob_set <- function(theme) {
+ggplot_grob_set <- function() {
   if (!rlang::is_installed("ggplot2")) return(NULL)
   .globals$ggplot_grob <- utils::getFromNamespace("ggplotGrob", "ggplot2")
   utils::assignInNamespace(
     "ggplotGrob",
-    function(x) ggplot_gtable(ggplot_build_with_theme(x, theme, newpage = FALSE)),
+    function(x) ggplot_gtable(ggplot_build_with_theme(x, .globals$theme, newpage = FALSE)),
     "ggplot2"
   )
 }

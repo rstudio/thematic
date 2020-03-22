@@ -37,7 +37,7 @@ get_google_fonts <- function() {
           "Attempting to update the set of known fonts..."
         )
         download.file(gfont_url(), tmpfile)
-        jsonlite::fromJSON(tmpfile)
+        structure(jsonlite::fromJSON(tmpfile), "content-length" = new_content_length)
       }
     },
     error = function(e) google_fonts

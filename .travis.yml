@@ -2,3 +2,5 @@
 
 language: R
 cache: packages
+# TODO: do test passes with and without ragg
+r_binary_packages: showtext

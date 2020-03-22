@@ -1,4 +1,5 @@
-base_palette_set <- function(theme) {
+base_palette_set <- function(theme = .globals$theme) {
+  base_palette_restore()
   codes <- theme$qualitative
   .globals$base_palette <- if (isTRUE(is.na(codes))) grDevices::palette() else grDevices::palette(codes)
 }
@@ -9,11 +10,11 @@ base_palette_restore <- function() {
   rm("base_palette", envir = .globals)
 }
 
-base_params_set <- function(theme) {
+base_params_set <- function(theme = .globals$theme) {
+  base_params_restore()
   params <- list()
   bg <- theme$bg
   if (length(bg)) {
-    # message("set: ", bg)
     params <- c(params, graphics::par(bg = bg))
   }
   fg <- theme$fg
@@ -41,7 +42,6 @@ base_params_set <- function(theme) {
 
 base_params_restore <- function() {
   if (is.null(.globals$base_params)) return()
-  # message("restore: ", .globals$base_params$bg)
   do.call(graphics::par, .globals$base_params)
   rm("base_params", envir = .globals)
 }

@@ -32,20 +32,20 @@ library(thematic)
 
 **thematic** provides a single entry point to controling the main
 colours and fonts of **ggplot2**, **lattice**, and **base** graphics. To
-start a (global) theme, give `thematic_begin()` a background, a
+start a (global) theme, give `thematic_begin()` a background,
 foreground, and accent colour, as well as (optionally) a `font_spec()`.
 If a [Google Font](https://fonts.google.com) family is requested,
 **thematic** attempts to automatically download, cache, and register the
 font for use with **showtext** and **ragg** (learn more in [Custom
 Fonts](#custom-fonts)). That means, if you have an internet connection
-and **showtext** or **ragg** installed, any Google Font “just works”
-out-of-the-box in most cases.
+and either **showtext** or **ragg** installed, any Google Fonts “just
+work” for nearly any use case.
 
 ``` r
 library(thematic)
 thematic_begin(
-  bg = "#444444", fg = "#e4e4e4", accent = "#A020F0", 
-  font = font_spec(family = "Pacifico", scale = 1.25, auto_install = TRUE)
+  bg = "#212121", fg = "#C8C8C8", accent = "#5CB09D", 
+  font = font_spec("Oxanium", scale = 1.25)
 )
 ```
 
@@ -55,8 +55,8 @@ theme (e.g., plot/panel background, text colour, etc), but also for
 `accent`ed graphical markers (e.g., **ggplot2** geom defaults), as well
 as `sequential` and `qualitative` colour scales (these scaling defaults
 can also be controlled via `thematic_begin()`). `thematic_begin()` works
-by modifying global state in a “permanent” way so that all your future
-plots “just work”; thus, best practice is to call `thematic_end()` when
+by modifying global state in a “permanent” way so that any future plots
+assume that state; so, best practice is to call `thematic_end()` when
 you’re done using **thematic**.
 
 ## ggplot2
@@ -88,9 +88,10 @@ ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
   geom_point(alpha = 0.2) +
   geom_smooth() +
   facet_wrap(~cut) + ggtitle("Diamond price by carat and cut")
+#> `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 ```
 
-<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-3-1.svg" width="100%" style="display: block; margin: auto;" />
 
 And an example demonstrating (1) and (4):
 
@@ -99,7 +100,7 @@ ggplot(economics_long) +
   geom_line(aes(date, value01, colour = variable))
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-4-1.svg" width="100%" style="display: block; margin: auto;" />
 
 And an example demonstrating (1), (2), and (3):
 
@@ -109,7 +110,7 @@ ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
   geom_contour()
 ```
 
-<img src="man/figures/README-unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-5-1.svg" width="100%" style="display: block; margin: auto;" />
 
 ## Lattice
 
@@ -129,7 +130,7 @@ library(lattice)
 show.settings()
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-6-1.svg" width="100%" style="display: block; margin: auto;" />
 
 And here’s an real example (taken from `?lattice::levelplot`) of where
 “regions” is relevant:
@@ -154,7 +155,7 @@ contourplot(fit ~ wind * temperature | radiation, data = grid,
 detach()
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-7-1.svg" width="100%" style="display: block; margin: auto;" />
 
 ### Base
 
@@ -168,7 +169,7 @@ hist(rnorm(100))
 plot(rep(1:5, each = 5), rep(1:5, 5), col = 1:25, pch = 1:25, cex = 5)
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-8-1.svg" width="100%" style="display: block; margin: auto;" />
 
 However, do know that you can supply the current sequential colourscale
 to individual plotting functions by doing something like `col =
@@ -180,7 +181,7 @@ image(volcano)
 image(volcano, col = thematic_current("sequential"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-9-1.svg" width="100%" style="display: block; margin: auto;" />
 
 ## Controlling defaults
 
@@ -192,9 +193,10 @@ relevant defaults.
 ``` r
 thematic_begin(bg = "black", fg = "white", accent = NA)
 ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
+#> `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-10-1.svg" width="100%" style="display: block; margin: auto;" />
 
 By default, the `sequential` colour palette is based on a mixture of
 `bg`, `fg`, and `accent` (if it exists), but you could also set an
@@ -207,7 +209,7 @@ ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
   geom_contour()
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-11-1.svg" width="100%" style="display: block; margin: auto;" />
 
 Or, supply your own set `sequential` color codes:
 
@@ -216,7 +218,7 @@ thematic_begin(bg = "black", fg = "white", accent = "white", sequential = RColor
 ggplot2::last_plot()
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-12-1.svg" width="100%" style="display: block; margin: auto;" />
 
 Similarly, for `qualitative` colour scaling, you can set to `NA` to
 prevent the Okabe-Ito based default or provide your own set of color
@@ -228,7 +230,7 @@ ggplot(economics_long) +
   geom_line(aes(date, value01, color = variable))
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-13-1.svg" width="100%" style="display: block; margin: auto;" />
 
 ## Custom fonts
 
