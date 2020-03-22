@@ -9,11 +9,12 @@
 
 lattice_print_set <- function(theme) {
   if (!rlang::is_installed("lattice")) return(NULL)
+  lattice_print_restore()
   print_function <- lattice::lattice.getOption("print.function")
   .globals$lattice_print <- print_function
   lattice::lattice.options(
     print.function = function(x, ...) {
-      x$par.settings <- lattice_par(theme)
+      x$par.settings <- lattice_par()
       print_function <- print_function %||% utils::getFromNamespace("plot.trellis", "lattice")
       print_function(x, ...)
     }
@@ -26,7 +27,7 @@ lattice_print_restore <- function() {
   rm("lattice_print", envir = .globals)
 }
 
-lattice_par <- function(theme) {
+lattice_par <- function(theme = .globals$theme) {
   bg <- theme$bg
   fg <- theme$fg
   font <- theme$font

@@ -49,59 +49,55 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
                            qualitative = okabe_ito(),
                            sequential = sequential_gradient(fg, accent, bg),
                            font = font_spec()) {
-  # Destroy the previous changes before starting new changes
-  theme <- theme_create(
+  old_theme <- .globals$theme
+  .globals$theme <- theme_create(
     bg = bg, fg = fg, accent = accent,
     qualitative = qualitative, sequential = sequential,
     font = font
   )
-  thematic_end()
-  .globals$theme <- theme
-  # These functions modify global state in a way that is
-  # (hopefully) independent of the graphics device state
-  base_palette_set(theme)
-  ggplot_theme_set(theme)
-  ggplot_print_set(theme)
-  ggplot_grob_set(theme)
-  lattice_print_set(theme)
-  # Set base graphical parameters now, and also the next time
-  # plot.new()/grid.newpage() is called, which is necessary because
-  # each device has it's own set of graphical parameters,
-  # and opening a new device modifies the global state of said parameters
-  base_params_set(theme)
+  # Modify global state now, so that
+  base_params_set()
+  base_palette_set()
+  ggplot_theme_set()
+  ggplot_print_set()
+  ggplot_grob_set()
+  lattice_print_set()
+  knitr_dev_args_set()
+  # Register thematic hooks
   set_hooks()
-  # For getting auto-installed fonts to render in non-ragg devices
+  # Register showtext hooks (for custom font rendering in non-ragg devices)
   if (rlang::is_installed("showtext")) showtext::showtext_auto()
-  invisible(theme)
+  invisible(old_theme)
 }
 
 
 #' @rdname thematic_begin
-#' @param family font family.
+#' @param families a character vector of font families.
 #' @param scale numerical constant applied to font sizes.
 #' @param auto_install whether or not to attempt automatic download and registration
 #' of fonts not found on the system. Currently any font on Google Fonts is supported.
 #' @export
-font_spec <- function(family = "", scale = 1, auto_install = rlang::is_installed("ragg") || rlang::is_installed("showtext")) {
-  list(family = family, scale = scale, auto_install = auto_install)
+font_spec <- function(families = "", scale = 1, auto_install = rlang::is_installed("ragg") || rlang::is_installed("showtext")) {
+  list(families = families, scale = scale, auto_install = auto_install)
 }
 
-is_default_family <- function(family) {
-  identical(family, "")
+is_default_family <- function(x) {
+  identical(x, "")
 }
 
 #' @rdname thematic_begin
 #' @export
 thematic_end <- function() {
+  if (!is.null(.globals$theme)) rm("theme", envir = .globals)
+  base_params_restore()
   base_palette_restore()
+  knitr_dev_args_restore()
   ggplot_theme_restore()
   ggplot_print_restore()
   ggplot_grob_restore()
   lattice_print_restore()
-  base_params_restore()
-  restore_hooks()
+  remove_hooks()
   if (rlang::is_installed("showtext")) showtext::showtext_auto(FALSE)
-  if (!is.null(.globals$theme)) rm("theme", envir = .globals)
   invisible()
 }
 
@@ -175,13 +171,13 @@ thematic_with_device <- function(expr, device = safe_device(),
   dev <- grDevices::dev.cur()
   on.exit(grDevices::dev.off(dev), add = TRUE)
 
-  # make svglite happy (it doesn't support multiple pages and
-  # it's convenient to support it for our own testing purposes
-  if (!identical(device, getFromNamespace("svglite", "svglite"))) {
-    op <- graphics::par(mar = rep(0, 4))
-    grDevices::devAskNewPage(FALSE)
-    tryCatch(graphics::plot.new(), finally = graphics::par(op))
-  }
+  ## make svglite happy (it doesn't support multiple pages and
+  ## it's convenient to support it for our own testing purposes
+  #if (!identical(device, getFromNamespace("svglite", "svglite"))) {
+  #  op <- graphics::par(mar = rep(0, 4))
+  #  grDevices::devAskNewPage(FALSE)
+  #  tryCatch(graphics::plot.new(), finally = graphics::par(op))
+  #}
 
   # Evaluate the expression
   expr <- rlang::enquo(expr)
@@ -238,12 +234,6 @@ theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
     vapply(x, parse_any_color, character(1), USE.NAMES = FALSE)
   })
   theme$font <- font
-
-  # Default font family doesn't require any special handling
-  if (!is_default_family(font$family)) {
-    theme$font$family <- resolve_font_families(font$family, font$auto_install)
-  }
-
   theme
 }
 

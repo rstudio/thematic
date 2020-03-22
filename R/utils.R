@@ -38,17 +38,6 @@ parse_any_color <- function(x) {
   if (is.character(y)) y else x
 }
 
-is_rstudio_device <- function() {
-  dev <- grDevices::dev.cur()
-  if (identical("RStudioGD", names(dev))) {
-    return(TRUE)
-  }
-  if (identical("null device", names(dev)) && is_rstudio()) {
-    return(TRUE)
-  }
-  FALSE
-}
-
 is_rstudio <- function() {
   identical("1", Sys.getenv("RSTUDIO", NA))
 }
