@@ -1,21 +1,45 @@
-lattice_params_set <- function(theme) {
-  if (missing_package("lattice")) return(NULL)
-  .globals$lattice_params <- lattice::trellis.par.get()
+# Apparently the only way to set lattice pars in a way that is independent
+# of graphics device state is to attach those pars to the lattice object...
+# This excerpt is taken from the @seealso section of help(trellis.device)
+#>
+#> trellis.par.get and trellis.par.set can be used to query and modify the
+#> settings after a device has been initialized. The par.settings argument to
+#> high level functions, described in xyplot, can be used to attach transient
+#> settings to a "trellis" object.
+
+lattice_print_set <- function(theme) {
+  if (!rlang::is_installed("lattice")) return(NULL)
+  lattice_print_restore()
+  print_function <- lattice::lattice.getOption("print.function")
+  .globals$lattice_print <- print_function
+  lattice::lattice.options(
+    print.function = function(x, ...) {
+      x$par.settings <- lattice_par()
+      print_function <- print_function %||% utils::getFromNamespace("plot.trellis", "lattice")
+      print_function(x, ...)
+    }
+  )
+}
+
+lattice_print_restore <- function() {
+  if (!exists("lattice_print", envir = .globals)) return()
+  lattice::lattice.options(print.function = .globals$lattice_print)
+  rm("lattice_print", envir = .globals)
+}
+
+lattice_par <- function(theme = .globals$theme) {
   bg <- theme$bg
   fg <- theme$fg
+  font <- theme$font
 
-  lattice::trellis.par.set(
+  params <- list(
     # See figure 9.3 for an example of where grid gpar matters
     # http://lmdvr.r-forge.r-project.org/figures/figures.html
-    grid.pars =         list(col = fg),
+    grid.pars =         list(col = fg, fontfamily = font$family, cex = font$scale),
     background =        list(col = bg),
     reference.line =    list(col = bg),
-    panel.background =  list(
-      col = mix_colors(theme$bg, theme$fg, 0.1)
-    ),
-    strip.background =  list(
-      col = mix_colors(theme$bg, theme$fg, 0.2)
-    ),
+    panel.background =  list(col = mix_colors(theme$bg, theme$fg, 0.1)),
+    strip.background =  list(col = mix_colors(theme$bg, theme$fg, 0.2)),
     strip.border =      list(col = fg),
     axis.line =         list(col = fg),
     axis.text =         list(col = fg),
@@ -30,43 +54,33 @@ lattice_params_set <- function(theme) {
     plot.polygon =      list(border = fg),
     superpose.polygon = list(border = fg),
     box.dot =           list(col = fg),
-    dot.line =          list(
-      col = mix_colors(theme$bg, theme$fg, 0.2)
-    )
+    dot.line =          list(col = mix_colors(theme$bg, theme$fg, 0.2))
   )
 
   # For lattice, accent can be of length 2, one to specify
   # 'stroke' accent and one for fill accent
   accent <- rep(theme$accent, length.out = 2)
   if (sum(is.na(accent)) == 0) {
-    lattice::trellis.par.set(
-      plot.line =         list(col = accent[[1]]),
-      plot.symbol =       list(col = accent[[1]]),
-      dot.symbol =        list(col = accent[[1]]),
-      box.rectangle =     list(col = accent[[1]]),
-      box.umbrella =      list(col = accent[[1]]),
-      plot.polygon =      list(col = accent[[2]]),
-      grid.pars =         list(fill = accent[[2]])
-    )
+    params$plot.line$col <-     accent[[1]]
+    params$plot.symbol$col <-   accent[[1]]
+    params$dot.symbol$col <-    accent[[1]]
+    params$box.rectangle$col <- accent[[1]]
+    params$box.umbrella$col <-  accent[[1]]
+    params$plot.polygon$col <-  accent[[2]]
+    params$grid.pars$fill <-    accent[[2]]
   }
 
   qualitative <- theme$qualitative
   if (sum(is.na(qualitative)) == 0) {
     # I'm not in love with the idea of this; but alas, it's consistent with lattice's default
-    region_pal <- grDevices::colorRampPalette(c(qualitative[[1]], "white", qualitative[[2]]))
-    lattice::trellis.par.set(
-      strip.shingle =     list(col = qualitative),
-      regions           = list(col = region_pal(100)),
-      superpose.line =    list(col = qualitative),
-      superpose.symbol =  list(col = qualitative, fill = qualitative),
-      superpose.polygon = list(col = qualitative)
-    )
+    region_pal <- grDevices::colorRampPalette(c(qualitative[[1]], bg, qualitative[[2]]))
+    params$strip.shingle$col <-     qualitative
+    params$regions$col <-           region_pal(100)
+    params$superpose.line$col <-    qualitative
+    params$superpose.symbol$col <-  qualitative
+    params$superpose.symbol$fill <- qualitative
+    params$superpose.polygon$col <- qualitative
   }
-}
 
-
-lattice_params_restore <- function() {
-  if (is.null(.globals$lattice_params)) return()
-  lattice::trellis.par.set(theme = .globals$lattice_params)
-  rm("lattice_params", envir = .globals)
+  params
 }

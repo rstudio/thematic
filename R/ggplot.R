@@ -2,9 +2,10 @@
 # Theme management
 # ---------------------------------------------------------------
 
-ggplot_theme_set <- function(theme) {
-  if (missing_package("ggplot2")) return(NULL)
-  .globals$ggplot_theme <- ggplot2::theme_set(ggtheme_auto(theme$bg, theme$fg))
+ggplot_theme_set <- function(theme = .globals$theme) {
+  if (!rlang::is_installed("ggplot2")) return(NULL)
+  ggplot_theme_restore()
+  .globals$ggplot_theme <- ggplot2::theme_set(ggtheme_auto(theme))
 }
 
 ggplot_theme_restore <- function() {
@@ -13,10 +14,19 @@ ggplot_theme_restore <- function() {
   rm("ggplot_theme", envir = .globals)
 }
 
-ggtheme_auto <- function(bg, fg) {
-  text <- ggplot2::element_text(colour = fg)
-  line <- ggplot2::element_line(colour = fg)
+ggtheme_auto <- function(theme = .globals$theme) {
+  fg <- theme$fg
+  bg <- theme$bg
+  font <- theme$font
+
   themeGray <- ggplot2::theme_gray()
+
+  text <- ggplot2::element_text(
+    colour = fg,
+    family = font$family,
+    size = themeGray$text$size * font$scale
+  )
+  line <- ggplot2::element_line(colour = fg)
 
   themeGray + ggplot2::theme(
     line = line,
@@ -44,7 +54,6 @@ ggtheme_auto <- function(bg, fg) {
   )
 }
 
-
 # -----------------------------------------------------------------------------------
 # Print management
 #
@@ -55,15 +64,15 @@ ggtheme_auto <- function(bg, fg) {
 # for Geoms (this PR might do it, but it might not https://github.com/tidyverse/ggplot2/pull/2749)
 # -----------------------------------------------------------------------------------
 
-ggplot_print_set <- function(theme) {
-  if (missing_package("ggplot2")) return(NULL)
+ggplot_print_set <- function() {
+  if (!rlang::is_installed("ggplot2")) return(NULL)
+  ggplot_print_restore()
   .globals$ggplot_print <- tryCatch(
     utils::getS3method("print", "ggplot"),
     error = function(e) utils::getFromNamespace("print.ggplot", "ggplot2")
   )
-  registerS3method("print", "ggplot", custom_print.ggplot(theme))
+  registerS3method("print", "ggplot", custom_print.ggplot)
 }
-
 
 
 ggplot_print_restore <- function() {
@@ -72,28 +81,40 @@ ggplot_print_restore <- function() {
   rm("ggplot_print", envir = .globals)
 }
 
+
 # N.B. this print function is designed this way because
 # shiny needs the build/gtable returned from the print method
-# If and when ggplot2 get proper scale/geom default mechanisms
-# we can and should avoid overriding the print method
-custom_print.ggplot <- function(theme = list()) {
-  function(x) {
-    build <- ggplot_build_with_theme(x, theme)
-    gtable <- ggplot2::ggplot_gtable(build)
+custom_print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
+  ggplot2::set_last_plot(x)
+  if (newpage) grid::grid.newpage()
+  # Add a special class as a way of calling a ggplot build method
+  # that we control (needed since we'd like the defaults to be
+  # able to change dynamically at print time)
+  oldClass(x) <- unique(c("ggplot_thematic", oldClass(x)))
+  build <- ggplot2::ggplot_build(x)
+  gtable <- ggplot2::ggplot_gtable(build)
+  if (is.null(vp)) {
     grid::grid.draw(gtable)
-
-    structure(list(
-      build = build,
-      gtable = gtable
-    ), class = "ggplot_build_gtable")
+  } else {
+    if (is.character(vp))
+      grid::seekViewport(vp)
+    else grid::pushViewport(vp)
+    grid::grid.draw(gtable)
+    grid::upViewport()
   }
+
+  structure(list(
+    build = build,
+    gtable = gtable
+  ), class = "ggplot_build_gtable")
 }
 
 
-# This is currently needed to
-ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_build, newpage = TRUE) {
-  if (newpage) grid::grid.newpage()
-  if (!length(theme)) return(ggplot_build(p))
+
+ggplot_build.ggplot_thematic <- function(p, theme = .globals$theme) {
+  if (!length(theme)) {
+    return(NextMethod("ggplot_build", p))
+  }
   fg <- theme$fg
   bg <- theme$bg
   # Accent can be of length 2 because lattice
@@ -113,28 +134,22 @@ ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_bui
   )
 
   # Remember defaults
-  default_colours <- lapply(geoms, function(geom) geom$default_aes$colour)
-  default_fills <- lapply(geoms, function(geom) geom$default_aes$fill)
+  user_defaults <- lapply(geoms, function(geom) geom$default_aes)
 
   # Modify defaults
-  Map(function(geom, default_color, default_fill) {
-    colour <- geom$default_aes$colour
-    fill <- geom$default_aes$fill
-    # To avoid the possibility of modifying twice
-    if (identical(colour, default_color)) {
-      geom$default_aes$colour <- adjust_color(colour, bg, fg, accent)
+  Map(function(geom, user_default) {
+    geom$default_aes$colour <- adjust_color(user_default$colour, bg, fg, accent)
+    geom$default_aes$fill <- adjust_color(user_default$fill, bg, fg, accent)
+    # i.e., GeomText/GeomLabel
+    if ("family" %in% names(geom$default_aes)) {
+      geom$default_aes$family <- theme$font$family
+      geom$default_aes$size <- user_default$size * theme$font$scale
     }
-    if (identical(fill, default_fill)) {
-      geom$default_aes$fill <- adjust_color(fill, bg, fg, accent)
-    }
-  }, geoms, default_colours, default_fills)
+  }, geoms, user_defaults)
 
-  # Restore defaults
+  # Restore users defaults on exit
   on.exit({
-    Map(function(geom, colour, fill) {
-      geom$default_aes$colour <- colour
-      geom$default_aes$fill <- fill
-    }, geoms, default_colours, default_fills)
+    Map(function(x, y) { x$default_aes <- y }, geoms, user_defaults)
   }, add = TRUE)
 
   # Modify scaling defaults
@@ -159,9 +174,6 @@ ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_bui
   }
 
   # If we have modern ggplot2, use the official scale default APIs.
-  # TODO: update version depending on when these PRs are merged.
-  # https://github.com/tidyverse/ggplot2/pull/3828
-  # https://github.com/tidyverse/ggplot2/pull/3833
   if (has_proper_ggplot_scale_defaults()) {
     old_scales <- do.call(options, scale_defaults)
     on.exit({options(old_scales)}, add = TRUE)
@@ -199,17 +211,27 @@ ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_bui
     }
   }
 
-  ggplot_build(p)
-}
-
-tryGet <- function(...) {
-  tryCatch(get(...), error = function(e) NULL)
+  NextMethod("ggplot_build", p)
 }
 
 restore_scale <- function(name, x, envir) {
   if (is.null(x)) rm(name, envir = envir) else assign(name, x, envir = envir)
 }
 
+# Intentionally refers to a version that doesn't exist (yet).
+# TODO: update version when these PRs land.
+# https://github.com/tidyverse/ggplot2/pull/3828
+# https://github.com/tidyverse/ggplot2/pull/3833
 has_proper_ggplot_scale_defaults <- function() {
-  utils::packageVersion("ggplot2") > "3.3.0"
+  utils::packageVersion("ggplot2") > "4.0.0"
+}
+
+qualitative_pal <- function(codes) {
+  function(n) {
+    if (n <= length(codes)) {
+      codes[seq_len(n)]
+    } else {
+      scales::hue_pal()(n)
+    }
+  }
 }

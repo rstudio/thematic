@@ -41,41 +41,62 @@
 #'
 #' thematic_begin("darkblue", "skyblue", "orange")
 #' image(volcano)
-#' image(volcano, col = theme_current("sequential"))
+#' image(volcano, col = thematic_current("sequential"))
 #' lattice::show.settings()
 #' thematic_end()
 #'
 thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
-                        qualitative = okabe_ito(),
-                        sequential = sequential_gradient(fg, accent, bg)) {
-  # Destroy the previous changes before starting new changes
-  thematic_end()
-  theme <- theme_create(
+                           qualitative = okabe_ito(),
+                           sequential = sequential_gradient(fg, accent, bg),
+                           font = font_spec()) {
+  old_theme <- .globals$theme
+  .globals$theme <- theme_create(
     bg = bg, fg = fg, accent = accent,
-    qualitative = qualitative, sequential = sequential
+    qualitative = qualitative, sequential = sequential,
+    font = font
   )
-  .globals$theme <- theme
-  base_params_set(theme)
-  base_palette_set(theme)
-  grid_params_set(theme)
-  lattice_params_set(theme)
-  ggplot_theme_set(theme)
-  ggplot_print_set(theme)
-  invisible(theme)
+  # Register thematic hooks (these hooks modify global state when a new page is drawn)
+  set_hooks()
+  # Register showtext hooks (for custom font rendering in non-ragg devices)
+  if (rlang::is_installed("showtext")) showtext::showtext_auto()
+
+  # Override ggplot print method mainly because we currently need access to
+  # the plot object in order to set Geom/Scale defaults
+  ggplot_print_set()
+
+  invisible(old_theme)
 }
 
 
+#' @rdname thematic_begin
+#' @param families a character vector of font families.
+#' @param scale numerical constant applied to font sizes.
+#' @param auto_install whether or not to attempt automatic download and registration
+#' of fonts not found on the system. Currently any font on Google Fonts is supported.
+#' @export
+font_spec <- function(families = "", scale = 1, auto_install = rlang::is_installed("ragg") || rlang::is_installed("showtext")) {
+  list(families = families, scale = scale, auto_install = auto_install)
+}
+
+is_default_family <- function(x) {
+  identical(x, "")
+}
 
 #' @rdname thematic_begin
 #' @export
 thematic_end <- function() {
   if (!is.null(.globals$theme)) rm("theme", envir = .globals)
+  remove_hooks()
+  if (rlang::is_installed("showtext")) showtext::showtext_auto(FALSE)
+
+  # Removing the plot.new hooks is not enough to restore global state
   base_params_restore()
   base_palette_restore()
-  grid_params_restore()
-  lattice_params_restore()
+  knitr_dev_args_restore()
   ggplot_theme_restore()
   ggplot_print_restore()
+  lattice_print_restore()
+
   invisible()
 }
 
@@ -87,32 +108,134 @@ thematic_current <- function(which = "all") {
   if (identical("all", which)) .globals$theme else .globals$theme[[which]]
 }
 
-# TODO:
-# 1. Use a class?
-# 2. Try to parse with col2rgb, and if it fails, try again with htmltools::parseCssColors()?
-theme_create <- function(bg, fg, accent, qualitative, sequential) {
-  theme <- list(
-    bg = bg, fg = fg, accent = accent,
-    qualitative = qualitative, sequential = sequential
-  )
-  lapply(theme, function(x) {
-    if (identical(x, NA)) return(x)
-    vapply(x, validate_color, character(1), USE.NAMES = FALSE)
+
+#' @rdname thematic_begin
+#' @param expr an expression that produces a plot.
+#' @param device a graphics device to use for capturing the plot
+#' @param width
+#' @param height
+#' @param ... arguments to the graphics `device`.
+#' @inheritParams thematic_begin
+#' @export
+#' @examples
+#'
+#' library(thematic)
+#' font <- font_spec(family = "Rock Salt", scale = 1.25)
+#' thematic_begin("black", "white", font = font)
+#' file <- thematic_with_device(plot(1:10), res = 144)
+#' if (interactive()) browseURL(file)
+thematic_with_device <- function(expr, device = safe_device(),
+                                 filename = tempfile(fileext = ".png"), ...) {
+  # N.B. implementation is quite similar to htmltools::capturePlot
+  if (!is.function(device)) {
+    stop(call. = FALSE, "The `device` argument should be a function, e.g. `ragg::agg_png`")
+  }
+
+  isTempFile <- missing(filename)
+
+  # collect user and device arguments
+  args <- rlang::list2(filename = filename, ...)
+  device_args <- names(formals(device))
+
+  # do our best to find the background color arg
+  bg_arg <- grep("^background$|^bg$", device_args, value = TRUE)
+  if (!length(bg_arg)) {
+    stop(
+      "Wasn't able to detect the background color argument for the given device, ",
+      "so thematic won't automatically set it for you, but you can also set it yourself ",
+      "by doing `thematic_with_device(expr, bg_color_arg = thematic_current('bg'))`",
+      call. = FALSE
+    )
+  }
+
+  if (!is.null(args[[bg_arg]])) {
+    warning(
+      "Did you intend to specify the background color? ",
+      "Thematic will set the background for you based on the current theme.",
+      call. = FALSE
+    )
+  } else {
+    args[[bg_arg]] <- thematic_current("bg") %||% "white"
+  }
+
+  # Handle the case where device wants `file` instead of `filename`
+  # (e.g., svglite::svglite)
+  if (!"filename" %in% device_args && "file" %in% device_args) {
+    args$file <- args$file %||% args$filename
+    args$filename <- NULL
+  }
+
+  # Device management
+  do.call(device, args)
+  dev <- grDevices::dev.cur()
+  on.exit(grDevices::dev.off(dev), add = TRUE)
+
+  # make svglite happy (it doesn't support multiple pages and
+  # it's convenient to support it for our own testing purposes
+  if (!identical(device, getFromNamespace("svglite", "svglite"))) {
+    op <- graphics::par(mar = rep(0, 4))
+    grDevices::devAskNewPage(FALSE)
+    tryCatch(graphics::plot.new(), finally = graphics::par(op))
+  }
+
+  # Evaluate the expression
+  expr <- rlang::enquo(expr)
+  tryCatch({
+    result <- withVisible(rlang::eval_tidy(expr))
+    if (result$visible) {
+      capture.output(print(result$value))
+    }
+    filename
+  }, error = function(e) {
+    try({
+      # i.e., if we _know_ this is a tempfile remove it before throwing
+      if (isTempFile && file.exists(filename))
+        unlink(filename)
+    })
+    stop(e)
   })
 }
 
-# x should be of length 1
-validate_color <- function(x) {
-  y <- tryCatch(
-    col2rgb(x),
-    error = function(e) {
-      y <- htmltools::parseCssColors(x, mustWork = FALSE)
-      if (is.na(y)) stop("Invalid color specification '", x, "'.", call. = FALSE)
-      y
-    }
+safe_device <- function(type = c("png", "tiff", "ppm")) {
+  type <- match.arg(type)
+
+  if (rlang::is_installed("ragg")) {
+    dev <- switch(
+      type,
+      png = ragg::agg_png,
+      tiff = ragg::agg_tiff,
+      ppm = ragg::agg_ppm
+    )
+    return(dev)
+  }
+
+  if (!rlang::is_installed("showtext")) {
+    message("Auto-installation of custom fonts requires either the showtext or ragg package.")
+  }
+
+  switch(
+    type,
+    png = grDevices::png,
+    tiff = grDevices::tiff,
+    stop("'", type, "' graphics device not available.", call. = )
   )
-  if (is.character(y)) y else x
 }
+
+
+# TODO: Use a class?
+theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
+  colors <- list(
+    bg = bg, fg = fg, accent = accent,
+    qualitative = qualitative, sequential = sequential
+  )
+  theme <- lapply(colors, function(x) {
+    if (identical(x, NA)) return(x)
+    vapply(x, parse_any_color, character(1), USE.NAMES = FALSE)
+  })
+  theme$font <- font
+  theme
+}
+
 
 #' Okabe Ito colorscale
 #'
@@ -125,7 +248,7 @@ okabe_ito <- function(n = NULL) {
   if (is.null(n)) okabeIto else okabeIto[seq_len(n)]
 }
 
-
+# TODO: export?
 sequential_gradient <- function(fg, accent, bg, n = 30) {
   if (anyNA(c(fg, accent, bg))) return(NA)
 

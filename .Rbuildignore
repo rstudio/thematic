@@ -5,3 +5,8 @@
 ^docs$
 ^pkgdown$
 ^README\.Rmd$
+^README\.html$
+^data-raw$
+Untitled*
+^\.travis\.yml$
+^codecov\.yml$

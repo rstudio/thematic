@@ -1,0 +1,6 @@
+# R for travis: see documentation at https://docs.travis-ci.com/user/languages/r
+
+language: R
+cache: packages
+# TODO: do test passes with and without ragg
+r_binary_packages: showtext

@@ -2,8 +2,10 @@
 % Please edit documentation in R/thematic.R
 \name{thematic_begin}
 \alias{thematic_begin}
+\alias{font_spec}
 \alias{thematic_end}
 \alias{thematic_current}
+\alias{thematic_with_device}
 \title{Theme static plots based on a few colors}
 \usage{
 thematic_begin(
@@ -11,12 +13,26 @@ thematic_begin(
   fg = NULL,
   accent = NA,
   qualitative = okabe_ito(),
-  sequential = sequential_gradient(fg, accent, bg)
+  sequential = sequential_gradient(fg, accent, bg),
+  font = font_spec()
+)
+
+font_spec(
+  family = "",
+  scale = 1,
+  auto_install = rlang::is_installed("ragg") || rlang::is_installed("showtext")
 )
 
 thematic_end()
 
 thematic_current(which = "all")
+
+thematic_with_device(
+  expr,
+  device = safe_device(),
+  filename = tempfile(fileext = ".png"),
+  ...
+)
 }
 \arguments{
 \item{bg}{a background color.}
@@ -34,8 +50,21 @@ the number of data levels exceeds the max allowed colors).}
 \item{sequential}{color palette for numeric variables.
 Defaults to a gradient based on \code{accent} color.}
 
+\item{family}{font family.}
+
+\item{scale}{numerical constant applied to font sizes.}
+
+\item{auto_install}{whether or not to attempt automatic download and registration
+of fonts not found on the system. Currently any font on Google Fonts is supported.}
+
 \item{which}{which theme element (i.e., which argument of \code{\link[=thematic_begin]{thematic_begin()}}?).
 Defaults to all theme elements.}
+
+\item{expr}{an expression that produces a plot.}
+
+\item{device}{a graphics device to use for capturing the plot}
+
+\item{...}{arguments to the graphics \code{device}.}
 }
 \description{
 Theme ggplot2, lattice, and base graphics based on just a few colors
@@ -67,8 +96,14 @@ lattice::show.settings()
 
 thematic_begin("darkblue", "skyblue", "orange")
 image(volcano)
-image(volcano, col = theme_current("sequential"))
+image(volcano, col = thematic_current("sequential"))
 lattice::show.settings()
 thematic_end()
 
+
+library(thematic)
+font <- font_spec(family = "Rock Salt", scale = 1.25)
+thematic_begin("black", "white", font = font)
+file <- thematic_with_device(plot(1:10), res = 144)
+if (interactive()) browseURL(file)
 }

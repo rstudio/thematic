@@ -1,30 +1,37 @@
 Package: thematic
-Title: Theme ggplot2, lattice, and base graphics based on a few simple settings
+Title: Simple and automatic theming of ggplot2, lattice, and base graphics
 Version: 0.0.1
 Authors@R: c(
-  person("Carson", "Sievert", role = c("aut", "cre"), email = "cpsievert1@gmail.com", comment = c(ORCID = "0000-0002-4958-2844"))
+  person("Carson", "Sievert", role = c("aut", "cre"), email = "carson@rstudio.com", comment = c(ORCID = "0000-0002-4958-2844")),
+  person("Joe", "Cheng", role = "aut", email = "joe@rstudio.com"),
+  person(family = "RStudio", role = "cph")
   )
 Description: Theme ggplot2, lattice, and base graphics based on a few simple settings
 Imports:
-  utils,
-  graphics,
-  grDevices,
-  farver,
-  scales,
-  rlang
-Suggests:
-    ggplot2,
+    utils,
+    graphics,
+    grDevices,
     grid,
-    lattice,
-    Cairo,
+    farver,
+    rlang,
+    scales
+Suggests:
+    systemfonts,
     ragg,
+    showtext,
+    ggplot2,
+    lattice,
+    knitr,
     rmarkdown,
     shiny,
     htmltools,
     testthat (>= 2.1.0),
-    vdiffr
+    vdiffr,
+    covr,
+    jsonlite,
+    httr
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
