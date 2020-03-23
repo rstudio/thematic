@@ -46,6 +46,17 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
     return(families)
   }
 
+  # I don't think it's feasible to detect font support in RStudio...
+  dev <- grDevices::dev.cur()
+  if (is_rstudio_device(dev)) {
+    warning(
+      call. = FALSE,
+      "Auto-installed fonts aren't supported in RStudio's graphics device. ",
+      "Try using thematic_with_device() and make sure at least one of showtext or ragg is installed."
+    )
+    return(families[1])
+  }
+
   type <- match.arg(type)
   for (i in seq_along(families)) {
     family <- families[[i]]
@@ -57,7 +68,7 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
     }
 
     # If we can render the font family, do no more!
-    if (can_render(family, type)) {
+    if (can_render(family, type, dev)) {
       break
     }
 
@@ -70,7 +81,7 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
     }
 
     # Try again
-    if (can_render(family, type)) {
+    if (can_render(family, type, dev)) {
       break
     } else {
       # TODO: check for ragg/showtext?
@@ -87,23 +98,12 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
 
 
 
-can_render <- function(family, type = c("base", "grid"), ...) {
-  if (is_default_family(family)) return(TRUE)
-
-  dev_cur <- grDevices::dev.cur()
-  if (is_rstudio_device(dev_cur)) {
-    warning(call. = FALSE,
-      "The RStudio graphics device is unable to render auto-installed fonts. ",
-      "Try using thematic_with_device() and make sure at least one of showtext or ragg is installed."
-    )
-    return(TRUE)
-  }
-
+can_render <- function(family, type = c("base", "grid"), device) {
   # ragg devices doesn't produce a warning if the font family is not
   # available; instead, it uses whatever match_font(family) gives.
   # Therefore, it seems reasonable to assume the font is available
-  # if the match resolves to similar other than a generic font family
-  if (is_ragg_device(dev_cur)) {
+  # if the match resolves to something other than a generic font family
+  if (is_ragg_device(device)) {
     if (family %in% c("sans", "serif", "mono")) return(TRUE)
     f <- systemfonts::match_font(family)
     is_available <- !identical(f, systemfonts::match_font("sans")) &&
@@ -114,14 +114,15 @@ can_render <- function(family, type = c("base", "grid"), ...) {
 
   # Try to open a new (temporary) device based on the current one
   # so we don't generate multiple pages
-  if (!is_null_device(dev_cur)) {
-    opts <- options(device = names(dev_cur))
+
+  if (!is_null_device(device)) {
+    opts <- options(device = names(device))
     on.exit(options(opts), add = TRUE)
   }
   try({
     grDevices::dev.new()
-    dev <- grDevices::dev.cur()
-    on.exit(grDevices::dev.off(dev), add = TRUE)
+    dev_new <- grDevices::dev.cur()
+    on.exit(grDevices::dev.off(dev_new), add = TRUE)
   }, silent = TRUE)
 
   # temporarily disable thematics plot hooks
