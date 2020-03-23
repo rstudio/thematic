@@ -25,10 +25,11 @@ registerMethods <- function(methods) {
   # https://github.com/rstudio/rsconnect/pull/295/files
   options(
     rsconnect.pre.deploy = function(app_dir) {
-      font_cache_dir_set(app_dir)
+      font_cache_set(app_dir)
     }
   )
 
+  # Register our our build method
   registerMethods(
     list(c("ggplot2", "ggplot_build", "ggplot_thematic"))
   )
