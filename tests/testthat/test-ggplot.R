@@ -19,6 +19,8 @@ test_that("ggplot baselines", {
   )
   huron <- data.frame(year = 1875:1972, level = as.vector(LakeHuron))
 
+  dsample <- diamonds[sample(nrow(diamonds), 1000), ]
+
   ggplot2_examples <- list(
     GeomPointColor = {
       ggplot(mtcars, aes(wt, mpg, color = cyl)) + geom_point()
@@ -67,7 +69,7 @@ test_that("ggplot baselines", {
       expand_limits(positions),
     GeomLine = ggplot(economics_long, aes(date, value01, group = variable)) + geom_line(),
     GeomLine2 = ggplot(economics_long, aes(date, value01, colour = variable)) + geom_line(),
-    GeomPoint = ggplot(diamonds, aes(carat, price)) + geom_point(alpha = 1/50),
+    GeomPoint = ggplot(dsample, aes(carat, price)) + geom_point(alpha = 0.1),
     GeomPoint2 = ggplot(mtcars, aes(wt, mpg, color = factor(cyl), shape = factor(cyl))) + geom_point(),
     GeomQuantile = ggplot(mpg, aes(displ, 1 / hwy)) + geom_point() + geom_quantile(),
     GeomRibbon = ggplot(huron, aes(year)) +
@@ -83,7 +85,7 @@ test_that("ggplot baselines", {
         geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "segment"), data = df) +
         geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = -0.2)
     },
-    GeomSmooth = ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
+    GeomSmooth = ggplot(dsample, aes(carat, price)) +
       geom_point(alpha = 0.2) +
       geom_smooth() +
       facet_wrap(~cut) + ggtitle("Diamond price by carat and cut"),
@@ -118,8 +120,9 @@ test_that("ggplot baselines", {
     }
   )
 
-
-  thematic_begin("#444444", "#e4e4e4", "#749886")
+  # TODO: make test work without internet connection?
+  font <- font_spec("Oxanium", scale = 1.25)
+  thematic_begin("#444444", "#e4e4e4", "#749886", font = font)
   Map(expect_doppelganger, names(ggplot2_examples), ggplot2_examples)
   thematic_end()
 })
