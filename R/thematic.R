@@ -161,7 +161,7 @@ thematic_with_device <- function(expr, device = safe_device(),
   # Handle the case where device wants `file` instead of `filename`
   # (e.g., svglite::svglite)
   if (!"filename" %in% device_args && "file" %in% device_args) {
-    args$file <- args$filename
+    args$file <- args$file %||% args$filename
     args$filename <- NULL
   }
 
@@ -170,13 +170,13 @@ thematic_with_device <- function(expr, device = safe_device(),
   dev <- grDevices::dev.cur()
   on.exit(grDevices::dev.off(dev), add = TRUE)
 
-  ## make svglite happy (it doesn't support multiple pages and
-  ## it's convenient to support it for our own testing purposes
-  #if (!identical(device, getFromNamespace("svglite", "svglite"))) {
-  #  op <- graphics::par(mar = rep(0, 4))
-  #  grDevices::devAskNewPage(FALSE)
-  #  tryCatch(graphics::plot.new(), finally = graphics::par(op))
-  #}
+  # make svglite happy (it doesn't support multiple pages and
+  # it's convenient to support it for our own testing purposes
+  if (!identical(device, getFromNamespace("svglite", "svglite"))) {
+    op <- graphics::par(mar = rep(0, 4))
+    grDevices::devAskNewPage(FALSE)
+    tryCatch(graphics::plot.new(), finally = graphics::par(op))
+  }
 
   # Evaluate the expression
   expr <- rlang::enquo(expr)
