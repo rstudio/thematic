@@ -34,9 +34,8 @@ grid_before_hook <- function() {
   )
   # Now set defaults
   knitr_dev_args_set()
+  # Updating of Geom/Scale defaults is already handled ggplot_build.ggplot_thematic
   ggplot_theme_set()
-  ggplot_print_set()
-  ggplot_grob_set()
   lattice_print_set()
 }
 

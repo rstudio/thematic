@@ -55,18 +55,15 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
     qualitative = qualitative, sequential = sequential,
     font = font
   )
-  # Modify global state now, so that
-  base_params_set()
-  base_palette_set()
-  ggplot_theme_set()
-  ggplot_print_set()
-  ggplot_grob_set()
-  lattice_print_set()
-  knitr_dev_args_set()
-  # Register thematic hooks
+  # Register thematic hooks (these hooks modify global state when a new page is drawn)
   set_hooks()
   # Register showtext hooks (for custom font rendering in non-ragg devices)
   if (rlang::is_installed("showtext")) showtext::showtext_auto()
+
+  # Override ggplot print method mainly because we currently need access to
+  # the plot object in order to set Geom/Scale defaults
+  ggplot_print_set()
+
   invisible(old_theme)
 }
 
@@ -89,15 +86,17 @@ is_default_family <- function(x) {
 #' @export
 thematic_end <- function() {
   if (!is.null(.globals$theme)) rm("theme", envir = .globals)
+  remove_hooks()
+  if (rlang::is_installed("showtext")) showtext::showtext_auto(FALSE)
+
+  # Removing the plot.new hooks is not enough to restore global state
   base_params_restore()
   base_palette_restore()
   knitr_dev_args_restore()
   ggplot_theme_restore()
   ggplot_print_restore()
-  ggplot_grob_restore()
   lattice_print_restore()
-  remove_hooks()
-  if (rlang::is_installed("showtext")) showtext::showtext_auto(FALSE)
+
   invisible()
 }
 

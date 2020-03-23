@@ -66,6 +66,7 @@ ggtheme_auto <- function(theme = .globals$theme) {
 
 ggplot_print_set <- function() {
   if (!rlang::is_installed("ggplot2")) return(NULL)
+  ggplot_print_restore()
   .globals$ggplot_print <- tryCatch(
     utils::getS3method("print", "ggplot"),
     error = function(e) utils::getFromNamespace("print.ggplot", "ggplot2")
@@ -80,15 +81,27 @@ ggplot_print_restore <- function() {
   rm("ggplot_print", envir = .globals)
 }
 
+
 # N.B. this print function is designed this way because
 # shiny needs the build/gtable returned from the print method
-# If and when ggplot2 get proper scale/geom default mechanisms
-# we can and should avoid overriding the print method
 custom_print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   ggplot2::set_last_plot(x)
-  build <- ggplot_build_with_theme(x, .globals$theme, newpage = newpage)
+  if (newpage) grid::grid.newpage()
+  # Add a special class as a way of calling a ggplot build method
+  # that we control (needed since we'd like the defaults to be
+  # able to change dynamically at print time)
+  oldClass(x) <- unique(c("ggplot_thematic", oldClass(x)))
+  build <- ggplot2::ggplot_build(x)
   gtable <- ggplot2::ggplot_gtable(build)
-  grid::grid.draw(gtable)
+  if (is.null(vp)) {
+    grid::grid.draw(gtable)
+  } else {
+    if (is.character(vp))
+      grid::seekViewport(vp)
+    else grid::pushViewport(vp)
+    grid::grid.draw(gtable)
+    grid::upViewport()
+  }
 
   structure(list(
     build = build,
@@ -96,31 +109,12 @@ custom_print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   ), class = "ggplot_build_gtable")
 }
 
-# Also override ggplot2::ggplotGrob() to get default overriding
-# working with things like gridExtra and patchwork that don't
-# necessarily call ggplot2:::print.ggplot
-# TODO: do we need something similar for ggplot_gtable()?
-ggplot_grob_set <- function() {
-  if (!rlang::is_installed("ggplot2")) return(NULL)
-  .globals$ggplot_grob <- utils::getFromNamespace("ggplotGrob", "ggplot2")
-  utils::assignInNamespace(
-    "ggplotGrob",
-    function(x) ggplot_gtable(ggplot_build_with_theme(x, .globals$theme, newpage = FALSE)),
-    "ggplot2"
-  )
-}
-
-ggplot_grob_restore <- function() {
-  if (is.null(.globals$ggplot_grob)) return()
-  utils::assignInNamespace("ggplotGrob", .globals$ggplot_grob, "ggplot2")
-  rm("ggplot_grob", envir = .globals)
-}
 
 
-# This is currently needed to
-ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_build, newpage = FALSE) {
-  if (newpage) grid::grid.newpage()
-  if (!length(theme)) return(ggplot_build(p))
+ggplot_build.ggplot_thematic <- function(p, theme = .globals$theme) {
+  if (!length(theme)) {
+    return(NextMethod("ggplot_build", p))
+  }
   fg <- theme$fg
   bg <- theme$bg
   # Accent can be of length 2 because lattice
@@ -217,10 +211,8 @@ ggplot_build_with_theme <- function(p, theme, ggplot_build = ggplot2::ggplot_bui
     }
   }
 
-  ggplot_build(p)
+  NextMethod("ggplot_build", p)
 }
-
-
 
 restore_scale <- function(name, x, envir) {
   if (is.null(x)) rm(name, envir = envir) else assign(name, x, envir = envir)
