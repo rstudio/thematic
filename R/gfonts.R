@@ -79,13 +79,13 @@ register_gfont_cache <- function(info = NULL) {
 }
 
 
-
 gfont_info <- function(family) {
-  family_idx <- match(family, google_fonts$family)
+  gfonts <- get_google_fonts()
+  family_idx <- match(family, gfonts$family)
   if (is.na(family_idx)) {
     NULL
   } else {
-    google_fonts[family_idx, , drop = TRUE]
+    gfonts[family_idx, , drop = TRUE]
   }
 }
 
@@ -97,6 +97,12 @@ has_gfont_cache <- function(info) {
     pattern = paste0(".", gfont_format, "$")
   )
   length(font_files) >= 1
+}
+
+# Use updated version of fonts, if available; otherwise,
+# fallback to the set shipped with the package
+get_google_fonts <- function() {
+  .globals$google_fonts %||% google_fonts
 }
 
 gfont_url <- function() {

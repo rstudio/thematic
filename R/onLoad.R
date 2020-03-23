@@ -34,9 +34,14 @@ registerMethods <- function(methods) {
     list(c("ggplot2", "ggplot_build", "ggplot_thematic"))
   )
 
-  # Try to get the most recent set of google fonts and fallback
-  # to the set shipped with the package
-  .globals$google_fonts <- get_google_fonts()
+  # Asynchronously update the set of google fonts (if possible)
+  if (rlang::is_installed("later") &&
+      rlang::is_installed("curl") &&
+      rlang::is_installed("jsonlite")) {
+    subscribe_fetch_content_length()
+    subscribe_fetch_fonts()
+    update_google_fonts()
+  }
 
   if (!rlang::is_installed("knitr")) return()
   if (rlang::is_installed("showtext")) {
@@ -50,22 +55,66 @@ registerMethods <- function(methods) {
   }
 }
 
-
-get_google_fonts <- function() {
-  tmpfile <- tempfile(fileext = ".json")
-  on.exit(unlink(tmpfile, recursive = TRUE), add = TRUE)
-  tryCatch(
-    {
-      new_content_length <- httr::HEAD(gfont_url())$headers$`content-length`
-      if (!identical(new_content_length, attr(google_fonts, "content-length"))) {
-        message(
-          "Google Fonts has updated since thematic was last updated.",
-          "Attempting to update the set of known fonts..."
-        )
-        download.file(gfont_url(), tmpfile)
-        structure(jsonlite::fromJSON(tmpfile), "content-length" = new_content_length)
+subscribe_fetch_content_length <- function() {
+  .globals$content_length_pool <- curl::new_pool()
+  .globals$content_length_done <- FALSE
+  curl::curl_fetch_multi(
+    gfont_url(),
+    done = function(res) {
+      contentLength <- get_content_length(res)
+      if (length(contentLength)) {
+        .globals$content_length <- contentLength
       }
+      .globals$content_length_done <- TRUE
     },
-    error = function(e) google_fonts
+    fail = function(err) {
+      .globals$content_length_done <- TRUE
+    },
+    pool = .globals$content_length_pool,
+    # This effectively makes it a HEAD request
+    # https://github.com/jeroen/curl/issues/24#issuecomment-101030581
+    handle = curl::new_handle(nobody = TRUE)
   )
+}
+
+subscribe_fetch_fonts <- function() {
+  .globals$fonts_pool <- curl::new_pool()
+  .globals$fonts_done <- FALSE
+  curl::curl_fetch_multi(
+    gfont_url(),
+    done = function(res) {
+      body <- rawToChar(res$content)
+      # Note that google_fonts() looks for this global object
+      .globals$google_fonts <- structure(
+        jsonlite::parse_json(body, simplifyVector = TRUE),
+        "content-length" = get_content_length(res)
+      )
+      .globals$fonts_done <- TRUE
+    },
+    fail = function(res) {
+      .globals$fonts_done <- TRUE
+    },
+    pool = .globals$fonts_pool
+  )
+}
+
+
+update_google_fonts <- function() {
+  if (!.globals$content_length_done) {
+    later::later(update_google_fonts, 0.1)
+    curl::multi_run(timeout = 0, pool = .globals$content_length_pool)
+  } else {
+    # set to TRUE to debug me
+    new_fonts <- !identical(.globals$content_length, attr(google_fonts, "content-length"))
+    if (new_fonts && !.globals$fonts_done) {
+      later::later(update_google_fonts, 0.1)
+      curl::multi_run(timeout = 0, pool = .globals$fonts_pool)
+    }
+  }
+}
+
+get_content_length <- function(res) {
+  headers <- rawToChar(res$headers)
+  m <- regexec("Content-Length:\\s+([0-9]+)", headers)
+  regmatches(headers, m)[[1]][2]
 }
