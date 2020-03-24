@@ -10,7 +10,7 @@ adjust_color <- function(color, bg, fg, accent = NA) {
 
   # If a gray scale color, then the degree of gray determines
   # the mixing between fg (aka black) and bg (aka white)
-  rgbs <- grDevices::col2rgb(color, alpha = TRUE)[1:3,1]
+  rgbs <- col2rgb(color, alpha = TRUE)[1:3,1]
   if (sum(diff(rgbs)) == 0) {
     return(mix_colors(bg, fg, 1 - (rgbs[1] / 255)))
   }

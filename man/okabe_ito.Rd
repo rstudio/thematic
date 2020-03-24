@@ -9,9 +9,15 @@ okabe_ito(n = NULL)
 \arguments{
 \item{n}{number of colors.}
 }
+\value{
+a vector of color codes.
+}
 \description{
 Okabe Ito colorscale
 }
 \references{
 \url{https://jfly.uni-koeln.de/color/}
+}
+\seealso{
+\code{\link[=thematic_begin]{thematic_begin()}}
 }

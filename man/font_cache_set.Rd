@@ -7,11 +7,27 @@
 font_cache_set(path, cleanup = FALSE)
 }
 \arguments{
-\item{path}{a filepath.}
+\item{path}{a filepath for the new cachine directory.}
+
+\item{cleanup}{whether or not to remove font files from the
+previously used caching directory (after copying to the new location).}
 }
 \value{
 Returns the previously used caching directory.
 }
 \description{
-Control the directory used for font caching
+The default directory used for font caching is system dependent;
+and thus, not very portable from machine to machine. Use this
+function to move thematic's cache to a new path. This is primarily
+useful for making font cache relative to a shiny app directory,
+so that, when the app is deployed, the cache deploys with it.
+}
+\examples{
+\dontrun{
+  font_cache_set("my_app")
+  shiny::runApp("my_app")
+}
+}
+\seealso{
+\code{\link[=thematic_begin]{thematic_begin()}}, \code{\link[=font_spec]{font_spec()}}
 }

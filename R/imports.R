@@ -1,2 +1,6 @@
-#' @importFrom grDevices col2rgb
-#' @importFrom utils capture.output getFromNamespace assignInNamespace download.file unzip
+#' @importFrom graphics par plot plot.new
+#' @importFrom grid grid.newpage grid.draw grid.text gpar seekViewport pushViewport upViewport
+#' @importFrom grDevices col2rgb dev.new dev.cur dev.off devAskNewPage palette colorRampPalette quartz.options
+#' @importFrom utils capture.output download.file unzip packageVersion modifyList getFromNamespace getS3method assignInNamespace
+#' @importFrom rlang is_installed list2
+NULL

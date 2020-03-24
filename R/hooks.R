@@ -20,8 +20,6 @@ base_before_hook <- function() {
   .globals$theme$font$family <- resolve_font_family(
     font$families, type = "base", font$auto_install
   )
-  # Now set defaults
-  knitr_dev_args_set()
   base_params_set()
   base_palette_set()
 }
@@ -32,8 +30,6 @@ grid_before_hook <- function() {
   .globals$theme$font$family <- resolve_font_family(
     font$families, type = "grid", font$auto_install
   )
-  # Now set defaults
-  knitr_dev_args_set()
   # Updating of Geom/Scale defaults is already handled ggplot_build.ggplot_thematic
   ggplot_theme_set()
   lattice_print_set()
@@ -46,13 +42,30 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
     return(families)
   }
 
-  # I don't think it's feasible to detect font support in RStudio...
-  dev <- grDevices::dev.cur()
-  if (is_rstudio_device(dev)) {
+  # Returns the name of the currently active device
+  # (and, if none is active, the name of the one that *will be* used)
+  dev_name <- infer_device()
+
+  if ("RStudioGD" %in% dev_name) {
     warning(
       call. = FALSE,
-      "Auto-installed fonts aren't supported in RStudio's graphics device. ",
-      "Try using thematic_with_device() and make sure at least one of showtext or ragg is installed."
+      "The RStudio's graphics device is currently unable to render non-system fonts ",
+      "(i.e., thematic's Google Font support doesn't include RStudioGD). However, ",
+      "if you have showtext (or ragg) is installed, this plot should render fine in shiny and rmarkdown. ",
+      "To save this plot to a file (and preview), see `help(thematic_with_device)`."
+    )
+    return(families[1])
+  }
+
+  # Since can_render() needs to open the device to detect font support,
+  # we need to be able to map a device name to a function
+  dev_fun <- get_device_function(dev_name)
+  if (!is.function(dev_fun)) {
+    warning(
+      "Thematic's Google Font support doesn't currently know about this graphics device: '", dev_name, "'. ",
+      "Please let us know if you see this warning: ",
+      "https://github.com/rstudio/thematic/issues/new",
+      call. = FALSE
     )
     return(families[1])
   }
@@ -68,12 +81,12 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
     }
 
     # If we can render the font family, do no more!
-    if (can_render(family, type, dev)) {
+    if (can_render(family, type, dev_fun, dev_name)) {
       break
     }
 
     if (auto_install) {
-      if (!rlang::is_installed("showtext") && !rlang::is_installed("ragg")) {
+      if (!is_installed("showtext") && !is_installed("ragg")) {
         warning("Auto installation of fonts requires either showtext or ragg to be installed", call. = FALSE)
       } else {
         try_gfont_download_and_register(info, family)
@@ -81,15 +94,14 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
     }
 
     # Try again
-    if (can_render(family, type, dev)) {
+    if (can_render(family, type, dev_fun, dev_name)) {
       break
     } else {
-      # TODO: check for ragg/showtext?
       warning(
-        call. = FALSE,
-        "It seems the current graphics device '", names(infer_device()), "' ",
+        "It seems the current graphics device '", dev_name, "' ",
         "is unable to render the requested font family '", family, "'. ",
-        "Try using thematic_with_device() and make sure at least one of showtext or ragg is installed."
+        "Try using `thematic_with_device()` and make sure at least one of showtext or ragg is installed.",
+        call. = FALSE
       )
     }
   }
@@ -98,12 +110,12 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
 
 
 
-can_render <- function(family, type = c("base", "grid"), device) {
-  # ragg devices doesn't produce a warning if the font family is not
+can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
+  # ragg devices don't produce a warning if the font family is not
   # available; instead, it uses whatever match_font(family) gives.
   # Therefore, it seems reasonable to assume the font is available
   # if the match resolves to something other than a generic font family
-  if (is_ragg_device(device)) {
+  if (dev_name %in% paste0("agg_", c("png", "tiff", "ppm"))) {
     if (family %in% c("sans", "serif", "mono")) return(TRUE)
     f <- systemfonts::match_font(family)
     is_available <- !identical(f, systemfonts::match_font("sans")) &&
@@ -112,18 +124,18 @@ can_render <- function(family, type = c("base", "grid"), device) {
     return(is_available)
   }
 
-  # Try to open a new (temporary) device based on the current one
-  # so we don't generate multiple pages
-
-  if (!is_null_device(device)) {
-    opts <- options(device = names(device))
-    on.exit(options(opts), add = TRUE)
-  }
-  try({
-    grDevices::dev.new()
-    dev_new <- grDevices::dev.cur()
-    on.exit(grDevices::dev.off(dev_new), add = TRUE)
-  }, silent = TRUE)
+  # To see if we have font support on the given device without
+  # generating multiple pages, (temporarily) open the device
+  # to render some text
+  opts <- options(device = dev_fun)
+  on.exit(options(opts), add = TRUE)
+  tmp <- tempfile()
+  dev_new(filename = tmp)
+  dev <- dev.cur()
+  on.exit({
+    dev.off(dev)
+    unlink(tmp, recursive = TRUE)
+  }, add = TRUE)
 
   # temporarily disable thematics plot hooks
   # (otherwise, we'd get caught in an infinite loop)
@@ -135,10 +147,10 @@ can_render <- function(family, type = c("base", "grid"), device) {
   tryCatch(
     {
       if (type == "grid") {
-        grid::grid.newpage()
-        grid::grid.text("testing", x = 0.5, y = 0.5, gp = grid::gpar(fontfamily = family))
+        grid.newpage()
+        grid.text("testing", x = 0.5, y = 0.5, gp = gpar(fontfamily = family))
       } else {
-        graphics::plot(1, family = family)
+        plot(1, family = family)
       }
       TRUE
     },
@@ -154,35 +166,67 @@ can_render <- function(family, type = c("base", "grid"), device) {
 }
 
 
-is_ragg_device <- function(x) {
-  # TODO: support supertransparent?
-  isTRUE(names(x) %in% paste0("agg_", c("png", "tiff", "ppm")))
-}
-
-is_rstudio_device <- function(x) {
-  if (identical("RStudioGD", names(x))) {
-    return(TRUE)
-  }
-  if (is_null_device(x) && is_rstudio() && interactive()) {
-    return(TRUE)
-  }
-  FALSE
-}
-
-is_null_device <- function(x) {
-  identical(names(x), "null device") && x == 1
-}
-
 infer_device <- function() {
-  dev_cur <- grDevices::dev.cur()
-  # If there's a device already open, then use it
-  if (!is_null_device(dev_cur)) {
-    return(dev_cur)
+  dev_name <- names(dev.cur())
+  if (!"null device" %in% dev_name) {
+    return(dev_name)
   }
-  # Otherwise, temporarily open to a new device to
-  # infer what the device *will be*
-  grDevices::dev.new()
-  dev_new <- grDevices::dev.cur()
-  on.exit(grDevices::dev.off(dev_new), add = TRUE)
-  dev_new
+  # Temporarily open to a new device to infer what the device *will be*
+  tmp <- tempfile()
+  dev_new(filename = tmp)
+  dev <- dev.cur()
+  on.exit({dev.off(dev); unlink(tmp, recursive = TRUE)}, add = TRUE)
+  names(dev)
+}
+
+# Do our best to map the name of the current device to an
+# actual device function
+get_device_function <- function(name) {
+  # resolve known cases where the .Device name doesn't
+  # quite map to the relevant function name
+  name <- switch(
+    name,
+    quartz_off_screen = "quartz",
+    `win.metafile:`  = "win.metafile",
+    name
+  )
+  # Effectively what dev.new() does to find a device function from a string
+  # https://github.com/wch/r-source/blob/d6c208e4/src/library/grDevices/R/device.R#L291-L293
+  if (exists(name, .GlobalEnv)) {
+    return(get(name, .GlobalEnv))
+  }
+  if (exists(name, asNamespace("grDevices"))) {
+    return(get(name, asNamespace("grDevices")))
+  }
+  # Other important (non-grDevices) devices
+  switch(
+    name,
+    agg_png = ragg::agg_png,
+    agg_tiff = ragg::agg_tiff,
+    agg_ppm = ragg::agg_ppm,
+    # We don't want to suggest since it doesn't work with showtext
+    Cairo = getFromNamespace("Cairo", "Cairo"),
+    devSVG = getFromNamespace("svglite", "svglite"),
+    # TODO: cairoDevices?
+    warning("Unknown device name: '", name, "'", call. = FALSE)
+  )
+}
+
+
+# Most devices use `filename` instead of `file`,
+# but there are a few exceptions (e.g., pdf(), svglite::svglite())
+dev_new <- function(filename) {
+  # quartz()'s type default is "native", which is an on-screen device,
+  # which can lead to suprising behavior. Fortunately, at least as far
+  # as I can tell, if fonts are supported on one quartz type, it should
+  # be supported for all types
+  opts <- quartz.options(type = "png")
+  on.exit(do.call(quartz.options, opts), add = TRUE)
+  suppressMessages(dev.new(filename = filename, file = filename))
+  #tryCatch(
+  #  suppressMessages(),
+  #  error = function(e) {
+  #    dev.new(file = filename, ...)
+  #  }
+  #)
 }

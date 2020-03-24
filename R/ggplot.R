@@ -3,7 +3,7 @@
 # ---------------------------------------------------------------
 
 ggplot_theme_set <- function(theme = .globals$theme) {
-  if (!rlang::is_installed("ggplot2")) return(NULL)
+  if (!is_installed("ggplot2")) return(NULL)
   ggplot_theme_restore()
   .globals$ggplot_theme <- ggplot2::theme_set(ggtheme_auto(theme))
 }
@@ -65,11 +65,11 @@ ggtheme_auto <- function(theme = .globals$theme) {
 # -----------------------------------------------------------------------------------
 
 ggplot_print_set <- function() {
-  if (!rlang::is_installed("ggplot2")) return(NULL)
+  if (!is_installed("ggplot2")) return(NULL)
   ggplot_print_restore()
   .globals$ggplot_print <- tryCatch(
-    utils::getS3method("print", "ggplot"),
-    error = function(e) utils::getFromNamespace("print.ggplot", "ggplot2")
+    getS3method("print", "ggplot"),
+    error = function(e) getFromNamespace("print.ggplot", "ggplot2")
   )
   registerS3method("print", "ggplot", custom_print.ggplot)
 }
@@ -86,7 +86,7 @@ ggplot_print_restore <- function() {
 # shiny needs the build/gtable returned from the print method
 custom_print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   ggplot2::set_last_plot(x)
-  if (newpage) grid::grid.newpage()
+  if (newpage) grid.newpage()
   # Add a special class as a way of calling a ggplot build method
   # that we control (needed since we'd like the defaults to be
   # able to change dynamically at print time)
@@ -94,13 +94,13 @@ custom_print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   build <- ggplot2::ggplot_build(x)
   gtable <- ggplot2::ggplot_gtable(build)
   if (is.null(vp)) {
-    grid::grid.draw(gtable)
+    grid.draw(gtable)
   } else {
     if (is.character(vp))
-      grid::seekViewport(vp)
-    else grid::pushViewport(vp)
-    grid::grid.draw(gtable)
-    grid::upViewport()
+      seekViewport(vp)
+    else pushViewport(vp)
+    grid.draw(gtable)
+    upViewport()
   }
 
   structure(list(
@@ -129,7 +129,7 @@ ggplot_build.ggplot_thematic <- function(p, theme = .globals$theme) {
     lapply(p$layers, function(x) x$geom),
     lapply(
       c("GeomPoint", "GeomLine", "GeomPolygon"),
-      utils::getFromNamespace, "ggplot2"
+      getFromNamespace, "ggplot2"
     )
   )
 
@@ -182,6 +182,7 @@ ggplot_build.ggplot_thematic <- function(p, theme = .globals$theme) {
     # `scales_add_defaults()` first looks in the plot_env to find default scales
     # https://github.com/tidyverse/ggplot2/blob/a7b3135/R/layer.r#L214
     if (!identical(sequential, NA)) {
+      # TODO: distinguish between existing/NULL
       colour_continuous <- tryGet("scale_colour_continuous", envir = p$plot_env)
       fill_continuous <- tryGet("scale_fill_continuous", envir = p$plot_env)
       assign("scale_colour_continuous", scale_defaults$ggplot2.continuous.colour, envir = p$plot_env)
@@ -223,7 +224,7 @@ restore_scale <- function(name, x, envir) {
 # https://github.com/tidyverse/ggplot2/pull/3828
 # https://github.com/tidyverse/ggplot2/pull/3833
 has_proper_ggplot_scale_defaults <- function() {
-  utils::packageVersion("ggplot2") > "4.0.0"
+  packageVersion("ggplot2") > "4.0.0"
 }
 
 qualitative_pal <- function(codes) {

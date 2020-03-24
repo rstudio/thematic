@@ -9,17 +9,25 @@
 #' [thematic_current()] (this can be particularly useful for routing the
 #' sequential color palette to base/lattice graphics).
 #'
+#' Colors may be anything understood by [col2rgb()] or `htmltools::parseCssColors()`
+#' (i.e., may be any valid R or CSS color string).
+#'
 #' @param bg a background color.
 #' @param fg a foreground color.
 #' @param accent a color for making certain graphical markers 'stand out'
 #' (e.g., the fitted line color for [ggplot2::geom_smooth()]).
 #' Can be 2 colors for lattice (stroke vs fill accent).
+#' @param font a `font_spec()` object.
+#' @param sequential color palette for numeric variables.
+#' Defaults to a gradient based on `accent` color.
 #' @param qualitative color palette for discrete variables.
 #' Defaults to the Okabe-Ito colorscale (won't be used in ggplot2 when
 #' the number of data levels exceeds the max allowed colors).
-#' @param sequential color palette for numeric variables.
-#' Defaults to a gradient based on `accent` color.
 #'
+#' @return Returns any information about the previously set theme (if any), invisibly.
+#'
+#' @rdname thematic
+#' @seealso [font_spec()], [thematic_with_device()]
 #' @export
 #' @examples
 #' # simple dark mode
@@ -46,9 +54,9 @@
 #' thematic_end()
 #'
 thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
-                           qualitative = okabe_ito(),
-                           sequential = sequential_gradient(fg, accent, bg),
-                           font = font_spec()) {
+                           font = font_spec(),
+                           sequential = sequential_gradient(fg = fg, accent = accent, bg = bg),
+                           qualitative = okabe_ito()) {
   old_theme <- .globals$theme
   .globals$theme <- theme_create(
     bg = bg, fg = fg, accent = accent,
@@ -58,36 +66,23 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
   # Register thematic hooks (these hooks modify global state when a new page is drawn)
   set_hooks()
   # Register showtext hooks (for custom font rendering in non-ragg devices)
-  if (rlang::is_installed("showtext")) showtext::showtext_auto()
+  if (is_installed("showtext")) showtext::showtext_auto()
 
   # Override ggplot print method mainly because we currently need access to
   # the plot object in order to set Geom/Scale defaults
   ggplot_print_set()
 
+  knitr_dev_args_set()
+
   invisible(old_theme)
 }
 
-
-#' @rdname thematic_begin
-#' @param families a character vector of font families.
-#' @param scale numerical constant applied to font sizes.
-#' @param auto_install whether or not to attempt automatic download and registration
-#' of fonts not found on the system. Currently any font on Google Fonts is supported.
-#' @export
-font_spec <- function(families = "", scale = 1, auto_install = rlang::is_installed("ragg") || rlang::is_installed("showtext")) {
-  list(families = families, scale = scale, auto_install = auto_install)
-}
-
-is_default_family <- function(x) {
-  identical(x, "")
-}
-
-#' @rdname thematic_begin
+#' @rdname thematic
 #' @export
 thematic_end <- function() {
   if (!is.null(.globals$theme)) rm("theme", envir = .globals)
   remove_hooks()
-  if (rlang::is_installed("showtext")) showtext::showtext_auto(FALSE)
+  if (is_installed("showtext")) showtext::showtext_auto(FALSE)
 
   # Removing the plot.new hooks is not enough to restore global state
   base_params_restore()
@@ -100,125 +95,12 @@ thematic_end <- function() {
   invisible()
 }
 
-#' @rdname thematic_begin
+#' @rdname thematic
 #' @param which which theme element (i.e., which argument of [thematic_begin()]?).
 #' Defaults to all theme elements.
 #' @export
 thematic_current <- function(which = "all") {
   if (identical("all", which)) .globals$theme else .globals$theme[[which]]
-}
-
-
-#' @rdname thematic_begin
-#' @param expr an expression that produces a plot.
-#' @param device a graphics device to use for capturing the plot
-#' @param width
-#' @param height
-#' @param ... arguments to the graphics `device`.
-#' @inheritParams thematic_begin
-#' @export
-#' @examples
-#'
-#' library(thematic)
-#' font <- font_spec(family = "Rock Salt", scale = 1.25)
-#' thematic_begin("black", "white", font = font)
-#' file <- thematic_with_device(plot(1:10), res = 144)
-#' if (interactive()) browseURL(file)
-thematic_with_device <- function(expr, device = safe_device(),
-                                 filename = tempfile(fileext = ".png"), ...) {
-  # N.B. implementation is quite similar to htmltools::capturePlot
-  if (!is.function(device)) {
-    stop(call. = FALSE, "The `device` argument should be a function, e.g. `ragg::agg_png`")
-  }
-
-  isTempFile <- missing(filename)
-
-  # collect user and device arguments
-  args <- rlang::list2(filename = filename, ...)
-  device_args <- names(formals(device))
-
-  # do our best to find the background color arg
-  bg_arg <- grep("^background$|^bg$", device_args, value = TRUE)
-  if (!length(bg_arg)) {
-    stop(
-      "Wasn't able to detect the background color argument for the given device, ",
-      "so thematic won't automatically set it for you, but you can also set it yourself ",
-      "by doing `thematic_with_device(expr, bg_color_arg = thematic_current('bg'))`",
-      call. = FALSE
-    )
-  }
-
-  if (!is.null(args[[bg_arg]])) {
-    warning(
-      "Did you intend to specify the background color? ",
-      "Thematic will set the background for you based on the current theme.",
-      call. = FALSE
-    )
-  } else {
-    args[[bg_arg]] <- thematic_current("bg") %||% "white"
-  }
-
-  # Handle the case where device wants `file` instead of `filename`
-  # (e.g., svglite::svglite)
-  if (!"filename" %in% device_args && "file" %in% device_args) {
-    args$file <- args$file %||% args$filename
-    args$filename <- NULL
-  }
-
-  # Device management
-  do.call(device, args)
-  dev <- grDevices::dev.cur()
-  on.exit(grDevices::dev.off(dev), add = TRUE)
-
-  # make svglite happy (it doesn't support multiple pages and
-  # it's convenient to support it for our own testing purposes
-  if (!identical(device, getFromNamespace("svglite", "svglite"))) {
-    op <- graphics::par(mar = rep(0, 4))
-    grDevices::devAskNewPage(FALSE)
-    tryCatch(graphics::plot.new(), finally = graphics::par(op))
-  }
-
-  # Evaluate the expression
-  expr <- rlang::enquo(expr)
-  tryCatch({
-    result <- withVisible(rlang::eval_tidy(expr))
-    if (result$visible) {
-      capture.output(print(result$value))
-    }
-    filename
-  }, error = function(e) {
-    try({
-      # i.e., if we _know_ this is a tempfile remove it before throwing
-      if (isTempFile && file.exists(filename))
-        unlink(filename)
-    })
-    stop(e)
-  })
-}
-
-safe_device <- function(type = c("png", "tiff", "ppm")) {
-  type <- match.arg(type)
-
-  if (rlang::is_installed("ragg")) {
-    dev <- switch(
-      type,
-      png = ragg::agg_png,
-      tiff = ragg::agg_tiff,
-      ppm = ragg::agg_ppm
-    )
-    return(dev)
-  }
-
-  if (!rlang::is_installed("showtext")) {
-    message("Auto-installation of custom fonts requires either the showtext or ragg package.")
-  }
-
-  switch(
-    type,
-    png = grDevices::png,
-    tiff = grDevices::tiff,
-    stop("'", type, "' graphics device not available.", call. = )
-  )
 }
 
 
@@ -232,25 +114,74 @@ theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
     if (identical(x, NA)) return(x)
     vapply(x, parse_any_color, character(1), USE.NAMES = FALSE)
   })
+  if (!inherits(font, "font_spec")) {
+    stop("The `font` argument must be a `font_spec()` object", call. = FALSE)
+  }
   theme$font <- font
   theme
 }
+
+
+#' Font specification
+#'
+#' Specify a collection of font families. The first font family supported
+#' by the relevant device (i.e., the device that is open, or will be opened, at
+#' plotting time) is used by thematic. If a given font family is not supported
+#' by the default, but is a [Google Font](https://fonts.google.com/) and
+#' `auto_install = TRUE`, the font will be downloaded, cached, and registered
+#' for use the **showtext** and **ragg** packages.
+#'
+#' @param families a character vector of font families.
+#' @param scale numerical constant applied to font sizes.
+#' @param auto_install whether or not to attempt automatic download and registration
+#' of fonts not found on the system. Currently any font on Google Fonts is supported.
+#'
+#' @return a list of information about the font specification.
+#' @seealso [thematic_with_device()], [thematic_begin()], [font_cache_set()]
+#'
+#' @export
+font_spec <- function(families = "", scale = 1, auto_install = is_installed("ragg") || is_installed("showtext")) {
+  structure(
+    list(families = families, scale = scale, auto_install = auto_install),
+    class = "font_spec"
+  )
+}
+
+is_default_family <- function(x) {
+  identical(x, "")
+}
+
+
+
 
 
 #' Okabe Ito colorscale
 #'
 #' @param n number of colors.
 #'
-#' @export
+#' @return a vector of color codes.
+#' @seealso [thematic_begin()]
 #' @references \url{https://jfly.uni-koeln.de/color/}
+#' @export
 okabe_ito <- function(n = NULL) {
   okabeIto <- c("#E69F00", "#009E73", "#0072B2", "#CC79A7", "#999999", "#D55E00", "#F0E442", "#56B4E9")
   if (is.null(n)) okabeIto else okabeIto[seq_len(n)]
 }
 
-# TODO: export?
-sequential_gradient <- function(fg, accent, bg, n = 30) {
+#' Construct a sequential colorscale from fg, accent, and bg
+#'
+#' @inheritParams thematic_begin
+#' @param alpha a number between 0 and 1. Controls how close the endpoints
+#' should be to the `fg` and `bg`.
+#' @param n the number of color codes to return
+#' @return a vector of color codes.
+#' @seealso [thematic_begin()]
+#' @export
+sequential_gradient <- function(alpha = 0.5, n = 30, fg, accent, bg) {
   if (anyNA(c(fg, accent, bg))) return(NA)
+  if (alpha > 1 || alpha < 0) {
+    stop("alpha must be between 0 and 1", call. = FALSE)
+  }
 
   # Main idea: Interpolate between [fg+accent -> accent -> bg+accent]
   # For the endpoints the amount of blending of fg/bg and accent
@@ -267,8 +198,8 @@ sequential_gradient <- function(fg, accent, bg, n = 30) {
   vals <- scales::rescale(
     seq(0, 1, length.out = n),
     to = 0.5 + c(
-      -0.5 * as.numeric(fg_dist / total_dist),
-      0.4 * as.numeric(bg_dist / total_dist)
+      -alpha * as.numeric(fg_dist / total_dist),
+      alpha * as.numeric(bg_dist / total_dist)
     )
   )
   scales::colour_ramp(c(fg, accent, bg), alpha = TRUE)(vals)

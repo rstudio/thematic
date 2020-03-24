@@ -2,37 +2,22 @@
 % Please edit documentation in R/thematic.R
 \name{thematic_begin}
 \alias{thematic_begin}
-\alias{font_spec}
 \alias{thematic_end}
 \alias{thematic_current}
-\alias{thematic_with_device}
 \title{Theme static plots based on a few colors}
 \usage{
 thematic_begin(
   bg = NULL,
   fg = NULL,
   accent = NA,
-  qualitative = okabe_ito(),
-  sequential = sequential_gradient(fg, accent, bg),
-  font = font_spec()
-)
-
-font_spec(
-  family = "",
-  scale = 1,
-  auto_install = rlang::is_installed("ragg") || rlang::is_installed("showtext")
+  font = font_spec(),
+  sequential = sequential_gradient(fg = fg, accent = accent, bg = bg),
+  qualitative = okabe_ito()
 )
 
 thematic_end()
 
 thematic_current(which = "all")
-
-thematic_with_device(
-  expr,
-  device = safe_device(),
-  filename = tempfile(fileext = ".png"),
-  ...
-)
 }
 \arguments{
 \item{bg}{a background color.}
@@ -43,28 +28,20 @@ thematic_with_device(
 (e.g., the fitted line color for \code{\link[ggplot2:geom_smooth]{ggplot2::geom_smooth()}}).
 Can be 2 colors for lattice (stroke vs fill accent).}
 
-\item{qualitative}{color palette for discrete variables.
-Defaults to the Okabe-Ito colorscale (won't be used in ggplot2 when
-the number of data levels exceeds the max allowed colors).}
+\item{font}{a \code{font_spec()} object.}
 
 \item{sequential}{color palette for numeric variables.
 Defaults to a gradient based on \code{accent} color.}
 
-\item{family}{font family.}
-
-\item{scale}{numerical constant applied to font sizes.}
-
-\item{auto_install}{whether or not to attempt automatic download and registration
-of fonts not found on the system. Currently any font on Google Fonts is supported.}
+\item{qualitative}{color palette for discrete variables.
+Defaults to the Okabe-Ito colorscale (won't be used in ggplot2 when
+the number of data levels exceeds the max allowed colors).}
 
 \item{which}{which theme element (i.e., which argument of \code{\link[=thematic_begin]{thematic_begin()}}?).
 Defaults to all theme elements.}
-
-\item{expr}{an expression that produces a plot.}
-
-\item{device}{a graphics device to use for capturing the plot}
-
-\item{...}{arguments to the graphics \code{device}.}
+}
+\value{
+Returns any information about the previously set theme (if any), invisibly.
 }
 \description{
 Theme ggplot2, lattice, and base graphics based on just a few colors
@@ -75,6 +52,10 @@ global state to the state before \code{\link[=thematic_begin]{thematic_begin()}}
 use \code{\link[=thematic_end]{thematic_end()}}. To inspect the current thematic state, use
 \code{\link[=thematic_current]{thematic_current()}} (this can be particularly useful for routing the
 sequential color palette to base/lattice graphics).
+}
+\details{
+Colors may be anything understood by \code{\link[=col2rgb]{col2rgb()}} or \code{htmltools::parseCssColors()}
+(i.e., may be any valid R or CSS color string).
 }
 \examples{
 # simple dark mode
@@ -100,10 +81,7 @@ image(volcano, col = thematic_current("sequential"))
 lattice::show.settings()
 thematic_end()
 
-
-library(thematic)
-font <- font_spec(family = "Rock Salt", scale = 1.25)
-thematic_begin("black", "white", font = font)
-file <- thematic_with_device(plot(1:10), res = 144)
-if (interactive()) browseURL(file)
+}
+\seealso{
+\code{\link[=font_spec]{font_spec()}}, \code{\link[=thematic_with_device]{thematic_with_device()}}
 }

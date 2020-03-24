@@ -7,7 +7,7 @@ knitr_dev_args_set <- function() {
 
   .globals$knitr_dev_args <- knitr::opts_chunk$get("dev.args") %||% list()
   knitr::opts_chunk$set(
-    dev.args = utils::modifyList(
+    dev.args = modifyList(
       .globals$knitr_dev_args,
       list(bg = .globals$theme$bg)
     )

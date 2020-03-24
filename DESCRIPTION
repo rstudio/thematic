@@ -1,12 +1,16 @@
 Package: thematic
-Title: Simple and automatic theming of ggplot2, lattice, and base graphics
+Title: Simplified theming of ggplot2, lattice, and base graphics
 Version: 0.0.1
 Authors@R: c(
   person("Carson", "Sievert", role = c("aut", "cre"), email = "carson@rstudio.com", comment = c(ORCID = "0000-0002-4958-2844")),
   person("Joe", "Cheng", role = "aut", email = "joe@rstudio.com"),
   person(family = "RStudio", role = "cph")
   )
-Description: Theme ggplot2, lattice, and base graphics based on a few simple settings
+Description: 
+  Theme ggplot2, lattice, and base graphics based on a few choices, including foreground color, background color, accent color,
+  and font family. Fonts that aren't available on the system, but are available via download on Google Fonts,
+  can be automatically installed for use with the showtext and ragg packages.
+Depends: R (>= 2.10)
 Imports:
     utils,
     graphics,
@@ -30,7 +34,8 @@ Suggests:
     covr,
     jsonlite,
     curl,
-    later
+    later,
+    sf
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

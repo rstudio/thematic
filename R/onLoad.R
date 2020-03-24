@@ -35,16 +35,14 @@ registerMethods <- function(methods) {
   )
 
   # Asynchronously update the set of google fonts (if possible)
-  if (rlang::is_installed("later") &&
-      rlang::is_installed("curl") &&
-      rlang::is_installed("jsonlite")) {
+  if (is_installed("later") && is_installed("curl") && is_installed("jsonlite")) {
     subscribe_fetch_content_length()
     subscribe_fetch_fonts()
     update_google_fonts()
   }
 
-  if (!rlang::is_installed("knitr")) return()
-  if (rlang::is_installed("showtext")) {
+  if (!is_installed("knitr")) return()
+  if (is_installed("showtext")) {
     knitr::opts_chunk$set("fig.showtext" = TRUE)
   } else if (isTRUE(getOption("knitr.in.progress"))) {
     warning(
