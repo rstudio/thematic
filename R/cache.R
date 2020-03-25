@@ -35,8 +35,8 @@ font_cache_set <- function(path, cleanup = FALSE) {
   invisible(old_home)
 }
 
-font_cache_family <- function(id) {
-  file.path(font_cache_housing(), id)
+gfont_cache_dir <- function(family) {
+  file.path(font_cache_housing(), gfont_id(family))
 }
 
 font_cache_housing <- function() {

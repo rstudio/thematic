@@ -62,9 +62,8 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
   dev_fun <- get_device_function(dev_name)
   if (!is.function(dev_fun)) {
     warning(
-      "Thematic's Google Font support doesn't currently know about this graphics device: '", dev_name, "'. ",
-      "Please let us know if you see this warning: ",
-      "https://github.com/rstudio/thematic/issues/new",
+      "Thematic's Google Font support doesn't currently know about the '", dev_name, "' graphics device. ",
+      "Please let us know if you see this warning: https://github.com/rstudio/thematic/issues/new",
       call. = FALSE
     )
     return(families[1])
@@ -74,13 +73,8 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
   for (i in seq_along(families)) {
     family <- families[[i]]
 
-    # First register any font cache
-    info <- gfont_info(family)
-    if (has_gfont_cache(info)) {
-      register_gfont_cache(info)
-    }
-
-    # If we can render the font family, do no more!
+    # If we can already render the font family, do no more!
+    try_register_gfont_cache(family)
     if (can_render(family, type, dev_fun, dev_name)) {
       break
     }
@@ -89,7 +83,7 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
       if (!is_installed("showtext") && !is_installed("ragg")) {
         warning("Auto installation of fonts requires either showtext or ragg to be installed", call. = FALSE)
       } else {
-        try_gfont_download_and_register(info, family)
+        try_gfont_download_and_register(family)
       }
     }
 
@@ -223,10 +217,4 @@ dev_new <- function(filename) {
   opts <- quartz.options(type = "png")
   on.exit(do.call(quartz.options, opts), add = TRUE)
   suppressMessages(dev.new(filename = filename, file = filename))
-  #tryCatch(
-  #  suppressMessages(),
-  #  error = function(e) {
-  #    dev.new(file = filename, ...)
-  #  }
-  #)
 }
