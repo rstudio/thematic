@@ -11,7 +11,7 @@ thematic_begin(
   fg = NULL,
   accent = NA,
   font = font_spec(),
-  sequential = sequential_gradient(fg = fg, accent = accent, bg = bg),
+  sequential = sequential_gradient(),
   qualitative = okabe_ito()
 )
 
@@ -30,12 +30,13 @@ Can be 2 colors for lattice (stroke vs fill accent).}
 
 \item{font}{a \code{font_spec()} object.}
 
-\item{sequential}{color palette for numeric variables.
-Defaults to a gradient based on \code{accent} color.}
+\item{sequential}{a color palette for graphical markers that encode
+numeric values. Can be a vector of color codes or a
+\code{\link[=sequential_gradient]{sequential_gradient()}} object.}
 
-\item{qualitative}{color palette for discrete variables.
-Defaults to the Okabe-Ito colorscale (won't be used in ggplot2 when
-the number of data levels exceeds the max allowed colors).}
+\item{qualitative}{a color palette for graphical markers that encode
+qualitative values (won't be used in ggplot2 when the number of data
+levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.}
 
 \item{which}{which theme element (i.e., which argument of \code{\link[=thematic_begin]{thematic_begin()}}?).
 Defaults to all theme elements.}

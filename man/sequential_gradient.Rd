@@ -4,28 +4,47 @@
 \alias{sequential_gradient}
 \title{Construct a sequential colorscale from fg, accent, and bg}
 \usage{
-sequential_gradient(alpha = 0.5, n = 30, fg, accent, bg)
+sequential_gradient(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30)
 }
 \arguments{
-\item{alpha}{a number between 0 and 1. Controls how close the endpoints
-should be to the \code{fg} and \code{bg}.}
+\item{fg_weight}{a number (between 0 and 1) defining much of the \code{fg}
+color should be mixed into the colourscale.}
 
-\item{n}{the number of color codes to return}
+\item{bg_weight}{a number (between 0 and 1) defining much of the \code{bg}
+color should be mixed into the colourscale.}
 
-\item{fg}{a foreground color.}
+\item{fg_low}{if \code{TRUE} (the default), the \code{fg} color is used for the
+low end of the colorscale (rather than the high end).}
 
-\item{accent}{a color for making certain graphical markers 'stand out'
-(e.g., the fitted line color for \code{\link[ggplot2:geom_smooth]{ggplot2::geom_smooth()}}).
-Can be 2 colors for lattice (stroke vs fill accent).}
-
-\item{bg}{a background color.}
+\item{n}{number of color codes.}
 }
 \value{
-a vector of color codes.
+a list of options for passing to the \code{sequential} argument of \code{\link[=thematic_begin]{thematic_begin()}}.
 }
 \description{
-Construct a sequential colorscale from fg, accent, and bg
+Controls the default weighting and direction of the color gradient
+derived from the \code{fg}, \code{bg}, and \code{accent} color (defined in \code{thematic_begin()}).
 }
-\seealso{
-\code{\link[=thematic_begin]{thematic_begin()}}
+\examples{
+
+# Gradient from fg to accent
+fg <- sequential_gradient(1, 0)
+thematic_begin("black", "white", "salmon", sequential = fg)
+qplot(1:10, 1:10, color = 1:10)
+
+# Gradient from accent -> bg
+bg <- sequential_gradient(0, 1)
+thematic_begin("black", "white", "salmon", sequential = bg)
+qplot(1:10, 1:10, color = 1:10)
+
+# Gradient from mix(accent, fg, 0.5) -> mix(accent, bg, 0.5)
+mix <- sequential_gradient(0.5, 0.5)
+thematic_begin("black", "white", "salmon", sequential = mix)
+qplot(1:10, 1:10, color = 1:10)
+
+# Use fg (instead of bg) for high end of scale
+mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
+thematic_begin("black", "white", "salmon", sequential = mix_flip)
+qplot(1:10, 1:10, color = 1:10)
+
 }

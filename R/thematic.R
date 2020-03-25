@@ -18,11 +18,12 @@
 #' (e.g., the fitted line color for [ggplot2::geom_smooth()]).
 #' Can be 2 colors for lattice (stroke vs fill accent).
 #' @param font a `font_spec()` object.
-#' @param sequential color palette for numeric variables.
-#' Defaults to a gradient based on `accent` color.
-#' @param qualitative color palette for discrete variables.
-#' Defaults to the Okabe-Ito colorscale (won't be used in ggplot2 when
-#' the number of data levels exceeds the max allowed colors).
+#' @param sequential a color palette for graphical markers that encode
+#' numeric values. Can be a vector of color codes or a
+#' [sequential_gradient()] object.
+#' @param qualitative a color palette for graphical markers that encode
+#' qualitative values (won't be used in ggplot2 when the number of data
+#' levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.
 #'
 #' @return Returns any information about the previously set theme (if any), invisibly.
 #'
@@ -55,7 +56,7 @@
 #'
 thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
                            font = font_spec(),
-                           sequential = sequential_gradient(fg = fg, accent = accent, bg = bg),
+                           sequential = sequential_gradient(),
                            qualitative = okabe_ito()) {
   old_theme <- .globals$theme
   .globals$theme <- theme_create(
@@ -104,8 +105,10 @@ thematic_current <- function(which = "all") {
 }
 
 
-# TODO: Use a class?
 theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
+  if (inherits(sequential, "thematic_sequential_options")) {
+    sequential <- resolve_sequential_gradient(fg = fg, accent = accent, bg = bg, options = sequential)
+  }
   colors <- list(
     bg = bg, fg = fg, accent = accent,
     qualitative = qualitative, sequential = sequential
@@ -152,9 +155,6 @@ is_default_family <- function(x) {
 }
 
 
-
-
-
 #' Okabe Ito colorscale
 #'
 #' @param n number of colors.
@@ -170,22 +170,67 @@ okabe_ito <- function(n = NULL) {
 
 #' Construct a sequential colorscale from fg, accent, and bg
 #'
-#' @inheritParams thematic_begin
-#' @param alpha a number between 0 and 1. Controls how close the endpoints
-#' should be to the `fg` and `bg`.
-#' @param n the number of color codes to return
-#' @return a vector of color codes.
-#' @seealso [thematic_begin()]
+#' Controls the default weighting and direction of the color gradient
+#' derived from the `fg`, `bg`, and `accent` color (defined in `thematic_begin()`).
+#'
+#' @param fg_weight a number (between 0 and 1) defining much of the `fg`
+#' color should be mixed into the colourscale.
+#' @param bg_weight a number (between 0 and 1) defining much of the `bg`
+#' color should be mixed into the colourscale.
+#' @param fg_low if `TRUE` (the default), the `fg` color is used for the
+#' low end of the colorscale (rather than the high end).
+#' @param n number of color codes.
+#' @return a list of options for passing to the `sequential` argument of [thematic_begin()].
 #' @export
-sequential_gradient <- function(alpha = 0.5, n = 30, fg, accent, bg) {
-  if (anyNA(c(fg, accent, bg))) return(NA)
-  if (alpha > 1 || alpha < 0) {
-    stop("alpha must be between 0 and 1", call. = FALSE)
+#' @examples
+#'
+#' # Gradient from fg to accent
+#' fg <- sequential_gradient(1, 0)
+#' thematic_begin("black", "white", "salmon", sequential = fg)
+#' qplot(1:10, 1:10, color = 1:10)
+#'
+#' # Gradient from accent -> bg
+#' bg <- sequential_gradient(0, 1)
+#' thematic_begin("black", "white", "salmon", sequential = bg)
+#' qplot(1:10, 1:10, color = 1:10)
+#'
+#' # Gradient from mix(accent, fg, 0.5) -> mix(accent, bg, 0.5)
+#' mix <- sequential_gradient(0.5, 0.5)
+#' thematic_begin("black", "white", "salmon", sequential = mix)
+#' qplot(1:10, 1:10, color = 1:10)
+#'
+#' # Use fg (instead of bg) for high end of scale
+#' mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
+#' thematic_begin("black", "white", "salmon", sequential = mix_flip)
+#' qplot(1:10, 1:10, color = 1:10)
+#'
+sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30) {
+  # TODO: return a list with special class that gets resolved at theme_create() time
+  if (any(fg_weight > 1 | fg_weight < 0)) {
+    stop("`fg_weight` must be between 0 and 1.", call. = FALSE)
   }
+  if (any(bg_weight > 1 | bg_weight < 0)) {
+    stop("`bg_weight` must be between 0 and 1.", call. = FALSE)
+  }
+  if (n < 3) {
+    stop("`n` must be 3 or more.", call. = FALSE)
+  }
+  if (!is.logical(fg_low)) {
+    stop("`fg_low` must be `TRUE` or `FALSE`", call. = FALSE)
+  }
+  structure(
+    list(fg_weight = fg_weight, bg_weight = bg_weight, fg_low = fg_low, n = n),
+    class = "thematic_sequential_options"
+  )
+}
 
-  # Main idea: Interpolate between [fg+accent -> accent -> bg+accent]
-  # For the endpoints the amount of blending of fg/bg and accent
-  # depends on how similar thwt
+
+# Main idea: Interpolate between [fg+accent -> accent -> bg+accent]
+# For the endpoints the amount of blending of fg/bg and accent
+# depends on their perceptual distance
+resolve_sequential_gradient <- function(fg, accent, bg, options = sequential_gradient()) {
+  if (anyNA(c(fg, accent, bg))) return(NA)
+
   fg_dist <- farver::compare_colour(
     farver::decode_colour(fg), farver::decode_colour(accent),
     from_space = "rgb", method = "cie2000"
@@ -195,12 +240,22 @@ sequential_gradient <- function(alpha = 0.5, n = 30, fg, accent, bg) {
     from_space = "rgb", method = "cie2000"
   )
   total_dist <- bg_dist + fg_dist
-  vals <- scales::rescale(
-    seq(0, 1, length.out = n),
-    to = 0.5 + c(
-      -alpha * as.numeric(fg_dist / total_dist),
-      alpha * as.numeric(bg_dist / total_dist)
+
+  rng <- if (options$fg_low) {
+    c(
+      -options$fg_weight * as.numeric(fg_dist / total_dist),
+      options$bg_weight * as.numeric(bg_dist / total_dist)
     )
+  } else {
+    c(
+      -options$bg_weight * as.numeric(bg_dist / total_dist),
+      options$fg_weight * as.numeric(fg_dist / total_dist)
+    )
+  }
+  grid <- scales::rescale(
+    seq(0, 1, length.out = options$n),
+    to = pmax(pmin(rng + 0.5, 1), 0)
   )
-  scales::colour_ramp(c(fg, accent, bg), alpha = TRUE)(vals)
+  cols <- if (options$fg_low) c(fg, accent, bg) else c(bg, accent, fg)
+  scales::colour_ramp(cols, alpha = TRUE)(grid)
 }
