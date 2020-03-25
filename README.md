@@ -88,7 +88,6 @@ ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
   geom_point(alpha = 0.2) +
   geom_smooth() +
   facet_wrap(~cut) + ggtitle("Diamond price by carat and cut")
-#> `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.svg" width="100%" style="display: block; margin: auto;" />
@@ -183,42 +182,67 @@ image(volcano, col = thematic_current("sequential"))
 
 <img src="man/figures/README-unnamed-chunk-9-1.svg" width="100%" style="display: block; margin: auto;" />
 
-## Controlling defaults
+## Thematic, in detail
 
 At a minimum, `thematic_begin()` wants a `bg` and `fg` color, but any of
 the other arguments may be explicitly (or implicitly) missing (i.e., set
 to `NA`), which will prevent **thematic** from setting any of the
-relevant defaults.
+relevant defaults. For example, by leaving `accent = NA`, **ggplot2**
+will continue to use it’s default accent color:
 
 ``` r
-thematic_begin(bg = "black", fg = "white", accent = NA)
-ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
-#> `geom_smooth()` using method = 'loess' and formula 'y ~ x'
+library(patchwork)
+preview_theme <- function() {
+  smooth <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
+  contour <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
+    geom_raster(aes(fill = density)) + 
+    geom_contour()
+  smooth + contour
+}
 ```
 
-<img src="man/figures/README-unnamed-chunk-10-1.svg" width="100%" style="display: block; margin: auto;" />
-
-By default, the `sequential` colour palette is based on a mixture of
-`bg`, `fg`, and `accent` (if it exists), but you could also set an
-`accent` color and still use the default `sequential` colour palette.
-
 ``` r
-thematic_begin(bg = "black", fg = "white", accent = "white", sequential = NA)
-ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
-  geom_raster(aes(fill = density)) + 
-  geom_contour()
+thematic_begin(bg = "black", fg = "white")
+preview_theme()
 ```
 
 <img src="man/figures/README-unnamed-chunk-11-1.svg" width="100%" style="display: block; margin: auto;" />
 
-Or, supply your own set `sequential` color codes:
+The default `sequential` colour gradient is based on a somewhat abitrary
+mixture of `bg`, `fg`, and `accent` (if all are defined). The amount
+(and direction) of which these colors are combined into a gradient can
+be controlled through `sequential_gradient()`:
 
 ``` r
-thematic_begin(bg = "black", fg = "white", accent = "white", sequential = RColorBrewer::brewer.pal(9, "Greens"))
-ggplot2::last_plot()
+thematic_begin(bg = "black", fg = "white", accent = "salmon")
+preview_theme()
+thematic_begin(
+  bg = "black", fg = "white", accent = "salmon", 
+  # fg -> accent
+  sequential = sequential_gradient(fg_weight = 1, bg_weight = 0)
+)
+preview_theme()
+thematic_begin(
+  bg = "black", fg = "white", accent = "salmon", 
+  # bg -> accent
+  sequential = sequential_gradient(fg_weight = 0, bg_weight = 1, fg_low = FALSE)
+)
+preview_theme()
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.svg" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-12-1.svg" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-12-2.svg" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-12-3.svg" width="100%" style="display: block; margin: auto;" />
+
+Keep in mind that you can set `sequential = NA` to avoid setting
+relevant defaults and also supply your own vector of color codes:
+
+``` r
+thematic_begin(bg = "black", fg = "white", accent = "salmon", sequential = NA)
+preview_theme()
+thematic_begin(bg = "black", fg = "white", accent = "salmon", sequential = RColorBrewer::brewer.pal(9, "Greys"))
+preview_theme()
+```
+
+<img src="man/figures/README-unnamed-chunk-13-1.svg" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-13-2.svg" width="100%" style="display: block; margin: auto;" />
 
 Similarly, for `qualitative` colour scaling, you can set to `NA` to
 prevent the Okabe-Ito based default or provide your own set of color
@@ -230,7 +254,7 @@ ggplot(economics_long) +
   geom_line(aes(date, value01, color = variable))
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.svg" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-14-1.svg" width="100%" style="display: block; margin: auto;" />
 
 ## Custom fonts
 

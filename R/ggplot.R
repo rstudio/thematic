@@ -109,6 +109,23 @@ custom_print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
   ), class = "ggplot_build_gtable")
 }
 
+ggplot_grob_set <- function() {
+  if (!is_installed("ggplot2")) return(NULL)
+  ggplot_grob_restore()
+  .globals$ggplot_grob <- getFromNamespace("ggplotGrob", "ggplot2")
+  assignInNamespace("ggplotGrob", ggplot_grob, "ggplot2")
+}
+
+ggplot_grob_restore <- function() {
+  if (is.null(.globals$ggplot_grob)) return()
+  assignInNamespace("ggplotGrob", .globals$ggplot_grob, "ggplot2")
+  rm("ggplot_grob", envir = .globals)
+}
+
+ggplot_grob <- function(x) {
+  oldClass(x) <- unique(c("ggplot_thematic", oldClass(x)))
+  ggplot_gtable(ggplot_build(x))
+}
 
 
 ggplot_build.ggplot_thematic <- function(p, theme = .globals$theme) {

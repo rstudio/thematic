@@ -34,6 +34,9 @@ registerMethods <- function(methods) {
     list(c("ggplot2", "ggplot_build", "ggplot_thematic"))
   )
 
+  # TODO: why must this happen onLoad in order for patchwork to work?
+  ggplot_grob_set()
+
   if (!is_installed("knitr")) return()
   if (is_installed("showtext")) {
     knitr::opts_chunk$set("fig.showtext" = TRUE)

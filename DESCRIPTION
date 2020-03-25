@@ -34,8 +34,9 @@ Suggests:
     covr,
     jsonlite,
     curl,
-    later,
-    sf
+    sf,
+    patchwork,
+    gridExtra
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
