@@ -7,7 +7,6 @@ test_that("lattice baselines", {
   library(stats)
 
   thematic_begin("black", "white", "pink", font = font_spec("Rock Salt"))
-  on.exit(thematic_end(), add = TRUE)
 
   expect_doppelganger("dot_plot", dotplot(variety ~ yield | year * site, data=barley))
 

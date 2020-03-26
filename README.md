@@ -294,3 +294,16 @@ but you can override those defaults by calling `thematic_begin()`
 yourself.
 
 TODO: an example.
+
+## Known issues
+
+  - If you have **showtext** installed and Google Font rendering still
+    fails in **knitr**/**rmarkdown**, you can probably fix it by doing
+    one of the following in a “setup” chunk (i.e., a **knitr** code
+    chunk that appears at the top of the document which sets up [chunk
+    options](https://yihui.org/knitr/options/) defaults and other global
+    state):
+    1.  Include `knitr::opts_chunk$set("fig.showtext" = TRUE)`, which
+        enables **showtext** in all *future* code chunks.
+    2.  Load **thematic** (e.g., `library(thematic)`), which will call
+        `knitr::opts_chunk$set("fig.showtext" = TRUE)` for you.

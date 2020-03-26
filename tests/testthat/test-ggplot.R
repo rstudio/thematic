@@ -2,8 +2,13 @@ context("ggplot")
 
 test_that("ggplot baselines", {
   skip_if_not_installed("ggplot2")
-
   library(ggplot2)
+
+  # TODO:
+  # 1. make test work without internet connection?
+  # 2. why does on.exit(thematic_end(), add = TRUE) lead to weirdness?
+  font <- font_spec("Oxanium", scale = 1.25)
+  thematic_begin("#444444", "#e4e4e4", "#749886", font = font)
 
   ids <- factor(c("1.1", "2.1", "1.2", "2.2", "1.3", "2.3"))
   values <- data.frame(
@@ -22,9 +27,7 @@ test_that("ggplot baselines", {
   dsample <- diamonds[sample(nrow(diamonds), 1000), ]
 
   ggplot2_examples <- list(
-    GeomPointColor = {
-      ggplot(mtcars, aes(wt, mpg, color = cyl)) + geom_point()
-    },
+    GeomPointColor = ggplot(mtcars, aes(wt, mpg, color = cyl)) + geom_point(),
     GeomAbline = {
       ggplot(mtcars, aes(mpg, wt)) +
         geom_point() +
@@ -120,10 +123,6 @@ test_that("ggplot baselines", {
     }
   )
 
-  # TODO: make test work without internet connection?
-  font <- font_spec("Oxanium", scale = 1.25)
-  thematic_begin("#444444", "#e4e4e4", "#749886", font = font)
-  on.exit(thematic_end(), add = TRUE)
   Map(expect_doppelganger, names(ggplot2_examples), ggplot2_examples)
 })
 
@@ -132,7 +131,6 @@ test_that("gridExtra integration", {
   skip_if_not_installed("gridExtra")
 
   thematic_begin(bg = "black", fg = "white", accent = "salmon")
-  on.exit(thematic_end(), add = TRUE)
   smooth <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
   contour <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
     geom_raster(aes(fill = density)) +
@@ -144,7 +142,6 @@ test_that("patchwork integration", {
   skip_if_not_installed("patchwork")
 
   thematic_begin(bg = "black", fg = "white", accent = "salmon")
-  on.exit(thematic_end(), add = TRUE)
   smooth <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
   contour <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
     geom_raster(aes(fill = density)) +
