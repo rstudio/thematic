@@ -25,6 +25,7 @@ Suggests:
     showtext,
     ggplot2,
     lattice,
+    stats,
     knitr,
     rmarkdown,
     shiny,

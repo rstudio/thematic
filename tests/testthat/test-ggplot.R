@@ -123,6 +123,7 @@ test_that("ggplot baselines", {
   # TODO: make test work without internet connection?
   font <- font_spec("Oxanium", scale = 1.25)
   thematic_begin("#444444", "#e4e4e4", "#749886", font = font)
+  on.exit(thematic_end(), add = TRUE)
   Map(expect_doppelganger, names(ggplot2_examples), ggplot2_examples)
 })
 
@@ -131,6 +132,7 @@ test_that("gridExtra integration", {
   skip_if_not_installed("gridExtra")
 
   thematic_begin(bg = "black", fg = "white", accent = "salmon")
+  on.exit(thematic_end(), add = TRUE)
   smooth <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
   contour <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
     geom_raster(aes(fill = density)) +
@@ -142,6 +144,7 @@ test_that("patchwork integration", {
   skip_if_not_installed("patchwork")
 
   thematic_begin(bg = "black", fg = "white", accent = "salmon")
+  on.exit(thematic_end(), add = TRUE)
   smooth <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
   contour <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
     geom_raster(aes(fill = density)) +
