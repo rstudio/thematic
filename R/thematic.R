@@ -69,9 +69,9 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
   # Register showtext hooks (for custom font rendering in non-ragg devices)
   if (is_installed("showtext")) showtext::showtext_auto()
 
-  # Override ggplot print method mainly because we currently need access to
+  # Override ggplot build method mainly because we currently need access to
   # the plot object in order to set Geom/Scale defaults
-  ggplot_print_set()
+  ggplot_build_set()
 
   knitr_dev_args_set()
 
@@ -90,7 +90,7 @@ thematic_end <- function() {
   base_palette_restore()
   knitr_dev_args_restore()
   ggplot_theme_restore()
-  ggplot_print_restore()
+  ggplot_build_restore()
   lattice_print_restore()
 
   invisible()

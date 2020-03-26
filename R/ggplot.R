@@ -55,82 +55,32 @@ ggtheme_auto <- function(theme = .globals$theme) {
 }
 
 # -----------------------------------------------------------------------------------
-# Print management
+# Custom ggplot_build()
 #
-# N.B. Overriding the print method is obviously not ideal, but compared to alternative
+# N.B. Overriding the build method is obviously not ideal, but compared to alternative
 # approaches to setting/restoring Geom and Scale defaults, it seems like the best
 # option at the moment. A future version of ggplot2 should provide sufficient tools for
 # managing scale defaults management, but it's unclear whether we'll have the same
 # for Geoms (this PR might do it, but it might not https://github.com/tidyverse/ggplot2/pull/2749)
 # -----------------------------------------------------------------------------------
 
-ggplot_print_set <- function() {
+ggplot_build_set <- function() {
   if (!is_installed("ggplot2")) return(NULL)
-  ggplot_print_restore()
-  .globals$ggplot_print <- tryCatch(
-    getS3method("print", "ggplot"),
-    error = function(e) getFromNamespace("print.ggplot", "ggplot2")
-  )
-  registerS3method("print", "ggplot", custom_print.ggplot)
+  ggplot_build_restore()
+  .globals$ggplot_build <- getFromNamespace("ggplot_build.ggplot", "ggplot2")
+  assignInNamespace("ggplot_build.ggplot", ggplot_build.ggplot_thematic, "ggplot2")
 }
 
-
-ggplot_print_restore <- function() {
-  if (is.null(.globals$ggplot_print)) return()
-  registerS3method("print", "ggplot", .globals$ggplot_print)
-  rm("ggplot_print", envir = .globals)
-}
-
-
-# N.B. this print function is designed this way because
-# shiny needs the build/gtable returned from the print method
-custom_print.ggplot <- function(x, newpage = is.null(vp), vp = NULL, ...) {
-  ggplot2::set_last_plot(x)
-  if (newpage) grid.newpage()
-  # Add a special class as a way of calling a ggplot build method
-  # that we control (needed since we'd like the defaults to be
-  # able to change dynamically at print time)
-  oldClass(x) <- unique(c("ggplot_thematic", oldClass(x)))
-  build <- ggplot2::ggplot_build(x)
-  gtable <- ggplot2::ggplot_gtable(build)
-  if (is.null(vp)) {
-    grid.draw(gtable)
-  } else {
-    if (is.character(vp))
-      seekViewport(vp)
-    else pushViewport(vp)
-    grid.draw(gtable)
-    upViewport()
-  }
-
-  structure(list(
-    build = build,
-    gtable = gtable
-  ), class = "ggplot_build_gtable")
-}
-
-ggplot_grob_set <- function() {
-  if (!is_installed("ggplot2")) return(NULL)
-  ggplot_grob_restore()
-  .globals$ggplot_grob <- getFromNamespace("ggplotGrob", "ggplot2")
-  assignInNamespace("ggplotGrob", ggplot_grob, "ggplot2")
-}
-
-ggplot_grob_restore <- function() {
-  if (is.null(.globals$ggplot_grob)) return()
-  assignInNamespace("ggplotGrob", .globals$ggplot_grob, "ggplot2")
-  rm("ggplot_grob", envir = .globals)
-}
-
-ggplot_grob <- function(x) {
-  oldClass(x) <- unique(c("ggplot_thematic", oldClass(x)))
-  ggplot_gtable(ggplot_build(x))
+ggplot_build_restore <- function() {
+  if (is.null(.globals$ggplot_build)) return()
+  assignInNamespace("ggplot_build.ggplot", .globals$ggplot_build, "ggplot2")
+  rm("ggplot_build", envir = .globals)
 }
 
 
 ggplot_build.ggplot_thematic <- function(p, theme = .globals$theme) {
   if (!length(theme)) {
-    return(NextMethod("ggplot_build", p))
+    return(.globals$ggplot_build(p))
   }
   fg <- theme$fg
   bg <- theme$bg
@@ -229,7 +179,7 @@ ggplot_build.ggplot_thematic <- function(p, theme = .globals$theme) {
     }
   }
 
-  NextMethod("ggplot_build", p)
+  .globals$ggplot_build(p)
 }
 
 restore_scale <- function(name, x, envir) {
