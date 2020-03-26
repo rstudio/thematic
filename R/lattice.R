@@ -10,13 +10,16 @@
 lattice_print_set <- function(theme) {
   if (!is_installed("lattice")) return(NULL)
   lattice_print_restore()
-  print_function <- lattice::lattice.getOption("print.function")
-  .globals$lattice_print <- print_function
+  .globals$lattice_print <- lattice::lattice.getOption("print.function") %||%
+    getFromNamespace("plot.trellis", "lattice")
   lattice::lattice.options(
     print.function = function(x, ...) {
+      # Force our before.grid.newpage hook to happen *before*
+      # lattice's print function is called, which needs to happen
+      # in order for us to resolve the font *before* drawing
+      grid::grid.newpage()
       x$par.settings <- lattice_par()
-      print_function <- print_function %||% getFromNamespace("plot.trellis", "lattice")
-      print_function(x, ...)
+      .globals$lattice_print(x, ..., newpage = FALSE)
     }
   )
 }
@@ -27,7 +30,8 @@ lattice_print_restore <- function() {
   rm("lattice_print", envir = .globals)
 }
 
-lattice_par <- function(theme = .globals$theme) {
+lattice_par <- function() {
+  theme <- .globals$theme
   bg <- theme$bg
   fg <- theme$fg
   font <- theme$font

@@ -72,7 +72,7 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
   # Override ggplot build method mainly because we currently need access to
   # the plot object in order to set Geom/Scale defaults
   ggplot_build_set()
-
+  lattice_print_set()
   knitr_dev_args_set()
 
   invisible(old_theme)
