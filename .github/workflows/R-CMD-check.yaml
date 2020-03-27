@@ -67,7 +67,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install pkg-config
-          brew install cask xquartz
+          brew cask install xquartz
 
       - name: systemfonts sysdeps linux
         if: runner.os == 'Linux'
