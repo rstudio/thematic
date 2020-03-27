@@ -10,6 +10,7 @@ Description:
   Theme ggplot2, lattice, and base graphics based on a few choices, including foreground color, background color, accent color,
   and font family. Fonts that aren't available on the system, but are available via download on Google Fonts,
   can be automatically installed for use with the showtext and ragg packages.
+URL: https://github.com/rstudio/thematic#readme
 Depends: R (>= 2.10)
 Imports:
     utils,
@@ -32,6 +33,7 @@ Suggests:
     htmltools,
     testthat (>= 2.1.0),
     vdiffr,
+    svglite,
     covr,
     jsonlite,
     curl,
