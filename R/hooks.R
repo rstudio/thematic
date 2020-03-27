@@ -214,7 +214,9 @@ dev_new <- function(filename) {
   # which can lead to suprising behavior. Fortunately, at least as far
   # as I can tell, if fonts are supported on one quartz type, it should
   # be supported for all types
-  opts <- quartz.options(type = "png")
-  on.exit(do.call(quartz.options, opts), add = TRUE)
+  if (capabilities("aqua")) {
+    opts <- quartz.options(type = "png")
+    on.exit(do.call(quartz.options, opts), add = TRUE)
+  }
   suppressMessages(dev.new(filename = filename, file = filename))
 }
