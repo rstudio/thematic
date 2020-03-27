@@ -21,7 +21,7 @@ Imports:
     rlang,
     scales
 Suggests:
-    systemfonts,
+    systemfonts (>= 0.1.1.9000),
     ragg,
     showtext,
     ggplot2,
@@ -30,7 +30,7 @@ Suggests:
     knitr,
     rmarkdown,
     shiny,
-    htmltools,
+    htmltools (>= 0.4.0.9003),
     testthat (>= 2.1.0),
     vdiffr,
     svglite,
@@ -45,4 +45,7 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Remotes: RcppCore/Rcpp
+Remotes: 
+  - RcppCore/Rcpp
+  - rstudio/htmltools
+  - r-lib/systemfonts
