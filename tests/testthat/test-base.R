@@ -3,7 +3,6 @@ context("base")
 test_that("base baselines", {
 
   thematic_begin("black", "white", "violet", font_spec("Amatic SC", 1.5))
-  #on.exit(thematic_end(), add = TRUE)
 
   expect_doppelganger("scatter", function() { plot(1:10) })
   expect_doppelganger("scatter-cols", function() { plot(1:10, col = 1:10) })
