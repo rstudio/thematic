@@ -215,8 +215,8 @@ dev_new <- function(filename) {
   # as I can tell, if fonts are supported on one quartz type, it should
   # be supported for all types
   if (capabilities("aqua")) {
-    opts <- quartz.options(type = "png")
-    on.exit(do.call(quartz.options, opts), add = TRUE)
+    opts <- grDevices::quartz.options(type = "png")
+    on.exit(do.call(grDevices::quartz.options, opts), add = TRUE)
   }
   suppressMessages(dev.new(filename = filename, file = filename))
 }
