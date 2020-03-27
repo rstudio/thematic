@@ -63,8 +63,27 @@ jobs:
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
 
+      # ------------------------------------------------------------
+      # Should be able to remove after next systemfonts CRAN release
+      - name: systemfonts sysdeps mac
+        if: runner.os == 'macOS'
+        run: |
+          brew install freetype
+
+      - name: systemfonts sysdeps linux
+        if: runner.os == 'Linux'
+        run: |
+          apt-get install libfontconfig1-dev
+      # ------------------------------------------------------------
+
+      - name: Rcpp band-aid
+        run: |
+          install.packages("Rcpp", repos="https://rcppcore.github.io/drat")
+        shell: Rscript {0}
+
       - name: Install dependencies
         run: |
+          if (.Platform[['OS.type']] == 'windows' || Sys.info()[['sysname']] == 'Darwin') options(pkgType = 'binary')
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
