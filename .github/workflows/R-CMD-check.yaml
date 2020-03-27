@@ -68,7 +68,7 @@ jobs:
       - name: systemfonts sysdeps mac
         if: runner.os == 'macOS'
         run: |
-          brew install freetype
+          brew install pkg-config
 
       - name: systemfonts sysdeps linux
         if: runner.os == 'Linux'
