@@ -72,7 +72,7 @@ jobs:
       - name: systemfonts sysdeps linux
         if: runner.os == 'Linux'
         run: |
-          apt-get install libfontconfig1-dev
+          sudo apt-get install libfontconfig1-dev
       # ------------------------------------------------------------
 
       - name: Rcpp band-aid
