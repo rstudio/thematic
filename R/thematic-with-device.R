@@ -37,7 +37,7 @@ thematic_with_device <- function(expr, device = default_device(),
     stop(
       "Wasn't able to detect the background color argument for the given device, ",
       "so thematic won't automatically set it for you, but you can also set it yourself ",
-      "by doing `thematic_with_device(expr, bg_color_arg = thematic_current('bg'))`",
+      "by doing `thematic_with_device(expr, bg_color_arg = thematic_get_option('bg'))`",
       call. = FALSE
     )
   }
@@ -49,7 +49,7 @@ thematic_with_device <- function(expr, device = default_device(),
       call. = FALSE
     )
   } else {
-    args[[bg_arg]] <- thematic_current("bg") %||% "white"
+    args[[bg_arg]] <- thematic_get_option("bg", "white")
   }
 
   # Handle the case where device wants `file` instead of `filename`

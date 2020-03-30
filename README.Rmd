@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
   out.width = "100%", 
   fig.align = 'center',
   fig.width = 10,
-  fig.asp = 0.618,  # 1 / phi
+  fig.asp = 0.5,
   fig.show = "hold",
   dev = "svg",
   message = FALSE
@@ -68,20 +68,12 @@ As you'll see in the examples below, **thematic** uses these "main" colours to i
 
 Here's an example demonstrating (1) and (2):  
 
-```{r}
+```{r, message=TRUE}
 library(ggplot2)
 ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
   geom_point(alpha = 0.2) +
   geom_smooth() +
   facet_wrap(~cut) + ggtitle("Diamond price by carat and cut")
-```
-  
-  
-And an example demonstrating (1) and (4):  
-
-```{r}
-ggplot(economics_long) +
-  geom_line(aes(date, value01, colour = variable))
 ```
 
 And an example demonstrating (1), (2), and (3):  
@@ -89,7 +81,32 @@ And an example demonstrating (1), (2), and (3):
 ```{r}
 ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
   geom_raster(aes(fill = density)) + 
-  geom_contour()
+  geom_contour() +
+  ggtitle("Old faithful eruption vs waiting time")
+```
+  
+And an example demonstrating (1) and (4):  
+
+```{r}
+ggplot(economics_long) +
+  geom_line(aes(date, value01, colour = variable)) +
+  ggtitle("Economic indicators")
+```
+
+As for 3rd party **ggplot2** extension packages, **thematic** should work as expected, as long as those extension packages aren't setting their own defaults for (1)-(4).
+
+```{r, fig.asp = 0.8}
+library(GGally)
+ggpairs(
+  iris, aes(colour = Species),
+  upper = list(continuous = wrap(ggally_cor, displayGrid = FALSE, alignPercent = 0.9))
+)
+```
+
+```{r}
+ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), colour = factor(cyl))) +
+  geom_point() +
+  ggrepel::geom_text_repel()
 ```
 
 ## Lattice
@@ -135,12 +152,12 @@ hist(rnorm(100))
 plot(rep(1:5, each = 5), rep(1:5, 5), col = 1:25, pch = 1:25, cex = 5)
 ```
 
-However, do know that you can supply the current sequential colourscale to individual plotting functions by doing something like `col = thematic_current("sequential")`:
+However, do know that you can supply the current sequential colourscale to individual plotting functions by doing something like `col = thematic_get_option("sequential")`:
 
 ```{r}
 par(mfrow = c(1, 2))
 image(volcano)
-image(volcano, col = thematic_current("sequential"))
+image(volcano, col = thematic_get_option("sequential"))
 ```
 
 ## Thematic, in detail
@@ -158,7 +175,7 @@ preview_theme <- function() {
 }
 ```
 
-```{r}
+```{r, fig.height=2}
 thematic_begin(bg = "black", fg = "white")
 preview_theme()
 ```
@@ -167,28 +184,28 @@ The default `sequential` colour gradient is based on a somewhat abitrary mixture
 
 ```{r}
 thematic_begin(bg = "black", fg = "white", accent = "salmon")
-preview_theme()
+preview_theme() + ggtitle("Gradient: mix(fg, accent) -> accent -> mix(bg, accent)")
 thematic_begin(
   bg = "black", fg = "white", accent = "salmon", 
   # fg -> accent
   sequential = sequential_gradient(fg_weight = 1, bg_weight = 0)
 )
-preview_theme()
+preview_theme() + ggtitle("Gradient: fg -> accent")
 thematic_begin(
   bg = "black", fg = "white", accent = "salmon", 
   # bg -> accent
   sequential = sequential_gradient(fg_weight = 0, bg_weight = 1, fg_low = FALSE)
 )
-preview_theme()
+preview_theme() + ggtitle("Gradient: bg -> accent")
 ```
 
 Keep in mind that you can set `sequential = NA` to avoid setting relevant defaults and also supply your own vector of color codes:
 
 ```{r}
 thematic_begin(bg = "black", fg = "white", accent = "salmon", sequential = NA)
-preview_theme()
-thematic_begin(bg = "black", fg = "white", accent = "salmon", sequential = RColorBrewer::brewer.pal(9, "Greys"))
-preview_theme()
+preview_theme() + ggtitle("'Missing' sequential palette")
+thematic_begin(bg = "black", fg = "white", accent = "salmon", sequential = RColorBrewer::brewer.pal(9, "Oranges"))
+preview_theme() + ggtitle("Custom sequential palette (colorbrewer's Oranges)")
 ```
 
 Similarly, for `qualitative` colour scaling, you can set to `NA` to prevent the Okabe-Ito based default or provide your own set of color codes:
@@ -196,7 +213,8 @@ Similarly, for `qualitative` colour scaling, you can set to `NA` to prevent the 
 ```{r}
 thematic_begin(bg = "black", fg = "white", qualitative = RColorBrewer::brewer.pal(8, "Dark2"))
 ggplot(economics_long) +
-  geom_line(aes(date, value01, color = variable))
+  geom_line(aes(date, value01, color = variable)) +
+  ggtitle("Custom qualitative palette (colorbrewer's dark2)")
 ```
 
 

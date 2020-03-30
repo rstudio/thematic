@@ -3,7 +3,6 @@
 \name{thematic_begin}
 \alias{thematic_begin}
 \alias{thematic_end}
-\alias{thematic_current}
 \title{Theme static plots based on a few colors}
 \usage{
 thematic_begin(
@@ -16,8 +15,6 @@ thematic_begin(
 )
 
 thematic_end()
-
-thematic_current(which = "all")
 }
 \arguments{
 \item{bg}{a background color.}
@@ -37,9 +34,6 @@ numeric values. Can be a vector of color codes or a
 \item{qualitative}{a color palette for graphical markers that encode
 qualitative values (won't be used in ggplot2 when the number of data
 levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.}
-
-\item{which}{which theme element (i.e., which argument of \code{\link[=thematic_begin]{thematic_begin()}}?).
-Defaults to all theme elements.}
 }
 \value{
 Returns any information about the previously set theme (if any), invisibly.
@@ -50,9 +44,7 @@ supplied to \code{\link[=thematic_begin]{thematic_begin()}}. \code{\link[=themat
 state (e.g., sets relevant options in \code{\link[graphics:par]{graphics::par()}}, \code{\link[grid:gpar]{grid::gpar()}},
 \code{\link[lattice:trellis.par.set]{lattice::trellis.par.set()}}, \code{\link[ggplot2:theme_set]{ggplot2::theme_set()}}, etc). To restore
 global state to the state before \code{\link[=thematic_begin]{thematic_begin()}} was called,
-use \code{\link[=thematic_end]{thematic_end()}}. To inspect the current thematic state, use
-\code{\link[=thematic_current]{thematic_current()}} (this can be particularly useful for routing the
-sequential color palette to base/lattice graphics).
+use \code{\link[=thematic_end]{thematic_end()}}.
 }
 \details{
 Colors may be anything understood by \code{\link[=col2rgb]{col2rgb()}} or \code{htmltools::parseCssColors()}
@@ -78,11 +70,11 @@ lattice::show.settings()
 
 thematic_begin("darkblue", "skyblue", "orange")
 image(volcano)
-image(volcano, col = thematic_current("sequential"))
+image(volcano, col = thematic_get_option("sequential"))
 lattice::show.settings()
 thematic_end()
 
 }
 \seealso{
-\code{\link[=font_spec]{font_spec()}}, \code{\link[=thematic_with_device]{thematic_with_device()}}
+\code{\link[=font_spec]{font_spec()}}, \code{\link[=thematic_with_device]{thematic_with_device()}}, \code{\link[=thematic_get]{thematic_get()}}
 }

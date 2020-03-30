@@ -90,28 +90,53 @@ ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
   geom_point(alpha = 0.2) +
   geom_smooth() +
   facet_wrap(~cut) + ggtitle("Diamond price by carat and cut")
+#> `geom_smooth()` using method = 'loess' and formula 'y ~ x'
 ```
 
 <img src="man/figures/README-unnamed-chunk-3-1.svg" width="100%" style="display: block; margin: auto;" />
-
-And an example demonstrating (1) and (4):
-
-``` r
-ggplot(economics_long) +
-  geom_line(aes(date, value01, colour = variable))
-```
-
-<img src="man/figures/README-unnamed-chunk-4-1.svg" width="100%" style="display: block; margin: auto;" />
 
 And an example demonstrating (1), (2), and (3):
 
 ``` r
 ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
   geom_raster(aes(fill = density)) + 
-  geom_contour()
+  geom_contour() +
+  ggtitle("Old faithful eruption vs waiting time")
+```
+
+<img src="man/figures/README-unnamed-chunk-4-1.svg" width="100%" style="display: block; margin: auto;" />
+
+And an example demonstrating (1) and (4):
+
+``` r
+ggplot(economics_long) +
+  geom_line(aes(date, value01, colour = variable)) +
+  ggtitle("Economic indicators")
 ```
 
 <img src="man/figures/README-unnamed-chunk-5-1.svg" width="100%" style="display: block; margin: auto;" />
+
+As for 3rd party **ggplot2** extension packages, **thematic** should
+work as expected, as long as those extension packages aren’t setting
+their own defaults for (1)-(4).
+
+``` r
+library(GGally)
+ggpairs(
+  iris, aes(colour = Species),
+  upper = list(continuous = wrap(ggally_cor, displayGrid = FALSE, alignPercent = 0.9))
+)
+```
+
+<img src="man/figures/README-unnamed-chunk-6-1.svg" width="100%" style="display: block; margin: auto;" />
+
+``` r
+ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), colour = factor(cyl))) +
+  geom_point() +
+  ggrepel::geom_text_repel()
+```
+
+<img src="man/figures/README-unnamed-chunk-7-1.svg" width="100%" style="display: block; margin: auto;" />
 
 ## Lattice
 
@@ -131,7 +156,7 @@ library(lattice)
 show.settings()
 ```
 
-<img src="man/figures/README-unnamed-chunk-6-1.svg" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-8-1.svg" width="100%" style="display: block; margin: auto;" />
 
 And here’s an real example (taken from `?lattice::levelplot`) of where
 “regions” is relevant:
@@ -156,7 +181,7 @@ contourplot(fit ~ wind * temperature | radiation, data = grid,
 detach()
 ```
 
-<img src="man/figures/README-unnamed-chunk-7-1.svg" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-9-1.svg" width="100%" style="display: block; margin: auto;" />
 
 ### Base
 
@@ -170,19 +195,19 @@ hist(rnorm(100))
 plot(rep(1:5, each = 5), rep(1:5, 5), col = 1:25, pch = 1:25, cex = 5)
 ```
 
-<img src="man/figures/README-unnamed-chunk-8-1.svg" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-10-1.svg" width="100%" style="display: block; margin: auto;" />
 
 However, do know that you can supply the current sequential colourscale
 to individual plotting functions by doing something like `col =
-thematic_current("sequential")`:
+thematic_get_option("sequential")`:
 
 ``` r
 par(mfrow = c(1, 2))
 image(volcano)
-image(volcano, col = thematic_current("sequential"))
+image(volcano, col = thematic_get_option("sequential"))
 ```
 
-<img src="man/figures/README-unnamed-chunk-9-1.svg" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-11-1.svg" width="100%" style="display: block; margin: auto;" />
 
 ## Thematic, in detail
 
@@ -208,7 +233,7 @@ thematic_begin(bg = "black", fg = "white")
 preview_theme()
 ```
 
-<img src="man/figures/README-unnamed-chunk-11-1.svg" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-13-1.svg" width="100%" style="display: block; margin: auto;" />
 
 The default `sequential` colour gradient is based on a somewhat abitrary
 mixture of `bg`, `fg`, and `accent` (if all are defined). The amount
@@ -217,34 +242,34 @@ be controlled through `sequential_gradient()`:
 
 ``` r
 thematic_begin(bg = "black", fg = "white", accent = "salmon")
-preview_theme()
+preview_theme() + ggtitle("Gradient: mix(fg, accent) -> accent -> mix(bg, accent)")
 thematic_begin(
   bg = "black", fg = "white", accent = "salmon", 
   # fg -> accent
   sequential = sequential_gradient(fg_weight = 1, bg_weight = 0)
 )
-preview_theme()
+preview_theme() + ggtitle("Gradient: fg -> accent")
 thematic_begin(
   bg = "black", fg = "white", accent = "salmon", 
   # bg -> accent
   sequential = sequential_gradient(fg_weight = 0, bg_weight = 1, fg_low = FALSE)
 )
-preview_theme()
+preview_theme() + ggtitle("Gradient: bg -> accent")
 ```
 
-<img src="man/figures/README-unnamed-chunk-12-1.svg" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-12-2.svg" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-12-3.svg" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-14-1.svg" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-14-2.svg" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-14-3.svg" width="100%" style="display: block; margin: auto;" />
 
 Keep in mind that you can set `sequential = NA` to avoid setting
 relevant defaults and also supply your own vector of color codes:
 
 ``` r
 thematic_begin(bg = "black", fg = "white", accent = "salmon", sequential = NA)
-preview_theme()
-thematic_begin(bg = "black", fg = "white", accent = "salmon", sequential = RColorBrewer::brewer.pal(9, "Greys"))
-preview_theme()
+preview_theme() + ggtitle("'Missing' sequential palette")
+thematic_begin(bg = "black", fg = "white", accent = "salmon", sequential = RColorBrewer::brewer.pal(9, "Oranges"))
+preview_theme() + ggtitle("Custom sequential palette (colorbrewer's Oranges)")
 ```
 
-<img src="man/figures/README-unnamed-chunk-13-1.svg" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-13-2.svg" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-15-1.svg" width="100%" style="display: block; margin: auto;" /><img src="man/figures/README-unnamed-chunk-15-2.svg" width="100%" style="display: block; margin: auto;" />
 
 Similarly, for `qualitative` colour scaling, you can set to `NA` to
 prevent the Okabe-Ito based default or provide your own set of color
@@ -253,10 +278,11 @@ codes:
 ``` r
 thematic_begin(bg = "black", fg = "white", qualitative = RColorBrewer::brewer.pal(8, "Dark2"))
 ggplot(economics_long) +
-  geom_line(aes(date, value01, color = variable))
+  geom_line(aes(date, value01, color = variable)) +
+  ggtitle("Custom qualitative palette (colorbrewer's dark2)")
 ```
 
-<img src="man/figures/README-unnamed-chunk-14-1.svg" width="100%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-16-1.svg" width="100%" style="display: block; margin: auto;" />
 
 ## Custom fonts
 

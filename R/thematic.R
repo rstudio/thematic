@@ -5,9 +5,7 @@
 #' state (e.g., sets relevant options in [graphics::par()], [grid::gpar()],
 #' [lattice::trellis.par.set()], [ggplot2::theme_set()], etc). To restore
 #' global state to the state before [thematic_begin()] was called,
-#' use [thematic_end()]. To inspect the current thematic state, use
-#' [thematic_current()] (this can be particularly useful for routing the
-#' sequential color palette to base/lattice graphics).
+#' use [thematic_end()].
 #'
 #' Colors may be anything understood by [col2rgb()] or `htmltools::parseCssColors()`
 #' (i.e., may be any valid R or CSS color string).
@@ -28,7 +26,7 @@
 #' @return Returns any information about the previously set theme (if any), invisibly.
 #'
 #' @rdname thematic
-#' @seealso [font_spec()], [thematic_with_device()]
+#' @seealso [font_spec()], [thematic_with_device()], [thematic_get()]
 #' @export
 #' @examples
 #' # simple dark mode
@@ -50,7 +48,7 @@
 #'
 #' thematic_begin("darkblue", "skyblue", "orange")
 #' image(volcano)
-#' image(volcano, col = thematic_current("sequential"))
+#' image(volcano, col = thematic_get_option("sequential"))
 #' lattice::show.settings()
 #' thematic_end()
 #'
@@ -96,12 +94,60 @@ thematic_end <- function() {
   invisible()
 }
 
-#' @rdname thematic
-#' @param which which theme element (i.e., which argument of [thematic_begin()]?).
-#' Defaults to all theme elements.
+#' Query the current thematic theme
+#'
+#' [thematic_get()] returns information about the entire theme,
+#' whereas [thematic_get_option()] returns information about a specific
+#' option.
+#'
 #' @export
-thematic_current <- function(which = "all") {
-  if (identical("all", which)) .globals$theme else .globals$theme[[which]]
+#' @examples
+#' thematic_get()
+#' thematic_begin("darkblue", "skyblue")
+#' thematic_get_option("bg")
+#'
+#' if (interactive()) {
+#'   scales::show_col(thematic_get_mixture(seq(0, 1, by = 0.1)))
+#' }
+#'
+thematic_get <- function() {
+  .globals$theme
+}
+
+#' @rdname thematic_get
+#' @param name a theme element name (e.g., `fg`, `bg`, etc.)
+#' @param default a default value to return in the event no thematic theme is active.
+#' @export
+thematic_get_option <- function(name = "", default = NULL) {
+  if (length(name) != 1) {
+    stop("`name` must be length 1", call. = FALSE)
+  }
+  theme_names <- names(.globals$theme)
+  if (!name %in% theme_names) {
+    stop(
+      sprintf(
+        "`name` must be one of the following: '%s'",
+        paste(theme_names, collapse = "', '")
+      ),
+      call. = FALSE
+    )
+  }
+  .globals$theme[[name]] %||% default
+}
+
+#' @rdname thematic_get
+#' @param amounts value(s) between 0 and 1 specifying how much to mix `fg` (0) and `bg` (1).
+#' @export
+thematic_get_mixture <- function(amounts = 0.5) {
+  if (any(amounts < 0 | amounts > 1)) {
+    stop("`amounts` must be between 0 and 1", call. = FALSE)
+  }
+  fg <- thematic_get_option("fg")
+  bg <- thematic_get_option("bg")
+  if (!length(fg) || !length(bg)) {
+    return(NULL)
+  }
+  scales::colour_ramp(c(fg, bg))(amounts)
 }
 
 
