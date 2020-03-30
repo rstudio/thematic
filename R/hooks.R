@@ -32,6 +32,7 @@ grid_before_hook <- function() {
   )
   # Updating of Geom/Scale defaults is already handled ggplot_build.ggplot_thematic
   ggplot_theme_set()
+  ggplot_build_set()
   lattice_print_set()
 }
 

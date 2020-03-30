@@ -22,23 +22,35 @@ try_gfont_download_and_register <- function(family) {
   )
   tmpzip <- tempfile(fileext = ".zip")
   on.exit(unlink(tmpzip, recursive = TRUE), add = TRUE)
-  res <- try({
-    download.file(url, tmpzip)
-    unzip(tmpzip, exdir = gfont_cache_dir(family))
-    try_register_gfont_cache(family)
-  })
-  success <- !inherits(res, "try-error")
-  if (success) {
-    message("Successfully downloaded the '", family, "' font family.")
-  } else {
-    warning(
-      "Failed to download the '", family, "' font family.",
-      call. = FALSE
-    )
-  }
-  success
+  download_file(url, tmpzip)
+  message("Successfully downloaded the '", family, "' font family.")
+  unzip(tmpzip, exdir = gfont_cache_dir(family))
+  try_register_gfont_cache(family)
 }
 
+download_file <- function(url, dest, ...) {
+  if (is_installed("curl")) {
+    if (!curl::has_internet()) {
+      warning(
+        "Looks like you don't have internet access, which is needed to ",
+        "download and install Google Fonts files. Try either changing ",
+        "thematic::font_spec(), manually installing the relevant font, or ",
+        "trying again with internet access.",
+        call. = FALSE
+      )
+    }
+    return(curl::curl_download(url, dest, ...))
+  }
+
+  if (capabilities("libcurl")) {
+    return(download.file(url, dest, method = "libcurl", ...))
+  }
+
+  stop(
+    "Downloading Google Font files requires either the curl package or ",
+    "`capabilities('libcurl')`. ", call. = FALSE
+  )
+}
 
 try_register_gfont_cache <- function(family) {
 
@@ -86,6 +98,7 @@ try_fetch_google_fonts <- function() {
   if (!is_installed("curl")) return(google_fonts)
   if (!is_installed("jsonlite")) return(google_fonts)
   if (!curl::has_internet()) return(google_fonts)
+  message("Fetching the latest set of Google Fonts")
   new_length <- tryCatch(get_content_length(), error = function(e) NA)
   old_length <- attr(google_fonts, "content-length")
   if (identical(new_length, old_length)) {

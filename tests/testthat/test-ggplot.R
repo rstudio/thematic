@@ -140,13 +140,14 @@ test_that("gridExtra integration", {
 
 test_that("patchwork integration", {
   skip_if_not_installed("patchwork")
+  library(patchwork)
 
-  thematic_begin(bg = "black", fg = "white", accent = "salmon", font = font_spec("Oxanium", scale = 1.25))
   smooth <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
   contour <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
     geom_raster(aes(fill = density)) +
     geom_contour()
-  library(patchwork)
+
+  thematic_begin(bg = "black", fg = "white", accent = "salmon", font = font_spec("Oxanium", scale = 1.25))
   expect_doppelganger("patchwork", smooth + contour)
 })
 
