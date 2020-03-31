@@ -34,6 +34,7 @@ jobs:
       RSPM: ${{ matrix.config.rspm }}
       # switch off vdiffr by default
       VDIFFR_RUN_TESTS: false
+      _R_CHECK_FORCE_SUGGESTS_: false
 
     steps:
       - uses: actions/checkout@v2
