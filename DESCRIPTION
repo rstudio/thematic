@@ -39,7 +39,8 @@ Suggests:
     curl,
     sf,
     patchwork,
-    gridExtra
+    gridExtra,
+    shinytest
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

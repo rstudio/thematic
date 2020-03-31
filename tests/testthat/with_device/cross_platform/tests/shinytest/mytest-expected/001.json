@@ -1,0 +1,28 @@
+{
+  "input": {
+
+  },
+  "output": {
+    "jpeg": {
+      "src": "[image data sha1: 2d1d988ebcaddc9054c8cade69f23fb91214a36f]",
+      "width": 800,
+      "height": 400
+    },
+    "png": {
+      "src": "[image data sha1: 13fcd8d9f88fa7aff86a8f2c7d4cf7b887b7dc37]",
+      "width": 800,
+      "height": 400
+    },
+    "ragg_png": {
+      "src": "[image data sha1: 81a37a1f0e015e405079d4d87c325113fe818ef8]",
+      "width": 800,
+      "height": 400
+    },
+    "svg": {
+      "src": "[image data sha1: 55e238c1c650b64c8b75434079b75d00ab989add]"
+    }
+  },
+  "export": {
+
+  }
+}
