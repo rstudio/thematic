@@ -145,6 +145,7 @@ test_that("ggplot baselines", {
 
 test_that("sf integration", {
   skip_if_not_installed("sf")
+  skip_if_not(Sys.info()[["sysname"]] == "Darwin")
   library(sf)
 
   nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
