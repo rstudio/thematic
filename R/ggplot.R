@@ -73,16 +73,20 @@ ggplot_build_set <- function() {
   # https://github.com/wch/r-source/blob/d0ede8/src/library/utils/R/objects.R#L472
   ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
   .globals$ggplot_build <- getFromNamespace("ggplot_build.ggplot", "ggplot2")
-  assignInNamespace("ggplot_build.ggplot", ggthematic_build, "ggplot2")
+  assign_in_namespace <- assignInNamespace
+  assign_in_namespace("ggplot_build.ggplot", ggthematic_build, "ggplot2")
 }
 
 ggplot_build_restore <- function() {
   if (is.function(.globals$ggplot_build)) {
     ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
-    assignInNamespace("ggplot_build.ggplot", .globals$ggplot_build, "ggplot2")
+    assign_in_namespace <- assignInNamespace
+    assign_in_namespace("ggplot_build.ggplot", .globals$ggplot_build, "ggplot2")
     rm("ggplot_build", envir = .globals)
   }
 }
+
+
 
 
 ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .globals$theme) {
