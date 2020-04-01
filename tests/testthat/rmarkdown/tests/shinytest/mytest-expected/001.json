@@ -1,0 +1,25 @@
+{
+  "input": {
+    "foo": "png"
+  },
+  "output": {
+    "png-base": {
+      "src": "[image data sha1: 082be6d937495f91744199bd0d56d5e89bcd95e5]",
+      "width": 600,
+      "height": 400
+    },
+    "png-ggplot": {
+      "src": "[image data sha1: 2c14bcea6c47efbf6946bbc486c3816e1fdc46f2]",
+      "width": 600,
+      "height": 400
+    },
+    "png-lattice": {
+      "src": "[image data sha1: 2a93f43f6b3cf598fd1736ea8c38daa89743f4a3]",
+      "width": 600,
+      "height": 400
+    }
+  },
+  "export": {
+
+  }
+}
