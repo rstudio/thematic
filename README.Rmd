@@ -17,7 +17,6 @@ knitr::opts_chunk$set(
   fig.width = 10,
   fig.asp = 0.5,
   fig.show = "hold",
-  dev = "svg",
   message = FALSE
 )
 ```
