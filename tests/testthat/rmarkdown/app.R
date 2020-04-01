@@ -3,6 +3,12 @@ library(shiny)
 # All the devices we're testing
 devices <- c("png", "svg", "jpeg")
 
+onStop(function() {
+  lapply(devices, function(device) {
+    unlink(dir(pattern = paste0("\\.", device)))
+  })
+})
+
 
 # Modularized image output
 imageOutputs <- function(device) {
