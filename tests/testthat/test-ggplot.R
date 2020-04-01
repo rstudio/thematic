@@ -53,7 +53,6 @@ test_that("ggplot baselines", {
       ), aes(resp, trt, colour = group)) + geom_point() +
         geom_errorbarh(aes(xmax = resp + se, xmin = resp - se))
     })
-  expect_doppelganger("GeomHex", ggplot(diamonds, aes(carat, price)) + geom_hex(binwidth = c(.1, 500)))
   expect_doppelganger("GeomHistogram",  ggplot(diamonds, aes(price, fill = cut)) + geom_histogram(binwidth = 500))
   expect_doppelganger("GeomJitter", ggplot(mpg, aes(cyl, hwy)) + geom_jitter(width = 0.25))
   expect_doppelganger(
@@ -86,7 +85,6 @@ test_that("ggplot baselines", {
   expect_doppelganger("GeomLine2", ggplot(economics_long, aes(date, value01, colour = variable)) + geom_line())
   expect_doppelganger("GeomPoint", ggplot(dsample, aes(carat, price)) + geom_point(alpha = 0.1))
   expect_doppelganger("GeomPoint2", ggplot(mtcars, aes(wt, mpg, color = factor(cyl), shape = factor(cyl))) + geom_point())
-  expect_doppelganger("GeomQuantile", ggplot(mpg, aes(displ, 1 / hwy)) + geom_point() + geom_quantile())
   expect_doppelganger("GeomRibbon", {
     ggplot(huron, aes(year)) +
       geom_ribbon(aes(ymin = level - 1, ymax = level + 1), fill = "grey70") +
