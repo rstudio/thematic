@@ -161,23 +161,17 @@ test_that("gridExtra integration", {
   skip_if_not_installed("gridExtra")
 
   thematic_begin(bg = "black", fg = "white", accent = "salmon", font_spec("Oxanium", scale = 1.25))
-  smooth <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
-  contour <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
-    geom_raster(aes(fill = density)) +
-    geom_contour()
-  expect_doppelganger("grid-arrange", gridExtra::grid.arrange(smooth, contour))
+  p1 <- qplot(x = 1:10, y = 1:10, color = 1:10)
+  p2 <- qplot(x = 1:10, y = 1:10, color = 1:10)
+  expect_doppelganger("grid-arrange", gridExtra::grid.arrange(p1, p2))
 })
 
 test_that("patchwork integration", {
   skip_if_not_installed("patchwork")
   library(patchwork)
-
-  smooth <- ggplot(mtcars, aes(wt, mpg)) + geom_point() + geom_smooth()
-  contour <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
-    geom_raster(aes(fill = density)) +
-    geom_contour()
-
+  p1 <- qplot(x = 1:10, y = 1:10, color = 1:10)
+  p2 <- qplot(x = 1:10, y = 1:10, color = 1:10)
   thematic_begin(bg = "black", fg = "white", accent = "salmon", font = font_spec("Oxanium", scale = 1.25))
-  expect_doppelganger("patchwork", smooth + contour)
+  expect_doppelganger("patchwork", p1 + p2)
 })
 
