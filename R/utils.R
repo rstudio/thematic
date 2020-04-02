@@ -1,4 +1,3 @@
-
 # Logic for adjusting a color based on bg/fg/accent
 adjust_color <- function(color, bg, fg, accent = NA) {
   if (!length(color)) return(color)
@@ -38,13 +37,40 @@ parse_any_color <- function(x) {
   if (is.character(y)) y else x
 }
 
+download_file <- function(url, dest, ...) {
+  if (is_installed("curl")) {
+    if (!curl::has_internet()) {
+      warning(
+        "Looks like you don't have internet access, which is needed to ",
+        "download and install Google Fonts files. Try either changing ",
+        "thematic::font_spec(), manually installing the relevant font, or ",
+        "trying again with internet access.",
+        call. = FALSE
+      )
+    }
+    return(curl::curl_download(url, dest, ...))
+  }
+
+  if (capabilities("libcurl")) {
+    return(download.file(url, dest, method = "libcurl", ...))
+  }
+
+  stop(
+    "Downloading Google Font files requires either the curl package or ",
+    "`capabilities('libcurl')`. ", call. = FALSE
+  )
+}
+
 is_rstudio <- function() {
   identical("1", Sys.getenv("RSTUDIO", NA))
 }
 
-
 tryGet <- function(...) {
   tryCatch(get(...), error = function(e) NULL)
+}
+
+"%OR%" <- function(x, y) {
+  if (is.null(x) || isTRUE(is.na(x))) y else x
 }
 
 "%||%" <- function(x, y) {

@@ -16,9 +16,8 @@ remove_hook <- function(name, hook) {
 
 base_before_hook <- function() {
   # Pick the first font family that can successfully render on this device
-  font <- .globals$theme$font
   .globals$theme$font$family <- resolve_font_family(
-    font$families, type = "base", font$auto_install
+    .globals$theme$font, type = "base"
   )
   base_params_set()
   base_palette_set()
@@ -26,9 +25,8 @@ base_before_hook <- function() {
 
 grid_before_hook <- function() {
   # Pick the first font family that can successfully render on this device
-  font <- .globals$theme$font
   .globals$theme$font$family <- resolve_font_family(
-    font$families, type = "grid", font$auto_install
+    .globals$theme$font, type = "grid"
   )
   # Updating of Geom/Scale defaults is already handled ggplot_build.ggplot_thematic
   ggplot_theme_set()
@@ -37,7 +35,8 @@ grid_before_hook <- function() {
 }
 
 
-resolve_font_family <- function(families, type = c("base", "grid"), auto_install = TRUE) {
+resolve_font_family <- function(font, type = c("base", "grid")) {
+  families <- font$families
   # The default font family doesn't require special handling
   if (is_default_family(families)) {
     return(families)
@@ -80,11 +79,11 @@ resolve_font_family <- function(families, type = c("base", "grid"), auto_install
       break
     }
 
-    if (auto_install) {
+    if (font$install) {
       if (!is_installed("showtext") && !is_installed("ragg")) {
         warning("Auto installation of fonts requires either showtext or ragg to be installed", call. = FALSE)
       } else {
-        try_gfont_download_and_register(family)
+        try_gfont_download_and_register(family, font$quiet)
       }
     }
 

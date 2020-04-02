@@ -7,7 +7,9 @@
 font_spec(
   families = "",
   scale = 1,
-  auto_install = is_installed("ragg") || is_installed("showtext")
+  install = is_installed("ragg") || is_installed("showtext"),
+  update = FALSE,
+  quiet = TRUE
 )
 }
 \arguments{
@@ -15,8 +17,20 @@ font_spec(
 
 \item{scale}{numerical constant applied to font sizes.}
 
-\item{auto_install}{whether or not to attempt automatic download and registration
-of fonts not found on the system. Currently any font on Google Fonts is supported.}
+\item{install}{whether to download and register font \code{families}
+available via \href{https://fonts.google.com/}{Google Fonts} (but unavailable to R).
+After a successful download, fonts are cached (in a directory which
+can be managed via \code{\link[=font_cache_set]{font_cache_set()}}), and registered for use with
+the \strong{showtext} and \strong{ragg} packages. If installation fails with
+a valid internet connection, you may need to fetch the latest Google
+Font information prior to installation (i.e., set \code{update = TRUE}).}
+
+\item{update}{if \code{TRUE}, the latest Google Fonts are fetched and
+any out-dated cache is updated. Fetching the latest fonts requires a
+Google Font API key (one is bundled with the package, but you can
+set your own via an environment variable, \code{GFONT_KEY}).}
+
+\item{quiet}{whether to suppress download messages.}
 }
 \value{
 a list of information about the font specification.
@@ -26,7 +40,7 @@ Specify a collection of font families. The first font family supported
 by the relevant device (i.e., the device that is open, or will be opened, at
 plotting time) is used by thematic. If a given font family is not supported
 by the default, but is a \href{https://fonts.google.com/}{Google Font} and
-\code{auto_install = TRUE}, the font will be downloaded, cached, and registered
+\code{install = TRUE}, the font will be downloaded, cached, and registered
 for use the \strong{showtext} and \strong{ragg} packages.
 }
 \seealso{

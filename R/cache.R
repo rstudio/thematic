@@ -39,6 +39,10 @@ gfont_cache_dir <- function(family) {
   file.path(font_cache_housing(), gfont_id(family))
 }
 
+gfont_id <- function(family) {
+  gsub("\\s+", "-", tolower(family))
+}
+
 font_cache_housing <- function() {
   Sys.getenv(
     "THEMATIC_FONT_CACHE_DIR",

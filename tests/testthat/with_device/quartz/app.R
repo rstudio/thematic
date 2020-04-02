@@ -2,7 +2,7 @@ library(shiny)
 library(ggplot2)
 library(thematic)
 
-thematic_begin("black", "white", font = font_spec("Pacifico", 1.25))
+thematic_begin("black", "white", font = font_spec("Pacifico", 1.25, update = TRUE))
 onStop(function() {
   thematic_end()
 })

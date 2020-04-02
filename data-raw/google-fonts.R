@@ -1,12 +1,6 @@
 devtools::load_all()
 
-# Download the current set of fonts
-tmpfile <- tempfile(fileext = ".json")
-download.file(gfont_url(), tmpfile)
-google_fonts <- jsonlite::fromJSON(tmpfile)
-unlink(tmpfile, recursive = TRUE)
-
-# Save the content-length as an attribute (used for caching requests)
-attr(google_fonts, "content-length") <- httr::HEAD(gfont_url())$headers$`content-length`
-
+google_fonts <- jsonlite::fromJSON(gfont_api_url())$items
+google_fonts$kind <- NULL
+google_fonts <- add_gfont_faces(google_fonts)
 usethis::use_data(google_fonts, overwrite = TRUE, internal = TRUE)

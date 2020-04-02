@@ -8,6 +8,7 @@ output:
 
 ```{r, include = FALSE}
 library(thematic)
+set.seed(101)
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",

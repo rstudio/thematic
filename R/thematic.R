@@ -166,10 +166,13 @@ theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
   if (!inherits(font, "font_spec")) {
     stop("The `font` argument must be a `font_spec()` object", call. = FALSE)
   }
+  if (isTRUE(font$update)) {
+    update_gfonts()
+    update_gfonts_cache()
+  }
   theme$font <- font
   theme
 }
-
 
 #' Font specification
 #'
@@ -177,21 +180,32 @@ theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
 #' by the relevant device (i.e., the device that is open, or will be opened, at
 #' plotting time) is used by thematic. If a given font family is not supported
 #' by the default, but is a [Google Font](https://fonts.google.com/) and
-#' `auto_install = TRUE`, the font will be downloaded, cached, and registered
+#' `install = TRUE`, the font will be downloaded, cached, and registered
 #' for use the **showtext** and **ragg** packages.
 #'
 #' @param families a character vector of font families.
 #' @param scale numerical constant applied to font sizes.
-#' @param auto_install whether or not to attempt automatic download and registration
-#' of fonts not found on the system. Currently any font on Google Fonts is supported.
+#' @param install whether to download and register font `families`
+#' available via [Google Fonts](https://fonts.google.com/) (but unavailable to R).
+#' After a successful download, fonts are cached (in a directory which
+#' can be managed via [font_cache_set()]), and registered for use with
+#' the **showtext** and **ragg** packages. If installation fails with
+#' a valid internet connection, you may need to fetch the latest Google
+#' Font information prior to installation (i.e., set `update = TRUE`).
+#' @param update if `TRUE`, the latest Google Fonts are fetched and
+#' any out-dated font cache is updated. Fetching the latest fonts requires
+#' a Google Font API key (one is bundled with the package, but you can
+#' set your own via an environment variable, `GFONT_KEY`).
+#' @param quiet whether to suppress download messages.
 #'
-#' @return a list of information about the font specification.
+#' @return the input arguments as a list.
 #' @seealso [thematic_with_device()], [thematic_begin()], [font_cache_set()]
 #'
 #' @export
-font_spec <- function(families = "", scale = 1, auto_install = is_installed("ragg") || is_installed("showtext")) {
+font_spec <- function(families = "", scale = 1, install = is_installed("ragg") || is_installed("showtext"),
+                      update = FALSE, quiet = TRUE) {
   structure(
-    list(families = families, scale = scale, auto_install = auto_install),
+    list(families = families, scale = scale, install = install, update = update, quiet = quiet),
     class = "font_spec"
   )
 }

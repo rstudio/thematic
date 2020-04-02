@@ -1,78 +1,61 @@
-try_gfont_download_and_register <- function(family) {
+try_gfont_download_and_register <- function(family, quiet = TRUE) {
   # If no match in Google Font cache, look for a match with an updated set
+  google_fonts <- get_google_fonts()
   family_idx <- match(family, google_fonts$family)
+
   if (is.na(family_idx)) {
-    google_fonts <- try_fetch_google_fonts()
-    family_idx <- match(family, google_fonts$family)
-    if (is.na(family_idx)) {
-      warning(
-        "The font family '", family, "' doesn't appear to be available as a ",
-        "Google Font. Try manually downloading and installing it on your system. ",
-        "For more info, visit https://github.com/rstudio/thematic#fonts",
-        call. = FALSE
-      )
-      return(FALSE)
-    }
+    warning(
+      "The font family '", family, "' doesn't appear to be available as a ",
+      "Google Font. Try manually downloading and installing it on your system. ",
+      "For more info, visit https://github.com/rstudio/thematic#fonts",
+      call. = FALSE
+    )
+    return(FALSE)
   }
 
-  # Attempt to download
-  url <- paste0(
-    file.path(gfont_url(), gfont_id(family)),
-    paste0("?download=zip&formats=", gfont_format)
-  )
-  tmpzip <- tempfile(fileext = ".zip")
-  on.exit(unlink(tmpzip, recursive = TRUE), add = TRUE)
-  download_file(url, tmpzip)
-  message("Successfully downloaded the '", family, "' font family.")
-  unzip(tmpzip, exdir = gfont_cache_dir(family))
+  font_info <- google_fonts[family_idx, , drop = TRUE]
+
+  download_files <- function(urls, dests) {
+    urls <- urls[!is.na(urls)]
+    dests <- dests[!is.na(urls)]
+    Map(function(x, y) download_file(x, y, quiet = quiet), urls, dests)
+  }
+
+  cache_dir <- gfont_cache_dir(family)
+  if (!dir.exists(cache_dir)) dir.create(cache_dir, recursive = TRUE)
+
+  # Columns pointin to the relevant face-specific ttf files
+  # (these columns are added by add_gfont_faces())
+  faces <- c("regular", "bold", "italic", "bolditalic")
+  dests <- file.path(cache_dir, paste0(faces, ".ttf"))
+
+  download_files(font_info[faces], dests)
+  # Store the font info with the cache so we know if it needs
+  # to be updated later on
+  saveRDS(font_info, file = file.path(cache_dir, "cache.rds"))
   try_register_gfont_cache(family)
 }
 
-download_file <- function(url, dest, ...) {
-  if (is_installed("curl")) {
-    if (!curl::has_internet()) {
-      warning(
-        "Looks like you don't have internet access, which is needed to ",
-        "download and install Google Fonts files. Try either changing ",
-        "thematic::font_spec(), manually installing the relevant font, or ",
-        "trying again with internet access.",
-        call. = FALSE
-      )
-    }
-    return(curl::curl_download(url, dest, ...))
-  }
 
-  if (capabilities("libcurl")) {
-    return(download.file(url, dest, method = "libcurl", ...))
-  }
-
-  stop(
-    "Downloading Google Font files requires either the curl package or ",
-    "`capabilities('libcurl')`. ", call. = FALSE
-  )
-}
-
-try_register_gfont_cache <- function(family) {
+try_register_gfont_cache <- function(family, upgrade) {
+  google_fonts <- get_google_fonts()
+  family_idx <- match(family, google_fonts$family)
+  if (is.na(family_idx)) return()
 
   cache_dir <- gfont_cache_dir(family)
+  if (!dir.exists(cache_dir)) return()
 
-  # Return the path to a font family variant, if it exists
-  # NOTE: this does assume the google fonts service (i.e., gfonts_url())
-  # includes in the variant in the suffix of the filename
   font_file <- function(variant) {
     dir(
       cache_dir, full.names = TRUE,
-      pattern = paste0(variant, "\\.", gfont_format, "$")
+      pattern = paste0(variant, "\\.ttf$")
     )
   }
 
-  # Nothing to do if we can't find a regular font file definition
-  regular <- font_file("regular") %||% font_file("300")
-  if (!length(regular)) return()
-
-  bold <- font_file("700") %||% regular
-  italic <- font_file("italic") %||% font_file("300italic") %||% regular
-  bolditalic <- font_file("700italic") %||% bold
+  regular <- font_file("regular")
+  bold <- font_file("bold")
+  italic <- font_file("italic")
+  bolditalic <- font_file("bolditalic")
 
   try(
     systemfonts::register_font(
@@ -93,48 +76,67 @@ try_register_gfont_cache <- function(family) {
   )
 }
 
-
-try_fetch_google_fonts <- function() {
-  if (!is_installed("curl")) return(google_fonts)
-  if (!is_installed("jsonlite")) return(google_fonts)
-  if (!curl::has_internet()) return(google_fonts)
-  message("Fetching the latest set of Google Fonts")
-  new_length <- tryCatch(get_content_length(), error = function(e) NA)
-  old_length <- attr(google_fonts, "content-length")
-  if (identical(new_length, old_length)) {
-    return(google_fonts)
-  }
-  tryCatch(get_google_fonts(), error = function(e) google_fonts)
-}
-
-get_content_length <- function() {
-  content_length(curl::curl_fetch_memory(
-    gfont_metadata_url(),
-    handle = curl::new_handle(nobody = TRUE)
-  ))
-}
-
-content_length <- function(res) {
-  headers <- rawToChar(res$headers)
-  m <- regexec("Content-Length:\\s+([0-9]+)", headers)
-  regmatches(headers, m)[[1]][2]
-}
-
 get_google_fonts <- function() {
-  res <- curl::curl_fetch_memory(gfont_url())
-  jsonlite::parse_json(rawToChar(res$content), simplifyVector = TRUE)
+  .globals$google_fonts %||% google_fonts
 }
 
-gfont_id <- function(family) {
-  gsub("\\s+", "-", tolower(family))
+update_gfonts <- function() {
+  pkgs <- c("curl", "jsonlite")
+  for (pkg in pkgs) {
+    if (is_installed(pkg)) next
+    stop("Using an updated set of google fonts requires the ", pkg, "package to be installed", call. = FALSE)
+  }
+  .globals$google_fonts <- tryCatch(
+    add_gfont_faces(jsonlite::fromJSON(gfont_api_url())$items),
+    error = function(e) {
+      warning("Failed to update google fonts", call. = FALSE)
+      browser()
+      NULL
+    }
+  )
 }
 
-gfont_url <- function() {
-  getOption("gfonts.url", "https://google-webfonts-helper.herokuapp.com/api/fonts")
+# Do our best to map font-weight to R's font faces
+add_gfont_faces <- function(google_fonts) {
+  files <- google_fonts$files
+  google_fonts$regular <- files$regular %|% files$`300`
+
+  google_fonts$bold <- files$`700` %|%
+    files$`800` %|% files$`600` %|%
+    files$`900` %|% files$`500`
+
+  google_fonts$italic <- files$italic %|% files$`300italic`
+
+  google_fonts$bolditalic <- files$`700italic` %|%
+    files$`800italic` %|% files$`600italic` %|%
+    files$`900italic` %|% files$`500italic`
+
+  google_fonts
 }
 
-gfont_metadata_url <- function() {
-  getOption("gfonts.metadata.url", "https://fonts.google.com/metadata/fonts")
+update_gfonts_cache <- function(quiet = FALSE) {
+  font_dirs <- list.dirs(font_cache_housing(), full.names = TRUE, recursive = FALSE)
+  gfonts <- get_google_fonts()
+  for (font in font_dirs) {
+    cache <- readRDS(file.path(font, "cache.rds"))
+    lastModified <- gfonts[match(cache$family, gfonts$family), "lastModified", drop = TRUE]
+    if (isTRUE(lastModified > cache$lastModified)) {
+      if (!quiet) message("Updating out-of-date font cache for family '", cache$family, "'")
+      try_gfont_download_and_register(cache$family, quiet)
+    }
+  }
 }
 
-gfont_format <- "ttf"
+gfont_api_url <- function() {
+  paste0(
+    "https://www.googleapis.com/webfonts/v1/webfonts?key=",
+    gfont_key()
+  )
+}
+
+gfont_key <- function() {
+  Sys.getenv(
+    "GFONT_KEY",
+    paste0("AIzaSyDP", "KvElVqQ-", "26f7tjxyg", "IGpIajf", "tS_zmas")
+  )
+}
