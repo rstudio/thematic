@@ -16,7 +16,6 @@ test_that("Can render non-custom fonts on cross-platform devices", {
 not_cran <- Sys.getenv("NOT_CRAN")
 Sys.unsetenv("NOT_CRAN")
 test_that("Can render non-custom fonts on quartz device", {
-  skip_on_cran()
   skip_if_not_installed("shinytest")
   skip_if_not_installed("ggplot2")
   skip_if_not(capabilities("aqua"))
