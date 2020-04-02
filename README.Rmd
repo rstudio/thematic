@@ -25,11 +25,9 @@ knitr::opts_chunk$set(
 # thematic
 
 <!-- badges: start -->
+[![R build status](https://github.com/rstudio/thematic/workflows/R-CMD-check/badge.svg)](https://github.com/rstudio/thematic)
 [![CRAN status](https://www.r-pkg.org/badges/version/thematic)](https://CRAN.R-project.org/package=thematic)
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build status](https://travis-ci.org/rstudio/thematic.svg?branch=master)](https://travis-ci.org/rstudio/thematic)
-[![Codecov test coverage](https://codecov.io/gh/rstudio/thematic/branch/master/graph/badge.svg)](https://codecov.io/gh/rstudio/thematic?branch=master)
-[![R build status](https://github.com/rstudio/thematic/workflows/R-CMD-check/badge.svg)](https://github.com/rstudio/thematic)
 <!-- badges: end -->
 
 Simple and automatic theming of **ggplot2**, **lattice**, and **base** graphics.

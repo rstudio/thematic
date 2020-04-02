@@ -26,14 +26,14 @@ a valid internet connection, you may need to fetch the latest Google
 Font information prior to installation (i.e., set \code{update = TRUE}).}
 
 \item{update}{if \code{TRUE}, the latest Google Fonts are fetched and
-any out-dated cache is updated. Fetching the latest fonts requires a
-Google Font API key (one is bundled with the package, but you can
+any out-dated font cache is updated. Fetching the latest fonts requires
+a Google Font API key (one is bundled with the package, but you can
 set your own via an environment variable, \code{GFONT_KEY}).}
 
 \item{quiet}{whether to suppress download messages.}
 }
 \value{
-a list of information about the font specification.
+the input arguments as a list.
 }
 \description{
 Specify a collection of font families. The first font family supported
