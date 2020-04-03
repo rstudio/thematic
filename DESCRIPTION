@@ -34,9 +34,9 @@ Suggests:
     htmltools (>= 0.4.0.9003),
     testthat (>= 2.1.0),
     vdiffr,
+    svglite,
     jsonlite,
     curl,
-    sf,
     patchwork,
     gridExtra
 License: MIT + file LICENSE
