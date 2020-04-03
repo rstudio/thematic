@@ -177,14 +177,19 @@ infer_device <- function() {
 # Do our best to map the name of the current device to an
 # actual device function
 get_device_function <- function(name) {
-  # resolve known cases where the .Device name doesn't
-  # quite map to the relevant function name
-  name <- switch(
-    name,
-    quartz_off_screen = "quartz",
-    `win.metafile:`  = "win.metafile",
-    name
-  )
+
+  # first, resolve known cases where the .Device name
+  # doesn't quite map to the relevant function name
+  if (identical("win.metafile:", name)) {
+    return(getFromNamespace("win.metafile", "grDevices"))
+  }
+
+  # Note that quartz defaults to an on-screen device,
+  # so this needs to set to an off-screen type
+  if (identical("quartz_off_screen", name)) {
+    return(function(...) getFromNamespace("quartz", "grDevices")(type = "png", ...))
+  }
+
   # Effectively what dev.new() does to find a device function from a string
   # https://github.com/wch/r-source/blob/d6c208e4/src/library/grDevices/R/device.R#L291-L293
   if (exists(name, .GlobalEnv)) {
@@ -215,15 +220,6 @@ dev_new <- function(filename) {
   if (length(.globals$device)) {
     do.call(.globals$device$fun, .globals$device$args)
     return()
-  }
-
-  # quartz()'s type default is "native", which is an on-screen device,
-  # which can lead to suprising behavior. Fortunately, at least as far
-  # as I can tell, if fonts are supported on one quartz type, it should
-  # be supported for all types
-  if (capabilities("aqua")) {
-    opts <- grDevices::quartz.options(type = "png")
-    on.exit(do.call(grDevices::quartz.options, opts), add = TRUE)
   }
   # Most devices use `filename` instead of `file`,
   # but there are a few exceptions (e.g., pdf(), svglite::svglite())
