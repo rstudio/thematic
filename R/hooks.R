@@ -37,6 +37,7 @@ grid_before_hook <- function() {
 
 resolve_font_family <- function(font, type = c("base", "grid")) {
   families <- font$families
+
   # The default font family doesn't require special handling
   if (is_default_family(families)) {
     return(families)
@@ -207,9 +208,15 @@ get_device_function <- function(name) {
 }
 
 
-# Most devices use `filename` instead of `file`,
-# but there are a few exceptions (e.g., pdf(), svglite::svglite())
+
 dev_new <- function(filename) {
+  # If this is called via thematic_with_device(), then we know
+  # exactly what function and args to use to clone the device
+  if (length(.globals$device)) {
+    do.call(.globals$device$fun, .globals$device$args)
+    return()
+  }
+
   # quartz()'s type default is "native", which is an on-screen device,
   # which can lead to suprising behavior. Fortunately, at least as far
   # as I can tell, if fonts are supported on one quartz type, it should
@@ -218,5 +225,7 @@ dev_new <- function(filename) {
     opts <- grDevices::quartz.options(type = "png")
     on.exit(do.call(grDevices::quartz.options, opts), add = TRUE)
   }
+  # Most devices use `filename` instead of `file`,
+  # but there are a few exceptions (e.g., pdf(), svglite::svglite())
   suppressMessages(dev.new(filename = filename, file = filename))
 }

@@ -55,7 +55,7 @@ thematic_with_device <- function(expr, device = default_device(),
   # Handle the case where device wants `file` instead of `filename`
   # (e.g., svglite::svglite)
   if (!"filename" %in% device_args && "file" %in% device_args) {
-    args$file <- args$file %||% args$filename
+    args$file <- args[["file"]] %||% args$filename
     args$filename <- NULL
   }
 
@@ -64,13 +64,10 @@ thematic_with_device <- function(expr, device = default_device(),
   dev <- dev.cur()
   on.exit(dev.off(dev), add = TRUE)
 
-  # make svglite happy (it doesn't support multiple pages and
-  # it's convenient to support it for our own testing purposes
-  if (!identical(device, getFromNamespace("svglite", "svglite"))) {
-    op <- par(mar = rep(0, 4))
-    devAskNewPage(FALSE)
-    tryCatch(plot.new(), finally = par(op))
-  }
+  # Let the world know about the device's arguments, so that
+  # resolve_font_family() can use them when cloning the device
+  .globals$device <- list(fun = device, args = args)
+  on.exit(rm("device", envir = .globals), add = TRUE)
 
   # Evaluate the expression
   expr <- rlang::enquo(expr)
@@ -80,7 +77,8 @@ thematic_with_device <- function(expr, device = default_device(),
       capture.output(print(result$value))
     }
     filename
-  }, error = function(e) {
+  },
+  error = function(e) {
     try({
       # i.e., if we _know_ this is a tempfile remove it before throwing
       if (isTempFile && file.exists(filename))

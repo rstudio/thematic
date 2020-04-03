@@ -15,10 +15,9 @@ server <- function(input, output, session) {
   output$quartz <- renderImage({
     file <- thematic_with_device(
       qplot(1:10) + ggtitle("quartz png"),
-      device = grDevices::png, type = "quartz",
-      width = 800, height = 400
+      device = grDevices::png
     )
-    list(src = file, width = 800, height = 400)
+    list(src = file, width = 480, height = 480)
   })
 }
 

@@ -5,6 +5,7 @@
 ^docs$
 ^tmp$
 ^pkgdown$
+^tests/figs$
 ^README\.Rmd$
 ^README\.html$
 ^data-raw$

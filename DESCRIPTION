@@ -1,5 +1,5 @@
 Package: thematic
-Title: Simplified theming of 'ggplot2', 'lattice', and 'base' graphics
+Title: Simplified Theming of 'ggplot2', 'lattice', and 'base' Graphics
 Version: 0.0.1
 Authors@R: c(
   person("Carson", "Sievert", role = c("aut", "cre"), email = "carson@rstudio.com", comment = c(ORCID = "0000-0002-4958-2844")),
