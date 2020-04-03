@@ -81,9 +81,8 @@ jobs:
       - name: Mac systemdeps
         if: runner.os == 'macOS'
         run: |
-          brew install pkg-config
-          brew install gdal
-          brew cask install xquartz
+          brew cask install xquartz phantomjs
+          brew install pkg-config gdal
 
       # ------------------------------------------------------------
 
