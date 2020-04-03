@@ -49,5 +49,6 @@ RoxygenNote: 7.1.0
 Remotes: 
   RcppCore/Rcpp,
   rstudio/htmltools,
+  rstudio/shinytest,
   r-lib/systemfonts,
   r-lib/ragg
