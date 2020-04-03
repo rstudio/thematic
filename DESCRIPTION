@@ -49,5 +49,5 @@ Remotes:
   rstudio/htmltools,
   rstudio/shinytest,
   rstudio/shiny,
-  r-lib/systemfonts,
+  r-lib/systemfonts@683b6bd82d90766f778e7e081a09e9f9b632aa15,
   r-lib/ragg
