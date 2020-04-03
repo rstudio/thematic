@@ -3,11 +3,7 @@
 
   },
   "output": {
-    "quartz": {
-      "src": "[image data sha1: fbe11e22f22d9c87423bbb08867a0dfd8510a788]",
-      "width": 480,
-      "height": 480
-    }
+    "quartz": null
   },
   "export": {
 

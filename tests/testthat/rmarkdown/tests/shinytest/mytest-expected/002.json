@@ -3,36 +3,12 @@
     "foo": "svg"
   },
   "output": {
-    "png-base": {
-      "src": "[image data sha1: 082be6d937495f91744199bd0d56d5e89bcd95e5]",
-      "width": 600,
-      "height": 400
-    },
-    "png-ggplot": {
-      "src": "[image data sha1: 2c14bcea6c47efbf6946bbc486c3816e1fdc46f2]",
-      "width": 600,
-      "height": 400
-    },
-    "png-lattice": {
-      "src": "[image data sha1: 2a93f43f6b3cf598fd1736ea8c38daa89743f4a3]",
-      "width": 600,
-      "height": 400
-    },
-    "svg-base": {
-      "src": "[image data sha1: 0c5f100684e70cad7dcf88b3bff110d3f8ffc52d]",
-      "width": 600,
-      "height": 400
-    },
-    "svg-ggplot": {
-      "src": "[image data sha1: 3b5945a00f5134c3f17d48df03f9912e28c1120b]",
-      "width": 600,
-      "height": 400
-    },
-    "svg-lattice": {
-      "src": "[image data sha1: 1b5e19593e6908462583a8c841bf2da4dae1a7cc]",
-      "width": 600,
-      "height": 400
-    }
+    "png-base": null,
+    "png-ggplot": null,
+    "png-lattice": null,
+    "svg-base": null,
+    "svg-ggplot": null,
+    "svg-lattice": null
   },
   "export": {
 

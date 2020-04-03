@@ -3,13 +3,6 @@ library(shiny)
 # All the devices we're testing
 devices <- c("png", "svg", "jpeg")
 
-onStop(function() {
-  lapply(devices, function(device) {
-    unlink(dir(pattern = paste0("\\.", device)))
-  })
-})
-
-
 # Modularized image output
 imageOutputs <- function(device) {
   ns <- NS(device)
@@ -28,15 +21,12 @@ renderImages <- function(device) {
         width = 600, height = 400
       )
     }
-    output$ggplot <- renderImage({
-      image_info("ggplot", device)
-    }, deleteFile = FALSE)
-    output$lattice <- renderImage({
-      image_info("lattice", device)
-    }, deleteFile = FALSE)
-    output$base <- renderImage({
-      image_info("base", device)
-    }, deleteFile = FALSE)
+    render_image <- function(expr) {
+      snapshotPreprocessOutput(renderImage(expr), function(value) {})
+    }
+    output$ggplot <- render_image(image_info("ggplot", device))
+    output$lattice <- render_image(image_info("lattice", device))
+    output$base <- render_image(image_info("base", device))
   })
 }
 

@@ -4,7 +4,7 @@ test_that("base baselines", {
 
   thematic_begin("black", "white", "violet", font_spec("Amatic SC", 1.5, update = TRUE))
 
-  expect_doppelganger("scatter", function() { plot(1:10) })
+  expect_doppelganger("scatter", function() { plot(1:11) })
   expect_doppelganger("scatter-cols", function() { plot(1:10, col = 1:10) })
   expect_doppelganger("lines", function() {
     plot(1:10, (1:10)^2, type = "b", pch = 19, xlab = "x", ylab = "y")

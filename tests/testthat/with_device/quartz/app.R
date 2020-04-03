@@ -12,13 +12,13 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  output$quartz <- renderImage({
+  output$quartz <- snapshotPreprocessOutput(renderImage({
     file <- thematic_with_device(
       qplot(1:10) + ggtitle("quartz png"),
       device = grDevices::png
     )
     list(src = file, width = 480, height = 480)
-  })
+  }), function(value) {})
 }
 
 shinyApp(ui, server)
