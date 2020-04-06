@@ -46,7 +46,7 @@ server <- function(input, output, session) {
 
   lapply(devices, renderImages)
 
-  onStop(function() {
+  onFlush(function() {
     lapply(devices, function(device) {
       unlink(dir(pattern = paste0("\\.", device)))
     })
