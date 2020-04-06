@@ -32,8 +32,8 @@ jobs:
       RSPM: ${{ matrix.config.rspm }}
       _R_CHECK_FORCE_SUGGESTS_: false
       # Runs vdiffr test only on the latest version of R
-      VDIFFR_RUN_TESTS: ${{ matrix.config.vdiffr }}
-      VDIFFR_LOG_PATH: "../vdiffr.Rout.fail"
+      VDIFFR_RUN_TESTS: true
+      #VDIFFR_LOG_PATH: "../vdiffr.Rout.fail"
 
 
     steps:
@@ -98,7 +98,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Check
-        run: Sys.setenv(NOT_CRAN = "true"); rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: Test
