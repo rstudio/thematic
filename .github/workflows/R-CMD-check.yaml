@@ -101,6 +101,7 @@ jobs:
       # worth testing
       - name: Install testing dependencies
         run: |
+          shinytest::installDependencies()
           install.packages(c('sf', 'Cairo', 'patchwork', 'gridExtra'))
         shell: Rscript {0}
 
