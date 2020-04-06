@@ -37,10 +37,8 @@ renderImages <- function(device) {
 }
 
 
-tabs <- lapply(devices, function(x) tabPanel(x, imageOutputs(x)))
-ui <- fluidPage(
-  do.call(tabsetPanel, c(list(id = "foo"), tabs))
-)
+tags <- lapply(devices, imageOutputs)
+ui <- fluidPage(tagList(tags))
 
 server <- function(input, output, session) {
   # Knit all the Rmds
