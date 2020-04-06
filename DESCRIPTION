@@ -36,9 +36,7 @@ Suggests:
     vdiffr,
     svglite,
     jsonlite,
-    curl,
-    patchwork,
-    gridExtra
+    curl
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

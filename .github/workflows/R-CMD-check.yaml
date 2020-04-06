@@ -97,6 +97,12 @@ jobs:
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
 
+      # Packages that aren't really worth putting in suggests but are
+      # worth testing
+      - name: Install testing dependencies
+        run: |
+          install.packages(c('sf', 'Cairo', 'patchwork', 'gridExtra'))
+
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}

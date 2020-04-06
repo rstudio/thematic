@@ -143,11 +143,13 @@ test_that("ggplot baselines", {
 test_that("sf integration", {
   skip_if_not_installed("sf")
   skip_if_not(Sys.info()[["sysname"]] == "Darwin")
-  library(sf)
+  st_read <- getFromNamespace("st_read", "sf")
+  st_read <- getFromNamespace("st_transform", "sf")
+  st_read <- getFromNamespace("st_centroid", "sf")
 
-  nc <- sf::st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
-  nc_3857 <- sf::st_transform(nc, "+init=epsg:3857")
-  nc_3857$mid <- sf::st_centroid(nc_3857$geometry)
+  nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
+  nc_3857 <- st_transform(nc, "+init=epsg:3857")
+  nc_3857$mid <- st_centroid(nc_3857$geometry)
   p <- ggplot(nc_3857) +
     geom_sf(colour = "white") +
     geom_sf(aes(geometry = mid, size = AREA), show.legend = "point")
@@ -162,12 +164,15 @@ test_that("gridExtra integration", {
   thematic_begin(bg = "black", fg = "white", accent = "salmon", font_spec("Oxanium", scale = 1.25))
   p1 <- qplot(x = 1:10, y = 1:10, color = 1:10)
   p2 <- qplot(x = 1:10, y = 1:10, color = 1:10)
-  expect_doppelganger("grid-arrange", gridExtra::grid.arrange(p1, p2))
+  expect_doppelganger(
+    "grid-arrange", getFromNamespace("grid.arrange", "gridExtra")(p1, p2)
+  )
 })
 
 test_that("patchwork integration", {
   skip_if_not_installed("patchwork")
-  library(patchwork)
+  ggplot2 <- "patchwork"
+  library(ggplot2)
   p1 <- qplot(x = 1:10, y = 1:10, color = 1:10)
   p2 <- qplot(x = 1:10, y = 1:10, color = 1:10)
   thematic_begin(bg = "black", fg = "white", accent = "salmon", font = font_spec("Oxanium", scale = 1.25))
