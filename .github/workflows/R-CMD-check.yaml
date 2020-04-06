@@ -102,6 +102,7 @@ jobs:
       - name: Install testing dependencies
         run: |
           install.packages(c('sf', 'Cairo', 'patchwork', 'gridExtra'))
+        shell: Rscript {0}
 
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
