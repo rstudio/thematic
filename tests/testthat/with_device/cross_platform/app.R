@@ -26,26 +26,30 @@ doWithDevice <- function(expr, device, width = width_px, height = height_px, ...
   list(src = file, width = width, height = height)
 }
 
+render_image <- function(expr) {
+  snapshotPreprocessOutput(renderImage(expr), function(value) {})
+}
+
 server <- function(input, output, session) {
-  output$png <- renderImage({
+  output$png <- render_image({
     doWithDevice(
       qplot(1:10) + ggtitle("Cairo::CairoPNG"),
       Cairo::CairoPNG
     )
   })
-  output$ragg_png <- renderImage({
+  output$ragg_png <- render_image({
     doWithDevice(
       qplot(1:10) + ggtitle("ragg::agg_png"),
       ragg::agg_png
     )
   })
-  output$jpeg <- renderImage({
+  output$jpeg <- render_image({
     doWithDevice(
       qplot(1:10) + ggtitle("grDevices::jpeg"),
       grDevices::jpeg, filename = tempfile(fileext = ".jpeg")
     )
   })
-  output$svg <- renderImage({
+  output$svg <- render_image({
     x <- doWithDevice(
       qplot(1:10) + ggtitle("grDevices::svg"),
       grDevices::svg, filename = tempfile(fileext = ".svg"),
