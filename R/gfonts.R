@@ -90,7 +90,6 @@ update_gfonts <- function() {
     add_gfont_faces(jsonlite::fromJSON(gfont_api_url())$items),
     error = function(e) {
       warning("Failed to update google fonts", call. = FALSE)
-      browser()
       NULL
     }
   )

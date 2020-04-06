@@ -15,7 +15,7 @@
 #' @param accent a color for making certain graphical markers 'stand out'
 #' (e.g., the fitted line color for [ggplot2::geom_smooth()]).
 #' Can be 2 colors for lattice (stroke vs fill accent).
-#' @param font a `font_spec()` object.
+#' @param font a `font_spec()` object. If missing, font defaults are not altered.
 #' @param sequential a color palette for graphical markers that encode
 #' numeric values. Can be a vector of color codes or a
 #' [sequential_gradient()] object.
@@ -52,8 +52,7 @@
 #' lattice::show.settings()
 #' thematic_end()
 #'
-thematic_begin <- function(bg = NULL, fg = NULL, accent = NA,
-                           font = font_spec(),
+thematic_begin <- function(bg = NULL, fg = NULL, accent = NA, font = NA,
                            sequential = sequential_gradient(),
                            qualitative = okabe_ito()) {
   old_theme <- .globals$theme
@@ -163,8 +162,11 @@ theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
     if (identical(x, NA)) return(x)
     vapply(x, parse_any_color, character(1), USE.NAMES = FALSE)
   })
+  if (isTRUE(is.na(font))) {
+    font <- font_spec()
+  }
   if (!inherits(font, "font_spec")) {
-    stop("The `font` argument must be a `font_spec()` object", call. = FALSE)
+    stop("The `font` argument must be either `NA` or a `font_spec()` object", call. = FALSE)
   }
   if (isTRUE(font$update)) {
     update_gfonts()
