@@ -94,7 +94,7 @@ thematic_with_device <- function(expr, device = default_device(),
 default_device <- function(type = c("png", "tiff", "svg", "pdf")) {
   type <- match.arg(type)
 
-  if (is_installed("ragg")) {
+  if (type %in% c("png", "tiff") && is_installed("ragg") && !is_installed("showtext")) {
     dev <- switch(
       type,
       png = ragg::agg_png,
