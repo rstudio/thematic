@@ -72,5 +72,9 @@ test_that("lattice baselines", {
     })
 
   expect_doppelganger("settings", show.settings())
+
+
+  thematic_begin("black", "white", c("orange", "blue"))
+  expect_doppelganger("settings2", show.settings())
 })
 

@@ -293,6 +293,7 @@ sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE
 # For the endpoints the amount of blending of fg/bg and accent
 # depends on their perceptual distance
 resolve_sequential_gradient <- function(fg, accent, bg, options = sequential_gradient()) {
+  accent <- accent[1]
   if (anyNA(c(fg, accent, bg))) return(NA)
 
   fg_dist <- farver::compare_colour(
