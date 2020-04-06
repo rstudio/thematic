@@ -1,5 +1,4 @@
 app <- ShinyDriver$new("../../")
 app$snapshotInit("mytest")
 
-Sys.sleep(10)
 app$snapshot()

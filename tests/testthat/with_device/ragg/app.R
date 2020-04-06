@@ -1,0 +1,29 @@
+library(shiny)
+library(ggplot2)
+library(thematic)
+
+thematic_begin("black", "white", font = font_spec("Pacifico", 1.25, update = TRUE))
+onStop(function() {
+  thematic_end()
+})
+
+ui <- fluidPage(
+  imageOutput("ragg_png")
+)
+
+render_image <- function(expr) {
+  snapshotPreprocessOutput(renderImage(expr), function(value) {})
+}
+
+server <- function(input, output, session) {
+  output$ragg_png <- render_image({
+    file <- thematic_with_device(
+      qplot(1:10) + ggtitle("ragg::agg_png"),
+      device = ragg::agg_png,
+      width = 800, height = 400
+    )
+    list(src = file, width = 800, height = 400)
+  })
+}
+
+shinyApp(ui, server)

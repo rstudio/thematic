@@ -126,9 +126,8 @@ can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
   on.exit(options(opts), add = TRUE)
   tmp <- tempfile()
   dev_new(filename = tmp)
-  dev <- dev.cur()
   on.exit({
-    dev.off(dev)
+    dev.off()
     unlink(tmp, recursive = TRUE)
   }, add = TRUE)
 
