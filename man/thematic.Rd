@@ -9,7 +9,7 @@ thematic_begin(
   bg = NULL,
   fg = NULL,
   accent = NA,
-  font = font_spec(),
+  font = NA,
   sequential = sequential_gradient(),
   qualitative = okabe_ito()
 )
@@ -25,7 +25,7 @@ thematic_end()
 (e.g., the fitted line color for \code{\link[ggplot2:geom_smooth]{ggplot2::geom_smooth()}}).
 Can be 2 colors for lattice (stroke vs fill accent).}
 
-\item{font}{a \code{font_spec()} object.}
+\item{font}{a \code{font_spec()} object. If missing, font defaults are not altered.}
 
 \item{sequential}{a color palette for graphical markers that encode
 numeric values. Can be a vector of color codes or a
