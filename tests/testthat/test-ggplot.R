@@ -32,7 +32,7 @@ test_that("ggplot baselines", {
       facet_wrap(~ cyl)
   })
   expect_doppelganger("GeomBar", ggplot(mpg, aes(class)) + geom_bar(aes(weight = displ)))
-  expect_doppelganger("GeomBin2d", ggplot(diamonds, aes(x, y)) + xlim(4, 10) + ylim(4, 10) + geom_bin2d())
+  expect_warning(expect_doppelganger("GeomBin2d", ggplot(diamonds, aes(x, y)) + xlim(4, 10) + ylim(4, 10) + geom_bin2d()))
   expect_doppelganger("GeomBox", ggplot(mpg, aes(class, hwy)) + geom_boxplot())
   # For some reason these give slightly different svgs on different platforms?
   #expect_doppelganger("GeomContour", ggplot(faithfuld, aes(waiting, eruptions, z = density)) + geom_contour())
@@ -144,8 +144,8 @@ test_that("sf integration", {
   skip_if_not_installed("sf")
   skip_if_not(Sys.info()[["sysname"]] == "Darwin")
   st_read <- getFromNamespace("st_read", "sf")
-  st_read <- getFromNamespace("st_transform", "sf")
-  st_read <- getFromNamespace("st_centroid", "sf")
+  st_transform <- getFromNamespace("st_transform", "sf")
+  st_centroid <- getFromNamespace("st_centroid", "sf")
 
   nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
   nc_3857 <- st_transform(nc, "+init=epsg:3857")
