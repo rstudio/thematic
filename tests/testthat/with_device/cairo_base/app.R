@@ -21,6 +21,7 @@ server <- function(input, output, session) {
     file <- thematic_with_device(
       qplot(1:10) + ggtitle("grDevices::png"),
       device = grDevices::png, type = "cairo",
+      antialias = "none",
       width = 800, height = 400
     )
     list(src = file, width = 800, height = 400)
@@ -29,6 +30,7 @@ server <- function(input, output, session) {
     file <- thematic_with_device(
       qplot(1:10) + ggtitle("grDevices::svg"),
       device = grDevices::svg, filename = tempfile(fileext = ".svg"),
+      antialias = "none",
       width = 8, height = 4
     )
     list(src = file, width = 800, height = 400)
