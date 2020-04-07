@@ -3,6 +3,7 @@ context("with_device")
 skip_on_cran()
 skip_if_not_installed("shinytest")
 skip_if_not_installed("ggplot2")
+skip_if_not(.Platform$OS.type != "windows")
 
 
 test_that("Custom fonts with ragg", {
@@ -26,13 +27,6 @@ test_that("Custom fonts with quartz device", {
   shinytest::expect_pass(shinytest::testApp("quartz_png"))
 })
 
-test_that("Custom fonts with cairo capabilities", {
-  skip_if_not(capabilities()[["cairo"]])
-
-  shinytest::expect_pass(shinytest::testApp("cairo_png"))
-  shinytest::expect_pass(shinytest::testApp("cairo_svg"))
-})
-
 # Remaining tests are rmarkdown specific
 skip_if_not_installed("rmarkdown")
 
@@ -43,7 +37,7 @@ test_that("Can render non-custom fonts in rmarkdown with quartz png", {
 })
 
 test_that("Can render non-custom fonts in rmarkdown with quartz png", {
-  skip_if_not(capabilities()[["aqua"]])
+  skip_if_not_installed("Cairo")
 
   shinytest::expect_pass(shinytest::testApp("CairoPNG_rmd"))
 })
