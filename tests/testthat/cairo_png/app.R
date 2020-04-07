@@ -8,8 +8,7 @@ onStop(function() {
 })
 
 ui <- fluidPage(
-  imageOutput("png"),
-  imageOutput("svg")
+  imageOutput("png")
 )
 
 render_image <- function(expr) {
@@ -26,16 +25,6 @@ server <- function(input, output, session) {
     )
     list(src = file, width = 800, height = 400)
   })
-  output$svg <- render_image({
-    file <- thematic_with_device(
-      qplot(1:10) + ggtitle("grDevices::svg"),
-      device = grDevices::svg, filename = tempfile(fileext = ".svg"),
-      antialias = "none",
-      width = 8, height = 4
-    )
-    list(src = file, width = 800, height = 400)
-  })
-
 }
 
 shinyApp(ui, server)
