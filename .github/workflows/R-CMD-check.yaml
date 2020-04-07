@@ -82,7 +82,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew cask install xquartz phantomjs
-          brew install pkg-config gdal
+          brew install pkg-config gdal cairo
 
       # ------------------------------------------------------------
 
