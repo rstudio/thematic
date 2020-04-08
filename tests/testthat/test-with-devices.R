@@ -7,7 +7,7 @@ skip_if_not_installed("ggplot2")
 # a la shinycoreci:::platform()
 shinytest_suffix <- function() {
   if (.Platform$OS.type == "windows") {
-    return("win")
+    return("mac")
   }
   sys <- Sys.info()[["sysname"]]
   if (sys == "Darwin") {
@@ -48,16 +48,13 @@ skip_if_not_installed("rmarkdown")
 
 test_that("Can render non-custom fonts in rmarkdown with quartz png", {
   skip_if_not(capabilities()[["aqua"]])
-
   expect_app_doppelganger("quartz_png_rmd")
 })
 
 test_that("Can render non-custom fonts in rmarkdown with CairoPNG", {
   skip_if_not_installed("Cairo")
-
   expect_app_doppelganger("CairoPNG_rmd")
 })
-
 
 test_that("pdf_document compiles without error", {
   outfile <- rmarkdown::render("pdf.Rmd", quiet = TRUE)
