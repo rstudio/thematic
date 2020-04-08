@@ -8,7 +8,7 @@ knitr_dev_args_set <- function() {
   old_args <-  knitr::opts_chunk$get("dev.args")
   new_args <- list(bg = .globals$theme$bg)
   if (isTRUE(dev %in% names(old_args))) {
-    new_args <- setNames(list(new_args), dev)
+    new_args <- rlang::set_names(list(new_args), dev)
   }
 
   .globals$knitr_dev_args <- old_args
