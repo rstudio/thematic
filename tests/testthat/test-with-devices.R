@@ -3,12 +3,30 @@ context("with_device")
 skip_on_cran()
 skip_if_not_installed("shinytest")
 skip_if_not_installed("ggplot2")
-skip_if_not(.Platform$OS.type != "windows")
+
+# a la shinycoreci:::platform()
+shinytest_suffix <- function() {
+  if (.Platform$OS.type == "windows") {
+    return("win")
+  }
+  sys <- Sys.info()[["sysname"]]
+  if (sys == "Darwin") {
+    return("mac")
+  }
+  if (sys == "Linux") {
+    return("linux")
+  }
+  stop("unknown platform")
+}
+
+expect_app_doppelganger <- function(appDir) {
+  shinytest::expect_pass(shinytest::testApp(appDir, suffix = shinytest_suffix()))
+}
 
 
 test_that("Custom fonts with ragg", {
   skip_if_not_installed("ragg")
-  shinytest::expect_pass(shinytest::testApp("agg_png"))
+  expect_app_doppelganger("agg_png")
 })
 
 
@@ -17,14 +35,12 @@ skip_if_not_installed("showtext")
 
 test_that("Custom fonts with Cairo package", {
   skip_if_not_installed("Cairo")
-
-  shinytest::expect_pass(shinytest::testApp("CairoPNG"))
+  expect_app_doppelganger("CairoPNG")
 })
 
 test_that("Custom fonts with quartz device", {
   skip_if_not(capabilities()[["aqua"]])
-
-  shinytest::expect_pass(shinytest::testApp("quartz_png"))
+  expect_app_doppelganger("quartz_png")
 })
 
 # Remaining tests are rmarkdown specific
@@ -33,13 +49,13 @@ skip_if_not_installed("rmarkdown")
 test_that("Can render non-custom fonts in rmarkdown with quartz png", {
   skip_if_not(capabilities()[["aqua"]])
 
-  shinytest::expect_pass(shinytest::testApp("quartz_png_rmd"))
+  expect_app_doppelganger("quartz_png_rmd")
 })
 
-test_that("Can render non-custom fonts in rmarkdown with quartz png", {
+test_that("Can render non-custom fonts in rmarkdown with CairoPNG", {
   skip_if_not_installed("Cairo")
 
-  shinytest::expect_pass(shinytest::testApp("CairoPNG_rmd"))
+  expect_app_doppelganger("CairoPNG_rmd")
 })
 
 
