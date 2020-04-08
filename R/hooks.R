@@ -186,7 +186,7 @@ get_device_function <- function(name) {
   # Note that quartz defaults to an on-screen device,
   # so this needs to set to an off-screen type
   if (identical("quartz_off_screen", name)) {
-    return(function(...) getFromNamespace("quartz", "grDevices")(type = "png", ...))
+    return(grDevices::png)
   }
 
   # Effectively what dev.new() does to find a device function from a string
