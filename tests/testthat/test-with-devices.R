@@ -7,7 +7,7 @@ skip_if_not_installed("ggplot2")
 # a la shinycoreci:::platform()
 shinytest_suffix <- function() {
   if (.Platform$OS.type == "windows") {
-    return("mac")
+    return("win")
   }
   sys <- Sys.info()[["sysname"]]
   if (sys == "Darwin") {
