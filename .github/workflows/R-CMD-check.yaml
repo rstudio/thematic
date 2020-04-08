@@ -101,7 +101,8 @@ jobs:
       # worth testing
       - name: Install testing dependencies
         run: |
-          install.packages(c('sf', 'Cairo', 'patchwork', 'gridExtra'))
+          install.packages(c('sf', 'Cairo', 'patchwork', 'gridExtra', 'tinytex'))
+          tinytex::install_tinytex()
         shell: Rscript {0}
 
       - name: Check
