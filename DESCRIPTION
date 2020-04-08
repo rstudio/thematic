@@ -44,7 +44,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Remotes: 
   rstudio/htmltools,
-  rstudio/shinytest,
+  rstudio/shinytest@useBytes,
   rstudio/shiny,
   r-lib/systemfonts,
   r-lib/ragg
