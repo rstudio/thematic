@@ -42,3 +42,9 @@ test_that("Can render non-custom fonts in rmarkdown with quartz png", {
   shinytest::expect_pass(shinytest::testApp("CairoPNG_rmd"))
 })
 
+
+test_that("pdf_document compiles without error", {
+  outfile <- rmarkdown::render("pdf.Rmd", quiet = TRUE)
+  expect_true(file.exists(outfile))
+  unlink(outfile)
+})
