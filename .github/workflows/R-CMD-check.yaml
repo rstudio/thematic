@@ -91,6 +91,13 @@ jobs:
           install.packages("Rcpp", repos="https://rcppcore.github.io/drat")
         shell: Rscript {0}
 
+      # processx is broken on r-devel
+      - name: processx band-aid
+        if: runner.os == 'macOS'
+        run: |
+          remotes::install_github('r-lib/processx')
+        shell: Rscript {0}
+
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
