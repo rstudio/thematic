@@ -91,11 +91,6 @@ jobs:
 
       # ------------------------------------------------------------
 
-      - name: Rcpp band-aid
-        run: |
-          install.packages("Rcpp", repos="https://rcppcore.github.io/drat")
-        shell: Rscript {0}
-
       - name: Install dependencies
         run: |
           remotes::install_deps(dependencies = TRUE)
