@@ -37,6 +37,11 @@ jobs:
 
 
     steps:
+      - name: Windows git setup
+        if: runner.os == 'Windows'
+        run:
+          git config --global core.autocrlf false
+
       - uses: actions/checkout@v2
         with:
           lfs: true
