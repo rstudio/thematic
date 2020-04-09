@@ -43,6 +43,12 @@ test_that("Custom fonts with quartz device", {
   expect_app_doppelganger("quartz_png")
 })
 
+test_that("Custom fonts with cairo capabilities", {
+  skip_if_not(capabilities()[["cairo"]])
+  expect_app_doppelganger("cairo_png")
+  expect_app_doppelganger("cairo_svg")
+})
+
 # Remaining tests are rmarkdown specific
 skip_if_not_installed("rmarkdown")
 
