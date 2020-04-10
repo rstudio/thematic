@@ -78,7 +78,6 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA, font = NA,
 #' @rdname thematic
 #' @export
 thematic_end <- function() {
-  if (!is.null(.globals$theme)) rm("theme", envir = .globals)
   remove_hooks()
   if (is_installed("showtext")) showtext::showtext_auto(FALSE)
 
@@ -89,6 +88,8 @@ thematic_end <- function() {
   ggplot_theme_restore()
   ggplot_build_restore()
   lattice_print_restore()
+
+  if (!is.null(.globals$theme)) rm("theme", envir = .globals)
 
   invisible()
 }
