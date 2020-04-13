@@ -1,11 +1,25 @@
-#' Theme static plots based on a few colors
+#' Automatic theming of static plots
 #'
-#' Theme ggplot2, lattice, and base graphics based on just a few colors
-#' supplied to [thematic_begin()]. [thematic_begin()] works by modifying global
-#' state (e.g., sets relevant options in [graphics::par()], [grid::gpar()],
-#' [lattice::trellis.par.set()], [ggplot2::theme_set()], etc). To restore
-#' global state to the state before [thematic_begin()] was called,
-#' use [thematic_end()].
+#' Enable (or disable) automatic theming of ggplot2, lattice, and base graphics.
+#' While enabled, thematic registers [plot.new()]/[grid.newpage()] hooks
+#' that set relevant options (i.e., [graphics::par()], [grid::gpar()],
+#' [lattice::trellis.par.set()], [ggplot2::theme_set()], etc) based on
+#' the current context.
+#'
+#' @section Resolving 'auto' values:
+#'
+#' The `bg`, `fg`, `accent`, and `font` arguments all support a value of `'auto'`.
+#' In this case, thematic does it's best to use information based on the current
+#' plotting context to inform relevant graphical parameters. The order of priority
+#' for resolving `'auto'` is as follows:
+#'
+#' 1. If running inside `shiny::renderPlot()`, use `shiny::getCurrentOutputInfo()`.
+#' 2. If set, use [auto_preferences_set()].
+#' 3. If running inside `rmarkdown::html_document()` with `theme = NULL`,
+#'   use `bootstraplib::bs_theme_get_variables()`.
+#' 4. If running inside RStudio, use `rstudioapi::getThemeInfo()`.
+#'
+#' @details
 #'
 #' Colors may be anything understood by [col2rgb()] or `htmltools::parseCssColors()`
 #' (i.e., may be any valid R or CSS color string).
@@ -52,15 +66,20 @@
 #' lattice::show.settings()
 #' thematic_end()
 #'
-thematic_begin <- function(bg = NULL, fg = NULL, accent = NA, font = NA,
-                           sequential = sequential_gradient(),
+thematic_begin <- function(bg = "auto", fg = "auto", accent = "auto",
+                           font = NA, sequential = sequential_gradient(),
                            qualitative = okabe_ito()) {
   old_theme <- .globals$theme
-  .globals$theme <- theme_create(
+  .globals$theme <- list(
     bg = bg, fg = fg, accent = accent,
     qualitative = qualitative, sequential = sequential,
     font = font
   )
+
+  # Set knitr dev.args = list(bg = bg) now (instead of later)
+  # so at least the _next_ chunk has the right bg color.
+  knitr_dev_args_set()
+
   # Register thematic hooks (these hooks modify global state when a new page is drawn)
   set_hooks()
   # Register showtext hooks (for custom font rendering in non-ragg devices)
@@ -70,7 +89,6 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA, font = NA,
   # the plot object in order to set Geom/Scale defaults
   ggplot_build_set()
   lattice_print_set()
-  knitr_dev_args_set()
 
   invisible(old_theme)
 }
@@ -150,33 +168,6 @@ thematic_get_mixture <- function(amounts = 0.5) {
   scales::colour_ramp(c(fg, bg))(amounts)
 }
 
-
-theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
-  if (inherits(sequential, "thematic_sequential_options")) {
-    sequential <- resolve_sequential_gradient(fg = fg, accent = accent, bg = bg, options = sequential)
-  }
-  colors <- list(
-    bg = bg, fg = fg, accent = accent,
-    qualitative = qualitative, sequential = sequential
-  )
-  theme <- lapply(colors, function(x) {
-    if (identical(x, NA)) return(x)
-    vapply(x, parse_any_color, character(1), USE.NAMES = FALSE)
-  })
-  if (isTRUE(is.na(font))) {
-    font <- font_spec()
-  }
-  if (!inherits(font, "font_spec")) {
-    stop("The `font` argument must be either `NA` or a `font_spec()` object", call. = FALSE)
-  }
-  if (isTRUE(font$update)) {
-    update_gfonts()
-    update_gfonts_cache()
-  }
-  theme$font <- font
-  theme
-}
-
 #' Font specification
 #'
 #' Specify a collection of font families. The first font family supported
@@ -207,14 +198,27 @@ theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
 #' @export
 font_spec <- function(families = "", scale = 1, install = is_installed("ragg") || is_installed("showtext"),
                       update = FALSE, quiet = TRUE) {
+
+  if (update) {
+    update_gfonts()
+    update_gfonts_cache()
+  }
+
+  # mainly for internal usefulness (i.e., font_spec(font = NA))
+  families <- families %OR% ""
+
   structure(
-    list(families = families, scale = scale, install = install, update = update, quiet = quiet),
+    list(families = families, scale = scale, install = install, quiet = quiet),
     class = "font_spec"
   )
 }
 
-is_default_family <- function(x) {
-  identical(x, "")
+is_default_family <- function(font) {
+  is_font_spec(font) && identical(font$family, "")
+}
+
+is_font_spec <- function(x) {
+  inherits(x, "font_spec")
 }
 
 

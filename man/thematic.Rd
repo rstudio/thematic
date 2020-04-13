@@ -3,12 +3,12 @@
 \name{thematic_begin}
 \alias{thematic_begin}
 \alias{thematic_end}
-\title{Theme static plots based on a few colors}
+\title{Automatic theming of static plots}
 \usage{
 thematic_begin(
-  bg = NULL,
-  fg = NULL,
-  accent = NA,
+  bg = "auto",
+  fg = "auto",
+  accent = "auto",
   font = NA,
   sequential = sequential_gradient(),
   qualitative = okabe_ito()
@@ -39,17 +39,32 @@ levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.}
 Returns any information about the previously set theme (if any), invisibly.
 }
 \description{
-Theme ggplot2, lattice, and base graphics based on just a few colors
-supplied to \code{\link[=thematic_begin]{thematic_begin()}}. \code{\link[=thematic_begin]{thematic_begin()}} works by modifying global
-state (e.g., sets relevant options in \code{\link[graphics:par]{graphics::par()}}, \code{\link[grid:gpar]{grid::gpar()}},
-\code{\link[lattice:trellis.par.set]{lattice::trellis.par.set()}}, \code{\link[ggplot2:theme_set]{ggplot2::theme_set()}}, etc). To restore
-global state to the state before \code{\link[=thematic_begin]{thematic_begin()}} was called,
-use \code{\link[=thematic_end]{thematic_end()}}.
+Enable (or disable) automatic theming of ggplot2, lattice, and base graphics.
+While enabled, thematic registers \code{\link[=plot.new]{plot.new()}}/\code{\link[=grid.newpage]{grid.newpage()}} hooks
+that set relevant options (i.e., \code{\link[graphics:par]{graphics::par()}}, \code{\link[grid:gpar]{grid::gpar()}},
+\code{\link[lattice:trellis.par.set]{lattice::trellis.par.set()}}, \code{\link[ggplot2:theme_set]{ggplot2::theme_set()}}, etc) based on
+the current context.
 }
 \details{
 Colors may be anything understood by \code{\link[=col2rgb]{col2rgb()}} or \code{htmltools::parseCssColors()}
 (i.e., may be any valid R or CSS color string).
 }
+\section{Resolving 'auto'}{
+
+
+The \code{bg}, \code{fg}, \code{accent}, and \code{font} arguments all support a value of \code{'auto'}.
+In this case, thematic does it's best to use information based on the current
+plotting context to inform relevant graphical parameters. The order of priority
+for resolving \code{'auto'} is as follows:
+\enumerate{
+\item If running inside \code{shiny::renderPlot()}, use \code{shiny::getCurrentOutputInfo()}.
+\item If set, use \code{\link[=auto_preferences_set]{auto_preferences_set()}}.
+\item If running inside \code{rmarkdown::html_document()} with \code{theme = NULL},
+use \code{bootstraplib::bs_theme_get_variables()}.
+\item If running inside RStudio, use \code{rstudioapi::getThemeInfo()}.
+}
+}
+
 \examples{
 # simple dark mode
 thematic_begin("black", "white")

@@ -65,14 +65,22 @@ is_rstudio <- function() {
   identical("1", Sys.getenv("RSTUDIO", NA))
 }
 
+dropNulls <- function(x) {
+  x[!vapply(x, is.null, FUN.VALUE=logical(1))]
+}
+
+tryNULL <- function(expr) {
+  tryCatch(expr, error = function(e) NULL)
+}
+
 tryGet <- function(...) {
   tryCatch(get(...), error = function(e) NULL)
 }
 
-"%OR%" <- function(x, y) {
-  if (is.null(x) || isTRUE(is.na(x))) y else x
-}
-
 "%||%" <- function(x, y) {
   if (!length(x)) y else x
+}
+
+"%OR%" <- function(x, y) {
+  if (is.null(x) || isTRUE(is.na(x))) y else x
 }
