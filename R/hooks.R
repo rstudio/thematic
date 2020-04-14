@@ -46,7 +46,7 @@ resolve_font_family <- function(type = c("base", "grid")) {
   families <- font$families
 
   # Do nothing if default font family
-  if (is_default_family(font)) return()
+  if (is_default_spec(font)) return()
 
   # Returns the name of the currently active device
   # (and, if none is active, the name of the one that *will be* used)

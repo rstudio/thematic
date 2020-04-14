@@ -73,7 +73,7 @@ thematic_begin <- function(bg = "auto", fg = "auto", accent = "auto",
   .globals$theme <- list(
     bg = bg, fg = fg, accent = accent,
     qualitative = qualitative, sequential = sequential,
-    font = font
+    font = as_font_spec(font)
   )
 
   # Set knitr dev.args = list(bg = bg) now (instead of later)
@@ -204,21 +204,26 @@ font_spec <- function(families = "", scale = 1, install = is_installed("ragg") |
     update_gfonts_cache()
   }
 
-  # mainly for internal usefulness (i.e., font_spec(font = NA))
-  families <- families %OR% ""
-
   structure(
     list(families = families, scale = scale, install = install, quiet = quiet),
     class = "font_spec"
   )
 }
 
-is_default_family <- function(font) {
-  is_font_spec(font) && identical(font$family, "")
-}
-
 is_font_spec <- function(x) {
   inherits(x, "font_spec")
+}
+
+as_font_spec <- function(font) {
+  if (is_font_spec(font)) return(font)
+  if (isTRUE(is.na(font))) return(font_spec())
+  if (is.character(font)) return(font_spec(font))
+
+  stop("`font` must be either `NA`, a `font_spec()` object, or a character vector", call. = FALSE)
+}
+
+is_default_spec <- function(font) {
+  identical(as_font_spec(font), font_spec())
 }
 
 

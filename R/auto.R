@@ -21,7 +21,7 @@ auto_preferences_set <- function(bg = NULL, fg = NULL, accent = NULL, font = NUL
     if (isTRUE(is.na(x))) x else parse_any_color(x)
   })
   if (!is.null(font)) {
-    preferences$font <- if (is_font_spec(font)) font else font_spec(font)
+    preferences$font <- as_font_spec(font)
   }
   oldPrefs <- .globals$auto_preferences
   .globals$auto_preferences <- preferences
@@ -82,25 +82,13 @@ resolve_auto_theme <- function() {
     theme[[col]] <- vapply(theme[[col]], parse_any_color, character(1), USE.NAMES = FALSE)
   }
 
-  # Make sure font is a sensible value
-  if (isTRUE(is.na(theme$font))) {
-    theme$font <- font_spec()
-  }
-
-  if (is_font_spec(theme$font)) {
-    .globals$theme <- theme
-    return()
-  }
-
-  if (!identical(theme$font, "auto")) {
-    stop("The `font` argument must be either `NA`, `'auto'`, or a `font_spec()` object", call. = FALSE)
-  }
-
-  # Resolve auto fonts
-  if (length(outputInfo$font)) {
-    theme$font <- shiny_font_spec(outputInfo$font)
+  if (identical(theme$font$families, "auto")) {
+    theme$font <- shiny_font_spec(outputInfo$font) %||%
+      autoPreferences$font %||%
+      bs_font_spec() %||%
+      font_spec()
   } else {
-    theme$font <- bs_font_spec() %||% font_spec()
+    theme$font <- as_font_spec(theme$font)
   }
 
   .globals$theme <- theme
@@ -159,11 +147,12 @@ rs_theme_colors <- function() {
 # ------------------------------------------------------------
 
 shiny_font_spec <- function(font) {
+  if (!length(font)) return(NULL)
   if (isTRUE(font$renderedFamily %in% generic_css_families())) {
     warning(
-      "renderPlot()'s autoTheme doesn't support generic CSS font families (e.g. '",
-      font$renderedFamily, "'). Consider using a Google Font family instead ",
-      "https://fonts.google.com/", call. = FALSE
+      "Generic CSS font families (e.g. '", font$renderedFamily, "') aren't supported. ",
+      "Consider using a Google Font family instead https://fonts.google.com/",
+      call. = FALSE
     )
     font$renderedFamily <- NULL
   }

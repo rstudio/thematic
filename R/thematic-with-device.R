@@ -103,7 +103,7 @@ default_device <- function(type = c("png", "tiff", "svg", "pdf")) {
     return(dev)
   }
 
-  if (!is_installed("showtext") && !is_default_family(.globals$theme$font)) {
+  if (!is_installed("showtext") && !is_default_spec(.globals$theme$font)) {
     warning(
       "Custom font rendering requires either the showtext or ragg package.",
       call. = FALSE
