@@ -18,7 +18,8 @@ knitr::opts_chunk$set(
   fig.width = 10,
   fig.asp = 0.5,
   fig.show = "hold",
-  message = FALSE
+  message = FALSE,
+  fig.retina = 2
 )
 ```
 
@@ -30,20 +31,20 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-Simple and automatic theming of **ggplot2**, **lattice**, and **base** graphics.
+Streamlined theming of **ggplot2**, **lattice**, and **base** graphics.
 
 ## Installation
 
 **thematic** is not yet available on [CRAN](https://CRAN.R-project.org), but you can install it now with:
 
 ``` r
-remotes::install_github("cpsievert/thematic")
+remotes::install_github("rstudio/thematic")
 library(thematic)
 ```
 
 ## Getting started
 
-**thematic** provides a single entry point to controling the main colours and fonts of **ggplot2**, **lattice**, and **base** graphics. To start a (global) theme, give `thematic_begin()` a background, foreground, and accent colour, as well as (optionally) a `font_spec()`. If a [Google Font](https://fonts.google.com) family is requested, **thematic** attempts to automatically download, cache, and register the font for use with **showtext** and **ragg** (learn more in [Custom Fonts](#custom-fonts)).  That means, if you have an internet connection and either **showtext** or **ragg** installed, any Google Fonts "just work" for nearly any use case.
+**thematic** provides a single entry point to the main colours and fonts of **ggplot2**, **lattice**, and **base** graphics. To start a (global) theme, give `thematic_begin()` a background, foreground, and accent colour, as well as (optionally) a `font_spec()`. If a [Google Font](https://fonts.google.com) family is requested, **thematic** attempts to automatically download, cache, and register the font for use with **showtext** and **ragg** (learn more in [Custom Fonts](#custom-fonts)).  That means, if you have an internet connection and either **showtext** or **ragg** installed, any Google Fonts "just work" for nearly any use case.
 
 ```{r}
 library(thematic)
@@ -226,7 +227,7 @@ file <- thematic_with_device(plot(1), res = 144)
 
 If you're in RStudio, you can preview the resulting `file` with `file.show(file)`. Moreover, to embed the `file` in **rmarkdown**/**knitr**, do `knitr::include_graphics(file)`.
 
-If you want to use custom font(s) that aren't Google Font(s), you'll currently need to manually download and install/register them with R. Since **thematic** has implicit **ragg** and **showtext** integration, after downloading the font files, you can use `systemfonts::register_font()` and `sysfonts::font_add()` to register them for use with **rmarkdown**/**knitr**/`thematic_with_device()`. Another, more expensive, but permanent (i.e., you only have to do it once, instead of everytime you start a new R session) way to make custom fonts available to R is with `extrafont::import_font()` and `extrafont::loadfonts()`.
+If you want to use custom font(s) that aren't Google Font(s), you'll currently need to manually download and install/register them with R. Since **thematic** has implicit **ragg** and **showtext** integration, after downloading the font files, you can use `systemfonts::register_font()` and/or `sysfonts::font_add()` to register them for use with **rmarkdown**/**knitr**/`thematic_with_device()`. Another, more expensive, but permanent (i.e., you only have to do it once, instead of everytime you start a new R session) way to make custom fonts available to R is with `extrafont::import_font()` and `extrafont::loadfonts()`.
 
 ## With shiny auto-theming
 
