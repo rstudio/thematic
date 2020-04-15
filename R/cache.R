@@ -11,7 +11,7 @@
 #' previously used caching directory (after copying to the new location).
 #'
 #' @return Returns the previously used caching directory.
-#' @seealso [thematic_begin()], [font_spec()]
+#' @seealso [thematic_on()], [font_spec()]
 #'
 #' @export
 #' @examples

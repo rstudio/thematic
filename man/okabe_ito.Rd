@@ -19,5 +19,5 @@ Okabe Ito colorscale
 \url{https://jfly.uni-koeln.de/color/}
 }
 \seealso{
-\code{\link[=thematic_begin]{thematic_begin()}}
+\code{\link[=thematic_on]{thematic_on()}}
 }

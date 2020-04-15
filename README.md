@@ -13,7 +13,10 @@ status](https://www.r-pkg.org/badges/version/thematic)](https://CRAN.R-project.o
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-Streamlined theming of **ggplot2**, **lattice**, and **base** graphics.
+Automatic and consistent theming of **ggplot2**, **lattice**, and
+**base** graphics.
+
+  - TODO: note about color-blind safe
 
 ## Installation
 
@@ -29,8 +32,8 @@ library(thematic)
 
 **thematic** provides a single entry point to the main colours and fonts
 of **ggplot2**, **lattice**, and **base** graphics. To start a (global)
-theme, give `thematic_begin()` a background, foreground, and accent
-colour, as well as (optionally) a `font_spec()`. If a [Google
+theme, give `thematic_on()` a background, foreground, and accent colour,
+as well as (optionally) a `font_spec()`. If a [Google
 Font](https://fonts.google.com) family is requested, **thematic**
 attempts to automatically download, cache, and register the font for use
 with **showtext** and **ragg** (learn more in [Custom
@@ -40,7 +43,7 @@ work” for nearly any use case.
 
 ``` r
 library(thematic)
-thematic_begin(
+thematic_on(
   bg = "#212121", fg = "#C8C8C8", accent = "#5CB09D", 
   font = font_spec("Oxanium", scale = 1.25)
 )
@@ -51,9 +54,9 @@ colours to inform consistent defaults not only for the plot’s overall
 theme (e.g., plot/panel background, text colour, etc), but also for
 `accent`ed graphical markers (e.g., **ggplot2** geom defaults), as well
 as `sequential` and `qualitative` colour scales (these scaling defaults
-can also be controlled via `thematic_begin()`). `thematic_begin()` works
-by modifying global state in a “permanent” way so that any future plots
-assume that state; so, best practice is to call `thematic_end()` when
+can also be controlled via `thematic_on()`). `thematic_on()` works by
+modifying global state in a “permanent” way so that any future plots
+assume that state; so, best practice is to call `thematic_off()` when
 you’re done using **thematic**.
 
 ## ggplot2
@@ -206,7 +209,7 @@ image(volcano, col = thematic_get_option("sequential"))
 
 ## Thematic, in detail
 
-At a minimum, `thematic_begin()` wants a `bg` and `fg` color, but any of
+At a minimum, `thematic_on()` wants a `bg` and `fg` color, but any of
 the other arguments may be explicitly (or implicitly) missing (i.e., set
 to `NA`), which will prevent **thematic** from setting any of the
 relevant defaults. For example, by leaving `accent = NA`, **ggplot2**
@@ -224,7 +227,7 @@ preview_theme <- function() {
 ```
 
 ``` r
-thematic_begin(bg = "black", fg = "white")
+thematic_on(bg = "black", fg = "white")
 preview_theme()
 ```
 
@@ -236,15 +239,15 @@ mixture of `bg`, `fg`, and `accent` (if all are defined). The amount
 be controlled through `sequential_gradient()`:
 
 ``` r
-thematic_begin(bg = "black", fg = "white", accent = "salmon")
+thematic_on(bg = "black", fg = "white", accent = "salmon")
 preview_theme() + ggtitle("Gradient: mix(fg, accent) -> accent -> mix(bg, accent)")
-thematic_begin(
+thematic_on(
   bg = "black", fg = "white", accent = "salmon", 
   # fg -> accent
   sequential = sequential_gradient(fg_weight = 1, bg_weight = 0)
 )
 preview_theme() + ggtitle("Gradient: fg -> accent")
-thematic_begin(
+thematic_on(
   bg = "black", fg = "white", accent = "salmon", 
   # bg -> accent
   sequential = sequential_gradient(fg_weight = 0, bg_weight = 1, fg_low = FALSE)
@@ -258,9 +261,9 @@ Keep in mind that you can set `sequential = NA` to avoid setting
 relevant defaults and also supply your own vector of color codes:
 
 ``` r
-thematic_begin(bg = "black", fg = "white", accent = "salmon", sequential = NA)
+thematic_on(bg = "black", fg = "white", accent = "salmon", sequential = NA)
 preview_theme() + ggtitle("'Missing' sequential palette")
-thematic_begin(bg = "black", fg = "white", accent = "salmon", sequential = RColorBrewer::brewer.pal(9, "Oranges"))
+thematic_on(bg = "black", fg = "white", accent = "salmon", sequential = RColorBrewer::brewer.pal(9, "Oranges"))
 preview_theme() + ggtitle("Custom sequential palette (colorbrewer's Oranges)")
 ```
 
@@ -271,7 +274,7 @@ prevent the Okabe-Ito based default or provide your own set of color
 codes:
 
 ``` r
-thematic_begin(bg = "black", fg = "white", qualitative = RColorBrewer::brewer.pal(8, "Dark2"))
+thematic_on(bg = "black", fg = "white", qualitative = RColorBrewer::brewer.pal(8, "Dark2"))
 ggplot(economics_long) +
   geom_line(aes(date, value01, color = variable)) +
   ggtitle("Custom qualitative palette (colorbrewer's dark2)")
@@ -312,9 +315,8 @@ fonts available to R is with `extrafont::import_font()` and
 A [future version](https://github.com/rstudio/shiny/pull/2740) of Shiny
 will use **thematic** to implement it’s auto-theming feature. By just
 setting `shinyOptions(plot.autotheme = TRUE)`, `renderPlot()` will
-automatically supply sensible defaults to `thematic_begin()` arguments,
-but you can override those defaults by calling `thematic_begin()`
-yourself.
+automatically supply sensible defaults to `thematic_on()` arguments, but
+you can override those defaults by calling `thematic_on()` yourself.
 
 TODO: an example.
 

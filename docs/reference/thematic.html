@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Theme static plots based on a few colors — thematic_begin • thematic</title>
+<title>Automatic and consistent theming of static plots — thematic_on • thematic</title>
 
 
 <!-- jquery -->
@@ -39,13 +39,12 @@
 
 
 
-<meta property="og:title" content="Theme static plots based on a few colors — thematic_begin" />
-<meta property="og:description" content="Theme ggplot2, lattice, and base graphics based on just a few colors
-supplied to thematic_begin(). thematic_begin() works by modifying global
-state (e.g., sets relevant options in graphics::par(), grid::gpar(),
-lattice::trellis.par.set(), ggplot2::theme_set(), etc). To restore
-global state to the state before thematic_begin() was called,
-use thematic_end()." />
+<meta property="og:title" content="Automatic and consistent theming of static plots — thematic_on" />
+<meta property="og:description" content="Turn on (or off) automatic theming of ggplot2, lattice, and base graphics.
+While on, thematic registers plot.new()/grid.newpage() hooks
+that set relevant options (i.e., graphics::par(), grid::gpar(),
+lattice::trellis.par.set(), ggplot2::theme_set(), etc) based on
+the current context." />
 
 
 
@@ -113,30 +112,29 @@ use thematic_end()." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Theme static plots based on a few colors</h1>
+    <h1>Automatic and consistent theming of static plots</h1>
     <small class="dont-index">Source: <a href='https://github.com/rstudio/thematic/blob/master/R/thematic.R'><code>R/thematic.R</code></a></small>
     <div class="hidden name"><code>thematic.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Theme ggplot2, lattice, and base graphics based on just a few colors
-supplied to <code>thematic_begin()</code>. <code>thematic_begin()</code> works by modifying global
-state (e.g., sets relevant options in <code><a href='https://rdrr.io/r/graphics/par.html'>graphics::par()</a></code>, <code><a href='https://rdrr.io/r/grid/gpar.html'>grid::gpar()</a></code>,
-<code><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>lattice::trellis.par.set()</a></code>, <code><a href='https://ggplot2.tidyverse.org/reference/theme_get.html'>ggplot2::theme_set()</a></code>, etc). To restore
-global state to the state before <code>thematic_begin()</code> was called,
-use <code>thematic_end()</code>.</p>
+    <p>Turn on (or off) automatic theming of ggplot2, lattice, and base graphics.
+While on, thematic registers <code><a href='https://rdrr.io/r/graphics/frame.html'>plot.new()</a></code>/<code>grid.newpage()</code> hooks
+that set relevant options (i.e., <code><a href='https://rdrr.io/r/graphics/par.html'>graphics::par()</a></code>, <code><a href='https://rdrr.io/r/grid/gpar.html'>grid::gpar()</a></code>,
+<code><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>lattice::trellis.par.set()</a></code>, <code><a href='https://ggplot2.tidyverse.org/reference/theme_get.html'>ggplot2::theme_set()</a></code>, etc) based on
+the current context.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>thematic_begin</span>(
-  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+    <pre class="usage"><span class='fu'>thematic_on</span>(
+  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
   <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
   <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
   <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>()
 )
 
-<span class='fu'>thematic_end</span>()</pre>
+<span class='fu'>thematic_off</span>()</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -178,24 +176,35 @@ levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.</p
     <p>Returns any information about the previously set theme (if any), invisibly.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Colors may be anything understood by <code><a href='https://rdrr.io/r/grDevices/col2rgb.html'>col2rgb()</a></code> or <code><a href='https://rdrr.io/pkg/htmltools/man/parseCssColors.html'>htmltools::parseCssColors()</a></code>
-(i.e., may be any valid R or CSS color string).</p>
+    <p>The <code>bg</code>, <code>fg</code>, <code>accent</code>, and <code>font</code> arguments all support a value of <code>'auto'</code>,
+which are all resolved (just before plotting) based on the following (global)
+information, where available</p><ol>
+<li><p><code><a href='https://rdrr.io/pkg/shiny/man/getCurrentOutputInfo.html'>shiny::getCurrentOutputInfo()</a></code>.</p></li>
+<li><p><code><a href='auto_preferences.html'>auto_preferences_set()</a></code>.</p></li>
+<li><p><code><a href='https://rdrr.io/pkg/bootstraplib/man/bs_theme_get_variables.html'>bootstraplib::bs_theme_get_variables()</a></code>.</p></li>
+<li><p><code><a href='https://rdrr.io/pkg/rstudioapi/man/getThemeInfo.html'>rstudioapi::getThemeInfo()</a></code>.</p></li>
+</ol>
+
+<p>Note that if the resolving of <code>'auto'</code> for some reason doesn't pick up the
+right information, you can always specify values in <code>thematic_on()</code>.
+Colors (e.g., <code>bg</code>, <code>fg</code>, <code>accent</code>) may be any value understood by <code><a href='https://rdrr.io/r/grDevices/col2rgb.html'>col2rgb()</a></code>
+or <code><a href='https://rdrr.io/pkg/htmltools/man/parseCssColors.html'>htmltools::parseCssColors()</a></code> (i.e., may be any valid R or CSS color string).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='font_spec.html'>font_spec()</a></code>, <code><a href='thematic_with_device.html'>thematic_with_device()</a></code>, <code><a href='thematic_get.html'>thematic_get()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple dark mode</span>
-<span class='fu'>thematic_begin</span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>thematic_on</span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_preferences_set()` is set.</span></div><div class='img'><img src='thematic-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># use any color code</span>
-<span class='fu'>thematic_begin</span>(<span class='st'>"#444444"</span>, <span class='st'>"#e4e4e4"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>thematic_on</span>(<span class='st'>"#444444"</span>, <span class='st'>"#e4e4e4"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_preferences_set()` is set.</span></div><div class='img'><img src='thematic-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># restores _original_ state</span>
-<span class='fu'>thematic_end</span>()
+<span class='fu'>thematic_off</span>()
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-8.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>thematic_begin</span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, <span class='st'>"orange"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span>(<span class='no'>volcano</span>)</div><div class='img'><img src='thematic-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span>(<span class='no'>volcano</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='thematic_get.html'>thematic_get_option</a></span>(<span class='st'>"sequential"</span>))</div><div class='img'><img src='thematic-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>thematic_end</span>()</div></pre>
+<span class='fu'>thematic_on</span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, <span class='st'>"orange"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span>(<span class='no'>volcano</span>)</div><div class='img'><img src='thematic-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span>(<span class='no'>volcano</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='thematic_get.html'>thematic_get_option</a></span>(<span class='st'>"sequential"</span>))</div><div class='img'><img src='thematic-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>thematic_off</span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

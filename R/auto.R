@@ -4,15 +4,15 @@
 #' of a custom rmarkdown format that wish to have better default auto-theming
 #' behavior. By having the output document call `auto_preferences_set()`
 #' "pre-knit" (and `auto_preferences_clear()` "post-knit"), users of the
-#' output document can then simply call `thematic_begin()` within their document
+#' output document can then simply call `thematic_on()` within their document
 #' to adopt these preferences.
 #'
-#' @inheritParams thematic_begin
+#' @inheritParams thematic_on
 #' @rdname auto_preferences
 #' @export
 #' @examples
 #' auto_preferences_set("black", "white")
-#' thematic_begin()
+#' thematic_on()
 #' plot(1:10, 1:10)
 
 auto_preferences_set <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL) {
@@ -47,16 +47,26 @@ resolve_auto_theme <- function() {
     if (!identical(theme[[col]], "auto")) {
       next
     }
+    # shiny::getCurrentOutputInfo() gets 1st priority, since its
+    # *output* level styles, whereas autoPreferences are intended for
+    # the *document* level (i.e., preferences for a custom rmarkdown
+    # format). Perhaps there are situations where shiny::getCurrentOutputInfo()
+    # doesn't give you quite what you want, but in that case, you should be
+    # styling the containing div with your desired styles!
+    #
+    # Also, importantly, bsThemeColors contains Bootstrap Sass info
+    # only _if_ a knit is in progress (we don't necessary want to use
+    # a bs_theme_get_variable() info unless we know it's going to be
+    # relevant for the final output)
     theme[[col]] <- outputInfo[[col]] %||%
       autoPreferences[[col]] %||%
       bsThemeColors[[col]] %||%
       rsThemeColors[[col]] %||%
       theme[[col]]
     if (identical(theme[[col]], "auto")) {
-      # TODO: provide an option to suppress?
       warning(
         "thematic was unable to resolve `", col, "='auto'`. ",
-        "Try providing an actual color (or `NA`) to the `", col, "` argument of `thematic_begin()`. ",
+        "Try providing an actual color (or `NA`) to the `", col, "` argument of `thematic_on()`. ",
         "By the way, 'auto' is only officially supported in `shiny::renderPlot()`, ",
         "some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), ",
         "in RStudio, or if `auto_preferences_set()` is set.",
@@ -68,12 +78,9 @@ resolve_auto_theme <- function() {
     }
   }
 
-  # Construct the sequential palette
-  if (inherits(theme$sequential, "thematic_sequential_options")) {
-    theme$sequential <- resolve_sequential_gradient(
-      fg = theme$fg, accent = theme$accent, bg = theme$bg,
-      options = theme$sequential
-    )
+
+  if (is.function(theme$sequential)) {
+    theme$sequential <- do.call(theme$sequential, theme)
   }
 
   # Make sure we can parse any non-missing colors
@@ -83,6 +90,7 @@ resolve_auto_theme <- function() {
   }
 
   if (identical(theme$font$families, "auto")) {
+    # Note how this matches the order of priority for colors, as well
     theme$font <- shiny_font_spec(outputInfo$font) %||%
       autoPreferences$font %||%
       bs_font_spec() %||%
@@ -106,11 +114,9 @@ shiny_output_info <- function() {
 }
 
 bs_theme_colors <- function() {
-  if (!is_installed("bootstraplib")) return(NULL)
-  theme <- bootstraplib::bs_theme_get()
-  if (is.null(theme)) return(NULL)
+  if (!in_html_document()) return(NULL)
 
-  cols <- if ("3" %in% bootstraplib::theme_version(theme)) {
+  cols <- if ("3" %in% bootstraplib::theme_version()) {
     bootstraplib::bs_theme_get_variables(c("body-bg", "text-color", "link-color"))
   } else {
     bootstraplib::bs_theme_get_variables(c("body-bg", "body-color", "link-color"))
@@ -164,9 +170,7 @@ shiny_font_spec <- function(font) {
 }
 
 bs_font_spec <- function(){
-  if (!is_installed("bootstraplib")) return(NULL)
-  theme <- bootstraplib::bs_theme_get()
-  if (is.null(theme)) return(NULL)
+  if (!in_html_document()) return(NULL)
 
   family <- bootstraplib::bs_theme_get_variables("font-family-base")
   families <- strsplit(gsub('"', '', family), ", ")[[1]]
@@ -175,6 +179,12 @@ bs_font_spec <- function(){
     setdiff(families, generic_css_families()) %||% "",
     scale = size_to_scale(size)
   )
+}
+
+in_html_document <- function() {
+  if (!getOption("knitr.in.progress", FALSE)) return(FALSE)
+  if (!is_installed("bootstraplib")) return(FALSE)
+  !is.null(bootstraplib::bs_theme_get())
 }
 
 # Translate CSS font-size to font_spec(scale = ...)

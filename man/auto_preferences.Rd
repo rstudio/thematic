@@ -25,11 +25,11 @@ Setting of auto-theming preferences is primarily useful for developers
 of a custom rmarkdown format that wish to have better default auto-theming
 behavior. By having the output document call \code{auto_preferences_set()}
 "pre-knit" (and \code{auto_preferences_clear()} "post-knit"), users of the
-output document can then simply call \code{thematic_begin()} within their document
+output document can then simply call \code{thematic_on()} within their document
 to adopt these preferences.
 }
 \examples{
 auto_preferences_set("black", "white")
-thematic_begin()
+thematic_on()
 plot(1:10, 1:10)
 }

@@ -19,33 +19,33 @@ low end of the colorscale (rather than the high end).}
 \item{n}{number of color codes.}
 }
 \value{
-a list of options for passing to the \code{sequential} argument of \code{\link[=thematic_begin]{thematic_begin()}}.
+a list of options for passing to the \code{sequential} argument of \code{\link[=thematic_on]{thematic_on()}}.
 }
 \description{
 Controls the default weighting and direction of the color gradient
-derived from the \code{fg}, \code{bg}, and \code{accent} color (defined in \code{thematic_begin()}).
+derived from the \code{fg}, \code{bg}, and \code{accent} color (defined in \code{thematic_on()}).
 }
 \examples{
 
 if (requireNamespace("ggplot2", quietly = TRUE)) {
   # Gradient from fg to accent
   fg <- sequential_gradient(1, 0)
-  thematic_begin("black", "white", "salmon", sequential = fg)
+  thematic_on("black", "white", "salmon", sequential = fg)
   ggplot2::qplot(1:10, 1:10, color = 1:10)
 
   # Gradient from accent -> bg
   bg <- sequential_gradient(0, 1)
-  thematic_begin("black", "white", "salmon", sequential = bg)
+  thematic_on("black", "white", "salmon", sequential = bg)
   ggplot2::qplot(1:10, 1:10, color = 1:10)
 
   # Gradient from mix(accent, fg, 0.5) -> mix(accent, bg, 0.5)
   mix <- sequential_gradient(0.5, 0.5)
-  thematic_begin("black", "white", "salmon", sequential = mix)
+  thematic_on("black", "white", "salmon", sequential = mix)
   ggplot2::qplot(1:10, 1:10, color = 1:10)
 
   # Use fg (instead of bg) for high end of scale
   mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
-  thematic_begin("black", "white", "salmon", sequential = mix_flip)
+  thematic_on("black", "white", "salmon", sequential = mix_flip)
   ggplot2::qplot(1:10, 1:10, color = 1:10)
 }
 

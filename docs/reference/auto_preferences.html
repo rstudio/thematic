@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Font specification — font_spec • thematic</title>
+<title>Set auto theming preferences — auto_preferences_set • thematic</title>
 
 
 <!-- jquery -->
@@ -39,13 +39,13 @@
 
 
 
-<meta property="og:title" content="Font specification — font_spec" />
-<meta property="og:description" content="Specify a collection of font families. The first font family supported
-by the relevant device (i.e., the device that is open, or will be opened, at
-plotting time) is used by thematic. If a given font family is not supported
-by the default, but is a Google Font and
-install = TRUE, the font will be downloaded, cached, and registered
-for use the showtext and ragg packages." />
+<meta property="og:title" content="Set auto theming preferences — auto_preferences_set" />
+<meta property="og:description" content="Setting of auto-theming preferences is primarily useful for developers
+of a custom rmarkdown format that wish to have better default auto-theming
+behavior. By having the output document call auto_preferences_set()
+&quot;pre-knit&quot; (and auto_preferences_clear() &quot;post-knit&quot;), users of the
+output document can then simply call thematic_on() within their document
+to adopt these preferences." />
 
 
 
@@ -113,69 +113,52 @@ for use the showtext and ragg packages." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Font specification</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rstudio/thematic/blob/master/R/thematic.R'><code>R/thematic.R</code></a></small>
-    <div class="hidden name"><code>font_spec.Rd</code></div>
+    <h1>Set auto theming preferences</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rstudio/thematic/blob/master/R/auto.R'><code>R/auto.R</code></a></small>
+    <div class="hidden name"><code>auto_preferences.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Specify a collection of font families. The first font family supported
-by the relevant device (i.e., the device that is open, or will be opened, at
-plotting time) is used by thematic. If a given font family is not supported
-by the default, but is a <a href='https://fonts.google.com/'>Google Font</a> and
-<code>install = TRUE</code>, the font will be downloaded, cached, and registered
-for use the <strong>showtext</strong> and <strong>ragg</strong> packages.</p>
+    <p>Setting of auto-theming preferences is primarily useful for developers
+of a custom rmarkdown format that wish to have better default auto-theming
+behavior. By having the output document call <code>auto_preferences_set()</code>
+"pre-knit" (and <code>auto_preferences_clear()</code> "post-knit"), users of the
+output document can then simply call <code><a href='thematic.html'>thematic_on()</a></code> within their document
+to adopt these preferences.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>font_spec</span>(
-  <span class='kw'>families</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>install</span> <span class='kw'>=</span> <span class='fu'>is_installed</span>(<span class='st'>"ragg"</span>) <span class='kw'>||</span> <span class='fu'>is_installed</span>(<span class='st'>"showtext"</span>),
-  <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>auto_preferences_set</span>(<span class='kw'>bg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>accent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>auto_preferences_get</span>()</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>families</th>
-      <td><p>a character vector of font families.</p></td>
+      <th>bg</th>
+      <td><p>a background color.</p></td>
     </tr>
     <tr>
-      <th>scale</th>
-      <td><p>numerical constant applied to font sizes.</p></td>
+      <th>fg</th>
+      <td><p>a foreground color.</p></td>
     </tr>
     <tr>
-      <th>install</th>
-      <td><p>whether to download and register font <code>families</code>
-available via <a href='https://fonts.google.com/'>Google Fonts</a> (but unavailable to R).
-After a successful download, fonts are cached (in a directory which
-can be managed via <code><a href='font_cache_set.html'>font_cache_set()</a></code>), and registered for use with
-the <strong>showtext</strong> and <strong>ragg</strong> packages. If installation fails with
-a valid internet connection, you may need to fetch the latest Google
-Font information prior to installation (i.e., set <code>update = TRUE</code>).</p></td>
+      <th>accent</th>
+      <td><p>a color for making certain graphical markers 'stand out'
+(e.g., the fitted line color for <code><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>ggplot2::geom_smooth()</a></code>).
+Can be 2 colors for lattice (stroke vs fill accent).</p></td>
     </tr>
     <tr>
-      <th>update</th>
-      <td><p>if <code>TRUE</code>, the latest Google Fonts are fetched and
-any out-dated font cache is updated. Fetching the latest fonts requires
-a Google Font API key (one is bundled with the package, but you can
-set your own via an environment variable, <code>GFONT_KEY</code>).</p></td>
-    </tr>
-    <tr>
-      <th>quiet</th>
-      <td><p>whether to suppress download messages.</p></td>
+      <th>font</th>
+      <td><p>a <code><a href='font_spec.html'>font_spec()</a></code> object. If missing, font defaults are not altered.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>the input arguments as a list.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='thematic_with_device.html'>thematic_with_device()</a></code>, <code><a href='thematic.html'>thematic_on()</a></code>, <code><a href='font_cache_set.html'>font_cache_set()</a></code></p></div>
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'>auto_preferences_set</span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
+<span class='fu'><a href='thematic.html'>thematic_on</a></span>()
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_preferences_set()` is set.</span></div><div class='img'><img src='auto_preferences-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

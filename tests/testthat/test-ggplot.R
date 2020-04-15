@@ -5,7 +5,7 @@ test_that("ggplot baselines", {
   library(ggplot2)
 
   font <- font_spec("Oxanium", scale = 1.25, update = TRUE)
-  thematic_begin("#444444", "#e4e4e4", "#749886", font = font)
+  thematic_on("#444444", "#e4e4e4", "#749886", font = font)
 
   ids <- factor(c("1.1", "2.1", "1.2", "2.2", "1.3", "2.3"))
   values <- data.frame(
@@ -161,7 +161,7 @@ test_that("sf integration", {
 test_that("gridExtra integration", {
   skip_if_not_installed("gridExtra")
 
-  thematic_begin(bg = "black", fg = "white", accent = "salmon", font_spec("Oxanium", scale = 1.25))
+  thematic_on(bg = "black", fg = "white", accent = "salmon", font_spec("Oxanium", scale = 1.25))
   p1 <- qplot(x = 1:10, y = 1:10, color = 1:10)
   p2 <- qplot(x = 1:10, y = 1:10, color = 1:10)
   expect_doppelganger(
@@ -175,7 +175,7 @@ test_that("patchwork integration", {
   library(ggplot2)
   p1 <- qplot(x = 1:10, y = 1:10, color = 1:10)
   p2 <- qplot(x = 1:10, y = 1:10, color = 1:10)
-  thematic_begin(bg = "black", fg = "white", accent = "salmon", font = font_spec("Oxanium", scale = 1.25))
+  thematic_on(bg = "black", fg = "white", accent = "salmon", font = font_spec("Oxanium", scale = 1.25))
   expect_doppelganger("patchwork", p1 + p2)
 })
 

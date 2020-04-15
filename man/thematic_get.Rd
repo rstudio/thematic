@@ -26,7 +26,7 @@ option.
 }
 \examples{
 thematic_get()
-thematic_begin("darkblue", "skyblue")
+thematic_on("darkblue", "skyblue")
 thematic_get_option("bg")
 
 if (interactive()) {
