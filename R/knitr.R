@@ -7,8 +7,8 @@ knitr_dev_args_set <- function() {
   # resolve `bg = 'auto'`
   bg <- .globals$theme$bg
   if (identical(bg, "auto")) {
-    bg <- auto_preferences_get()$bg %||%
-      bs_theme_colors()$bg %||%
+    bg <- auto_preferences_get()[["bg"]] %||%
+      bs_theme_colors()[["bg"]] %||%
       bg
     if (identical(bg, "auto")){
       warning(
@@ -16,6 +16,8 @@ knitr_dev_args_set <- function() {
         call. = FALSE
       )
       return()
+    } else {
+      bg <- htmltools::parseCssColors(bg)
     }
   }
 
