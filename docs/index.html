@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Simplified Theming of ggplot2, lattice, and base Graphics • thematic</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/darkly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
 <script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
@@ -49,6 +49,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Articles
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+<li>
+      <a href="articles/understanding.html">Understanding thematic</a>
+    </li>
+  </ul>
+</li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
@@ -74,10 +86,7 @@
 <a href="#thematic" class="anchor"></a>thematic</h1></div>
 <!-- badges: start -->
 
-<p>Automatic and consistent theming of <strong>ggplot2</strong>, <strong>lattice</strong>, and <strong>base</strong> graphics.</p>
-<ul>
-<li>TODO: note about color-blind safe</li>
-</ul>
+<p>Automatic and consistent theming of <strong>ggplot2</strong>, <strong>lattice</strong>, and <strong>base</strong> graphics. In addition to automatic detection and adoption of relevant colors and fonts in <strong>shiny</strong>, <strong>rmarkdown</strong>, and RStudio, <strong>thematic</strong> also sets color-blind safe defaults for color scales.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -88,166 +97,68 @@
 <div id="getting-started" class="section level2">
 <h2 class="hasAnchor">
 <a href="#getting-started" class="anchor"></a>Getting started</h2>
-<p><strong>thematic</strong> provides a single entry point to the main colours and fonts of <strong>ggplot2</strong>, <strong>lattice</strong>, and <strong>base</strong> graphics. To start a (global) theme, give <code><a href="reference/thematic.html">thematic_on()</a></code> a background, foreground, and accent colour, as well as (optionally) a <code><a href="reference/font_spec.html">font_spec()</a></code>. If a <a href="https://fonts.google.com">Google Font</a> family is requested, <strong>thematic</strong> attempts to automatically download, cache, and register the font for use with <strong>showtext</strong> and <strong>ragg</strong> (learn more in <a href="#custom-fonts">Custom Fonts</a>). That means, if you have an internet connection and either <strong>showtext</strong> or <strong>ragg</strong> installed, any Google Fonts “just work” for nearly any use case.</p>
-<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">thematic</span>)
-<span class="fu"><a href="reference/thematic.html">thematic_on</a></span>(
-  <span class="kw">bg</span> <span class="kw">=</span> <span class="st">"#212121"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"#C8C8C8"</span>, <span class="kw">accent</span> <span class="kw">=</span> <span class="st">"#5CB09D"</span>,
-  <span class="kw">font</span> <span class="kw">=</span> <span class="fu"><a href="reference/font_spec.html">font_spec</a></span>(<span class="st">"Oxanium"</span>, <span class="kw">scale</span> <span class="kw">=</span> <span class="fl">1.25</span>)
+<p><strong>thematic</strong> has the ability to automatically detect and intelligently apply relevant colors and fonts to R plots in various different contexts. Automatic fonts aren’t enabled by default (since they can easily fail), but you can enable with <code>font = "auto"</code>:</p>
+<div class="sourceCode" id="cb2"><pre class="r"><span class="fu"><a href="reference/thematic.html">thematic_on</a></span>(<span class="kw">font</span> <span class="kw">=</span> <span class="st">"auto"</span>)</pre></div>
+<p>With <strong>thematic</strong> now enabled, static R plots generated via a <strong>shiny</strong> app automatically adopt the styling of their HTML container(s). For example, the <strong>shiny</strong> app below uses <strong>shinythemes</strong> and the <a href="https://developers.google.com/fonts/docs/getting_started">Google Fonts API</a> for styling the HTML; and thanks to <strong>thematic</strong>, those styles are automatically reflected in the R plots. Note that, in the case that the Pacifico font isn’t available to R, <strong>thematic</strong> will detect a lack of support, download font files via the Google Font API (unless told otherwise), cache them (see <code><a href="reference/font_cache_set.html">font_cache_set()</a></code>), and register them for use with both <strong>showtext</strong> and <strong>ragg</strong> (one of these two packages must be installed to actually render the auto-installed fonts).</p>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">shiny</span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+
+<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(
+  <span class="kw">ui</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span>(
+    <span class="kw">theme</span> <span class="kw">=</span> <span class="kw pkg">shinythemes</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/shinythemes/man/shinytheme.html">shinytheme</a></span>(<span class="st">"darkly"</span>),
+    <span class="no">tags</span>$<span class="fu">link</span>(<span class="kw">href</span><span class="kw">=</span><span class="st">"https://fonts.googleapis.com/css?family=Pacifico"</span>, <span class="kw">rel</span><span class="kw">=</span><span class="st">"stylesheet"</span>),
+    <span class="no">tags</span>$<span class="fu">style</span>(<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reexports.html">HTML</a></span>(<span class="st">"body{font-family: Pacifico}"</span>)),
+    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">tabsetPanel</a></span>(<span class="kw">type</span> <span class="kw">=</span> <span class="st">"pills"</span>,
+      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tabPanel.html">tabPanel</a></span>(<span class="st">"ggplot"</span>, <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span>(<span class="st">"ggplot"</span>)),
+      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tabPanel.html">tabPanel</a></span>(<span class="st">"lattice"</span>, <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span>(<span class="st">"lattice"</span>)),
+      <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tabPanel.html">tabPanel</a></span>(<span class="st">"base"</span>, <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span>(<span class="st">"base"</span>))
+    )
+  ),
+  <span class="kw">server</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>) {
+    <span class="no">output</span>$<span class="no">ggplot</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span>({
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">wt</span>, <span class="no">mpg</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">mtcars</span>), <span class="kw">colour</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">cyl</span>))) +
+        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() +
+        <span class="kw pkg">ggrepel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span>()
+    })
+    <span class="no">output</span>$<span class="no">lattice</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span>(<span class="kw pkg">lattice</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html">show.settings</a></span>())
+    <span class="no">output</span>$<span class="no">base</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span>({
+      <span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span>(<span class="no">volcano</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="reference/thematic_get.html">thematic_get_option</a></span>(<span class="st">"sequential"</span>))
+    })
+  }
 )</pre></div>
-<p>As you’ll see in the examples below, <strong>thematic</strong> uses these “main” colours to inform consistent defaults not only for the plot’s overall theme (e.g., plot/panel background, text colour, etc), but also for <code>accent</code>ed graphical markers (e.g., <strong>ggplot2</strong> geom defaults), as well as <code>sequential</code> and <code>qualitative</code> colour scales (these scaling defaults can also be controlled via <code><a href="reference/thematic.html">thematic_on()</a></code>). <code><a href="reference/thematic.html">thematic_on()</a></code> works by modifying global state in a “permanent” way so that any future plots assume that state; so, best practice is to call <code><a href="reference/thematic.html">thematic_off()</a></code> when you’re done using <strong>thematic</strong>.</p>
+<p><img src="reference/figures/shiny-darkly.gif" width="100%" style="display: block; margin: auto;"></p>
+<p>By the way, <strong>thematic</strong> works regardless of how the <strong>shiny</strong> app is actually styled (in fact, <a href="https://rstudio.github.io/bootstraplib/articles/recipes.html"><strong>bootstraplib</strong></a>, not <strong>shinythemes</strong>, will soon be our recommended way to style <strong>shiny</strong> apps). The only requirement is that, for font rendering, you must either use a <a href="https://fonts.google.com/">Google Font</a> (and have <strong>showtext</strong> or <strong>ragg</strong> installed) or make sure R already has the ability to render the font (which can be done manually via <strong>extrafont</strong>, <strong>showtext</strong>, or <strong>ragg</strong>).</p>
 </div>
-<div id="ggplot2" class="section level2">
+<div id="auto-vs-specified-themes" class="section level2">
 <h2 class="hasAnchor">
-<a href="#ggplot2" class="anchor"></a>ggplot2</h2>
-<p><strong>thematic</strong> works best with <strong>ggplot2</strong> (partly thanks to <strong>ggplot2</strong>’s overall design). In a nutshell, <strong>thematic</strong> does the following:</p>
-<ol>
-<li>Sets a new “complete” <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> default based on <code>bg</code>, <code>fg</code>, and <code>font</code>. Since this theme is “complete”, you probably don’t want to mix it with other complete themes (e.g., <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw()</a></code>), but you can definitely override particular aspects with <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code>.</li>
-<li>For each relevant <code>Geom</code>, sets new <code>Geom$default_aes</code> defaults (based on <code>bg</code>, <code>fg</code>, <code>accent</code>, and <code>font</code>). Grayscale colours (e.g., <code>GeomPoint$default_aes$colour</code>) are assigned a blend of <code>bg</code> and <code>fg</code> whereas non-grayscale colours (e.g., <code>GeomSmooth$default_aes$colour</code>) are assigned the <code>accent</code> colour.</li>
-<li>Defines a new <code>scale_[fill/colour]_continuous()</code> default (based on the <code>sequential</code> argument, which defaults to a gradient between <code>bg</code>, <code>fg</code>, and <code>accent</code>).</li>
-<li>Defines a new <code>scale_[fill/colour]_discrete()</code> default (based on the <code>qualitative</code> argument, which defaults to the colour-blind safe <a href="https://jfly.uni-koeln.de/color/">Okabe-Ito</a> palette).</li>
-</ol>
-<p>Here’s an example demonstrating (1) and (2):</p>
-<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<a href="#auto-vs-specified-themes" class="anchor"></a>Auto vs specified themes</h2>
+<p>Auto theming is guaranteed to work inside of a <strong>shiny</strong> runtime, but in other situations<sup>1</sup>, you may want to specify the colors and/or fonts prior to plot generation.</p>
+<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="reference/thematic.html">thematic_on</a></span>(
+  <span class="kw">bg</span> <span class="kw">=</span> <span class="st">"#FFFFF8"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"#111111"</span>, <span class="kw">accent</span> <span class="kw">=</span> <span class="st">"#DD1144"</span>,
+  <span class="kw">font</span> <span class="kw">=</span> <span class="fu"><a href="reference/font_spec.html">font_spec</a></span>(<span class="st">"Tangerine"</span>, <span class="kw">scale</span> <span class="kw">=</span> <span class="fl">2</span>)
+)</pre></div>
+<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">diamonds</span>[<span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span>(<span class="no">diamonds</span>), <span class="fl">1000</span>), ], <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">carat</span>, <span class="no">price</span>)) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw">alpha</span> <span class="kw">=</span> <span class="fl">0.2</span>) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span>() +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(~<span class="no">cut</span>) + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Diamond price by carat and cut"</span>)
-<span class="co">#&gt; `geom_smooth()` using method = 'loess' and formula 'y ~ x'</span></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>And an example demonstrating (1), (2), and (3):</p>
-<div class="sourceCode" id="cb4"><pre class="r"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">waiting</span>, <span class="no">eruptions</span>, <span class="kw">z</span> <span class="kw">=</span> <span class="no">density</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="no">density</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_contour.html">geom_contour</a></span>() +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Old faithful eruption vs waiting time"</span>)</pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(~<span class="no">cut</span>) + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Diamond price by carat and cut with tufte styling"</span>)</pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>And an example demonstrating (1) and (4):</p>
-<div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">economics_long</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">date</span>, <span class="no">value01</span>, <span class="kw">colour</span> <span class="kw">=</span> <span class="no">variable</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Economic indicators"</span>)</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-5-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>As for 3rd party <strong>ggplot2</strong> extension packages, <strong>thematic</strong> should work as expected, as long as those extension packages aren’t setting their own defaults for (1)-(4).</p>
-<div class="sourceCode" id="cb6"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">GGally</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/GGally/man/ggpairs.html">ggpairs</a></span>(
-  <span class="no">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">colour</span> <span class="kw">=</span> <span class="no">Species</span>),
-  <span class="kw">upper</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">continuous</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/GGally/man/wrap.html">wrap</a></span>(<span class="no">ggally_cor</span>, <span class="kw">displayGrid</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">alignPercent</span> <span class="kw">=</span> <span class="fl">0.9</span>))
-)</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">wt</span>, <span class="no">mpg</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">mtcars</span>), <span class="kw">colour</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">cyl</span>))) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() +
-  <span class="kw pkg">ggrepel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span>()</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-<div id="lattice" class="section level2">
+<div id="rendering-of-custom-fonts" class="section level2">
 <h2 class="hasAnchor">
-<a href="#lattice" class="anchor"></a>Lattice</h2>
-<p><strong>thematic</strong> also works with <strong>lattice</strong>; however, beware that theming decisions are made so that <strong>lattice</strong> plots look somewhat similar to <strong>ggplot2</strong>. Also, similar to <strong>base</strong> graphics, <strong>lattice</strong> doesn’t have a global distinction between a <code>qualitative</code> and <code>sequential</code> colourscales, so <code>sequential</code> isn’t used in <strong>lattice</strong>. Instead, as with the true <strong>lattice</strong> default, the “regions” colourscale interpolate between <code>qualitative[1]</code>, <code>bg</code>, and <code>qualitative[2]</code>.</p>
-<p>(Btw, for <strong>lattice</strong>, <code>accent</code> may be of length 2. The first is used for ‘stroke’ and the second for ‘fill’).</p>
-<div class="sourceCode" id="cb8"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lattice</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html">show.settings</a></span>()</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-8-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>And here’s an real example (taken from <code><a href="https://rdrr.io/pkg/lattice/man/levelplot.html">?lattice::levelplot</a></code>) of where “regions” is relevant:</p>
-<div class="sourceCode" id="cb9"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">stats</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/attach.html">attach</a></span>(<span class="no">environmental</span>)
-<span class="no">ozo.m</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/loess.html">loess</a></span>((<span class="no">ozone</span>^(<span class="fl">1</span>/<span class="fl">3</span>)) ~ <span class="no">wind</span> * <span class="no">temperature</span> * <span class="no">radiation</span>,
-       <span class="kw">parametric</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"radiation"</span>, <span class="st">"wind"</span>), <span class="kw">span</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">degree</span> <span class="kw">=</span> <span class="fl">2</span>)
-<span class="no">w.marginal</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span>(<span class="no">wind</span>), <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">wind</span>), <span class="kw">length.out</span> <span class="kw">=</span> <span class="fl">50</span>)
-<span class="no">t.marginal</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span>(<span class="no">temperature</span>), <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">temperature</span>), <span class="kw">length.out</span> <span class="kw">=</span> <span class="fl">50</span>)
-<span class="no">r.marginal</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span>(<span class="no">radiation</span>), <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(<span class="no">radiation</span>), <span class="kw">length.out</span> <span class="kw">=</span> <span class="fl">4</span>)
-<span class="no">wtr.marginal</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">wind</span> <span class="kw">=</span> <span class="no">w.marginal</span>, <span class="kw">temperature</span> <span class="kw">=</span> <span class="no">t.marginal</span>,
-        <span class="kw">radiation</span> <span class="kw">=</span> <span class="no">r.marginal</span>)
-<span class="no">grid</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/expand.grid.html">expand.grid</a></span>(<span class="no">wtr.marginal</span>)
-<span class="no">grid</span>[, <span class="st">"fit"</span>] <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/predict.html">predict</a></span>(<span class="no">ozo.m</span>, <span class="no">grid</span>))
-<span class="fu"><a href="https://rdrr.io/pkg/lattice/man/levelplot.html">contourplot</a></span>(<span class="no">fit</span> ~ <span class="no">wind</span> * <span class="no">temperature</span> <span class="kw">|</span> <span class="no">radiation</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">grid</span>,
-            <span class="kw">cuts</span> <span class="kw">=</span> <span class="fl">10</span>, <span class="kw">region</span> <span class="kw">=</span> <span class="fl">TRUE</span>,
-            <span class="kw">xlab</span> <span class="kw">=</span> <span class="st">"Wind Speed (mph)"</span>,
-            <span class="kw">ylab</span> <span class="kw">=</span> <span class="st">"Temperature (F)"</span>,
-            <span class="kw">main</span> <span class="kw">=</span> <span class="st">"Cube Root Ozone (cube root ppb)"</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/detach.html">detach</a></span>()</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;"></p>
-<div id="base" class="section level3">
-<h3 class="hasAnchor">
-<a href="#base" class="anchor"></a>Base</h3>
-<p>Simlar to <strong>lattice</strong>, <strong>base</strong> R graphics doesn’t have a global distinction between a <code>qualitative</code> and <code>sequential</code> colourscales, it just has <code><a href="https://rdrr.io/r/grDevices/palette.html">palette()</a></code> (which is closest, semantically, to <code>qualitative</code>):</p>
-<div class="sourceCode" id="cb10"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">100</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>:<span class="fl">5</span>, <span class="kw">each</span> <span class="kw">=</span> <span class="fl">5</span>), <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>:<span class="fl">5</span>, <span class="fl">5</span>), <span class="kw">col</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">25</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">25</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>However, do know that you can supply the current sequential colourscale to individual plotting functions by doing something like <code>col = thematic_get_option("sequential")</code>:</p>
-<div class="sourceCode" id="cb11"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
-<span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span>(<span class="no">volcano</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span>(<span class="no">volcano</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="reference/thematic_get.html">thematic_get_option</a></span>(<span class="st">"sequential"</span>))</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;"></p>
+<a href="#rendering-of-custom-fonts" class="anchor"></a>Rendering of custom fonts</h2>
+<p>Rendering of ‘custom’ Google Fonts (i.e., Google Fonts not generally available to R) requires either the <strong>showtext</strong> or the <strong>ragg</strong> package to be installed. For Google Font rendering to work ‘out-of-the-box’ with both <strong>shiny</strong> and <strong>rmarkdown</strong>, make sure <strong>showtext</strong> is installed. If you want a plot with custom fonts outside of <strong>shiny</strong> and <strong>rmarkdown</strong>, consider using <code><a href="reference/thematic_with_device.html">thematic_with_device()</a></code> as RStudio’s graphics device currently doesn’t support custom fonts at all (if you’d like to preview the file that <code><a href="reference/thematic_with_device.html">thematic_with_device()</a></code> generates in RStudio, you can use <code><a href="https://rdrr.io/r/base/file.show.html">file.show()</a></code>).</p>
+<p>If you want custom font(s) that aren’t hosted by Google Fonts, you’ll currently need to download and register them with R yourself. After downloading the font files, you can use <code><a href="https://rdrr.io/pkg/sysfonts/man/font_add.html">sysfonts::font_add()</a></code> (for <strong>showtext</strong>) and/or <code><a href="https://rdrr.io/pkg/systemfonts/man/register_font.html">systemfonts::register_font()</a></code> (for <strong>ragg</strong>) to register them with R. Another, more expensive, but more permanent (i.e., you only have to do it once, instead of everytime you start a new R session) solution to make custom fonts available to R is via <code>extrafont::import_font()</code> and <code><a href="https://rdrr.io/pkg/extrafont/man/loadfonts.html">extrafont::loadfonts()</a></code>.</p>
+<p>If you have <strong>showtext</strong> installed and custom Google Font rendering still fails in <strong>rmarkdown</strong>, you can likely fix it by doing one of the following in a “setup” chunk (i.e., a <strong>knitr</strong> code chunk that appears at the top of the document which sets up <a href="https://yihui.org/knitr/options/">chunk options</a> defaults and other global state): 1. Include <code>knitr::opts_chunk$set("fig.showtext" = TRUE)</code>, which enables <strong>showtext</strong> in all <em>future</em> code chunks. 2. Load <strong>thematic</strong> (e.g., <code><a href="https://rdrr.io/pkg/thematic/man">library(thematic)</a></code>), which will call <code>knitr::opts_chunk$set("fig.showtext" = TRUE)</code> for you.</p>
 </div>
-</div>
-<div id="thematic-in-detail" class="section level2">
+<div id="learn-more" class="section level2">
 <h2 class="hasAnchor">
-<a href="#thematic-in-detail" class="anchor"></a>Thematic, in detail</h2>
-<p>At a minimum, <code><a href="reference/thematic.html">thematic_on()</a></code> wants a <code>bg</code> and <code>fg</code> color, but any of the other arguments may be explicitly (or implicitly) missing (i.e., set to <code>NA</code>), which will prevent <strong>thematic</strong> from setting any of the relevant defaults. For example, by leaving <code>accent = NA</code>, <strong>ggplot2</strong> will continue to use it’s default accent color:</p>
-<div class="sourceCode" id="cb12"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">patchwork</span>)
-<span class="no">preview_theme</span> <span class="kw">&lt;-</span> <span class="kw">function</span>() {
-  <span class="no">smooth</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">wt</span>, <span class="no">mpg</span>)) + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span>()
-  <span class="no">contour</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">waiting</span>, <span class="no">eruptions</span>, <span class="kw">z</span> <span class="kw">=</span> <span class="no">density</span>)) +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="no">density</span>)) +
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_contour.html">geom_contour</a></span>()
-  <span class="no">smooth</span> + <span class="no">contour</span>
-}</pre></div>
-<div class="sourceCode" id="cb13"><pre class="r"><span class="fu"><a href="reference/thematic.html">thematic_on</a></span>(<span class="kw">bg</span> <span class="kw">=</span> <span class="st">"black"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"white"</span>)
-<span class="fu">preview_theme</span>()</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>The default <code>sequential</code> colour gradient is based on a somewhat abitrary mixture of <code>bg</code>, <code>fg</code>, and <code>accent</code> (if all are defined). The amount (and direction) of which these colors are combined into a gradient can be controlled through <code><a href="reference/sequential_gradient.html">sequential_gradient()</a></code>:</p>
-<div class="sourceCode" id="cb14"><pre class="r"><span class="fu"><a href="reference/thematic.html">thematic_on</a></span>(<span class="kw">bg</span> <span class="kw">=</span> <span class="st">"black"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">accent</span> <span class="kw">=</span> <span class="st">"salmon"</span>)
-<span class="fu">preview_theme</span>() + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Gradient: mix(fg, accent) -&gt; accent -&gt; mix(bg, accent)"</span>)
-<span class="fu"><a href="reference/thematic.html">thematic_on</a></span>(
-  <span class="kw">bg</span> <span class="kw">=</span> <span class="st">"black"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">accent</span> <span class="kw">=</span> <span class="st">"salmon"</span>,
-  <span class="co"># fg -&gt; accent</span>
-  <span class="kw">sequential</span> <span class="kw">=</span> <span class="fu"><a href="reference/sequential_gradient.html">sequential_gradient</a></span>(<span class="kw">fg_weight</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">bg_weight</span> <span class="kw">=</span> <span class="fl">0</span>)
-)
-<span class="fu">preview_theme</span>() + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Gradient: fg -&gt; accent"</span>)
-<span class="fu"><a href="reference/thematic.html">thematic_on</a></span>(
-  <span class="kw">bg</span> <span class="kw">=</span> <span class="st">"black"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">accent</span> <span class="kw">=</span> <span class="st">"salmon"</span>,
-  <span class="co"># bg -&gt; accent</span>
-  <span class="kw">sequential</span> <span class="kw">=</span> <span class="fu"><a href="reference/sequential_gradient.html">sequential_gradient</a></span>(<span class="kw">fg_weight</span> <span class="kw">=</span> <span class="fl">0</span>, <span class="kw">bg_weight</span> <span class="kw">=</span> <span class="fl">1</span>, <span class="kw">fg_low</span> <span class="kw">=</span> <span class="fl">FALSE</span>)
-)
-<span class="fu">preview_theme</span>() + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Gradient: bg -&gt; accent"</span>)</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;"><img src="reference/figures/README-unnamed-chunk-14-2.png" width="100%" style="display: block; margin: auto;"><img src="reference/figures/README-unnamed-chunk-14-3.png" width="100%" style="display: block; margin: auto;"></p>
-<p>Keep in mind that you can set <code>sequential = NA</code> to avoid setting relevant defaults and also supply your own vector of color codes:</p>
-<div class="sourceCode" id="cb15"><pre class="r"><span class="fu"><a href="reference/thematic.html">thematic_on</a></span>(<span class="kw">bg</span> <span class="kw">=</span> <span class="st">"black"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">accent</span> <span class="kw">=</span> <span class="st">"salmon"</span>, <span class="kw">sequential</span> <span class="kw">=</span> <span class="fl">NA</span>)
-<span class="fu">preview_theme</span>() + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"'Missing' sequential palette"</span>)
-<span class="fu"><a href="reference/thematic.html">thematic_on</a></span>(<span class="kw">bg</span> <span class="kw">=</span> <span class="st">"black"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">accent</span> <span class="kw">=</span> <span class="st">"salmon"</span>, <span class="kw">sequential</span> <span class="kw">=</span> <span class="kw pkg">RColorBrewer</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span>(<span class="fl">9</span>, <span class="st">"Oranges"</span>))
-<span class="fu">preview_theme</span>() + <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Custom sequential palette (colorbrewer's Oranges)"</span>)</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;"><img src="reference/figures/README-unnamed-chunk-15-2.png" width="100%" style="display: block; margin: auto;"></p>
-<p>Similarly, for <code>qualitative</code> colour scaling, you can set to <code>NA</code> to prevent the Okabe-Ito based default or provide your own set of color codes:</p>
-<div class="sourceCode" id="cb16"><pre class="r"><span class="fu"><a href="reference/thematic.html">thematic_on</a></span>(<span class="kw">bg</span> <span class="kw">=</span> <span class="st">"black"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">qualitative</span> <span class="kw">=</span> <span class="kw pkg">RColorBrewer</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span>(<span class="fl">8</span>, <span class="st">"Dark2"</span>))
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">economics_long</span>) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">date</span>, <span class="no">value01</span>, <span class="kw">color</span> <span class="kw">=</span> <span class="no">variable</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">ggtitle</a></span>(<span class="st">"Custom qualitative palette (colorbrewer's dark2)"</span>)</pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;"></p>
-</div>
-<div id="custom-fonts" class="section level2">
-<h2 class="hasAnchor">
-<a href="#custom-fonts" class="anchor"></a>Custom fonts</h2>
-<p>Auto-installed fonts (i.e., custom fonts downloaded from Google Fonts) currently don’t work at all with the RStudio graphics device. <em>If</em> you have the <strong>showtext</strong> package installed, they should work with <strong>rmarkdown</strong>/<strong>knitr</strong> as well as with the default <code>device</code> in <code><a href="reference/thematic_with_device.html">thematic_with_device()</a></code> (the latter will also work if you have <strong>ragg</strong> instead of <strong>showtext</strong> installed):</p>
-<div class="sourceCode" id="cb17"><pre class="r"><span class="no">file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="reference/thematic_with_device.html">thematic_with_device</a></span>(<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="fl">1</span>), <span class="kw">res</span> <span class="kw">=</span> <span class="fl">144</span>)</pre></div>
-<p>If you’re in RStudio, you can preview the resulting <code>file</code> with <code><a href="https://rdrr.io/r/base/file.show.html">file.show(file)</a></code>. Moreover, to embed the <code>file</code> in <strong>rmarkdown</strong>/<strong>knitr</strong>, do <code><a href="https://rdrr.io/pkg/knitr/man/include_graphics.html">knitr::include_graphics(file)</a></code>.</p>
-<p>If you want to use custom font(s) that aren’t Google Font(s), you’ll currently need to manually download and install/register them with R. Since <strong>thematic</strong> has implicit <strong>ragg</strong> and <strong>showtext</strong> integration, after downloading the font files, you can use <code><a href="https://rdrr.io/pkg/systemfonts/man/register_font.html">systemfonts::register_font()</a></code> and/or <code><a href="https://rdrr.io/pkg/sysfonts/man/font_add.html">sysfonts::font_add()</a></code> to register them for use with <strong>rmarkdown</strong>/<strong>knitr</strong>/<code><a href="reference/thematic_with_device.html">thematic_with_device()</a></code>. Another, more expensive, but permanent (i.e., you only have to do it once, instead of everytime you start a new R session) way to make custom fonts available to R is with <code>extrafont::import_font()</code> and <code><a href="https://rdrr.io/pkg/extrafont/man/loadfonts.html">extrafont::loadfonts()</a></code>.</p>
-</div>
-<div id="with-shiny-auto-theming" class="section level2">
-<h2 class="hasAnchor">
-<a href="#with-shiny-auto-theming" class="anchor"></a>With shiny auto-theming</h2>
-<p>A <a href="https://github.com/rstudio/shiny/pull/2740">future version</a> of Shiny will use <strong>thematic</strong> to implement it’s auto-theming feature. By just setting <code>shinyOptions(plot.autotheme = TRUE)</code>, <code>renderPlot()</code> will automatically supply sensible defaults to <code><a href="reference/thematic.html">thematic_on()</a></code> arguments, but you can override those defaults by calling <code><a href="reference/thematic.html">thematic_on()</a></code> yourself.</p>
-<p>TODO: an example.</p>
-</div>
-<div id="known-issues" class="section level2">
-<h2 class="hasAnchor">
-<a href="#known-issues" class="anchor"></a>Known issues</h2>
-<ul>
-<li>If you have <strong>showtext</strong> installed and Google Font rendering still fails in <strong>knitr</strong>/<strong>rmarkdown</strong>, you can probably fix it by doing one of the following in a “setup” chunk (i.e., a <strong>knitr</strong> code chunk that appears at the top of the document which sets up <a href="https://yihui.org/knitr/options/">chunk options</a> defaults and other global state):
+<a href="#learn-more" class="anchor"></a>Learn more</h2>
+<p>For more examples of <strong>thematic</strong> in action, and to gain a better understanding of how it works, see the <a href="https://rstudio.github.io/thematic/articles/understanding.html">understanding article</a>.</p>
+<hr>
 <ol>
-<li>Include <code>knitr::opts_chunk$set("fig.showtext" = TRUE)</code>, which enables <strong>showtext</strong> in all <em>future</em> code chunks.</li>
-<li>Load <strong>thematic</strong> (e.g., <code><a href="https://rdrr.io/pkg/thematic/man">library(thematic)</a></code>), which will call <code>knitr::opts_chunk$set("fig.showtext" = TRUE)</code> for you.</li>
+<li>Auto theming works in <strong>rmarkdown</strong> with <code>runtime: shiny</code> and also in <code>html_document_base()</code> based output formats with a non-<code>NULL</code> <code>theme</code> (i.e., powered by <strong>bootstraplib</strong>). With time, hopefully most other <strong>rmarkdown</strong> output formats will use <code><a href="reference/auto_preferences.html">auto_preferences_set()</a></code> (internally) so that <code>'auto'</code> values can work the way you’d expect them to (at least by default). Note also that <code>accent='auto'</code> and <code>font='auto'</code> currently doesn’t work with custom RStudio themes.</li>
 </ol>
-</li>
-</ul>
 </div>
 </div>
   </div>
