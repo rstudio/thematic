@@ -52,15 +52,24 @@ resolve_font_family <- function(type = c("base", "grid")) {
   # (and, if none is active, the name of the one that *will be* used)
   dev_name <- infer_device()
 
+  # RStudio 1.4 introduced configurable graphics backends.
+  # It appears ragg is the only option that is able to render
+  # custom fonts at the moment (i.e., showtext with quartz/cairo
+  # doesn't appear to work at the moment)
   if ("RStudioGD" %in% dev_name) {
-    warning(
-      call. = FALSE,
-      "The RStudio's graphics device is currently unable to render non-system fonts ",
-      "(i.e., thematic's Google Font support doesn't include RStudioGD). However, ",
-      "if you have showtext (or ragg) is installed, this plot should render fine in shiny and rmarkdown. ",
-      "To save this plot to a file (and preview), see `help(thematic_with_device)`."
-    )
-    return(set_font_family(families[1]))
+    backend <- tryNULL(readRStudioPreference("graphics_backend"))
+    if (identical("ragg", backend)) {
+      dev_name <- "agg_png"
+    } else {
+      warning(
+        "Rendering custom fonts in the RStudio graphics device requires ",
+        "RStudio 1.4 with an AGG graphics backend. ",
+        if (!is_installed("ragg")) "First, install the ragg package, then ",
+        "Go to Tools -> Global Options -> General -> Graphics -> Backend -> AGG.",
+        call. = FALSE
+      )
+      return(set_font_family(families[1]))
+    }
   }
 
   # Since can_render() needs to open the device to detect font support,
@@ -78,6 +87,16 @@ resolve_font_family <- function(type = c("base", "grid")) {
   type <- match.arg(type)
   for (i in seq_along(families)) {
     family <- families[[i]]
+
+    # Bootstrap 4 defaults to a CSS system font family
+    if (family %in% generic_css_families()) {
+      warning(
+        "Generic CSS font families (e.g. '", family, "') aren't supported. ",
+        "Consider using a Google Font family instead https://fonts.google.com/",
+        call. = FALSE
+      )
+      break
+    }
 
     # If we can already render the font family, do no more!
     try_register_gfont_cache(family)
@@ -243,3 +262,17 @@ dev_new <- function(filename) {
   # but there are a few exceptions (e.g., pdf(), svglite::svglite())
   suppressMessages(dev.new(filename = filename, file = filename))
 }
+
+
+
+# https://drafts.csswg.org/css-fonts-4/#generic-font-families
+generic_css_families <- function() {
+  c(
+    "serif", "sans-serif", "cursive", "fantasy", "monospace",
+    "system-ui", "emoji", "math", "fangsong",
+    "ui-serif", "ui-sans-serif", "ui-monospace", "ui-rounded",
+    # not part of the official spec (earlier versions of system-ui)
+    "-apple-system" , "BlinkMacSystemFont"
+  )
+}
+

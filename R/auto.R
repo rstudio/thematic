@@ -94,6 +94,7 @@ resolve_auto_theme <- function() {
     theme$font <- shiny_font_spec(outputInfo$font) %||%
       autoPreferences$font %||%
       bs_font_spec() %||%
+      rs_font_spec() %||%
       font_spec()
   } else {
     theme$font <- as_font_spec(theme$font)
@@ -127,13 +128,11 @@ bs_theme_colors <- function() {
 
 
 rs_theme_colors <- function() {
-  if (!is_installed("rstudioapi")) return(NULL)
-  if (!is_installed("htmltools")) return(NULL)
+  if (!is_rstudio()) return(NULL)
 
   # Hopefully someday this'll return font/accent info
   # https://github.com/rstudio/rstudioapi/issues/174
-  info <- tryNULL(rstudioapi::getThemeInfo())
-  if (is.null(info)) return(NULL)
+  info <- getThemeInfo()
 
   # These colors were taken manually from the theme preview
   # (they are the token color)
@@ -142,7 +141,7 @@ rs_theme_colors <- function() {
     Ambiance = "#CFB171",
     Chaos = "#27759B",
     Chrome = "#98108D",
-    Clouds= "#98108D",
+    Clouds = "#98108D",
     `Clouds Midnight` = "#9A8767",
     Cobalt = "#F7A600",
     `Crimson Editor` = "#2918FF",
@@ -185,17 +184,8 @@ rs_theme_colors <- function() {
 
 shiny_font_spec <- function(font) {
   if (!length(font)) return(NULL)
-  if (isTRUE(font$renderedFamily %in% generic_css_families())) {
-    warning(
-      "Generic CSS font families (e.g. '", font$renderedFamily, "') aren't supported. ",
-      "Consider using a Google Font family instead https://fonts.google.com/",
-      call. = FALSE
-    )
-    font$renderedFamily <- NULL
-  }
-  families <- as.character(font$renderedFamily %||% font$families)
   font_spec(
-    setdiff(families, generic_css_families()) %||% "",
+    c(font$renderedFamily, font$families),
     scale = size_to_scale(font$size)
   )
 }
@@ -206,10 +196,7 @@ bs_font_spec <- function(){
   family <- bootstraplib::bs_theme_get_variables("font-family-base")
   families <- strsplit(gsub('"', '', family), ", ")[[1]]
   size <- bootstraplib::bs_theme_get_variables("font-size-base")
-  font_spec(
-    setdiff(families, generic_css_families()) %||% "",
-    scale = size_to_scale(size)
-  )
+  font_spec(families, scale = size_to_scale(size))
 }
 
 in_html_document <- function() {
@@ -281,13 +268,55 @@ size_to_scale <- function(size, pointsize = 12) {
 }
 
 
-# https://drafts.csswg.org/css-fonts-4/#generic-font-families
-generic_css_families <- function() {
-  c(
-    "serif", "sans-serif", "cursive", "fantasy", "monospace",
-    "system-ui", "emoji", "math", "fangsong",
-    "ui-serif", "ui-sans-serif", "ui-monospace", "ui-rounded",
-    # not part of the official spec (earlier versions of system-ui)
-    "-apple-system" , "BlinkMacSystemFont"
+rs_font_spec <- function() {
+  if (!is_rstudio()) return(NULL)
+
+  # readRStudioPreference was introduced in RStudio 1.3
+  pts <- tryCatch(readRStudioPreference("font_size_points"), error = function(e) 12)
+
+  # Note that server_editor_font appears in RStudio 1.4
+  # so it'll take awhile for this to be widely supported
+  family <- tryCatch(readRStudioPreference("server_editor_font"), error = function(e) "")
+
+  if (isTRUE(nzchar(family))) {
+    # TODO: respect global device pointsize
+    return(font_spec(family, scale = pts / 12))
+  }
+
+  if (identical(versionInfo()$mode, "server")) {
+    message("Auto font detection in RStudio Server requires RStudio 1.4 or higher.")
+    return(NULL)
+  }
+
+  # Try and read RStudio Desktop editor font preference
+  # https://support.rstudio.com/hc/en-us/articles/200534577-Resetting-RStudio-Desktop-s-State
+  family <- grep(
+    '\\s*"?font.*fixedWidth\\s*=',
+    tryNULL(rstudio_desktop_prefs()),
+    value = TRUE
   )
+  # TODO: if font hasn't been specified, this font.fixedWidth wont appear...
+  # is it correct to just use the default font?
+  if (!length(family)) {
+    return(NULL)
+  }
+  family <- strsplit(family, "=")[[1]][2]
+  family <- sub('^\\s*"?', '', sub('"?\\s*;?\\s*$', '', family))
+  # TODO: respect global device pointsize
+  font_spec(family, scale = pts / 12)
+}
+
+rstudio_desktop_prefs <- function() {
+  if (.Platform$OS.type == "windows") {
+    return(readLines(
+      file.path(Sys.getenv("APPDATA"), "RStudio", "desktop.ini")
+    ))
+  }
+  sys <- Sys.info()[["sysname"]]
+  if (sys == "Darwin") {
+    return(
+      system("defaults read com.rstudio.desktop", intern = TRUE)
+    )
+  }
+  readLines("~/.config/RStudio/desktop.ini")
 }

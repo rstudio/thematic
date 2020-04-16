@@ -19,10 +19,11 @@ Imports:
     grid,
     farver,
     rlang,
-    scales
+    scales,
+    rstudioapi (>= 0.8)
 Suggests:
     systemfonts (>= 0.1.1.9000),
-    ragg,
+    ragg (>= 0.1.5.9000),
     showtext,
     ggplot2,
     lattice,
@@ -31,7 +32,6 @@ Suggests:
     rmarkdown,
     shiny (> 1.4.0.9002),
     bootstraplib,
-    rstudioapi (>= 0.8),
     shinytest (>= 1.3.1.9003),
     htmltools (>= 0.4.0.9003),
     testthat (>= 2.1.0),
