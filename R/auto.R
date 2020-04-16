@@ -130,15 +130,46 @@ rs_theme_colors <- function() {
   if (!is_installed("rstudioapi")) return(NULL)
   if (!is_installed("htmltools")) return(NULL)
 
-  # Maybe someday this'll return font/accent info
+  # Hopefully someday this'll return font/accent info
   # https://github.com/rstudio/rstudioapi/issues/174
   info <- tryNULL(rstudioapi::getThemeInfo())
   if (is.null(info)) return(NULL)
 
-  # TODO: add more editors
+  # These colors were taken manually from the theme preview
+  # (they are the token color)
   info$accent <- switch(
     info$editor,
+    Ambiance = "#CFB171",
+    Chaos = "#27759B",
+    Chrome = "#98108D",
+    Clouds= "#98108D",
+    `Clouds Midnight` = "#9A8767",
+    Cobalt = "#F7A600",
+    `Crimson Editor` = "#2918FF",
+    Dawn = "#80523F",
+    Dracula = "#F785CE",
+    Dreamweaver = "#2918FF",
+    Eclipse = "#86058D",
+    `Idle Fingers` = "#CB8334",
+    Katzenmilch = "#7255B3",
+    `Kr Theme` = "#9FA695",
+    Material = "#DC9D67",
+    Merbivore = "#F37900",
+    `Merbivore Soft` = "#F48A3B",
+    `Mono Industrial` = "#ABA86D",
+    Monokai = "#F0297D",
+    `Pastel On Dark` = "#8486DF",
+    `Solarized Dark` = "#90A300",
+    `Solarized Light` = "#90A300",
+    Textmate = "#2918FF",
+    Tomorrow = "#9265B3",
+    `Tomorrow Night` = "#B99FC4",
     `Tomorrow Night 80s` = "#CFA4D3",
+    `Tomorrow Night Blue` = "#EBC3FF",
+    `Tomorrow Night Bright` = "#C8A2DE",
+    Twilight = "#CFB171",
+    `Vibrant Ink` = "#F57000",
+    Xcode = "#C706AF",
     NA
   )
   rlang::set_names(

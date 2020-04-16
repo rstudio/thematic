@@ -1,5 +1,5 @@
 ---
-title: "Understanding thematic"
+title: "thematic "
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -128,7 +128,7 @@ contourplot(fit ~ wind * temperature | radiation, data = grid,
 detach()
 ```
 
-### Base
+## Base
 
 Simlar to **lattice**, **base** R graphics doesn't have a global distinction between a `qualitative` and `sequential` colourscales, it just has `palette()` (which is closest, semantically, to `qualitative`):
 

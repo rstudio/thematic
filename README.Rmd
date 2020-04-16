@@ -118,7 +118,7 @@ If you have **showtext** installed and custom Google Font rendering still fails 
 
 ## Learn more
 
-For more examples of **thematic** in action, and to gain a better understanding of how it works, see the [understanding article](https://rstudio.github.io/thematic/articles/understanding.html).
+To learn more about **thematic**, see the [demos article](https://rstudio.github.io/thematic/articles/demos.html).
 
 <hr/>
 
