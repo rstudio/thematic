@@ -29,5 +29,5 @@ so that, when the app is deployed, the cache deploys with it.
 }
 }
 \seealso{
-\code{\link[=thematic_begin]{thematic_begin()}}, \code{\link[=font_spec]{font_spec()}}
+\code{\link[=thematic_on]{thematic_on()}}, \code{\link[=font_spec]{font_spec()}}
 }

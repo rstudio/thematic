@@ -10,7 +10,7 @@ Description:
   Theme ggplot2, lattice, and base graphics based on a few choices, including foreground color, background color, accent color,
   and font family. Fonts that aren't available on the system, but are available via download on Google Fonts,
   can be automatically installed for use with the showtext and ragg packages.
-URL: https://github.com/rstudio/thematic#readme
+URL: https://rstudio.github.io/thematic, https://github.com/rstudio/thematic#readme
 Depends: R (>= 2.10)
 Imports:
     utils,
@@ -29,7 +29,9 @@ Suggests:
     stats,
     knitr,
     rmarkdown,
-    shiny (>= 1.4.0.9002),
+    shiny (> 1.4.0.9002),
+    bootstraplib,
+    rstudioapi (>= 0.8),
     shinytest (>= 1.3.1.9003),
     htmltools (>= 0.4.0.9003),
     testthat (>= 2.1.0),
@@ -40,11 +42,14 @@ Suggests:
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Remotes: 
   rstudio/htmltools,
   rstudio/shinytest,
-  rstudio/shiny,
+  rstudio/shiny#2740,
   r-lib/systemfonts,
-  r-lib/ragg
+  r-lib/ragg,
+  rstudio/bootstraplib,
+  rstudio/rmarkdown#1706

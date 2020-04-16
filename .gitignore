@@ -4,4 +4,5 @@
 Untitled*
 README.html
 tmp/
-tests/testthat/Rplots.pdf
+tests/testthat/**/Rplots.pdf
+

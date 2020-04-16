@@ -6,11 +6,6 @@ library(thematic)
 device <- "quartz_png"
 ext <- "png"
 
-thematic_begin("black", "white", font = font_spec("Pacifico", 1.25, update = TRUE))
-onStop(function() {
-  thematic_end()
-})
-
 ui <- fluidPage(
   imageOutput("ggplot"),
   imageOutput("lattice"),
@@ -32,7 +27,7 @@ server <- function(input, output, session) {
   # Knit all the Rmds
   # Note that this is done inside the server function
   # to avoid a timeout issue with shinytest::testApp()
-  rmd_txt <- knitr::knit_expand("../template.Rmd", device = sprintf("'%s'", device))
+  rmd_txt <- knitr::knit_expand("../template_device.Rmd", device = sprintf("'%s'", device))
   res <- callr::r(function(...) { knitr::knit2html(...) }, args = list(text = rmd_txt))
 
   output$ggplot <- render_image(image_info("ggplot", ext))

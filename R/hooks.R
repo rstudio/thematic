@@ -14,34 +14,39 @@ remove_hook <- function(name, hook) {
   setHook(name, hooks[!is_thematic], "replace")
 }
 
+
 base_before_hook <- function() {
-  # Pick the first font family that can successfully render on this device
-  .globals$theme$font$family <- resolve_font_family(
-    .globals$theme$font, type = "base"
-  )
+  # resolves 'auto' values in .globals$theme
+  resolve_auto_theme()
+  # populates .globals$theme$font$family based on the first families we can support
+  resolve_font_family(type = "base")
+  # update the device's bg color
+  knitr_dev_args_set()
+  # update graphical parameters
   base_params_set()
   base_palette_set()
 }
 
 grid_before_hook <- function() {
-  # Pick the first font family that can successfully render on this device
-  .globals$theme$font$family <- resolve_font_family(
-    .globals$theme$font, type = "grid"
-  )
-  # Updating of Geom/Scale defaults is already handled ggplot_build.ggplot_thematic
+  # resolves 'auto' values in .globals$theme
+  resolve_auto_theme()
+  # populates .globals$theme$font$family based on the first families we can support
+  resolve_font_family(type = "grid")
+  # update the device's bg color
+  knitr_dev_args_set()
+  # update ggplot2/lattice defaults
   ggplot_theme_set()
   ggplot_build_set()
   lattice_print_set()
 }
 
 
-resolve_font_family <- function(font, type = c("base", "grid")) {
+resolve_font_family <- function(type = c("base", "grid")) {
+  font <- .globals$theme$font
   families <- font$families
 
-  # The default font family doesn't require special handling
-  if (is_default_family(families)) {
-    return(families)
-  }
+  # Do nothing if default font family
+  if (is_default_spec(font)) return()
 
   # Returns the name of the currently active device
   # (and, if none is active, the name of the one that *will be* used)
@@ -55,7 +60,7 @@ resolve_font_family <- function(font, type = c("base", "grid")) {
       "if you have showtext (or ragg) is installed, this plot should render fine in shiny and rmarkdown. ",
       "To save this plot to a file (and preview), see `help(thematic_with_device)`."
     )
-    return(families[1])
+    return(set_font_family(families[1]))
   }
 
   # Since can_render() needs to open the device to detect font support,
@@ -67,7 +72,7 @@ resolve_font_family <- function(font, type = c("base", "grid")) {
       "Please let us know if you see this warning: https://github.com/rstudio/thematic/issues/new",
       call. = FALSE
     )
-    return(families[1])
+    return(set_font_family(families[1]))
   }
 
   type <- match.arg(type)
@@ -100,9 +105,14 @@ resolve_font_family <- function(font, type = c("base", "grid")) {
       )
     }
   }
-  family
+
+  set_font_family(family)
 }
 
+set_font_family <- function(family) {
+  .globals$theme$font$family <- family
+  family
+}
 
 
 can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {

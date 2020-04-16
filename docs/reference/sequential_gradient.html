@@ -12,8 +12,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/darkly/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
@@ -41,7 +41,7 @@
 
 <meta property="og:title" content="Construct a sequential colorscale from fg, accent, and bg — sequential_gradient" />
 <meta property="og:description" content="Controls the default weighting and direction of the color gradient
-derived from the fg, bg, and accent color (defined in thematic_begin())." />
+derived from the fg, bg, and accent color (defined in thematic_on())." />
 
 
 
@@ -80,13 +80,7 @@ derived from the fg, bg, and accent color (defined in thematic_begin())." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
-<li>
-  <a href="../reference/index.html">Reference</a>
+  <a href="../articles/demos.html">Demos</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -116,7 +110,7 @@ derived from the fg, bg, and accent color (defined in thematic_begin())." />
 
     <div class="ref-description">
     <p>Controls the default weighting and direction of the color gradient
-derived from the <code>fg</code>, <code>bg</code>, and <code>accent</code> color (defined in <code><a href='thematic.html'>thematic_begin()</a></code>).</p>
+derived from the <code>fg</code>, <code>bg</code>, and <code>accent</code> color (defined in <code><a href='thematic.html'>thematic_on()</a></code>).</p>
     </div>
 
     <pre class="usage"><span class='fu'>sequential_gradient</span>(<span class='kw'>fg_weight</span> <span class='kw'>=</span> <span class='fl'>0.75</span>, <span class='kw'>bg_weight</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>fg_low</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>30</span>)</pre>
@@ -147,29 +141,29 @@ low end of the colorscale (rather than the high end).</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list of options for passing to the <code>sequential</code> argument of <code><a href='thematic.html'>thematic_begin()</a></code>.</p>
+    <p>a list of options for passing to the <code>sequential</code> argument of <code><a href='thematic.html'>thematic_on()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span>(<span class='st'>"ggplot2"</span>, <span class='kw'>quietly</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)) {
   <span class='co'># Gradient from fg to accent</span>
   <span class='no'>fg</span> <span class='kw'>&lt;-</span> <span class='fu'>sequential_gradient</span>(<span class='fl'>1</span>, <span class='fl'>0</span>)
-  <span class='fu'><a href='thematic.html'>thematic_begin</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>fg</span>)
+  <span class='fu'><a href='thematic.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>fg</span>)
   <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)
 
   <span class='co'># Gradient from accent -&gt; bg</span>
   <span class='no'>bg</span> <span class='kw'>&lt;-</span> <span class='fu'>sequential_gradient</span>(<span class='fl'>0</span>, <span class='fl'>1</span>)
-  <span class='fu'><a href='thematic.html'>thematic_begin</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>bg</span>)
+  <span class='fu'><a href='thematic.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>bg</span>)
   <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)
 
   <span class='co'># Gradient from mix(accent, fg, 0.5) -&gt; mix(accent, bg, 0.5)</span>
   <span class='no'>mix</span> <span class='kw'>&lt;-</span> <span class='fu'>sequential_gradient</span>(<span class='fl'>0.5</span>, <span class='fl'>0.5</span>)
-  <span class='fu'><a href='thematic.html'>thematic_begin</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>mix</span>)
+  <span class='fu'><a href='thematic.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>mix</span>)
   <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)
 
   <span class='co'># Use fg (instead of bg) for high end of scale</span>
   <span class='no'>mix_flip</span> <span class='kw'>&lt;-</span> <span class='fu'>sequential_gradient</span>(<span class='fl'>0.5</span>, <span class='fl'>0.5</span>, <span class='kw'>fg_low</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
-  <span class='fu'><a href='thematic.html'>thematic_begin</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>mix_flip</span>)
+  <span class='fu'><a href='thematic.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>mix_flip</span>)
   <span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)
 }</div><div class='output co'>#&gt; <span class='warning'>Warning: object 'name' not found</span></div><div class='output co'>#&gt; <span class='warning'>Warning: object 'name' not found</span></div><div class='output co'>#&gt; <span class='warning'>Warning: object 'name' not found</span></div><div class='output co'>#&gt; <span class='warning'>Warning: object 'name' not found</span></div><div class='img'><img src='sequential_gradient-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>

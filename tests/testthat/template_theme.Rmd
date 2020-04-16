@@ -1,26 +1,21 @@
 ---
-title: ""
+title: "Untitled"
 output: 
   html_document_base:
-    theme: null
+    theme: {{theme}}
     self_contained: false
 ---
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   echo = FALSE,
-  fig.path = "./",
-  dev = {{device}}
+  fig.path = "./"
 )
 ```
 
-
 ```{r}
 library(thematic)
-thematic_begin(
-  "#444444", "#e4e4e4", "#749886", 
-  font = font_spec("Liu Jian Mao Cao", scale = 1.25, update = TRUE)
-)
+thematic_on()
 ```
 
 ```{r ggplot}

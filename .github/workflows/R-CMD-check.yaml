@@ -99,10 +99,12 @@ jobs:
 
       # Packages that aren't really worth putting in suggests but are
       # worth testing
+      # NOTE: Installing luahbtex is a temporary fix https://github.com/yihui/tinytex/issues/194
       - name: Install testing dependencies
         run: |
           install.packages(c('sf', 'Cairo', 'patchwork', 'gridExtra', 'tinytex'))
           tinytex::install_tinytex()
+          tinytex::tlmgr_install('luahbtex')
         shell: Rscript {0}
 
       - name: Install phantomjs on windows

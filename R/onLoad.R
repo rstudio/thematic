@@ -2,9 +2,12 @@
   # Leverage rsconnect's pre-deployment hook to copy the font
   # cache over to a directory that we can use on the server
   # https://github.com/rstudio/rsconnect/pull/295/files
-  # TODO: throw warning if this is already set?
+  pre_deploy <- getOption("rsconnect.pre.deploy")
   options(
     rsconnect.pre.deploy = function(app_dir) {
+      if (is.function(pre_deploy)) {
+        pre_deploy(app_dir)
+      }
       font_cache_set(app_dir)
     }
   )

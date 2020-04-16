@@ -1,0 +1,37 @@
+---
+title: ""
+output: 
+  html_document_base:
+    theme: null
+    self_contained: false
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE,
+  fig.path = "./",
+  dev = {{device}}
+)
+```
+
+
+```{r}
+library(thematic)
+thematic_on(
+  "#444444", "#e4e4e4", "#749886", 
+  font = font_spec("Liu Jian Mao Cao", scale = 1.25, update = TRUE)
+)
+```
+
+```{r ggplot}
+library(ggplot2)
+qplot(x = 1:10, y = 1:10, color = 1:10)
+```
+
+```{r lattice}
+lattice::show.settings()
+```
+
+```{r base}
+image(volcano, col = thematic_get_option("sequential"))
+```

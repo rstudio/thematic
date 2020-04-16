@@ -1,14 +1,24 @@
-#' Theme static plots based on a few colors
+#' Automatic and consistent theming of static plots
 #'
-#' Theme ggplot2, lattice, and base graphics based on just a few colors
-#' supplied to [thematic_begin()]. [thematic_begin()] works by modifying global
-#' state (e.g., sets relevant options in [graphics::par()], [grid::gpar()],
-#' [lattice::trellis.par.set()], [ggplot2::theme_set()], etc). To restore
-#' global state to the state before [thematic_begin()] was called,
-#' use [thematic_end()].
+#' Turn on (or off) automatic theming of ggplot2, lattice, and base graphics.
+#' While on, thematic registers [plot.new()]/[grid.newpage()] hooks
+#' that set relevant options (i.e., [graphics::par()], [grid::gpar()],
+#' [lattice::trellis.par.set()], [ggplot2::theme_set()], etc) based on
+#' the current context.
 #'
-#' Colors may be anything understood by [col2rgb()] or `htmltools::parseCssColors()`
-#' (i.e., may be any valid R or CSS color string).
+#' The `bg`, `fg`, `accent`, and `font` arguments all support a value of `'auto'`,
+#' which are all resolved (just before plotting) based on the following (global)
+#' information, where available
+#'
+#' 1. `shiny::getCurrentOutputInfo()`.
+#' 2. [auto_preferences_set()].
+#' 3. `bootstraplib::bs_theme_get_variables()`.
+#' 4. `rstudioapi::getThemeInfo()`.
+#'
+#' Note that if the resolving of `'auto'` for some reason doesn't pick up the
+#' right information, you can always specify values in `thematic_on()`.
+#' Colors (e.g., `bg`, `fg`, `accent`) may be any value understood by [col2rgb()]
+#' or `htmltools::parseCssColors()` (i.e., may be any valid R or CSS color string).
 #'
 #' @param bg a background color.
 #' @param fg a foreground color.
@@ -30,37 +40,42 @@
 #' @export
 #' @examples
 #' # simple dark mode
-#' thematic_begin("black", "white")
+#' thematic_on("black", "white")
 #' plot(1:10)
 #' plot(1:10, col = 1:10)
 #' lattice::show.settings()
 #'
 #' # use any color code
-#' thematic_begin("#444444", "#e4e4e4")
+#' thematic_on("#444444", "#e4e4e4")
 #' plot(1:10)
 #' plot(1:10, col = 1:10)
 #' lattice::show.settings()
 #'
 #' # restores _original_ state
-#' thematic_end()
+#' thematic_off()
 #' plot(1:10)
 #' lattice::show.settings()
 #'
-#' thematic_begin("darkblue", "skyblue", "orange")
+#' thematic_on("darkblue", "skyblue", "orange")
 #' image(volcano)
 #' image(volcano, col = thematic_get_option("sequential"))
 #' lattice::show.settings()
-#' thematic_end()
+#' thematic_off()
 #'
-thematic_begin <- function(bg = NULL, fg = NULL, accent = NA, font = NA,
-                           sequential = sequential_gradient(),
+thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
+                           font = NA, sequential = sequential_gradient(),
                            qualitative = okabe_ito()) {
   old_theme <- .globals$theme
-  .globals$theme <- theme_create(
+  .globals$theme <- list(
     bg = bg, fg = fg, accent = accent,
     qualitative = qualitative, sequential = sequential,
-    font = font
+    font = as_font_spec(font)
   )
+
+  # Set knitr dev.args = list(bg = bg) now (instead of later)
+  # so at least the _next_ chunk has the right bg color.
+  knitr_dev_args_set()
+
   # Register thematic hooks (these hooks modify global state when a new page is drawn)
   set_hooks()
   # Register showtext hooks (for custom font rendering in non-ragg devices)
@@ -70,14 +85,13 @@ thematic_begin <- function(bg = NULL, fg = NULL, accent = NA, font = NA,
   # the plot object in order to set Geom/Scale defaults
   ggplot_build_set()
   lattice_print_set()
-  knitr_dev_args_set()
 
   invisible(old_theme)
 }
 
 #' @rdname thematic
 #' @export
-thematic_end <- function() {
+thematic_off <- function() {
   remove_hooks()
   if (is_installed("showtext")) showtext::showtext_auto(FALSE)
 
@@ -103,7 +117,7 @@ thematic_end <- function() {
 #' @export
 #' @examples
 #' thematic_get()
-#' thematic_begin("darkblue", "skyblue")
+#' thematic_on("darkblue", "skyblue")
 #' thematic_get_option("bg")
 #'
 #' if (interactive()) {
@@ -150,33 +164,6 @@ thematic_get_mixture <- function(amounts = 0.5) {
   scales::colour_ramp(c(fg, bg))(amounts)
 }
 
-
-theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
-  if (inherits(sequential, "thematic_sequential_options")) {
-    sequential <- resolve_sequential_gradient(fg = fg, accent = accent, bg = bg, options = sequential)
-  }
-  colors <- list(
-    bg = bg, fg = fg, accent = accent,
-    qualitative = qualitative, sequential = sequential
-  )
-  theme <- lapply(colors, function(x) {
-    if (identical(x, NA)) return(x)
-    vapply(x, parse_any_color, character(1), USE.NAMES = FALSE)
-  })
-  if (isTRUE(is.na(font))) {
-    font <- font_spec()
-  }
-  if (!inherits(font, "font_spec")) {
-    stop("The `font` argument must be either `NA` or a `font_spec()` object", call. = FALSE)
-  }
-  if (isTRUE(font$update)) {
-    update_gfonts()
-    update_gfonts_cache()
-  }
-  theme$font <- font
-  theme
-}
-
 #' Font specification
 #'
 #' Specify a collection of font families. The first font family supported
@@ -202,19 +189,37 @@ theme_create <- function(bg, fg, accent, qualitative, sequential, font) {
 #' @param quiet whether to suppress download messages.
 #'
 #' @return the input arguments as a list.
-#' @seealso [thematic_with_device()], [thematic_begin()], [font_cache_set()]
+#' @seealso [thematic_with_device()], [thematic_on()], [font_cache_set()]
 #'
 #' @export
 font_spec <- function(families = "", scale = 1, install = is_installed("ragg") || is_installed("showtext"),
                       update = FALSE, quiet = TRUE) {
+
+  if (update) {
+    update_gfonts()
+    update_gfonts_cache()
+  }
+
   structure(
-    list(families = families, scale = scale, install = install, update = update, quiet = quiet),
+    list(families = families, scale = scale, install = install, quiet = quiet),
     class = "font_spec"
   )
 }
 
-is_default_family <- function(x) {
-  identical(x, "")
+is_font_spec <- function(x) {
+  inherits(x, "font_spec")
+}
+
+as_font_spec <- function(font) {
+  if (is_font_spec(font)) return(font)
+  if (isTRUE(is.na(font))) return(font_spec())
+  if (is.character(font)) return(font_spec(font))
+
+  stop("`font` must be either `NA`, a `font_spec()` object, or a character vector", call. = FALSE)
+}
+
+is_default_spec <- function(font) {
+  identical(as_font_spec(font), font_spec())
 }
 
 
@@ -223,7 +228,7 @@ is_default_family <- function(x) {
 #' @param n number of colors.
 #'
 #' @return a vector of color codes.
-#' @seealso [thematic_begin()]
+#' @seealso [thematic_on()]
 #' @references \url{https://jfly.uni-koeln.de/color/}
 #' @export
 okabe_ito <- function(n = NULL) {
@@ -234,7 +239,7 @@ okabe_ito <- function(n = NULL) {
 #' Construct a sequential colorscale from fg, accent, and bg
 #'
 #' Controls the default weighting and direction of the color gradient
-#' derived from the `fg`, `bg`, and `accent` color (defined in `thematic_begin()`).
+#' derived from the `fg`, `bg`, and `accent` color (defined in `thematic_on()`).
 #'
 #' @param fg_weight a number (between 0 and 1) defining much of the `fg`
 #' color should be mixed into the colourscale.
@@ -243,34 +248,33 @@ okabe_ito <- function(n = NULL) {
 #' @param fg_low if `TRUE` (the default), the `fg` color is used for the
 #' low end of the colorscale (rather than the high end).
 #' @param n number of color codes.
-#' @return a list of options for passing to the `sequential` argument of [thematic_begin()].
+#' @return a list of options for passing to the `sequential` argument of [thematic_on()].
 #' @export
 #' @examples
 #'
 #' if (requireNamespace("ggplot2", quietly = TRUE)) {
 #'   # Gradient from fg to accent
 #'   fg <- sequential_gradient(1, 0)
-#'   thematic_begin("black", "white", "salmon", sequential = fg)
+#'   thematic_on("black", "white", "salmon", sequential = fg)
 #'   ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
 #'   # Gradient from accent -> bg
 #'   bg <- sequential_gradient(0, 1)
-#'   thematic_begin("black", "white", "salmon", sequential = bg)
+#'   thematic_on("black", "white", "salmon", sequential = bg)
 #'   ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
 #'   # Gradient from mix(accent, fg, 0.5) -> mix(accent, bg, 0.5)
 #'   mix <- sequential_gradient(0.5, 0.5)
-#'   thematic_begin("black", "white", "salmon", sequential = mix)
+#'   thematic_on("black", "white", "salmon", sequential = mix)
 #'   ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
 #'   # Use fg (instead of bg) for high end of scale
 #'   mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
-#'   thematic_begin("black", "white", "salmon", sequential = mix_flip)
+#'   thematic_on("black", "white", "salmon", sequential = mix_flip)
 #'   ggplot2::qplot(1:10, 1:10, color = 1:10)
 #' }
 #'
 sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30) {
-  # TODO: return a list with special class that gets resolved at theme_create() time
   if (any(fg_weight > 1 | fg_weight < 0)) {
     stop("`fg_weight` must be between 0 and 1.", call. = FALSE)
   }
@@ -283,45 +287,41 @@ sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE
   if (!is.logical(fg_low)) {
     stop("`fg_low` must be `TRUE` or `FALSE`", call. = FALSE)
   }
-  structure(
-    list(fg_weight = fg_weight, bg_weight = bg_weight, fg_low = fg_low, n = n),
-    class = "thematic_sequential_options"
-  )
-}
 
+  # Main idea: Interpolate between [fg+accent -> accent -> bg+accent]
+  # For the endpoints the amount of blending of fg/bg and accent
+  # depends on their perceptual distance
+  function(fg, accent, bg, ...) {
+    accent <- accent[1]
+    if (anyNA(c(fg, accent, bg))) return(NA)
 
-# Main idea: Interpolate between [fg+accent -> accent -> bg+accent]
-# For the endpoints the amount of blending of fg/bg and accent
-# depends on their perceptual distance
-resolve_sequential_gradient <- function(fg, accent, bg, options = sequential_gradient()) {
-  accent <- accent[1]
-  if (anyNA(c(fg, accent, bg))) return(NA)
-
-  fg_dist <- farver::compare_colour(
-    farver::decode_colour(fg), farver::decode_colour(accent),
-    from_space = "rgb", method = "cie2000"
-  )
-  bg_dist <- farver::compare_colour(
-    farver::decode_colour(bg), farver::decode_colour(accent),
-    from_space = "rgb", method = "cie2000"
-  )
-  total_dist <- bg_dist + fg_dist
-
-  rng <- if (options$fg_low) {
-    c(
-      -options$fg_weight * as.numeric(fg_dist / total_dist),
-      options$bg_weight * as.numeric(bg_dist / total_dist)
+    fg_dist <- farver::compare_colour(
+      farver::decode_colour(fg), farver::decode_colour(accent),
+      from_space = "rgb", method = "cie2000"
     )
-  } else {
-    c(
-      -options$bg_weight * as.numeric(bg_dist / total_dist),
-      options$fg_weight * as.numeric(fg_dist / total_dist)
+    bg_dist <- farver::compare_colour(
+      farver::decode_colour(bg), farver::decode_colour(accent),
+      from_space = "rgb", method = "cie2000"
     )
+    total_dist <- bg_dist + fg_dist
+
+    rng <- if (fg_low) {
+      c(
+        -fg_weight * as.numeric(fg_dist / total_dist),
+        bg_weight * as.numeric(bg_dist / total_dist)
+      )
+    } else {
+      c(
+        -bg_weight * as.numeric(bg_dist / total_dist),
+        fg_weight * as.numeric(fg_dist / total_dist)
+      )
+    }
+    grid <- scales::rescale(
+      seq(0, 1, length.out = n),
+      to = pmax(pmin(rng + 0.5, 1), 0)
+    )
+    cols <- if (fg_low) c(fg, accent, bg) else c(bg, accent, fg)
+    scales::colour_ramp(cols, alpha = TRUE)(grid)
   }
-  grid <- scales::rescale(
-    seq(0, 1, length.out = options$n),
-    to = pmax(pmin(rng + 0.5, 1), 0)
-  )
-  cols <- if (options$fg_low) c(fg, accent, bg) else c(bg, accent, fg)
-  scales::colour_ramp(cols, alpha = TRUE)(grid)
 }
+

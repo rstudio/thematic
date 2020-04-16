@@ -1,1 +1,11 @@
+template:
+  params:
+    bootswatch: darkly
+
 destination: docs
+
+navbar:
+  type: default
+  left:
+  - text: Demos
+    href: articles/demos.html

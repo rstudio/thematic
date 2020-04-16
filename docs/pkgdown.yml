@@ -1,6 +1,7 @@
 pandoc: 2.9.2.1
 pkgdown: 1.5.1
 pkgdown_sha: ~
-articles: []
-last_built: 2020-04-14T23:04Z
+articles:
+  understanding: understanding.html
+last_built: 2020-04-16T14:59Z
 

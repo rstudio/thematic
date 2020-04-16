@@ -15,7 +15,7 @@
 #'
 #' library(thematic)
 #' font <- font_spec("Rock Salt", scale = 1.25)
-#' thematic_begin("black", "white", font = font)
+#' thematic_on("black", "white", font = font)
 #' file <- thematic_with_device(plot(1:10), res = 144)
 #' if (interactive()) browseURL(file)
 thematic_with_device <- function(expr, device = default_device(),
@@ -42,14 +42,23 @@ thematic_with_device <- function(expr, device = default_device(),
     )
   }
 
-  if (!is.null(args[[bg_arg]])) {
-    warning(
-      "Did you intend to specify the background color? ",
-      "Thematic will set the background for you based on the current theme.",
-      call. = FALSE
-    )
-  } else {
-    args[[bg_arg]] <- thematic_get_option("bg", "white")
+  args[[bg_arg]] <- args[[bg_arg]] %||%
+    thematic_get_option("bg", "white")
+
+  if (identical(args[[bg_arg]], "auto")) {
+    args[[bg_arg]] <- auto_preferences_get()[["bg"]] %||%
+      bs_theme_colors()[["bg"]] %||%
+      rs_theme_colors()[["bg"]] %||%
+      args[[bg_arg]]
+    if (identical(args[[bg_arg]], "auto")){
+      message(
+        "Couldn't detect an 'auto' bg color to use in the graphics device.",
+        call. = FALSE
+      )
+      args[[bg_arg]] <- "white"
+    } else {
+      args[[bg_arg]] <- htmltools::parseCssColors(args[[bg_arg]])
+    }
   }
 
   # Handle the case where device wants `file` instead of `filename`
@@ -94,7 +103,7 @@ thematic_with_device <- function(expr, device = default_device(),
 default_device <- function(type = c("png", "tiff", "svg", "pdf")) {
   type <- match.arg(type)
 
-  if (type %in% c("png", "tiff") && is_installed("ragg") && !is_installed("showtext")) {
+  if (type %in% c("png", "tiff") && is_installed("ragg")) {
     dev <- switch(
       type,
       png = ragg::agg_png,
@@ -103,7 +112,7 @@ default_device <- function(type = c("png", "tiff", "svg", "pdf")) {
     return(dev)
   }
 
-  if (!is_installed("showtext") && !is_default_family(.globals$theme$font$families)) {
+  if (!is_installed("showtext") && !is_default_spec(.globals$theme$font)) {
     warning(
       "Custom font rendering requires either the showtext or ragg package.",
       call. = FALSE

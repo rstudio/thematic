@@ -36,7 +36,7 @@ one of either the showtext or ragg package(s) are installed.
 
 library(thematic)
 font <- font_spec("Rock Salt", scale = 1.25)
-thematic_begin("black", "white", font = font)
+thematic_on("black", "white", font = font)
 file <- thematic_with_device(plot(1:10), res = 144)
 if (interactive()) browseURL(file)
 }
