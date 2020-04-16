@@ -68,10 +68,17 @@ thematic_with_device <- function(expr, device = default_device(),
     args$filename <- NULL
   }
 
-  # Device management
+  # dev.off() closes the current device, then sets the current
+  # device to the _next_ device, which isn't necessarily the
+  # previously opened device. So, remember the current device now,
+  # then open a new one, then explicitly set the device to the
+  # previous device (so as to not cause side-effects).
+  dev_cur <- dev.cur()
   do.call(device, args)
-  dev <- dev.cur()
-  on.exit(dev.off(dev), add = TRUE)
+  on.exit({
+    dev.off()
+    if (dev_cur > 1) dev.set(dev_cur)
+  }, add = TRUE)
 
   # Let the world know about the device's arguments, so that
   # resolve_font_family() can use them when cloning the device

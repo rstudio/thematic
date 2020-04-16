@@ -135,11 +135,20 @@ can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
   opts <- options(device = dev_fun)
   on.exit(options(opts), add = TRUE)
   tmp <- tempfile()
+
+  # dev.off() closes the current device, then sets the current
+  # device to the _next_ device, which isn't necessarily the
+  # previously opened device. So, remember the current device now,
+  # then open a new one, then explicitly set the device to the
+  # previous device (so as to not cause side-effects).
+  dev_cur <- dev.cur()
   dev_new(filename = tmp)
   on.exit({
     dev.off()
+    if (dev_cur > 1) dev.set(dev_cur)
     unlink(tmp, recursive = TRUE)
   }, add = TRUE)
+
 
   # temporarily disable thematics plot hooks
   # (otherwise, we'd get caught in an infinite loop)
