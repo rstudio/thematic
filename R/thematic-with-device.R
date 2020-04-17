@@ -32,8 +32,8 @@ thematic_with_device <- function(expr, device = default_device(),
   device_args <- names(formals(device))
 
   # do our best to find the background color arg
-  bg_arg <- grep("^background$|^bg$", device_args, value = TRUE)
-  if (!length(bg_arg)) {
+  bg_arg <- grep("^background$|^bg$", device_args, value = TRUE)[1]
+  if (isTRUE(is.na(bg_arg))) {
     stop(
       "Wasn't able to detect the background color argument for the given device, ",
       "so thematic won't automatically set it for you, but you can also set it yourself ",

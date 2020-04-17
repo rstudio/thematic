@@ -52,11 +52,18 @@ resolve_font_family <- function(type = c("base", "grid")) {
   # (and, if none is active, the name of the one that *will be* used)
   dev_name <- infer_device()
 
-  # RStudio 1.4 introduced configurable graphics backends.
-  # It appears ragg is the only option that is able to render
-  # custom fonts at the moment (i.e., showtext with quartz/cairo
-  # doesn't appear to work at the moment)
   if ("RStudioGD" %in% dev_name) {
+    # Disable showtext in RStudio, because it currently doesn't work
+    # at all, and if fact, introduces issues with RStudio 1.4
+    # https://github.com/yixuan/showtext/issues/32
+    # TODO: if and when showtext gets support for RStudio 1.4, we should take advantage
+    # https://github.com/yixuan/showtext/issues/31
+    if (is_installed("showtext")) showtext::showtext_auto(FALSE)
+
+    # RStudio 1.4 introduced configurable graphics backends.
+    # It appears ragg is the only option that is able to render
+    # custom fonts at the moment (i.e., showtext with quartz/cairo
+    # doesn't appear to work at the moment)
     backend <- tryNULL(readRStudioPreference("graphics_backend"))
     if (identical("ragg", backend)) {
       dev_name <- "agg_png"
@@ -70,6 +77,10 @@ resolve_font_family <- function(type = c("base", "grid")) {
       )
       return(set_font_family(families[1]))
     }
+
+  } else if (!is_ragg_device(dev_name)) {
+    # Enable showtext if this is a non-ragg device
+    if (is_installed("showtext")) showtext::showtext_auto()
   }
 
   # Since can_render() needs to open the device to detect font support,
@@ -139,12 +150,13 @@ can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
   # available; instead, it uses whatever match_font(family) gives.
   # Therefore, it seems reasonable to assume the font is available
   # if the match resolves to something other than a generic font family
-  if (dev_name %in% paste0("agg_", c("png", "tiff", "ppm"))) {
-    if (family %in% c("sans", "serif", "mono")) return(TRUE)
+  if (is_ragg_device(dev_name)) {
+    if (family %in% c("sans", "serif", "mono", "emoji")) return(TRUE)
     f <- systemfonts::match_font(family)
     is_available <- !identical(f, systemfonts::match_font("sans")) &&
       !identical(f, systemfonts::match_font("serif")) &&
-      !identical(f, systemfonts::match_font("mono"))
+      !identical(f, systemfonts::match_font("mono")) &&
+      !identical(f, systemfonts::match_font("emoji"))
     return(is_available)
   }
 
@@ -249,7 +261,9 @@ get_device_function <- function(name) {
   )
 }
 
-
+is_ragg_device <- function(dev_name) {
+  dev_name %in% paste0("agg_", c("png", "tiff", "ppm"))
+}
 
 dev_new <- function(filename) {
   # If this is called via thematic_with_device(), then we know

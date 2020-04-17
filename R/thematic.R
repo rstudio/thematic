@@ -76,9 +76,14 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
   # so at least the _next_ chunk has the right bg color.
   knitr_dev_args_set()
 
-  # Register thematic hooks (these hooks modify global state when a new page is drawn)
+  # Remove any existing hooks before registering them
+  # (otherwise, repeated calls to set_hooks will keep adding them)
+  remove_hooks()
   set_hooks()
-  # Register showtext hooks (for custom font rendering in non-ragg devices)
+  # Do the same for showtext, also it's important these hooks
+  # come after thematic since we ight want to disable showtext
+  # in our hooks (see resolve_font_family())
+  if (is_installed("showtext")) showtext::showtext_auto(FALSE)
   if (is_installed("showtext")) showtext::showtext_auto()
 
   # Override ggplot build method mainly because we currently need access to
