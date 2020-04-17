@@ -1,0 +1,109 @@
+---
+title: "thematic in rmarkdown"
+author: "Carson Sievert"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{thematic in rmarkdown}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+`thematic_on()` works everywhere in **rmarkdown** so long as you specify the colors and fonts ([rendering Google Fonts](#gfont-rendering) may require some additional setup, though). When it comes to auto detection, there are 3 situations where it _can_ work:
+
+1. A `runtime: shiny` document where plots are generated via `renderPlot()` (or `renderImage`).
+2. An output format that builds on `html_document_base()` with a non-`NULL` `theme`.
+3. Other output formats that call `auto_preferences_set()` for you.
+
+
+## Auto detection in `html_document`
+
+Auto detection of colors and fonts is (partially) supported for  output formats that build on `html_document_base()` with a non-`NULL` `theme`, for example:
+
+````md
+---
+output: 
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include=FALSE}`r ''`
+library(thematic)
+thematic_on()
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## {.tabset .tabset-pills}
+
+### ggplot
+
+```{r}`r ''`
+library(ggplot2)
+ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), colour = factor(cyl))) +
+        geom_point() +
+        ggrepel::geom_text_repel()
+```
+
+### lattice
+
+```{r}`r ''`
+lattice::show.settings()
+```
+
+### base
+
+```{r}`r ''`
+image(volcano, col = thematic_get_option("sequential"))
+```
+````
+
+```{r, echo = FALSE}
+knitr::include_graphics("https://i.imgur.com/eWXYtis.gif")
+```
+
+Partial support in this case means that auto detection doesn't support custom CSS, but it will detect equivalent styling performed via **bootstraplib**. For example, auto detection wouldn't be able to pick up on custom CSS like this in your document:
+
+```html
+<style> 
+  body{font-family: Pacifico} 
+</style>
+```
+
+However, if you instead style the document via **bootstraplib** code inside the document, then auto detection can pick up on that custom styling (see [here](https://rstudio.github.io/bootstraplib/articles/recipes.html) for more info on styling via **bootstraplib**):
+
+```r
+bootstraplib::bs_theme_fonts("Pacifico")
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("https://i.imgur.com/eWXYtis.gif")
+```
+
+
+## Rendering Google Fonts {#gfont-rendering}
+
+Rendering Google Fonts in **rmarkdown** requires either **showtext** or **ragg** to be installed. **showtext** works with **rmarkdown**'s default graphics devices, so make sure it's installed to render Google Fonts on those devices in **rmarkdown**. If, for some reason, rendering fails, you might need to also make sure the `fig.showtext` [option](https://yihui.org/knitr/options/) is set to `TRUE`.
+
+```r
+# install.packages("showtext")
+knitr::opts_chunk$set(fig.showtext = TRUE)
+```
+
+**thematic** will do this for you when it's loaded (i.e., on `library(thematic)`), but that also means you can't start using **showtext** until the _next_ code chunk.
+
+To use **ragg**'s png device instead, which in some environments (especially hosted ones) can produce higher quality and consistent output in less time (see [here](https://ragg.r-lib.org/) for more details), do the following in a setup code chunk:
+
+```r
+# install.packages("ragg")
+knitr::opts_chunk$set(dev = "ragg_png")
+```
+
+Note that `dev = "ragg_png"` requires **knitr** v1.29 or higher (if you can't use that recent of a version you can also [set the device yourself](https://github.com/r-lib/ragg/issues/29))
+
+## Auto detection in other output formats
+
+Auto detecting in other output formats can in theory work if the output format sets `auto_preferences_set()`.

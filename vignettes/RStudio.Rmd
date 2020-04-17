@@ -1,0 +1,47 @@
+---
+title: "thematic in RStudio"
+author: "Carson Sievert"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{thematic in RStudio}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+`thematic_on()` works everywhere in RStudio so long as you specify the colors and fonts ([rendering Google Fonts](#gfont-rendering) requires very recent build of RStudio, though). Here's a snippet of my `.Rprofile`, which applies automatic colors and the [Fira Sans Condensed](https://fonts.google.com/specimen/Fira+Sans+Condensed) Google Font (a font that's similar, but intentionally not the same my RStudio editor font, [FiraCode](https://github.com/tonsky/FiraCode)). Note also that my [RStudio theme](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes) in this screenshot is Tomorrow Night 80s, but since the colors are automatic, they adjust to whatever theme I happen to be using (the only exception is that `accent='auto'` doesn't currently work with *custom* RStudio themes). It's also worth noting that automatic font detection (i.e. `font='auto'`) is supported on RStudio 1.4 or higher, but actual rendering of that font only works if it resolves to a Google Font (or a font that R/**ragg** already knows about).
+
+```r
+if (interactive() && rstudioapi::isAvailable()) {
+  thematic::thematic_on(font = "Fira Sans Condensed")
+}
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("RStudio.png")
+```
+
+
+## Rendering Google Fonts {#gfont-rendering}
+
+Rendering Google Fonts in RStudio requires RStudio 1.4 (currently only available in the [daily release](https://dailies.rstudio.com/)) with an AGG graphics device backend, which requires the **ragg** package:
+
+```r
+# install.packages("ragg")
+```
+
+To set the AGG backend, in RStudio, go to Tools -> Global Options -> Graphics -> Backend:
+
+```{r, echo = FALSE}
+knitr::include_graphics("backend.png")
+```
+
+
+## Auto theming support
+
+Auto detection of background and foreground should always work in RStudio, but `accent='auto'` is currently limited to non-custom [RStudio themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes). Moreover, `font='auto'` is fully supported on RStudio Server Pro (1.4 or higher), but may not work on RStudio Desktop.

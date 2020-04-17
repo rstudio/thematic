@@ -1,0 +1,18 @@
+#### ggplot
+
+```{r}
+library(ggplot2)
+qplot(1:10)
+```
+
+#### lattice
+
+```{r}
+lattice::show.settings()
+```
+
+#### base
+
+```{r}
+image(volcano, col = thematic_get_option("sequential"))
+```

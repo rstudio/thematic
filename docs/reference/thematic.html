@@ -83,7 +83,19 @@ the current context." />
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
         <li>
-  <a href="../articles/demos.html">Demos</a>
+  <a href="../articles/Shiny.html">Shiny</a>
+</li>
+<li>
+  <a href="../articles/rmarkdown.html">rmarkdown</a>
+</li>
+<li>
+  <a href="../articles/RStudio.html">RStudio</a>
+</li>
+<li>
+  <a href="../articles/Gallery.html">Gallery</a>
+</li>
+<li>
+  <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -190,10 +202,10 @@ or <code><a href='https://rdrr.io/pkg/htmltools/man/parseCssColors.html'>htmltoo
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple dark mode</span>
 <span class='fu'>thematic_on</span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_preferences_set()` is set.</span></div><div class='img'><img src='thematic-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># use any color code</span>
 <span class='fu'>thematic_on</span>(<span class='st'>"#444444"</span>, <span class='st'>"#e4e4e4"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_preferences_set()` is set.</span></div><div class='img'><img src='thematic-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># restores _original_ state</span>
 <span class='fu'>thematic_off</span>()
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic-8.png' alt='' width='700' height='433' /></div><div class='input'>
