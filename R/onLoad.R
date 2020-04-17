@@ -12,6 +12,18 @@
     }
   )
 
+  # Suggested CRAN packages that we need recent versions of
+  register_upgrade_message("systemfonts", "0.2")
+
+  # TODO: bump these to CRAN versions when released
+  register_upgrade_message("ragg", "0.1.5.9000")
+  register_upgrade_message("shinytest", "1.3.1.9003")
+  register_upgrade_message("htmltools", "0.4.0.9003")
+  # these will take longer
+  register_upgrade_message("rmarkdown", "2.2.0")
+  register_upgrade_message("shiny", "1.4.0.9900")
+
+
   if (!is_installed("knitr")) return()
   if (is_installed("showtext")) {
     knitr::opts_chunk$set("fig.showtext" = TRUE)
@@ -22,4 +34,37 @@
       call. = FALSE
     )
   }
+}
+
+
+# Essentially verbatim from shiny:::register_upgrade_message
+register_upgrade_message <- function(pkg, version) {
+  # Is an out-dated version of this package installed?
+  needs_upgrade <- function() {
+    if (system.file(package = pkg) == "")
+      return(FALSE)
+    if (utils::packageVersion(pkg) >= version)
+      return(FALSE)
+    TRUE
+  }
+
+  msg <- sprintf(
+    "thematic is designed to work with '%s' >= %s.
+    Please upgrade via install.packages('%s').",
+    pkg, version, pkg
+  )
+
+  if (pkg %in% loadedNamespaces() && needs_upgrade()) {
+    packageStartupMessage(msg)
+  }
+
+  # Always register hook in case pkg is loaded at some
+  # point the future (or, potentially, but less commonly,
+  # unloaded & reloaded)
+  setHook(
+    packageEvent(pkg, "onLoad"),
+    function(...) {
+      if (needs_upgrade()) packageStartupMessage(msg)
+    }
+  )
 }
