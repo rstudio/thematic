@@ -126,13 +126,15 @@ a font that isn’t already known to R (and isn’t a Google Font), point
 To learn more about how to set up and use **thematic** in various
 environments see these articles:
 
-  - [Shiny](https://rstudio.github.io/thematic/articles/Shiny.html)
+  - [Shiny](https://rstudio.github.io/thematic/articles/shiny.html)
   - [**rmarkdown**](https://rstudio.github.io/thematic/articles/rmarkdown.html)
-  - [RStudio](https://rstudio.github.io/thematic/articles/RStudio.html)
+  - [RStudio](https://rstudio.github.io/thematic/articles/rstudio.html)
 
 Also see the
-[gallery](https://rstudio.github.io/thematic/articles/gallery.html) for
-more inspiration and ideas on how to use thematic.
+[customize](https://rstudio.github.io/thematic/articles/customize.html)
+article to learn more about how to control thematic’s defaults and
+[examples](https://rstudio.github.io/thematic/articles/examples.html) to
+see and learn more about how thematic works in each plotting context.
 
 <!--
 

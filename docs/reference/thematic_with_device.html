@@ -85,13 +85,13 @@ one of either the showtext or ragg package(s) are installed." />
   <a href="../articles/Shiny.html">Shiny</a>
 </li>
 <li>
-  <a href="../articles/rmarkdown.html">rmarkdown</a>
+  <a href="../articles/rmarkdown.html">R Markdown</a>
 </li>
 <li>
   <a href="../articles/RStudio.html">RStudio</a>
 </li>
 <li>
-  <a href="../articles/Gallery.html">Gallery</a>
+  <a href="../articles/customize.html">Customize</a>
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
@@ -170,8 +170,7 @@ match the relevant <code>device</code>.</p></td>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>thematic</span>)
 <span class='no'>font</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='font_spec.html'>font_spec</a></span>(<span class='st'>"Rock Salt"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1.25</span>)
 <span class='fu'><a href='thematic.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='no'>font</span>)
-<span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='fu'>thematic_with_device</span>(<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>), <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>144</span>)
-<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) <span class='fu'><a href='https://rdrr.io/r/utils/browseURL.html'>browseURL</a></span>(<span class='no'>file</span>)</div></pre>
+<span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='fu'>thematic_with_device</span>(<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>), <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>144</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_preferences_set()` is set.</span></div><div class='input'><span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) <span class='fu'><a href='https://rdrr.io/r/utils/browseURL.html'>browseURL</a></span>(<span class='no'>file</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

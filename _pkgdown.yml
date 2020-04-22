@@ -9,11 +9,11 @@ navbar:
   left:
   - text: Shiny
     href: articles/Shiny.html
-  - text: rmarkdown
+  - text: R Markdown
     href: articles/rmarkdown.html
   - text: RStudio
     href: articles/RStudio.html
-  - text: Gallery
-    href: articles/Gallery.html
+  - text: Customize
+    href: articles/customize.html
   - text: Reference
     href: reference/index.html
