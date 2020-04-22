@@ -137,6 +137,35 @@ test_that("ggplot baselines", {
     ), aes(x, y, width = w)) + geom_tile(aes(fill = z))
   })
   expect_doppelganger("GeomViolin", ggplot(mtcars, aes(factor(cyl), mpg)) + geom_violin())
+})
+
+test_that("Scale defaults can be overridden", {
+
+  expect_doppelganger("sequential-color", {
+    ggplot(mtcars, aes(wt, mpg, color = cyl)) +
+      geom_point() +
+      scale_color_gradient2(midpoint = 6)
+  })
+
+  expect_doppelganger("sequential-fill", {
+    ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
+      geom_raster(aes(fill = density)) +
+      scale_fill_gradient2(midpoint = 0.02)
+  })
+
+  expect_doppelganger("qualitative-color", {
+    ggplot(economics_long) +
+      geom_line(aes(date, value01, color = variable)) +
+      scale_color_brewer(palette = "Accent")
+  })
+
+  expect_doppelganger("qualitative-fill", {
+    ggplot(mtcars, aes(mpg, fill = factor(am))) +
+      geom_density() +
+      scale_fill_brewer(palette = "Accent")
+  })
+
+
 
 })
 
