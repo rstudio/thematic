@@ -111,7 +111,8 @@ resolve_auto_theme <- function() {
 
 shiny_output_info <- function() {
   if (!is_installed("shiny")) return(NULL)
-  tryNULL(shiny::getCurrentOutputInfo())
+  info <- tryNULL(shiny::getCurrentOutputInfo())
+  info[c("bg", "fg", "accent", "font")]
 }
 
 bs_theme_colors <- function() {
