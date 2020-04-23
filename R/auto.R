@@ -72,7 +72,7 @@ resolve_auto_theme <- function() {
         "in RStudio, or if `auto_preferences_set()` is set.",
         call. = FALSE
       )
-      theme[[col]] <- NA
+      theme[[col]] <- switch(col, bg = "white", fg = "black", NA)
     } else {
       theme[[col]] <- htmltools::parseCssColors(theme[[col]])
     }
