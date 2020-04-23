@@ -247,9 +247,9 @@ okabe_ito <- function(n = NULL) {
 #' derived from the `fg`, `bg`, and `accent` color (defined in `thematic_on()`).
 #'
 #' @param fg_weight a number (between 0 and 1) defining much of the `fg`
-#' color should be mixed into the colourscale.
+#' color should be mixed into the colorscale.
 #' @param bg_weight a number (between 0 and 1) defining much of the `bg`
-#' color should be mixed into the colourscale.
+#' color should be mixed into the colorscale.
 #' @param fg_low if `TRUE` (the default), the `fg` color is used for the
 #' low end of the colorscale (rather than the high end).
 #' @param n number of color codes.

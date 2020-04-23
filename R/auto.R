@@ -64,13 +64,13 @@ resolve_auto_theme <- function() {
       rsThemeColors[[col]] %||%
       theme[[col]]
     if (identical(theme[[col]], "auto")) {
-      warning(
+      maybe_warn(
         "thematic was unable to resolve `", col, "='auto'`. ",
         "Try providing an actual color (or `NA`) to the `", col, "` argument of `thematic_on()`. ",
         "By the way, 'auto' is only officially supported in `shiny::renderPlot()`, ",
         "some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), ",
         "in RStudio, or if `auto_preferences_set()` is set.",
-        call. = FALSE
+        id = paste0("auto-detection-failure-", col)
       )
       theme[[col]] <- switch(col, bg = "white", fg = "black", NA)
     } else {
@@ -261,9 +261,9 @@ size_to_scale <- function(size, pointsize = 12) {
   tryCatch(
     as.numeric(sub("pt", "", pts)) / (.globals$device$args$pointsize %||% 12),
     warning = function() {
-      warning(
+      maybe_warn(
         "CSS font-size unit of '", size, "' not supported by thematic.",
-        call. = FALSE
+        id = "unsupported-font-size-unit"
       )
       1
     }

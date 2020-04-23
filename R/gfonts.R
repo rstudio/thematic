@@ -4,11 +4,11 @@ try_gfont_download_and_register <- function(family, quiet = TRUE) {
   family_idx <- match(family, google_fonts$family)
 
   if (is.na(family_idx)) {
-    warning(
+    maybe_warn(
       "The font family '", family, "' doesn't appear to be available as a ",
       "Google Font. Try manually downloading and installing it on your system. ",
       "For more info, visit https://github.com/rstudio/thematic#fonts",
-      call. = FALSE
+      id = paste0(family, "-not-a-google-font")
     )
     return(FALSE)
   }
@@ -89,7 +89,10 @@ update_gfonts <- function() {
   .globals$google_fonts <- tryCatch(
     add_gfont_faces(jsonlite::fromJSON(gfont_api_url())$items),
     error = function(e) {
-      warning("Failed to update google fonts", call. = FALSE)
+      maybe_warn(
+        "Failed to update google fonts",
+        id = "update-gfonts-failed"
+      )
       NULL
     }
   )
