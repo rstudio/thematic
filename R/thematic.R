@@ -65,11 +65,12 @@
 thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
                            font = NA, sequential = sequential_gradient(),
                            qualitative = okabe_ito()) {
+
   old_theme <- .globals$theme
   .globals$theme <- list(
-    bg = bg, fg = fg, accent = accent,
-    qualitative = qualitative, sequential = sequential,
-    font = as_font_spec(font)
+    bg = tag_auto(bg), fg = tag_auto(fg), accent = tag_auto(accent),
+    qualitative = qualitative, sequential_func = sequential,
+    font = as_font_spec(tag_auto(font))
   )
 
   # Set knitr dev.args = list(bg = bg) now (instead of later)
@@ -206,7 +207,10 @@ font_spec <- function(families = "", scale = 1, install = is_installed("ragg") |
   }
 
   structure(
-    list(families = families, scale = scale, install = install, quiet = quiet),
+    list(
+      families = tag_auto(families), scale = tag_auto(scale),
+      install = install, quiet = quiet
+    ),
     class = "font_spec"
   )
 }

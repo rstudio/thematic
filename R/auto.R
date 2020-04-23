@@ -44,7 +44,7 @@ resolve_auto_theme <- function() {
 
   # Resolve auto colors, if relevant
   for (col in c("bg", "fg", "accent")) {
-    if (!identical(theme[[col]], "auto")) {
+    if (!is_auto(theme[[col]])) {
       next
     }
     # shiny::getCurrentOutputInfo() gets 1st priority, since its
@@ -63,7 +63,7 @@ resolve_auto_theme <- function() {
       bsThemeColors[[col]] %||%
       rsThemeColors[[col]] %||%
       theme[[col]]
-    if (identical(theme[[col]], "auto")) {
+    if (isTRUE("auto" == theme[[col]])) {
       maybe_warn(
         "thematic was unable to resolve `", col, "='auto'`. ",
         "Try providing an actual color (or `NA`) to the `", col, "` argument of `thematic_on()`. ",
@@ -76,26 +76,44 @@ resolve_auto_theme <- function() {
     } else {
       theme[[col]] <- htmltools::parseCssColors(theme[[col]])
     }
+
+    # Retain auto class so that the _next_ time this hook
+    # gets called we know to resolve the value again
+    # (e.g., renderPlot() executes again, but this time with different styling)
+    theme[[col]] <- as_auto(theme[[col]])
   }
 
-
-  if (is.function(theme$sequential)) {
-    theme$sequential <- do.call(theme$sequential, theme)
+  # resolve sequential
+  theme$sequential <- if (is.function(theme$sequential_func)) {
+     do.call(theme$sequential_func, theme)
+  } else {
+    theme$sequential_func
   }
 
   # Make sure we can parse any non-missing colors
   for (col in c("bg", "fg", "accent", "qualitative", "sequential")) {
     if (isTRUE(is.na(theme[[col]]))) next
-    theme[[col]] <- vapply(theme[[col]], parse_any_color, character(1), USE.NAMES = FALSE)
+    val <- vapply(theme[[col]], parse_any_color, character(1), USE.NAMES = FALSE)
+    # Retain auto class (see comment above)
+    theme[[col]] <- if (is_auto(theme[[col]])) as_auto(val) else val
   }
 
-  if (identical(theme$font$families, "auto")) {
+  if (any(vapply(theme$font, is_auto, logical(1)))) {
     # Note how this matches the order of priority for colors, as well
-    theme$font <- shiny_font_spec(outputInfo$font) %||%
+    spec <- shiny_font_spec(outputInfo$font) %||%
       autoPreferences$font %||%
       bs_font_spec() %||%
       rs_font_spec() %||%
       font_spec()
+
+    # As with colors above, make sure to retain the auto class so that the
+    # _next_ time this hook gets called we know to resolve the value again
+    for (key in names(spec)) {
+      if (is_auto(theme$font[[key]])) {
+        theme$font[[key]] <- as_auto(spec[[key]])
+      }
+    }
+
   } else {
     theme$font <- as_font_spec(theme$font)
   }
@@ -322,4 +340,18 @@ rstudio_desktop_prefs <- function() {
     )
   }
   readLines("~/.config/RStudio/desktop.ini")
+}
+
+
+tag_auto <- function(x) {
+  if (identical(x, "auto")) as_auto(x) else x
+}
+
+as_auto <- function(x) {
+  oldClass(x) <- c("thematic_auto", oldClass(x))
+  x
+}
+
+is_auto <- function(x) {
+  inherits(x, "thematic_auto")
 }
