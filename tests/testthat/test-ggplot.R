@@ -39,7 +39,7 @@ test_that("ggplot baselines", {
   #expect_doppelganger("GeomContourRaster", ggplot(faithfuld, aes(waiting, eruptions, z = density)) + geom_raster(aes(fill = density)) + geom_contour())
   expect_doppelganger("GeomCount", ggplot(mpg, aes(cty, hwy)) + geom_count())
   expect_doppelganger("GeomDensity", ggplot(diamonds, aes(carat)) + geom_density())
-  expect_doppelganger("GeomDensityColor", ggplot(diamonds, aes(depth, fill = cut, colour = cut)) + geom_density(alpha = 0.1))
+  expect_doppelganger("GeomDensityColor", ggplot(diamonds, aes(depth, fill = cut, color = cut)) + geom_density(alpha = 0.1))
   expect_doppelganger("GeomDotPlot",  ggplot(mtcars, aes(x = mpg)) + geom_dotplot())
   expect_doppelganger(
     "GeomError", {
@@ -48,7 +48,7 @@ test_that("ggplot baselines", {
         resp = c(1, 5, 3, 4),
         group = factor(c(1, 2, 1, 2)),
         se = c(0.1, 0.3, 0.3, 0.2)
-      ), aes(resp, trt, colour = group)) + geom_point() +
+      ), aes(resp, trt, color = group)) + geom_point() +
         geom_errorbarh(aes(xmax = resp + se, xmin = resp - se))
     })
   expect_doppelganger("GeomHistogram",  ggplot(diamonds, aes(price, fill = cut)) + geom_histogram(binwidth = 500))
@@ -80,7 +80,7 @@ test_that("ggplot baselines", {
     }
   )
   expect_doppelganger("GeomLine", ggplot(economics_long, aes(date, value01, group = variable)) + geom_line())
-  expect_doppelganger("GeomLine2", ggplot(economics_long, aes(date, value01, colour = variable)) + geom_line())
+  expect_doppelganger("GeomLine2", ggplot(economics_long, aes(date, value01, color = variable)) + geom_line())
   expect_doppelganger("GeomPoint", ggplot(dsample, aes(carat, price)) + geom_point(alpha = 0.1))
   expect_doppelganger("GeomPoint2", ggplot(mtcars, aes(wt, mpg, color = factor(cyl), shape = factor(cyl))) + geom_point())
   expect_doppelganger("GeomRibbon", {
@@ -95,8 +95,8 @@ test_that("ggplot baselines", {
       df <- data.frame(x1 = 2.62, x2 = 3.57, y1 = 21.0, y2 = 15.0)
       ggplot(mtcars, aes(wt, mpg)) +
         geom_point() +
-        geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "curve"), data = df) +
-        geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, colour = "segment"), data = df) +
+        geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2, color = "curve"), data = df) +
+        geom_segment(aes(x = x1, y = y1, xend = x2, yend = y2, color = "segment"), data = df) +
         geom_curve(aes(x = x1, y = y1, xend = x2, yend = y2), data = df, curvature = -0.2)
     }
   )
@@ -110,7 +110,7 @@ test_that("ggplot baselines", {
     })
   expect_doppelganger(
     "GeomSmooth2", {
-      ggplot(mpg, aes(displ, hwy, colour = class)) +
+      ggplot(mpg, aes(displ, hwy, color = class)) +
         geom_point() +
         geom_smooth(se = FALSE, method = lm)
     }
@@ -180,7 +180,7 @@ test_that("sf integration", {
   nc_3857 <- st_transform(nc, "+init=epsg:3857")
   nc_3857$mid <- st_centroid(nc_3857$geometry)
   p <- ggplot(nc_3857) +
-    geom_sf(colour = "white") +
+    geom_sf(color = "white") +
     geom_sf(aes(geometry = mid, size = AREA), show.legend = "point")
 
   expect_doppelganger("GeomSf", p)

@@ -43,7 +43,7 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```{r}`r ''`
 library(ggplot2)
-ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), colour = factor(cyl))) +
+ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = factor(cyl))) +
         geom_point() +
         ggrepel::geom_text_repel()
 ```

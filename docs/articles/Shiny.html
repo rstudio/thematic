@@ -76,7 +76,7 @@
       <h1 data-toc-skip>thematic in shiny</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-04-22</h4>
+            <h4 class="date">2020-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/shiny.Rmd"><code>vignettes/shiny.Rmd</code></a></small>
       <div class="hidden name"><code>shiny.Rmd</code></div>
@@ -107,7 +107,7 @@
   ),
   <span class="kw">server</span> <span class="kw">=</span> <span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>) {
     <span class="no">output</span>$<span class="no">ggplot</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span>({
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">wt</span>, <span class="no">mpg</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">mtcars</span>), <span class="kw">colour</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">cyl</span>))) +
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">wt</span>, <span class="no">mpg</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">mtcars</span>), <span class="kw">color</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">cyl</span>))) +
         <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() +
         <span class="kw pkg">ggrepel</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggrepel/man/geom_text_repel.html">geom_text_repel</a></span>()
     })
@@ -117,7 +117,7 @@
     })
   }
 )</pre></body></html></div>
-<p><img src="https://i.imgur.com/eWXYtis.gif"><!-- --></p>
+<p><img src="https://i.imgur.com/F6Ay1Oc.gif"><!-- --></p>
 <p>Although this particular app leverages <strong>shinythemes</strong> to style the app, <strong>thematic</strong> works regardless of <em>how</em> the app is styled (by the way, the new <strong>bootstraplib</strong> package provides an exciting new alternative to <strong>shinythemes</strong> that soon will be our recommend way to style <strong>shiny</strong> apps). The magic is made possible through <code><a href="https://rdrr.io/pkg/shiny/man/getCurrentOutputInfo.html">shiny::getCurrentOutputInfo()</a></code>, which returns the relevant color and font information for the plot’s HTML container. That means, if you wanted, you could style the plot’s container in CSS and <strong>thematic</strong> would pick up those styles. For example, to change the bg/fg of the ggplot output, you could include the following in your UI definition:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r">tags$style(HTML("#ggplot {color: aqua; 
 background-color: purple }")))</pre></body></html></div>
@@ -140,9 +140,9 @@ background-color: purple }")))</pre></body></html></div>
 <div id="auto-rendering" class="section level2">
 <h2 class="hasAnchor">
 <a href="#auto-rendering" class="anchor"></a>Auto font rendering</h2>
-<p>In the unlikely event that your app uses a font family that is already known to R, you can turn on auto fonts without thinking twice:</p>
+<p>In the event that your app uses a Google Font (or a font family that is already known to R), you can turn on auto fonts without thinking twice:</p>
 <div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="fu"><a href="../reference/thematic.html">thematic_on</a></span>(<span class="kw">font</span> <span class="kw">=</span> <span class="st">"auto"</span>)</pre></body></html></div>
-<p>In the more likely event that your app uses a Google Font, and R can render Google Fonts (see above section), then you can also turn on auto fonts. For exanple, by adding the two following lines to the app’s UI and enabling auto fonts, we get the following result</p>
+<p>By the way, if you’re curious, to use a Google Font (e.g <a href="https://fonts.google.com/specimen/Pacifico">Pacifico</a>), you <em>can</em> import the fonts remotely this way; however, it’s recommended to use local font files (for hosting reasons). The <a href="https://github.com/dreamRs/gfonts"><strong>gfonts</strong> package</a> makes it really easy to download and use Google Fonts locally.</p>
 <div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="no">tags</span>$<span class="fu">link</span>(<span class="kw">href</span><span class="kw">=</span><span class="st">"https://fonts.googleapis.com/css?family=Pacifico"</span>, <span class="kw">rel</span><span class="kw">=</span><span class="st">"stylesheet"</span>)</pre></body></html></div>
 <div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="no">tags</span>$<span class="fu">style</span>(<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/reexports.html">HTML</a></span>(<span class="st">"body{font-family: Pacifico}"</span>))</pre></body></html></div>
 <p><img src="https://i.imgur.com/eWXYtis.gif"><!-- --></p>

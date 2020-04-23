@@ -36,7 +36,7 @@ shinyApp(
   ),
   server = function(input, output) {
     output$ggplot <- renderPlot({
-      ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), colour = factor(cyl))) +
+      ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = factor(cyl))) +
         geom_point() +
         ggrepel::geom_text_repel()
     })
@@ -49,7 +49,7 @@ shinyApp(
 ```
 
 ```{r, echo = FALSE}
-knitr::include_graphics("https://i.imgur.com/eWXYtis.gif")
+knitr::include_graphics("https://i.imgur.com/F6Ay1Oc.gif")
 ```
 
 Although this particular app leverages **shinythemes** to style the app, **thematic** works regardless of _how_ the app is styled (by the way, the new **bootstraplib** package provides an exciting new alternative to **shinythemes** that soon will be our recommend way to style **shiny** apps). The magic is made possible through `shiny::getCurrentOutputInfo()`, which returns the relevant color and font information for the plot's HTML container. That means, if you wanted, you could style the plot's container in CSS and **thematic** would pick up those styles. For example, to change the bg/fg of the ggplot output, you could include the following in your UI definition:
@@ -88,13 +88,13 @@ shinyOptions(shiny.device = ragg::agg_png)
 
 ## Auto font rendering {#auto-rendering}
 
-In the unlikely event that your app uses a font family that is already known to R, you can turn on auto fonts without thinking twice:
+In the event that your app uses a Google Font (or a font family that is already known to R), you can turn on auto fonts without thinking twice:
 
 ```r
 thematic_on(font = "auto")
 ```
 
-In the more likely event that your app uses a Google Font, and R can render Google Fonts (see above section), then you can also turn on auto fonts. For exanple, by adding the two following lines to the app's UI and enabling auto fonts, we get the following result 
+By the way, if you're curious, to use a Google Font (e.g [Pacifico](https://fonts.google.com/specimen/Pacifico)), you *can* import the fonts remotely this way; however, it's recommended to use local font files (for hosting reasons). The [**gfonts** package](https://github.com/dreamRs/gfonts) makes it really easy to download and use Google Fonts locally.
 
 ```r
 tags$link(href="https://fonts.googleapis.com/css?family=Pacifico", rel="stylesheet")
@@ -108,5 +108,3 @@ tags$style(HTML("body{font-family: Pacifico}"))
 ```{r, echo = FALSE}
 knitr::include_graphics("https://i.imgur.com/eWXYtis.gif")
 ```
-
-

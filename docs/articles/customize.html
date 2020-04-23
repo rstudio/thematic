@@ -76,7 +76,7 @@
       <h1 data-toc-skip>Customizing thematic</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-04-22</h4>
+            <h4 class="date">2020-04-23</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/customize.Rmd"><code>vignettes/customize.Rmd</code></a></small>
       <div class="hidden name"><code>customize.Rmd</code></div>
@@ -160,7 +160,7 @@
 <h3 class="hasAnchor">
 <a href="#ggplot2-theme-defaults" class="anchor"></a>ggplot2 theme defaults</h3>
 <p><code><a href="../reference/thematic.html">thematic_on()</a></code> sets a new “complete” <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> default based on <code>bg</code>, <code>fg</code>, and <code>font</code> (based on a modified version of <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray()</a></code>). Since this theme is “complete”, you probably don’t want to mix it with other complete themes (e.g., <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw()</a></code>), but you can definitely override particular aspects with <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code>.</p>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/thematic.html">thematic_on</a></span>(<span class="st">"black"</span>, <span class="st">"white"</span>)
+<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="fu"><a href="../reference/thematic.html">thematic_on</a></span>(<span class="kw">bg</span> <span class="kw">=</span> <span class="st">"#222222"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"white"</span>)
 <span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">wt</span>, <span class="no">mpg</span>)) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(~<span class="no">cyl</span>)
@@ -170,7 +170,7 @@
 <div class="sourceCode" id="cb10"><html><body><pre class="r"><span class="no">my_theme</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span>(
   <span class="kw">panel.background</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="fu"><a href="../reference/thematic_get.html">thematic_get_mixture</a></span>(<span class="fl">0.6</span>)),
   <span class="kw">strip.background</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="fu"><a href="../reference/thematic_get.html">thematic_get_mixture</a></span>(<span class="fl">0.3</span>)),
-  <span class="kw">strip.text</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="kw">colour</span> <span class="kw">=</span> <span class="fu"><a href="../reference/thematic_get.html">thematic_get_mixture</a></span>(<span class="fl">1</span>))
+  <span class="kw">strip.text</span> <span class="kw">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span>(<span class="kw">color</span> <span class="kw">=</span> <span class="fu"><a href="../reference/thematic_get.html">thematic_get_mixture</a></span>(<span class="fl">1</span>))
  )
 <span class="no">p</span> + <span class="no">my_theme</span></pre></body></html></div>
 <p><img src="customize_files/figure-html/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;"></p>
@@ -178,7 +178,7 @@
 <div id="ggplot2-geom-defaults" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ggplot2-geom-defaults" class="anchor"></a>ggplot2 geom defaults</h3>
-<p>For each relevant <code>Geom</code> (e.g., <code>GeomPoint</code>), new <code>Geom$default_aes</code> defaults are set (based on <code>bg</code>, <code>fg</code>, <code>accent</code>, and <code>font</code>). Grayscale colours (e.g., <code>GeomPoint$default_aes$colour</code>) are assigned a mixture of <code>bg</code> and <code>fg</code> whereas non-grayscale colours (e.g., <code>GeomSmooth$default_aes$colour</code>) are assigned the <code>accent</code> colour. It’s important to note these are just global defaults that only take effect if the aesthetic hasn’t been specified:</p>
+<p>For each relevant <code>Geom</code> (e.g., <code>GeomPoint</code>), new <code>Geom$default_aes</code> defaults are set (based on <code>bg</code>, <code>fg</code>, <code>accent</code>, and <code>font</code>). Grayscale colors (e.g., <code>GeomPoint$default_aes$color</code>) are assigned a mixture of <code>bg</code> and <code>fg</code> whereas non-grayscale colors (e.g., <code>GeomSmooth$default_aes$color</code>) are assigned the <code>accent</code> color. It’s important to note these are just global defaults that only take effect if the aesthetic hasn’t been specified:</p>
 <div class="sourceCode" id="cb11"><html><body><pre class="r"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">wt</span>, <span class="no">mpg</span>)) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>(<span class="kw">color</span> <span class="kw">=</span> <span class="st">"red"</span>) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span>(~<span class="no">cyl</span>)</pre></body></html></div>
@@ -187,13 +187,13 @@
 <div id="ggplot2-scale-defaults" class="section level3">
 <h3 class="hasAnchor">
 <a href="#ggplot2-scale-defaults" class="anchor"></a>ggplot2 scale defaults</h3>
-<p><code><a href="../reference/thematic.html">thematic_on()</a></code> sets a new <code>scale_[fill/colour]_continuous()</code> default (via <code>sequential</code>). See the previous section for an extensive discussion on how <code>sequential</code> works and note that adding a relevant (continuous) scale renders <code>sequential</code> irrelevant:</p>
-<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">wt</span>, <span class="no">mpg</span>, <span class="kw">color</span> <span class="kw">=</span> <span class="no">cyl</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_color_gradient2</a></span>(<span class="kw">midpoint</span> <span class="kw">=</span> <span class="fl">6</span>)</pre></body></html></div>
+<p><code><a href="../reference/thematic.html">thematic_on()</a></code> sets a new <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html">scale_fill_continuous()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html">scale_color_continuous()</a></code> defaults (based on <code>sequential</code>). See the previous section for an extensive discussion on how <code>sequential</code> works and note that adding a relevant (continuous) scale renders <code>sequential</code> irrelevant:</p>
+<div class="sourceCode" id="cb12"><html><body><pre class="r"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">waiting</span>, <span class="no">eruptions</span>, <span class="kw">z</span> <span class="kw">=</span> <span class="no">density</span>)) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="no">density</span>)) +
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient2</a></span>(<span class="kw">midpoint</span> <span class="kw">=</span> <span class="fl">0.02</span>)</pre></body></html></div>
 <p><img src="customize_files/figure-html/unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"></p>
 <ol start="4" style="list-style-type: decimal">
-<li>Defines a new <code>scale_[fill/colour]_discrete()</code> default (via <code>qualitative</code>). As with <code>sequential</code> colorscales, adding a relevant (discrete) scale renders <code>qualitative</code> irrelevant:</li>
+<li>Defines a new <code><a href="https://ggplot2.tidyverse.org/reference/scale_hue.html">scale_fill_discrete()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/scale_hue.html">scale_color_discrete()</a></code> defaults (based on <code>qualitative</code>). As with <code>sequential</code> colorscales, adding a relevant (discrete) scale renders <code>qualitative</code> irrelevant:</li>
 </ol>
 <div class="sourceCode" id="cb13"><html><body><pre class="r"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">economics_long</span>) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">date</span>, <span class="no">value01</span>, <span class="kw">color</span> <span class="kw">=</span> <span class="no">variable</span>)) +
@@ -202,7 +202,7 @@
 <p>As a side note, when it comes to 3rd party <strong>ggplot2</strong> extension packages, <strong>thematic</strong> should work as expected (<a href="https://github.com/rstudio/thematic">let us know if it doesn’t</a>) as long as those extension packages aren’t hard coding defaults in un-expected ways.</p>
 <div class="sourceCode" id="cb14"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">GGally</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/GGally/man/ggpairs.html">ggpairs</a></span>(
-  <span class="no">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">colour</span> <span class="kw">=</span> <span class="no">Species</span>),
+  <span class="no">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">color</span> <span class="kw">=</span> <span class="no">Species</span>),
   <span class="kw">upper</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw">continuous</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/GGally/man/wrap.html">wrap</a></span>(<span class="no">ggally_cor</span>, <span class="kw">displayGrid</span> <span class="kw">=</span> <span class="fl">FALSE</span>, <span class="kw">alignPercent</span> <span class="kw">=</span> <span class="fl">0.8</span>))
 )</pre></body></html></div>
 <p><img src="customize_files/figure-html/unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;"></p>
@@ -210,12 +210,14 @@
 <div id="lattice" class="section level3">
 <h3 class="hasAnchor">
 <a href="#lattice" class="anchor"></a>Lattice</h3>
-<p><strong>thematic</strong> also works with <strong>lattice</strong>; however, beware that theming decisions are made so that <strong>lattice</strong> plots look somewhat similar to <strong>ggplot2</strong>. Also, similar to <strong>base</strong> graphics, <strong>lattice</strong> doesn’t have a global distinction between a <code>qualitative</code> and <code>sequential</code> colourscales, so <code>sequential</code> isn’t used in <strong>lattice</strong>. Instead, as with the true <strong>lattice</strong> default, the “regions” colourscale interpolate between <code>qualitative[1]</code>, <code>bg</code>, and <code>qualitative[2]</code>.</p>
+<p><strong>thematic</strong> also works with <strong>lattice</strong>; however, beware that theming decisions are made so that <strong>lattice</strong> plots look somewhat similar to <strong>ggplot2</strong> (i.e. panel background is a mixture of <code>bg</code> and <code>fg</code> instead of just <code>bg</code>). Also, similar to <strong>base</strong> graphics, <strong>lattice</strong> doesn’t have a global distinction between a <code>qualitative</code> and <code>sequential</code> colorscales, so <code>sequential</code> isn’t used in <strong>lattice</strong>. Instead, for consistency with <strong>lattice</strong>’s default, the “regions” colorscale interpolates between <code>qualitative[1]</code>, <code>bg</code>, and <code>qualitative[2]</code>.</p>
 <p>(Btw, for <strong>lattice</strong>, <code>accent</code> may be of length 2. The first is used for ‘stroke’ and the second for ‘fill’).</p>
-<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lattice</span>)
+<div class="sourceCode" id="cb15"><html><body><pre class="r"><span class="co"># accent may be of length 2 (stroke and fill)</span>
+<span class="fu"><a href="../reference/thematic.html">thematic_on</a></span>(<span class="kw">bg</span> <span class="kw">=</span> <span class="st">"#222222"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">accent</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"purple"</span>, <span class="st">"red"</span>))
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lattice</span>)
 <span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html">show.settings</a></span>()</pre></body></html></div>
 <p><img src="customize_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>And here’s an real example (taken from <code><a href="https://rdrr.io/pkg/lattice/man/levelplot.html">?lattice::levelplot</a></code>) of where “regions” is relevant:</p>
+<p>It might seem strange to have <code>bg</code> define the middle of the color gradient, but it’s intentional so that it works well with <code>lattic::contourplot()</code> (or other cases where text wants to be placed on top of the gradient):</p>
 <div class="sourceCode" id="cb16"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">stats</span>)
 <span class="fu"><a href="https://rdrr.io/r/base/attach.html">attach</a></span>(<span class="no">environmental</span>)
 <span class="no">ozo.m</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/loess.html">loess</a></span>((<span class="no">ozone</span>^(<span class="fl">1</span>/<span class="fl">3</span>)) ~ <span class="no">wind</span> * <span class="no">temperature</span> * <span class="no">radiation</span>,
@@ -235,20 +237,20 @@
 <span class="fu"><a href="https://rdrr.io/r/base/detach.html">detach</a></span>()</pre></body></html></div>
 <p><img src="customize_files/figure-html/unnamed-chunk-17-1.png" width="100%" style="display: block; margin: auto;"></p>
 </div>
-</div>
-<div id="base" class="section level2">
-<h2 class="hasAnchor">
-<a href="#base" class="anchor"></a>Base</h2>
-<p>Similar to <strong>lattice</strong>, <strong>base</strong> R graphics doesn’t have a global distinction between a <code>qualitative</code> and <code>sequential</code> colourscales, it just has <code><a href="https://rdrr.io/r/grDevices/palette.html">palette()</a></code> (which is closest, semantically, to <code>qualitative</code>):</p>
+<div id="base" class="section level3">
+<h3 class="hasAnchor">
+<a href="#base" class="anchor"></a>Base</h3>
+<p>Similar to <strong>lattice</strong>, <strong>base</strong> R graphics doesn’t have a global distinction between a <code>qualitative</code> and <code>sequential</code> colorscales, it just has <code><a href="https://rdrr.io/r/grDevices/palette.html">palette()</a></code> (which is closest, semantically, to <code>qualitative</code>):</p>
 <div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
 <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">100</span>))
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>:<span class="fl">5</span>, <span class="kw">each</span> <span class="kw">=</span> <span class="fl">5</span>), <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>:<span class="fl">5</span>, <span class="fl">5</span>), <span class="kw">col</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">25</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">25</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></body></html></div>
 <p><img src="customize_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;"></p>
-<p>However, do know that you can supply the current sequential colourscale to individual plotting functions by doing something like <code>col = thematic_get_option("sequential")</code>:</p>
+<p>However, do know that you can supply the current sequential colorscale to individual plotting functions by doing something like <code>col = thematic_get_option("sequential")</code>:</p>
 <div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
 <span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span>(<span class="no">volcano</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span>(<span class="no">volcano</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="../reference/thematic_get.html">thematic_get_option</a></span>(<span class="st">"sequential"</span>))</pre></body></html></div>
 <p><img src="customize_files/figure-html/unnamed-chunk-19-1.png" width="100%" style="display: block; margin: auto;"></p>
+</div>
 </div>
   </div>
 

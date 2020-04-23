@@ -123,7 +123,7 @@ Also, note that `thematic_on()` modifies global defaults via `ggplot2::theme_set
 `thematic_on()` sets a new "complete" `theme()` default based on `bg`, `fg`, and `font` (based on a modified version of `theme_gray()`). Since this theme is "complete", you probably don't want to mix it with other complete themes (e.g., `theme_bw()`), but you can definitely override particular aspects with `theme()`.
 
 ```{r}
-thematic_on("black", "white")
+thematic_on(bg = "#222222", fg = "white")
 p <- ggplot(mtcars, aes(wt, mpg)) + 
   geom_point() +
   facet_wrap(~cyl)
@@ -136,14 +136,14 @@ By the way, it's worth noting that thematic uses a fairly arbitrary amount of mi
 my_theme <- theme(
   panel.background = element_rect(fill = thematic_get_mixture(0.6)),
   strip.background = element_rect(fill = thematic_get_mixture(0.3)),
-  strip.text = element_text(colour = thematic_get_mixture(1))
+  strip.text = element_text(color = thematic_get_mixture(1))
  )
 p + my_theme
 ```
 
 ### ggplot2 geom defaults
 
-For each relevant `Geom` (e.g., `GeomPoint`), new `Geom$default_aes` defaults are set (based on `bg`, `fg`, `accent`, and `font`). Grayscale colours (e.g., `GeomPoint$default_aes$colour`) are assigned a mixture of `bg` and `fg` whereas non-grayscale colours (e.g., `GeomSmooth$default_aes$colour`) are assigned the `accent` colour. It's important to note these are just global defaults that only take effect if the aesthetic hasn't been specified:
+For each relevant `Geom` (e.g., `GeomPoint`), new `Geom$default_aes` defaults are set (based on `bg`, `fg`, `accent`, and `font`). Grayscale colors (e.g., `GeomPoint$default_aes$color`) are assigned a mixture of `bg` and `fg` whereas non-grayscale colors (e.g., `GeomSmooth$default_aes$color`) are assigned the `accent` color. It's important to note these are just global defaults that only take effect if the aesthetic hasn't been specified:
 
 ```{r}
 ggplot(mtcars, aes(wt, mpg)) + 
@@ -153,15 +153,15 @@ ggplot(mtcars, aes(wt, mpg)) +
 
 ### ggplot2 scale defaults
 
-`thematic_on()` sets a new `scale_[fill/colour]_continuous()` default (via `sequential`). See the previous section for an extensive discussion on how `sequential` works and note that  adding a relevant (continuous) scale renders `sequential` irrelevant:
+`thematic_on()` sets a new `scale_fill_continuous()` and `scale_color_continuous()` defaults (based on `sequential`). See the previous section for an extensive discussion on how `sequential` works and note that  adding a relevant (continuous) scale renders `sequential` irrelevant:
 
 ```{r}
-ggplot(mtcars, aes(wt, mpg, color = cyl)) +
-  geom_point() +
-  scale_color_gradient2(midpoint = 6)
+ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
+  geom_raster(aes(fill = density)) +
+  scale_fill_gradient2(midpoint = 0.02)
 ```
 
-4. Defines a new `scale_[fill/colour]_discrete()` default (via `qualitative`). As with `sequential` colorscales, adding a relevant (discrete) scale renders `qualitative` irrelevant:
+4. Defines a new `scale_fill_discrete()` and `scale_color_discrete()` defaults (based on `qualitative`). As with `sequential` colorscales, adding a relevant (discrete) scale renders `qualitative` irrelevant:
 
 ```{r}
 ggplot(economics_long) +
@@ -174,23 +174,25 @@ As a side note, when it comes to 3rd party **ggplot2** extension packages, **the
 ```{r, fig.asp = 0.8}
 library(GGally)
 ggpairs(
-  iris, aes(colour = Species),
+  iris, aes(color = Species),
   upper = list(continuous = wrap(ggally_cor, displayGrid = FALSE, alignPercent = 0.8))
 )
 ```
 
 ### Lattice
 
-**thematic** also works with **lattice**; however, beware that theming decisions are made so that **lattice** plots look somewhat similar to **ggplot2**. Also, similar to **base** graphics, **lattice** doesn't have a global distinction between a `qualitative` and `sequential` colourscales, so `sequential` isn't used in **lattice**. Instead, as with the true **lattice** default, the "regions" colourscale interpolate between `qualitative[1]`, `bg`, and `qualitative[2]`.
+**thematic** also works with **lattice**; however, beware that theming decisions are made so that **lattice** plots look somewhat similar to **ggplot2** (i.e. panel background is a mixture of `bg` and `fg` instead of just `bg`). Also, similar to **base** graphics, **lattice** doesn't have a global distinction between a `qualitative` and `sequential` colorscales, so `sequential` isn't used in **lattice**. Instead, for consistency with **lattice**'s default, the "regions" colorscale interpolates between `qualitative[1]`, `bg`, and `qualitative[2]`.
 
 (Btw, for **lattice**, `accent` may be of length 2. The first is used for 'stroke' and the second for 'fill').
 
 ```{r}
+# accent may be of length 2 (stroke and fill)
+thematic_on(bg = "#222222", fg = "white", accent = c("purple", "red"))
 library(lattice)
 show.settings()
 ```
 
-And here's an real example (taken from `?lattice::levelplot`) of where "regions" is relevant: 
+It might seem strange to have `bg` define the middle of the color gradient, but it's intentional so that it works well with `lattic::contourplot()` (or other cases where text wants to be placed on top of the gradient):
 
 ```{r}
 library(stats)
@@ -212,9 +214,9 @@ contourplot(fit ~ wind * temperature | radiation, data = grid,
 detach()
 ```
 
-## Base
+### Base
 
-Similar to **lattice**, **base** R graphics doesn't have a global distinction between a `qualitative` and `sequential` colourscales, it just has `palette()` (which is closest, semantically, to `qualitative`):
+Similar to **lattice**, **base** R graphics doesn't have a global distinction between a `qualitative` and `sequential` colorscales, it just has `palette()` (which is closest, semantically, to `qualitative`):
 
 ```{r}
 par(mfrow = c(1, 2))
@@ -222,7 +224,7 @@ hist(rnorm(100))
 plot(rep(1:5, each = 5), rep(1:5, 5), col = 1:25, pch = 1:25, cex = 5)
 ```
 
-However, do know that you can supply the current sequential colourscale to individual plotting functions by doing something like `col = thematic_get_option("sequential")`:
+However, do know that you can supply the current sequential colorscale to individual plotting functions by doing something like `col = thematic_get_option("sequential")`:
 
 ```{r}
 par(mfrow = c(1, 2))

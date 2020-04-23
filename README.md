@@ -93,11 +93,14 @@ opt-in to font detection:
 thematic_on(font = "auto")
 ```
 
-Auto theming works best with a **shiny** runtime, but it can also work
-under certain conditions inside **rmarkdown** and RStudio. For a quick
-demonstration, we had a **shiny** app styled with a dark background,
-light foreground, and a Google Font (e.g. Pacifico), **thematic** can
-automatically mimic those styles in the R plots.
+Auto theming works best with a [**shiny**
+runtime](https://rstudio.github.io/thematic/articles/shiny.html), but it
+can also work under certain conditions inside
+[**rmarkdown**](https://rstudio.github.io/thematic/articles/rmarkdown.html)
+and [RStudio](https://rstudio.github.io/thematic/articles/rstudio.html).
+For a quick demonstration, here’s a **shiny** app styled with a dark
+background, light foreground, and a Google Font (e.g. Pacifico),
+**thematic** can automatically mimic those styles in the R plots.
 
 <img src="https://i.imgur.com/eWXYtis.gif" width="70%" style="display: block; margin: auto;" />
 
@@ -127,7 +130,8 @@ To learn more about how to set up and use **thematic** in various
 environments see these articles:
 
   - [Shiny](https://rstudio.github.io/thematic/articles/shiny.html)
-  - [**rmarkdown**](https://rstudio.github.io/thematic/articles/rmarkdown.html)
+  - [R
+    Markdown](https://rstudio.github.io/thematic/articles/rmarkdown.html)
   - [RStudio](https://rstudio.github.io/thematic/articles/rstudio.html)
 
 Also see the

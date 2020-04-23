@@ -87,7 +87,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 thematic_on(font = "auto")
 ```
 
-Auto theming works best with a **shiny** runtime, but it can also work under certain conditions inside **rmarkdown** and RStudio. For a quick demonstration, we had a **shiny** app styled with a dark background, light foreground, and a Google Font (e.g. Pacifico), **thematic** can automatically mimic those styles in the R plots.
+Auto theming works best with a [**shiny** runtime](https://rstudio.github.io/thematic/articles/shiny.html), but it can also work under certain conditions inside [**rmarkdown**](https://rstudio.github.io/thematic/articles/rmarkdown.html) and [RStudio](https://rstudio.github.io/thematic/articles/rstudio.html). For a quick demonstration, here's a **shiny** app styled with a dark background, light foreground, and a Google Font (e.g. Pacifico), **thematic** can automatically mimic those styles in the R plots.
 
 ```{r, echo = FALSE}
 knitr::include_graphics("https://i.imgur.com/eWXYtis.gif")
@@ -106,7 +106,7 @@ point `sysfonts::font_add()` (for **showtext**) or `systemfonts::register_font()
 To learn more about how to set up and use **thematic** in various environments see these articles:
 
 * [Shiny](https://rstudio.github.io/thematic/articles/shiny.html)
-* [**rmarkdown**](https://rstudio.github.io/thematic/articles/rmarkdown.html)
+* [R Markdown](https://rstudio.github.io/thematic/articles/rmarkdown.html)
 * [RStudio](https://rstudio.github.io/thematic/articles/rstudio.html)
 
 Also see the [customize](https://rstudio.github.io/thematic/articles/customize.html) article to learn more about how to control thematic's defaults and [examples](https://rstudio.github.io/thematic/articles/examples.html) to see and learn more about how thematic works in each plotting context.
