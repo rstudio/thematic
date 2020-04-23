@@ -48,6 +48,16 @@ resolve_font_family <- function(type = c("base", "grid")) {
   # Do nothing if default font family
   if (is_default_spec(font)) return()
 
+  # Make sure fig.showtext = TRUE in knitr (if this is a non-ragg device)
+  # (We set this .onLoad, but it only applies for the _next_ chunk)
+  if (isTRUE(getOption("knitr.in.progress"))) {
+    dev <- knitr::opts_current$get("dev")
+    show <- knitr::opts_current$get("fig.showtext")
+    if (!identical(show, TRUE) && !identical(dev, "ragg_png")) {
+      stop("The fig.showtext code chunk option must be TRUE")
+    }
+  }
+
   # Returns the name of the currently active device
   # (and, if none is active, the name of the one that *will be* used)
   dev_name <- infer_device()
