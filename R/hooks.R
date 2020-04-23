@@ -100,13 +100,14 @@ resolve_font_family <- function(type = c("base", "grid")) {
     family <- families[[i]]
 
     # Bootstrap 4 defaults to a CSS system font family
+    # TODO: consider an option to suppress?
     if (family %in% generic_css_families()) {
       warning(
         "Generic CSS font families (e.g. '", family, "') aren't supported. ",
         "Consider using a Google Font family instead https://fonts.google.com/",
         call. = FALSE
       )
-      break
+      next
     }
 
     # If we can already render the font family, do no more!
