@@ -45,10 +45,3 @@ LazyData: true
 VignetteBuilder: knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
-Remotes: 
-  rstudio/htmltools,
-  rstudio/shinytest,
-  rstudio/shiny#2740,
-  r-lib/ragg,
-  rstudio/bootstraplib,
-  rstudio/rmarkdown#1706

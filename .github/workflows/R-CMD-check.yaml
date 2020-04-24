@@ -102,6 +102,8 @@ jobs:
       # NOTE: Installing luahbtex is a temporary fix https://github.com/yihui/tinytex/issues/194
       - name: Install testing dependencies
         run: |
+          # TODO: remove me after next release cycle
+          remotes::install_github(c('rstudio/htmltools', 'rstudio/shinytest', 'rstudio/shiny#2740', 'r-lib/ragg', 'rstudio/bootstraplib', 'rstudio/rmarkdown#1706'))
           install.packages(c('sf', 'Cairo', 'patchwork', 'gridExtra', 'tinytex'))
           tinytex::install_tinytex()
           tinytex::tlmgr_install('luahbtex')
