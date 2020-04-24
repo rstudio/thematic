@@ -45,20 +45,23 @@ thematic_with_device <- function(expr, device = default_device(),
   args[[bg_arg]] <- args[[bg_arg]] %||%
     thematic_get_option("bg", "white")
 
-  if (identical(args[[bg_arg]], "auto")) {
+  # Resolve bg = "auto" in a similar manner to resolve_auto_theme()
+  # (i.e., allow auto values to be repeatedly resolved)
+  if (is_auto(args[[bg_arg]])) {
+    # Should this also consider shiny::getCurrentOutputInfo()?
     args[[bg_arg]] <- auto_preferences_get()[["bg"]] %||%
       bs_theme_colors()[["bg"]] %||%
-      rs_theme_colors()[["bg"]] %||%
       args[[bg_arg]]
-    if (identical(args[[bg_arg]], "auto")){
-      message(
+    if (isTRUE("auto" == args[[bg_arg]])) {
+      maybe_warn(
         "Couldn't detect an 'auto' bg color to use in the graphics device.",
-        call. = FALSE
+        id = "with-device-bg-auto"
       )
       args[[bg_arg]] <- "white"
     } else {
       args[[bg_arg]] <- htmltools::parseCssColors(args[[bg_arg]])
     }
+    args[[bg_arg]] <- as_auto(args[[bg_arg]])
   }
 
   # Handle the case where device wants `file` instead of `filename`

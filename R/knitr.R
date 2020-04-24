@@ -6,23 +6,27 @@ knitr_dev_args_set <- function() {
 
   # resolve `bg = 'auto'`
   bg <- .globals$theme$bg
-  if (identical(bg, "auto")) {
+
+  # Resolve bg = "auto" in a similar manner to resolve_auto_theme()
+  # (i.e., allow auto values to be repeatedly resolved)
+  if (is_auto(bg)) {
     bg <- auto_preferences_get()[["bg"]] %||%
       bs_theme_colors()[["bg"]] %||%
       bg
-    if (identical(bg, "auto")){
-      warning(
+    if (isTRUE("auto" == bg)) {
+      maybe_warn(
         "Couldn't detect an 'auto' bg color for the knitr dev",
-        call. = FALSE
+        id = "knitr-device-bg-auto"
       )
-      return()
+      bg <- "white"
     } else {
       bg <- htmltools::parseCssColors(bg)
     }
+    bg <- as_auto(bg)
   }
 
   dev <- knitr::opts_chunk$get("dev")
-  old_args <-  knitr::opts_chunk$get("dev.args")
+  old_args <- knitr::opts_chunk$get("dev.args")
   # Support ragg device if and when it's officially supported
   # https://github.com/yihui/knitr/pull/1834
   new_args <- rlang::set_names(

@@ -63,14 +63,15 @@
 #' thematic_off()
 #'
 thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
-                           font = NA, sequential = sequential_gradient(),
-                           qualitative = okabe_ito()) {
+                        font = NA, sequential = sequential_gradient(),
+                        qualitative = okabe_ito()) {
 
   old_theme <- .globals$theme
+
   .globals$theme <- list(
     bg = tag_auto(bg), fg = tag_auto(fg), accent = tag_auto(accent),
     qualitative = qualitative, sequential_func = sequential,
-    font = as_font_spec(tag_auto(font))
+    font = as_font_spec(font)
   )
 
   # Set knitr dev.args = list(bg = bg) now (instead of later)
@@ -222,6 +223,7 @@ is_font_spec <- function(x) {
 as_font_spec <- function(font) {
   if (is_font_spec(font)) return(font)
   if (isTRUE(is.na(font))) return(font_spec())
+  if (identical(font, "auto")) return(font_spec(tag_auto(font), tag_auto(font)))
   if (is.character(font)) return(font_spec(font))
 
   stop("`font` must be either `NA`, a `font_spec()` object, or a character vector", call. = FALSE)
