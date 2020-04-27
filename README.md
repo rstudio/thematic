@@ -13,10 +13,8 @@ status](https://www.r-pkg.org/badges/version/thematic)](https://CRAN.R-project.o
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-Automatic and consistent theming of **ggplot2**, **lattice**, and
-**base** graphics. In addition to automatic detection and adoption of
-relevant colors and fonts in **shiny**, **rmarkdown**, and RStudio,
-**thematic** also sets color-blind safe defaults for color scales.
+Unified and automatic theming of **ggplot2**, **lattice**, and **base**
+R graphics.
 
 ## Installation
 

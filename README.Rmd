@@ -21,6 +21,8 @@ knitr::opts_chunk$set(
   message = FALSE,
   fig.retina = 2
 )
+knitr::knit_hooks$set(optipng = knitr::hook_optipng)
+knitr::opts_chunk$set(optipng = "")
 ```
 
 # thematic
@@ -31,7 +33,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-Automatic and consistent theming of **ggplot2**, **lattice**, and **base** graphics. In addition to automatic detection and adoption of relevant colors and fonts in **shiny**, **rmarkdown**, and RStudio, **thematic** also sets color-blind safe defaults for color scales.
+Unified and automatic theming of **ggplot2**, **lattice**, and **base** R graphics.
 
 ## Installation
 

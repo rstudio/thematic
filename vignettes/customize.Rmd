@@ -23,6 +23,8 @@ knitr::opts_chunk$set(
   message = FALSE,
   fig.retina = 2
 )
+knitr::knit_hooks$set(optipng = knitr::hook_optipng)
+knitr::opts_chunk$set(optipng = "")
 ```
 
 There are two main ways to customize styling produced by **thematic**: (1) specify the global settings in `thematic_on()` and/or (2) modify defaults on the local (i.e., plot) level. 
@@ -153,7 +155,7 @@ ggplot(mtcars, aes(wt, mpg)) +
 
 ### ggplot2 scale defaults
 
-`thematic_on()` sets a new `scale_fill_continuous()` and `scale_color_continuous()` defaults (based on `sequential`). See the previous section for an extensive discussion on how `sequential` works and note that  adding a relevant (continuous) scale renders `sequential` irrelevant:
+`thematic_on()` sets a new `scale_fill_continuous()` and `scale_color_continuous()` defaults (based on `sequential`). See the previous section for an extensive discussion on how `sequential` works and note that adding a relevant (continuous) scale renders `sequential` irrelevant:
 
 ```{r}
 ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
@@ -161,12 +163,12 @@ ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
   scale_fill_gradient2(midpoint = 0.02)
 ```
 
-4. Defines a new `scale_fill_discrete()` and `scale_color_discrete()` defaults (based on `qualitative`). As with `sequential` colorscales, adding a relevant (discrete) scale renders `qualitative` irrelevant:
+It also defines new `scale_fill_discrete()` and `scale_color_discrete()` defaults (based on `qualitative`). As with `sequential` colorscales, adding a relevant (discrete) scale renders `qualitative` irrelevant:
 
 ```{r}
 ggplot(economics_long) +
   geom_line(aes(date, value01, color = variable)) +
-  scico::scale_color_scico_d()
+  scale_color_brewer(type = "qual")
 ```
 
 As a side note, when it comes to 3rd party **ggplot2** extension packages, **thematic** should work as expected ([let us know if it doesn't](https://github.com/rstudio/thematic)) as long as those extension packages aren't hard coding defaults in un-expected ways.
