@@ -14,8 +14,12 @@ ui <- fluidPage(
   plotOutput("p")
 )
 
+render_plot <- function(expr) {
+  snapshotPreprocessOutput(renderPlot(expr), function(value) {})
+}
+
 server <- function(input, output, session) {
-  output$p <- renderPlot({
+  output$p <- render_plot({
     plot(1:5, col = 1:5)
   })
 }
