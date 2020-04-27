@@ -23,7 +23,7 @@ if (interactive() && rstudioapi::isAvailable()) {
 ```
 
 ```{r, echo = FALSE}
-knitr::include_graphics("rstudio.png")
+knitr::include_graphics("RStudio.png")
 ```
 
 
