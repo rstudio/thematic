@@ -48,6 +48,16 @@ resolve_font_family <- function(type = c("base", "grid")) {
   # Do nothing if default font family
   if (is_default_spec(font)) return()
 
+  # Make sure fig.showtext = TRUE in knitr (if this is a non-ragg device)
+  # (We set this .onLoad, but it only applies for the _next_ chunk)
+  if (isTRUE(getOption("knitr.in.progress"))) {
+    dev <- knitr::opts_current$get("dev")
+    show <- knitr::opts_current$get("fig.showtext")
+    if (!identical(show, TRUE) && !identical(dev, "ragg_png")) {
+      stop("The fig.showtext code chunk option must be TRUE")
+    }
+  }
+
   # Returns the name of the currently active device
   # (and, if none is active, the name of the one that *will be* used)
   dev_name <- infer_device()
@@ -68,12 +78,12 @@ resolve_font_family <- function(type = c("base", "grid")) {
     if (identical("ragg", backend)) {
       dev_name <- "agg_png"
     } else {
-      warning(
+      maybe_warn(
         "Rendering custom fonts in the RStudio graphics device requires ",
         "RStudio 1.4 with an AGG graphics backend. ",
         if (!is_installed("ragg")) "First, install the ragg package, then ",
         "Go to Tools -> Global Options -> General -> Graphics -> Backend -> AGG.",
-        call. = FALSE
+        id = "rstudio-agg"
       )
       return(set_font_family(families[1]))
     }
@@ -87,12 +97,7 @@ resolve_font_family <- function(type = c("base", "grid")) {
   # we need to be able to map a device name to a function
   dev_fun <- get_device_function(dev_name)
   if (!is.function(dev_fun)) {
-    warning(
-      "Thematic's Google Font support doesn't currently know about the '", dev_name, "' graphics device. ",
-      "Please let us know if you see this warning: https://github.com/rstudio/thematic/issues/new",
-      call. = FALSE
-    )
-    return(set_font_family(families[1]))
+    stop("Internal error: get_device_function() should return a function.", call. = FALSE)
   }
 
   type <- match.arg(type)
@@ -100,13 +105,14 @@ resolve_font_family <- function(type = c("base", "grid")) {
     family <- families[[i]]
 
     # Bootstrap 4 defaults to a CSS system font family
+
     if (family %in% generic_css_families()) {
-      warning(
+      maybe_warn(
         "Generic CSS font families (e.g. '", family, "') aren't supported. ",
         "Consider using a Google Font family instead https://fonts.google.com/",
-        call. = FALSE
+        id = paste0("generic-css-family-", family)
       )
-      break
+      next
     }
 
     # If we can already render the font family, do no more!
@@ -117,21 +123,23 @@ resolve_font_family <- function(type = c("base", "grid")) {
 
     if (font$install) {
       if (!is_installed("showtext") && !is_installed("ragg")) {
-        warning("Auto installation of fonts requires either showtext or ragg to be installed", call. = FALSE)
-      } else {
-        try_gfont_download_and_register(family, font$quiet)
+        maybe_warn(
+          "Auto installation of fonts requires either showtext or ragg to be installed",
+          id = "needs-font-capabilities"
+        )
       }
+      try_gfont_download_and_register(family, font$quiet)
     }
 
     # Try again
     if (can_render(family, type, dev_fun, dev_name)) {
       break
     } else {
-      warning(
+      maybe_warn(
         "It seems the current graphics device '", dev_name, "' ",
         "is unable to render the requested font family '", family, "'. ",
         "Try using `thematic_with_device()` and make sure at least one of showtext or ragg is installed.",
-        call. = FALSE
+        id = "cant-render-font"
       )
     }
   }
@@ -253,11 +261,14 @@ get_device_function <- function(name) {
     agg_png = ragg::agg_png,
     agg_tiff = ragg::agg_tiff,
     agg_ppm = ragg::agg_ppm,
-    # We don't want to suggest since it doesn't work with showtext
     Cairo = getFromNamespace("Cairo", "Cairo"),
     devSVG = getFromNamespace("svglite", "svglite"),
-    # TODO: cairoDevices?
-    warning("Unknown device name: '", name, "'", call. = FALSE)
+    # TODO: support cairoDevices? tikz?
+    stop(
+      "thematic doesn't (yet) support the '", name, "' graphics device",
+      "Please report this error to https://github.com/rstudio/thematic/issues/new",
+      call. = FALSE
+    )
   )
 }
 

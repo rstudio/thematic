@@ -11,7 +11,7 @@
 #' information, where available
 #'
 #' 1. `shiny::getCurrentOutputInfo()`.
-#' 2. [auto_preferences_set()].
+#' 2. [auto_defaults_set()].
 #' 3. `bootstraplib::bs_theme_get_variables()`.
 #' 4. `rstudioapi::getThemeInfo()`.
 #'
@@ -63,12 +63,14 @@
 #' thematic_off()
 #'
 thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
-                           font = NA, sequential = sequential_gradient(),
-                           qualitative = okabe_ito()) {
+                        font = NA, sequential = sequential_gradient(),
+                        qualitative = okabe_ito()) {
+
   old_theme <- .globals$theme
+
   .globals$theme <- list(
-    bg = bg, fg = fg, accent = accent,
-    qualitative = qualitative, sequential = sequential,
+    bg = tag_auto(bg), fg = tag_auto(fg), accent = tag_auto(accent),
+    qualitative = qualitative, sequential_func = sequential,
     font = as_font_spec(font)
   )
 
@@ -206,7 +208,10 @@ font_spec <- function(families = "", scale = 1, install = is_installed("ragg") |
   }
 
   structure(
-    list(families = families, scale = scale, install = install, quiet = quiet),
+    list(
+      families = tag_auto(families), scale = tag_auto(scale),
+      install = install, quiet = quiet
+    ),
     class = "font_spec"
   )
 }
@@ -218,6 +223,7 @@ is_font_spec <- function(x) {
 as_font_spec <- function(font) {
   if (is_font_spec(font)) return(font)
   if (isTRUE(is.na(font))) return(font_spec())
+  if (identical(font, "auto")) return(font_spec(tag_auto(font), tag_auto(font)))
   if (is.character(font)) return(font_spec(font))
 
   stop("`font` must be either `NA`, a `font_spec()` object, or a character vector", call. = FALSE)
@@ -247,9 +253,9 @@ okabe_ito <- function(n = NULL) {
 #' derived from the `fg`, `bg`, and `accent` color (defined in `thematic_on()`).
 #'
 #' @param fg_weight a number (between 0 and 1) defining much of the `fg`
-#' color should be mixed into the colourscale.
+#' color should be mixed into the colorscale.
 #' @param bg_weight a number (between 0 and 1) defining much of the `bg`
-#' color should be mixed into the colourscale.
+#' color should be mixed into the colorscale.
 #' @param fg_low if `TRUE` (the default), the `fg` color is used for the
 #' low end of the colorscale (rather than the high end).
 #' @param n number of color codes.

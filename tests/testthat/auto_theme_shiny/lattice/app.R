@@ -14,8 +14,12 @@ ui <- fluidPage(
   plotOutput("p")
 )
 
+render_plot <- function(expr) {
+  snapshotPreprocessOutput(renderPlot(expr), function(value) {})
+}
+
 server <- function(input, output, session) {
-  output$p <- renderPlot({
+  output$p <- render_plot({
     lattice::show.settings()
   })
 }

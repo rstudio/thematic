@@ -3,40 +3,7 @@
 
   },
   "output": {
-    "p": {
-      "src": "[image data sha1: e5ae34c1e8358be37be1a696a875892d2ca5b1b8]",
-      "width": 962,
-      "height": 400,
-      "coordmap": {
-        "panels": [
-          {
-            "domain": {
-              "left": -0.04,
-              "right": 1.04,
-              "bottom": -0.04,
-              "top": 1.04
-            },
-            "range": {
-              "left": 0,
-              "right": 962,
-              "bottom": 399,
-              "top": -1
-            },
-            "log": {
-              "x": null,
-              "y": null
-            },
-            "mapping": {
-
-            }
-          }
-        ],
-        "dims": {
-          "width": 962,
-          "height": 400
-        }
-      }
-    }
+    "p": null
   },
   "export": {
 

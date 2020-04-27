@@ -7,5 +7,13 @@ destination: docs
 navbar:
   type: default
   left:
-  - text: Demos
-    href: articles/demos.html
+  - text: Shiny
+    href: articles/Shiny.html
+  - text: R Markdown
+    href: articles/rmarkdown.html
+  - text: RStudio
+    href: articles/RStudio.html
+  - text: Customize
+    href: articles/customize.html
+  - text: Reference
+    href: reference/index.html

@@ -160,33 +160,46 @@ ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .g
     # `scales_add_defaults()` first looks in the plot_env to find default scales
     # https://github.com/tidyverse/ggplot2/blob/a7b3135/R/layer.r#L214
     if (!identical(sequential, NA)) {
-      # TODO: distinguish between existing/NULL
-      colour_continuous <- tryGet("scale_colour_continuous", envir = p$plot_env)
-      fill_continuous <- tryGet("scale_fill_continuous", envir = p$plot_env)
-      assign("scale_colour_continuous", scale_defaults$ggplot2.continuous.colour, envir = p$plot_env)
-      assign("scale_fill_continuous", scale_defaults$ggplot2.continuous.fill, envir = p$plot_env)
-      on.exit({
-        restore_scale("scale_colour_continuous", colour_continuous, envir = p$plot_env)
-        restore_scale("scale_fill_continuous", fill_continuous, envir = p$plot_env)
-      }, add = TRUE)
+      if (!p$scales$has_scale("colour")) {
+        # TODO: distinguish between existing/NULL
+        colour_continuous <- tryGet("scale_colour_continuous", envir = p$plot_env)
+        assign("scale_colour_continuous", scale_defaults$ggplot2.continuous.colour, envir = p$plot_env)
+        on.exit({
+          restore_scale("scale_colour_continuous", colour_continuous, envir = p$plot_env)
+        }, add = TRUE)
+      }
+      if (!p$scales$has_scale("fill")) {
+        fill_continuous <- tryGet("scale_fill_continuous", envir = p$plot_env)
+        assign("scale_fill_continuous", scale_defaults$ggplot2.continuous.fill, envir = p$plot_env)
+        on.exit({
+          restore_scale("scale_fill_continuous", fill_continuous, envir = p$plot_env)
+        }, add = TRUE)
+      }
     }
     if (!identical(qualitative, NA)) {
-      colour_discrete <- tryGet("scale_colour_discrete", envir = p$plot_env)
-      fill_discrete <- tryGet("scale_fill_discrete", envir = p$plot_env)
-      assign(
-        "scale_colour_discrete",
-        function(...) ggplot2::discrete_scale("colour", "qualitative", qualitative_pal(qualitative), ...),
-        envir = p$plot_env
-      )
-      assign(
-        "scale_fill_discrete",
-        function(...) ggplot2::discrete_scale("fill", "qualitative", qualitative_pal(qualitative), ...),
-        envir = p$plot_env
-      )
-      on.exit({
-        restore_scale("scale_colour_discrete", colour_discrete, envir = p$plot_env)
-        restore_scale("scale_fill_discrete", fill_discrete, envir = p$plot_env)
-      }, add = TRUE)
+      if (!p$scales$has_scale("colour")) {
+        colour_discrete <- tryGet("scale_colour_discrete", envir = p$plot_env)
+        assign(
+          "scale_colour_discrete",
+          function(...) ggplot2::discrete_scale("colour", "qualitative", qualitative_pal(qualitative), ...),
+          envir = p$plot_env
+        )
+        on.exit({
+          restore_scale("scale_colour_discrete", colour_discrete, envir = p$plot_env)
+        }, add = TRUE)
+      }
+
+      if (!p$scales$has_scale("fill")) {
+        fill_discrete <- tryGet("scale_fill_discrete", envir = p$plot_env)
+        assign(
+          "scale_fill_discrete",
+          function(...) ggplot2::discrete_scale("fill", "qualitative", qualitative_pal(qualitative), ...),
+          envir = p$plot_env
+        )
+        on.exit({
+          restore_scale("scale_fill_discrete", fill_discrete, envir = p$plot_env)
+        }, add = TRUE)
+      }
     }
   }
 

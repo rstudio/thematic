@@ -1,0 +1,110 @@
+---
+title: "thematic in shiny"
+author: "Carson Sievert"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{thematic in shiny}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Automatic colors
+
+To relay the color styling of your **shiny** to static R plots, just call `thematic_on()`. Although it's not required, it's best practice to also add `onStop(thematic_off)` (just in case R code that runs after the app doesn't want to use **thematic**):
+
+```r
+library(shiny)
+library(ggplot2)
+library(thematic)
+
+thematic_on()
+onStop(thematic_off)
+
+shinyApp(
+  ui = fluidPage(
+    theme = shinythemes::shinytheme("darkly"),
+    tabsetPanel(type = "pills",
+      tabPanel("ggplot", plotOutput("ggplot")),
+      tabPanel("lattice", plotOutput("lattice")),
+      tabPanel("base", plotOutput("base"))
+    )
+  ),
+  server = function(input, output) {
+    output$ggplot <- renderPlot({
+      ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = factor(cyl))) +
+        geom_point() +
+        ggrepel::geom_text_repel()
+    })
+    output$lattice <- renderPlot(lattice::show.settings())
+    output$base <- renderPlot({
+      image(volcano, col = thematic_get_option("sequential"))
+    })
+  }
+)
+```
+
+```{r, echo = FALSE}
+knitr::include_graphics("https://i.imgur.com/F6Ay1Oc.gif")
+```
+
+Although this particular app leverages **shinythemes** to style the app, **thematic** works regardless of _how_ the app is styled (by the way, the new **bootstraplib** package provides an exciting new alternative to **shinythemes** that soon will be our recommend way to style **shiny** apps). The magic is made possible through `shiny::getCurrentOutputInfo()`, which returns the relevant color and font information for the plot's HTML container. That means, if you wanted, you could style the plot's container in CSS and **thematic** would pick up those styles. For example, to change the bg/fg of the ggplot output, you could include the following in your UI definition:
+
+```r
+tags$style(HTML("#ggplot {color: aqua; 
+background-color: purple }")))
+```
+
+And to change the accent color:
+
+```r
+# Change the link (i.e., accent) color
+tags$style(HTML("#ggplot a {color: red}"))
+```
+
+By the way, if you're a **shiny** or **htmlwidget** developer, you can also take advantage of `shiny::getCurrentOutputInfo()` in your custom widgets (see [here](https://github.com/rstudio/shiny/pull/2740) for more info).
+
+## Rendering Google Fonts {#gfont-rendering}
+
+Rendering of Google Fonts in **shiny** requires either **showtext** or **ragg** to be installed. **showtext** works with **shiny**'s default png device, so just make sure it's installed and add `library(showtext)` (to make sure deployment works as well).
+
+```r
+# install.packages("showtext")
+library(showtext)
+thematic_on(font = "Pacifico")
+```
+
+If you'd prefer to use **ragg** instead, which in some environments (especially hosted ones) can produce higher quality and consistent output in less time (see [here](https://ragg.r-lib.org/) for more details), do the following:
+
+```r
+# install.packages("ragg")
+shinyOptions(shiny.device = ragg::agg_png)
+```
+
+
+## Auto font rendering {#auto-rendering}
+
+In the event that your app uses a Google Font (or a font family that is already known to R), you can turn on auto fonts without thinking twice:
+
+```r
+thematic_on(font = "auto")
+```
+
+By the way, if you're curious, to use a Google Font (e.g [Pacifico](https://fonts.google.com/specimen/Pacifico)), you *can* import the fonts remotely this way; however, it's recommended to use local font files (for hosting reasons). The [**gfonts** package](https://github.com/dreamRs/gfonts) makes it really easy to download and use Google Fonts locally.
+
+```r
+tags$link(href="https://fonts.googleapis.com/css?family=Pacifico", rel="stylesheet")
+```
+
+```r
+tags$style(HTML("body{font-family: Pacifico}"))
+```
+
+
+```{r, echo = FALSE}
+knitr::include_graphics("https://i.imgur.com/eWXYtis.gif")
+```

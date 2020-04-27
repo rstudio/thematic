@@ -2,8 +2,7 @@
 adjust_color <- function(color, bg, fg, accent = NA) {
   if (!length(color)) return(color)
   if (length(color) > 1) {
-    warning("Failed to translated aes defaults (expected to be of length 1)")
-    return(color)
+    stop("Internal error: adjust_color() expects an input of length 1")
   }
   if (is.na(color) || identical(color, "NA")) return(color)
 

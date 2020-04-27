@@ -8,10 +8,10 @@ sequential_gradient(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30)
 }
 \arguments{
 \item{fg_weight}{a number (between 0 and 1) defining much of the \code{fg}
-color should be mixed into the colourscale.}
+color should be mixed into the colorscale.}
 
 \item{bg_weight}{a number (between 0 and 1) defining much of the \code{bg}
-color should be mixed into the colourscale.}
+color should be mixed into the colorscale.}
 
 \item{fg_low}{if \code{TRUE} (the default), the \code{fg} color is used for the
 low end of the colorscale (rather than the high end).}

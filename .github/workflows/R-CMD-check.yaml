@@ -71,6 +71,10 @@ jobs:
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
         run: |
+          # Use cran:libgit2 PPA to avoid conflicts of libcurl4-gnutls-dev
+          # https://github.com/r-hub/sysreqsdb/issues/77#issuecomment-620025428
+          sudo add-apt-repository ppa:cran/libgit2
+          sudo apt-get update
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
@@ -102,6 +106,8 @@ jobs:
       # NOTE: Installing luahbtex is a temporary fix https://github.com/yihui/tinytex/issues/194
       - name: Install testing dependencies
         run: |
+          # TODO: remove me after next release cycle
+          remotes::install_github(c('rstudio/htmltools', 'rstudio/shinytest', 'rstudio/shiny#2740', 'r-lib/ragg', 'rstudio/bootstraplib', 'rstudio/rmarkdown#1706'))
           install.packages(c('sf', 'Cairo', 'patchwork', 'gridExtra', 'tinytex'))
           tinytex::install_tinytex()
           tinytex::tlmgr_install('luahbtex')
