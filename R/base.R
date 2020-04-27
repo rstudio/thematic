@@ -50,20 +50,21 @@ base_params_restore <- function() {
   rm("base_params", envir = .globals)
 }
 
-par_no_new_device <- function(...) {
-  dev <- dev.cur()
-  if (dev.cur() == 1) {
-    on.exit(dev.off(), add = TRUE)
-  }
-  par(...)
+par_no_new_device <- function(..., fun) {
+  with_no_new_device(..., fun = par)
 }
 
-palette_no_new_device <- function(...) {
-  dev <- dev.cur()
-  if (dev.cur() == 1) {
-    on.exit(dev.off(), add = TRUE)
-  }
-  palette(...)
+palette_no_new_device <- function(..., fun) {
+  with_no_new_device(..., fun = palette)
 }
 
-
+with_no_new_device <- function(..., fun) {
+  dev_before <- dev.cur()
+  res <- fun(...)
+  dev_after <- dev.cur()
+  if (dev_before != dev_after) {
+    dev.off(dev_after)
+    dev.set(dev_before)
+  }
+  res
+}
