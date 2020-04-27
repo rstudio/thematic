@@ -26,6 +26,19 @@ remotes::install_github("rstudio/thematic")
 library(thematic)
 ```
 
+In addition, for the auto-theming integration with **shiny**, you
+currently need:
+
+``` r
+remotes::install_github("rstudio/shiny#2740")
+```
+
+And, for auto-theming in `rmarkdown::html_document()`:
+
+``` r
+remotes::install_github("rstudio/rmarkdown#1706")
+```
+
 ## Getting started
 
 **thematic** sets various graphing defaults based on a few different
