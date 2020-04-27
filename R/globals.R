@@ -12,7 +12,7 @@ needs_warning <- function(id) {
   }
 
   if (!inherits(last, "POSIXct")) {
-    abort("Internal error: Expected `POSIXct` value in `needs_warning()`.")
+    stop("Internal error: Expected `POSIXct` value in `needs_warning()`.", call. = FALSE)
   }
 
   # Warn every 8 hours
