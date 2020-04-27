@@ -49,7 +49,7 @@ thematic_with_device <- function(expr, device = default_device(),
   # (i.e., allow auto values to be repeatedly resolved)
   if (is_auto(args[[bg_arg]])) {
     # Should this also consider shiny::getCurrentOutputInfo()?
-    args[[bg_arg]] <- auto_preferences_get()[["bg"]] %||%
+    args[[bg_arg]] <- auto_defaults_get()[["bg"]] %||%
       bs_theme_colors()[["bg"]] %||%
       args[[bg_arg]]
     if (isTRUE("auto" == args[[bg_arg]])) {

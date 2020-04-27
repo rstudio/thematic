@@ -51,7 +51,7 @@ which are all resolved (just before plotting) based on the following (global)
 information, where available
 \enumerate{
 \item \code{shiny::getCurrentOutputInfo()}.
-\item \code{\link[=auto_preferences_set]{auto_preferences_set()}}.
+\item \code{\link[=auto_defaults_set]{auto_defaults_set()}}.
 \item \code{bootstraplib::bs_theme_get_variables()}.
 \item \code{rstudioapi::getThemeInfo()}.
 }

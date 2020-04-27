@@ -1,44 +1,44 @@
-#' Set auto theming preferences
+#' Set auto theming defaults
 #'
-#' Setting of auto-theming preferences is primarily useful for developers
+#' Setting of auto-theming defaults is primarily useful for developers
 #' of a custom rmarkdown format that wish to have better default auto-theming
-#' behavior. By having the output document call `auto_preferences_set()`
-#' "pre-knit" (and `auto_preferences_clear()` "post-knit"), users of the
+#' behavior. By having the output document call `auto_defaults_set()`
+#' "pre-knit" (and restoring the old defaults "post-knit"), users of the
 #' output document can then simply call `thematic_on()` within their document
-#' to adopt these preferences.
+#' to adopt these defaults.
 #'
 #' @inheritParams thematic_on
-#' @rdname auto_preferences
+#' @rdname auto_defaults
 #' @export
 #' @examples
-#' auto_preferences_set("black", "white")
+#' auto_defaults_set("black", "white")
 #' thematic_on()
 #' plot(1:10, 1:10)
 
-auto_preferences_set <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL) {
+auto_defaults_set <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL) {
   cols <- dropNulls(list(bg = bg, fg = fg, accent = accent))
-  preferences <- lapply(cols, function(x) {
+  defaults <- lapply(cols, function(x) {
     if (isTRUE(is.na(x))) x else parse_any_color(x)
   })
   if (!is.null(font)) {
-    preferences$font <- as_font_spec(font)
+    defaults$font <- as_font_spec(font)
   }
-  oldPrefs <- .globals$auto_preferences
-  .globals$auto_preferences <- preferences
+  oldPrefs <- .globals$auto_defaults
+  .globals$auto_defaults <- defaults
   invisible(oldPrefs)
 }
 
-#' @rdname auto_preferences
+#' @rdname auto_defaults
 #' @export
-auto_preferences_get <- function() {
-  .globals$auto_preferences
+auto_defaults_get <- function() {
+  .globals$auto_defaults
 }
 
 
 resolve_auto_theme <- function() {
   theme <- .globals$theme
   outputInfo <- shiny_output_info()
-  autoPreferences <- auto_preferences_get()
+  autoDefaults <- auto_defaults_get()
   bsThemeColors <- bs_theme_colors()
   rsThemeColors <- rs_theme_colors()
 
@@ -48,8 +48,8 @@ resolve_auto_theme <- function() {
       next
     }
     # shiny::getCurrentOutputInfo() gets 1st priority, since its
-    # *output* level styles, whereas autoPreferences are intended for
-    # the *document* level (i.e., preferences for a custom rmarkdown
+    # *output* level styles, whereas autoDefaults are intended for
+    # the *document* level (i.e., defaults for a custom rmarkdown
     # format). Perhaps there are situations where shiny::getCurrentOutputInfo()
     # doesn't give you quite what you want, but in that case, you should be
     # styling the containing div with your desired styles!
@@ -59,7 +59,7 @@ resolve_auto_theme <- function() {
     # a bs_theme_get_variable() info unless we know it's going to be
     # relevant for the final output)
     theme[[col]] <- outputInfo[[col]] %||%
-      autoPreferences[[col]] %||%
+      autoDefaults[[col]] %||%
       bsThemeColors[[col]] %||%
       rsThemeColors[[col]] %||%
       theme[[col]]
@@ -69,7 +69,7 @@ resolve_auto_theme <- function() {
         "Try providing an actual color (or `NA`) to the `", col, "` argument of `thematic_on()`. ",
         "By the way, 'auto' is only officially supported in `shiny::renderPlot()`, ",
         "some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), ",
-        "in RStudio, or if `auto_preferences_set()` is set.",
+        "in RStudio, or if `auto_defaults_set()` is set.",
         id = paste0("auto-detection-failure-", col)
       )
       theme[[col]] <- switch(col, bg = "white", fg = "black", NA)
@@ -101,7 +101,7 @@ resolve_auto_theme <- function() {
   if (any(vapply(theme$font, is_auto, logical(1)))) {
     # Note how this matches the order of priority for colors, as well
     spec <- shiny_font_spec(outputInfo$font) %||%
-      autoPreferences$font %||%
+      autoDefaults$font %||%
       bs_font_spec() %||%
       rs_font_spec() %||%
       font_spec()

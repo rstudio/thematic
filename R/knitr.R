@@ -10,7 +10,7 @@ knitr_dev_args_set <- function() {
   # Resolve bg = "auto" in a similar manner to resolve_auto_theme()
   # (i.e., allow auto values to be repeatedly resolved)
   if (is_auto(bg)) {
-    bg <- auto_preferences_get()[["bg"]] %||%
+    bg <- auto_defaults_get()[["bg"]] %||%
       bs_theme_colors()[["bg"]] %||%
       bg
     if (isTRUE("auto" == bg)) {
