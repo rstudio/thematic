@@ -49,7 +49,7 @@ shinyApp(
 ```
 
 ```{r, echo = FALSE}
-knitr::include_graphics("https://i.imgur.com/F6Ay1Oc.gif")
+knitr::include_graphics("https://i.imgur.com/KewYfYq.gif")
 ```
 
 Although this particular app leverages **shinythemes** to style the app, **thematic** works regardless of _how_ the app is styled (by the way, the new **bootstraplib** package provides an exciting new alternative to **shinythemes** that soon will be our recommend way to style **shiny** apps). The magic is made possible through `shiny::getCurrentOutputInfo()`, which returns the relevant color and font information for the plot's HTML container. That means, if you wanted, you could style the plot's container in CSS and **thematic** would pick up those styles. For example, to change the bg/fg of the ggplot output, you could include the following in your UI definition:

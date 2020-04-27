@@ -78,8 +78,8 @@
             
             <h4 class="date">2020-04-27</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/shiny.Rmd"><code>vignettes/shiny.Rmd</code></a></small>
-      <div class="hidden name"><code>shiny.Rmd</code></div>
+      <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/Shiny.Rmd"><code>vignettes/Shiny.Rmd</code></a></small>
+      <div class="hidden name"><code>Shiny.Rmd</code></div>
 
     </div>
 
@@ -117,7 +117,7 @@
     })
   }
 )</pre></body></html></div>
-<p><img src="https://i.imgur.com/F6Ay1Oc.gif"><!-- --></p>
+<p><img src="https://i.imgur.com/KewYfYq.gif"><!-- --></p>
 <p>Although this particular app leverages <strong>shinythemes</strong> to style the app, <strong>thematic</strong> works regardless of <em>how</em> the app is styled (by the way, the new <strong>bootstraplib</strong> package provides an exciting new alternative to <strong>shinythemes</strong> that soon will be our recommend way to style <strong>shiny</strong> apps). The magic is made possible through <code><a href="https://rdrr.io/pkg/shiny/man/getCurrentOutputInfo.html">shiny::getCurrentOutputInfo()</a></code>, which returns the relevant color and font information for the plot’s HTML container. That means, if you wanted, you could style the plot’s container in CSS and <strong>thematic</strong> would pick up those styles. For example, to change the bg/fg of the ggplot output, you could include the following in your UI definition:</p>
 <div class="sourceCode" id="cb2"><html><body><pre class="r">tags$style(HTML("#ggplot {color: aqua; 
 background-color: purple }")))</pre></body></html></div>

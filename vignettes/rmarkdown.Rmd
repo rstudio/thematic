@@ -62,7 +62,7 @@ image(volcano, col = thematic_get_option("sequential"))
 ````
 
 ```{r, echo = FALSE}
-knitr::include_graphics("https://i.imgur.com/eWXYtis.gif")
+knitr::include_graphics("https://i.imgur.com/KewYfYq.gif")
 ```
 
 Partial support in this case means that auto detection doesn't support custom CSS, but it will detect equivalent styling performed via **bootstraplib**. For example, auto detection wouldn't be able to pick up on custom CSS like this in your document:
