@@ -44,36 +44,29 @@ grid_before_hook <- function() {
 resolve_font_family <- function(type = c("base", "grid")) {
   font <- .globals$theme$font
   families <- font$families
-
-  # Do nothing if default font family
-  if (is_default_spec(font)) return()
-
-  # Make sure fig.showtext = TRUE in knitr (if this is a non-ragg device)
-  # (We set this .onLoad, but it only applies for the _next_ chunk)
-  if (isTRUE(getOption("knitr.in.progress"))) {
-    dev <- knitr::opts_current$get("dev")
-    show <- knitr::opts_current$get("fig.showtext")
-    if (!identical(show, TRUE) && !identical(dev, "ragg_png")) {
-      stop("The fig.showtext code chunk option must be TRUE")
-    }
-  }
+  is_default_font <- is_default_spec(font)
 
   # Returns the name of the currently active device
   # (and, if none is active, the name of the one that *will be* used)
   dev_name <- infer_device()
 
-  if ("RStudioGD" %in% dev_name) {
-    # Disable showtext in RStudio, because it currently doesn't work
-    # at all, and if fact, introduces issues with RStudio 1.4
-    # https://github.com/yixuan/showtext/issues/32
-    # TODO: if and when showtext gets support for RStudio 1.4, we should take advantage
-    # https://github.com/yixuan/showtext/issues/31
-    if (is_installed("showtext")) showtext::showtext_auto(FALSE)
+  # Disable showtext in RStudio, because it currently doesn't work
+  # at all, and if fact, introduces issues with RStudio 1.4
+  # https://github.com/yixuan/showtext/issues/32
+  # TODO: if and when showtext gets support for RStudio 1.4, we should take advantage
+  # https://github.com/yixuan/showtext/issues/31
+  if (is_installed("showtext")) {
+    showtext::showtext_auto(FALSE)
+    if (!"RStudioGD" %in% dev_name && !is_ragg_device(dev_name)) {
+      showtext::showtext_auto()
+    }
+  }
 
-    # RStudio 1.4 introduced configurable graphics backends.
-    # It appears ragg is the only option that is able to render
-    # custom fonts at the moment (i.e., showtext with quartz/cairo
-    # doesn't appear to work at the moment)
+  # RStudio 1.4 introduced configurable graphics backends.
+  # It appears ragg is the only option that is able to render
+  # custom fonts at the moment (i.e., showtext with quartz/cairo
+  # doesn't appear to work at the moment)
+  if ("RStudioGD" == dev_name) {
     backend <- tryNULL(readRStudioPreference("graphics_backend"))
     if (identical("ragg", backend)) {
       dev_name <- "agg_png"
@@ -87,10 +80,20 @@ resolve_font_family <- function(type = c("base", "grid")) {
       )
       return(set_font_family(families[1]))
     }
+  }
 
-  } else if (!is_ragg_device(dev_name)) {
-    # Enable showtext if this is a non-ragg device
-    if (is_installed("showtext")) showtext::showtext_auto()
+
+  # Return early if default font family
+  if (is_default_font) return()
+
+  # Make sure fig.showtext = TRUE in knitr (if this is a non-ragg device)
+  # (We set this .onLoad, but it only applies for the _next_ chunk)
+  if (isTRUE(getOption("knitr.in.progress"))) {
+    dev <- knitr::opts_current$get("dev")
+    show <- knitr::opts_current$get("fig.showtext")
+    if (!identical(show, TRUE) && !identical(dev, "ragg_png")) {
+      stop("The fig.showtext code chunk option must be TRUE")
+    }
   }
 
   # Since can_render() needs to open the device to detect font support,

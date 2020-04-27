@@ -83,7 +83,7 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
   remove_hooks()
   set_hooks()
   # Do the same for showtext, also it's important these hooks
-  # come after thematic since we ight want to disable showtext
+  # come after thematic since we might want to disable showtext
   # in our hooks (see resolve_font_family())
   if (is_installed("showtext")) showtext::showtext_auto(FALSE)
   if (is_installed("showtext")) showtext::showtext_auto()
