@@ -19,7 +19,8 @@ jobs:
       matrix:
         config:
           - {os: windows-latest, r: 'release', vdiffr: true}
-          - {os: macOS-latest, r: 'release', vdiffr: true}
+          # TODO: change to `r: release` when once it's on 4.0
+          - {os: macOS-latest, r: '4.0', vdiffr: true}
           - {os: macOS-latest, r: 'devel', vdiffr: false}
           - {os: ubuntu-16.04, r: 'release', vdiffr: true, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
           - {os: ubuntu-16.04, r: 'oldrel', vdiffr: false, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
