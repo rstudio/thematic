@@ -39,6 +39,18 @@ And, for auto-theming in `rmarkdown::html_document()`:
 remotes::install_github("rstudio/rmarkdown#1706")
 ```
 
+If you’d prefer to not install these experimental versions, and just
+want to play around with some **thematic** examples, take a test drive
+on **RStudio Cloud**:
+
+<div>
+
+<a href="https://rstudio.cloud/project/1208127" target="_blank">
+<img src="man/figures/thematic-test-drive.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;">
+</a>
+
+</div>
+
 ## Getting started
 
 **thematic** sets various graphing defaults based on a few different
