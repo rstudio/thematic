@@ -62,6 +62,9 @@ resolve_font_family <- function(type = c("base", "grid")) {
     }
   }
 
+  # Return early if default font family
+  if (is_default_font) return()
+
   # RStudio 1.4 introduced configurable graphics backends.
   # It appears ragg is the only option that is able to render
   # custom fonts at the moment (i.e., showtext with quartz/cairo
@@ -74,17 +77,13 @@ resolve_font_family <- function(type = c("base", "grid")) {
       maybe_warn(
         "Rendering custom fonts in the RStudio graphics device requires ",
         "RStudio 1.4 with an AGG graphics backend. ",
-        if (!is_installed("ragg")) "First, install the ragg package, then ",
-        "Go to Tools -> Global Options -> General -> Graphics -> Backend -> AGG.",
+        if (rstudioapi::isAvailable("1.4") && !is_installed("ragg")) "First, install the ragg package, then ",
+        if (rstudioapi::isAvailable("1.4")) "Go to Tools -> Global Options -> General -> Graphics -> Backend -> AGG.",
         id = "rstudio-agg"
       )
       return(set_font_family(families[1]))
     }
   }
-
-
-  # Return early if default font family
-  if (is_default_font) return()
 
   # Make sure fig.showtext = TRUE in knitr (if this is a non-ragg device)
   # (We set this .onLoad, but it only applies for the _next_ chunk)
