@@ -4,6 +4,9 @@ skip_on_cran()
 skip_if_not_installed("shinytest")
 skip_if_not_installed("ggplot2")
 skip_if_not_installed("lattice")
+# Run tests on release version of R
+skip_if_not(as.logical(Sys.getenv("SHINYTEST_RUN_TESTS", "true")))
+
 
 # a la shinycoreci:::platform()
 shinytest_suffix <- function() {
