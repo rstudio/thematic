@@ -1,21 +1,25 @@
 #' Set auto theming defaults
 #'
-#' Setting of auto-theming defaults is primarily useful for developers
-#' of a custom rmarkdown format that wish to have better default auto-theming
-#' behavior. By having the output document call `auto_defaults_set()`
-#' "pre-knit" (and restoring the old defaults "post-knit"), users of the
-#' output document can then simply call `thematic_on()` within their document
-#' to adopt these defaults.
+#' Auto theming defaults are used to resolve `"auto"` values outside
+#' of a **shiny** runtime (i.e., where auto theming might be based on
+#' imperfect heuristics). Setting of auto defaults is especially useful
+#' for developers of a custom rmarkdown format that wish to have better
+#' default auto-theming behavior. By having the output document call
+#' `auto_defaults()` "pre-knit" (and restoring the old defaults "post-knit"),
+#' users of the output document can then simply call `thematic_on()` within
+#' their document to adopt these defaults.
+#'
+#' @details Call this function with no arguments to get the current auto defaults.
+#'
 #'
 #' @inheritParams thematic_on
-#' @rdname auto_defaults
 #' @export
 #' @examples
-#' auto_defaults_set("black", "white")
+#' auto_defaults("black", "white")
 #' thematic_on()
 #' plot(1:10, 1:10)
 
-auto_defaults_set <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL) {
+auto_defaults <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL) {
   cols <- dropNulls(list(bg = bg, fg = fg, accent = accent))
   defaults <- lapply(cols, function(x) {
     if (isTRUE(is.na(x))) x else parse_any_color(x)
@@ -24,21 +28,17 @@ auto_defaults_set <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL) 
     defaults$font <- as_font_spec(font)
   }
   oldPrefs <- .globals$auto_defaults
-  .globals$auto_defaults <- defaults
+  if (length(defaults)) {
+    .globals$auto_defaults <- defaults
+  }
   invisible(oldPrefs)
-}
-
-#' @rdname auto_defaults
-#' @export
-auto_defaults_get <- function() {
-  .globals$auto_defaults
 }
 
 
 resolve_auto_theme <- function() {
   theme <- .globals$theme
   outputInfo <- shiny_output_info()
-  autoDefaults <- auto_defaults_get()
+  autoDefaults <- auto_defaults()
   bsThemeColors <- bs_theme_colors()
   rsThemeColors <- rs_theme_colors()
 
@@ -69,7 +69,7 @@ resolve_auto_theme <- function() {
         "Try providing an actual color (or `NA`) to the `", col, "` argument of `thematic_on()`. ",
         "By the way, 'auto' is only officially supported in `shiny::renderPlot()`, ",
         "some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), ",
-        "in RStudio, or if `auto_defaults_set()` is set.",
+        "in RStudio, or if `auto_defaults()` is set.",
         id = paste0("auto-detection-failure-", col)
       )
       theme[[col]] <- switch(col, bg = "white", fg = "black", NA)

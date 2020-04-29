@@ -23,8 +23,8 @@ knitr::opts_chunk$set(
   message = FALSE,
   fig.retina = 2
 )
-knitr::knit_hooks$set(optipng = knitr::hook_optipng)
-knitr::opts_chunk$set(optipng = "")
+#knitr::knit_hooks$set(optipng = knitr::hook_optipng)
+#knitr::opts_chunk$set(optipng = "")
 ```
 
 There are two main ways to customize styling produced by **thematic**: (1) specify the global settings in `thematic_on()` and/or (2) modify defaults on the local (i.e., plot) level. 

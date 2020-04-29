@@ -11,7 +11,7 @@
 #' information, where available
 #'
 #' 1. `shiny::getCurrentOutputInfo()`.
-#' 2. [auto_defaults_set()].
+#' 2. [auto_defaults()].
 #' 3. `bootstraplib::bs_theme_get_variables()`.
 #' 4. `rstudioapi::getThemeInfo()`.
 #'
