@@ -91,7 +91,7 @@
 <div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"rstudio/shiny#2740"</span>)</pre></div>
 <p>And, for auto-theming in <code><a href="https://rdrr.io/pkg/rmarkdown/man/html_document.html">rmarkdown::html_document()</a></code>:</p>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="kw pkg">remotes</span><span class="kw ns">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">"rstudio/rmarkdown#1706"</span>)</pre></div>
-<p>If you don’t want to install these experimental versions, and just want to play around with some <strong>thematic</strong> examples, take a test drive on RStudio Cloud:</p>
+<p>If you’d prefer to not install these experimental versions, and just want to play around with some <strong>thematic</strong> examples, take a test drive on <strong>RStudio Cloud</strong>:</p>
 <div>
 <p><a href="https://rstudio.cloud/project/1208127" target="_blank"> <img src="reference/figures/thematic-test-drive.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;"></a></p>
 </div>
@@ -145,7 +145,7 @@
 <li><a href="https://rstudio.github.io/thematic/articles/rmarkdown.html">R Markdown</a></li>
 <li><a href="https://rstudio.github.io/thematic/articles/rstudio.html">RStudio</a></li>
 </ul>
-<p>Also see the <a href="https://rstudio.github.io/thematic/articles/customize.html">customize</a> article to learn more about how to control thematic’s defaults and <a href="https://rstudio.github.io/thematic/articles/examples.html">examples</a> to see and learn more about how thematic works in each plotting context.</p>
+<p>Also see the <a href="https://rstudio.github.io/thematic/articles/customize.html">customize</a> article to learn more about how to control thematic’s defaults.</p>
 <!--
 
 With **thematic** now enabled, static R plots generated via a **shiny** app automatically adopt the styling of their HTML container(s). For example, the **shiny** app below uses **shinythemes** and the [Google Fonts API](https://developers.google.com/fonts/docs/getting_started) for styling the HTML; and thanks to **thematic**, those styles are automatically reflected in the R plots. Note that, in the case that the Pacifico font isn't available to R, **thematic** will detect a lack of support, download font files via the Google Font API (unless told otherwise), cache them (see `font_cache_set()`), and register them for use with both **showtext** and **ragg** (one of these two packages must be installed to actually render the auto-installed fonts).

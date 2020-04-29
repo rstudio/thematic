@@ -159,9 +159,7 @@ environments see these articles:
 
 Also see the
 [customize](https://rstudio.github.io/thematic/articles/customize.html)
-article to learn more about how to control thematic’s defaults and
-[examples](https://rstudio.github.io/thematic/articles/examples.html) to
-see and learn more about how thematic works in each plotting context.
+article to learn more about how to control thematic’s defaults.
 
 <!--
 

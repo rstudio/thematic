@@ -132,7 +132,7 @@ To learn more about how to set up and use **thematic** in various environments s
 * [R Markdown](https://rstudio.github.io/thematic/articles/rmarkdown.html)
 * [RStudio](https://rstudio.github.io/thematic/articles/rstudio.html)
 
-Also see the [customize](https://rstudio.github.io/thematic/articles/customize.html) article to learn more about how to control thematic's defaults and [examples](https://rstudio.github.io/thematic/articles/examples.html) to see and learn more about how thematic works in each plotting context.
+Also see the [customize](https://rstudio.github.io/thematic/articles/customize.html) article to learn more about how to control thematic's defaults.
 
 
 <!--
