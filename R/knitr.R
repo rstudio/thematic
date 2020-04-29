@@ -20,7 +20,7 @@ knitr_dev_args_set <- function() {
       )
       bg <- "white"
     } else {
-      bg <- htmltools::parseCssColors(bg)
+      bg <- parse_any_color(bg)
     }
     bg <- as_auto(bg)
   }

@@ -59,7 +59,7 @@ thematic_with_device <- function(expr, device = default_device(),
       )
       args[[bg_arg]] <- "white"
     } else {
-      args[[bg_arg]] <- htmltools::parseCssColors(args[[bg_arg]])
+      args[[bg_arg]] <- parse_any_color(args[[bg_arg]])
     }
     args[[bg_arg]] <- as_auto(args[[bg_arg]])
   }

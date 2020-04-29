@@ -74,7 +74,7 @@ resolve_auto_theme <- function() {
       )
       theme[[col]] <- switch(col, bg = "white", fg = "black", NA)
     } else {
-      theme[[col]] <- htmltools::parseCssColors(theme[[col]])
+      theme[[col]] <- parse_any_color(theme[[col]])
     }
 
     # Retain auto class so that the _next_ time this hook
