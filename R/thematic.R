@@ -82,11 +82,6 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
   # (otherwise, repeated calls to set_hooks will keep adding them)
   remove_hooks()
   set_hooks()
-  # Do the same for showtext, also it's important these hooks
-  # come after thematic since we might want to disable showtext
-  # in our hooks (see resolve_font_family())
-  if (is_installed("showtext")) showtext::showtext_auto(FALSE)
-  if (is_installed("showtext")) showtext::showtext_auto()
 
   # Override ggplot build method mainly because we currently need access to
   # the plot object in order to set Geom/Scale defaults

@@ -46,24 +46,12 @@ resolve_font_family <- function(type = c("base", "grid")) {
   families <- font$families
   is_default_font <- is_default_spec(font)
 
+  # Return early if default font family
+  if (is_default_font) return()
+
   # Returns the name of the currently active device
   # (and, if none is active, the name of the one that *will be* used)
   dev_name <- infer_device()
-
-  # Disable showtext in RStudio, because it currently doesn't work
-  # at all, and if fact, introduces issues with RStudio 1.4
-  # https://github.com/yixuan/showtext/issues/32
-  # TODO: if and when showtext gets support for RStudio 1.4, we should take advantage
-  # https://github.com/yixuan/showtext/issues/31
-  if (is_installed("showtext")) {
-    showtext::showtext_auto(FALSE)
-    if (!"RStudioGD" %in% dev_name && !is_ragg_device(dev_name)) {
-      showtext::showtext_auto()
-    }
-  }
-
-  # Return early if default font family
-  if (is_default_font) return()
 
   # RStudio 1.4 introduced configurable graphics backends.
   # It appears ragg is the only option that is able to render
@@ -91,9 +79,11 @@ resolve_font_family <- function(type = c("base", "grid")) {
     dev <- knitr::opts_current$get("dev")
     show <- knitr::opts_current$get("fig.showtext")
     if (!identical(show, TRUE) && !identical(dev, "ragg_png")) {
-      stop("The fig.showtext code chunk option must be TRUE")
+      stop("The fig.showtext code chunk option must be TRUE", call. = FALSE)
     }
   }
+
+  maybe_register_showtext(dev_name)
 
   # Since can_render() needs to open the device to detect font support,
   # we need to be able to map a device name to a function
@@ -106,8 +96,8 @@ resolve_font_family <- function(type = c("base", "grid")) {
   for (i in seq_along(families)) {
     family <- families[[i]]
 
-    # Bootstrap 4 defaults to a CSS system font family
-
+    # Bootstrap 4 defaults to a CSS system font family...
+    # we know we can't render those, so warn and try the next
     if (family %in% generic_css_families()) {
       maybe_warn(
         "Generic CSS font families (e.g. '", family, "') aren't supported. ",
@@ -117,33 +107,28 @@ resolve_font_family <- function(type = c("base", "grid")) {
       next
     }
 
-    # If we can already render the font family, do no more!
+    # Register Google Fonts cache
     try_register_gfont_cache(family)
+    # If we can already render the font family, do no more!
     if (can_render(family, type, dev_fun, dev_name)) {
       break
     }
-
+    # Download/register and try again
     if (font$install) {
-      if (!is_installed("showtext") && !is_installed("ragg")) {
-        maybe_warn(
-          "Auto installation of fonts requires either showtext or ragg to be installed",
-          id = "needs-font-capabilities"
-        )
-      }
       try_gfont_download_and_register(family, font$quiet)
     }
-
-    # Try again
     if (can_render(family, type, dev_fun, dev_name)) {
       break
-    } else {
-      maybe_warn(
-        "It seems the current graphics device '", dev_name, "' ",
-        "is unable to render the requested font family '", family, "'. ",
-        "Try using `thematic_with_device()` and make sure at least one of showtext or ragg is installed.",
-        id = "cant-render-font"
-      )
     }
+
+    # Try our best to give informative warning
+    maybe_warn(
+      "It seems the current graphics device '", dev_name, "' ",
+      "is unable to render the requested font family '", family, "'. ",
+      if (!is_installed("ragg") && !is_installed("showtext"))
+        "Install ragg and/or showtext to render custom fonts. ",
+      id = "cant-render-font"
+    )
   }
 
   set_font_family(family)
@@ -190,6 +175,7 @@ can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
     unlink(tmp, recursive = TRUE)
   }, add = TRUE)
 
+  if (is_installed("showtext")) showtext::showtext_begin()
 
   # temporarily disable thematics plot hooks
   # (otherwise, we'd get caught in an infinite loop)
@@ -227,10 +213,15 @@ infer_device <- function() {
   }
   # Temporarily open to a new device to infer what the device *will be*
   tmp <- tempfile()
+  dev_before <- dev.cur()
   dev_new(filename = tmp)
-  dev <- dev.cur()
-  on.exit({dev.off(dev); unlink(tmp, recursive = TRUE)}, add = TRUE)
-  names(dev)
+  dev_after <- dev.cur()
+  on.exit({
+    dev.off(dev_after)
+    unlink(tmp, recursive = TRUE)
+    dev.set(dev_before)
+  }, add = TRUE)
+  names(dev_after)
 }
 
 # Do our best to map the name of the current device to an
@@ -290,7 +281,40 @@ dev_new <- function(filename) {
   suppressMessages(dev.new(filename = filename, file = filename))
 }
 
+maybe_register_showtext <- function(dev_name) {
+  if (!is_installed("showtext")) return()
+  if (is_ragg_device(dev_name)) return()
+  if ("RStudioGD" %in% dev_name) return()
 
+  if (dev.cur() != 1) {
+    # https://github.com/yixuan/showtext/issues/33
+    set_showtext_dpi(dev_name)
+    showtext::showtext_begin()
+  } else {
+    maybe_warn(
+      "showtext font rendering requires a device to be open before plotting.",
+      id = "showtext-open-device"
+    )
+  }
+}
+
+set_showtext_dpi <- function(dev_name) {
+  # https://github.com/rstudio/shiny/issues/1832
+  dpi <- knitr::opts_current$get("dpi") %||% 96
+  session <- shiny::getDefaultReactiveDomain()
+  pixelratio <- session$clientData$pixelratio %||%
+    knitr::opts_current$get("fig.retina") %||% 1
+  if ("Cairo" == dev_name && pixelratio > 1) {
+    # https://github.com/yixuan/showtext/issues/33#issuecomment-620848077
+    maybe_warn(
+      "There are known issues with showtext and CairoPNG on ",
+      "high res displays. If fonts appear small, try using ",
+      "ragg::agg_png instead of CairoPNG.",
+      id = "showtext-high-res-cairopng"
+    )
+  }
+  showtext::showtext_opts(dpi = dpi * pixelratio)
+}
 
 # https://drafts.csswg.org/css-fonts-4/#generic-font-families
 generic_css_families <- function() {
