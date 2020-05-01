@@ -95,12 +95,12 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
 #' @export
 thematic_off <- function() {
   remove_hooks()
-  if (is_installed("showtext")) showtext::showtext_auto(FALSE)
 
   # Removing the plot.new hooks is not enough to restore global state
   base_params_restore()
   base_palette_restore()
   knitr_dev_args_restore()
+  showtext_opts_restore()
   ggplot_theme_restore()
   ggplot_build_restore()
   lattice_print_restore()

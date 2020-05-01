@@ -288,7 +288,7 @@ maybe_register_showtext <- function(dev_name) {
 
   if (dev.cur() != 1) {
     # https://github.com/yixuan/showtext/issues/33
-    set_showtext_dpi(dev_name)
+    showtext_opts_set(dev_name)
     showtext::showtext_begin()
   } else {
     maybe_warn(
@@ -298,7 +298,9 @@ maybe_register_showtext <- function(dev_name) {
   }
 }
 
-set_showtext_dpi <- function(dev_name) {
+showtext_opts_set <- function(dev_name) {
+  showtext_opts_restore()
+
   # https://github.com/rstudio/shiny/issues/1832
   dpi <- knitr::opts_current$get("dpi") %||% 96
   session <- shiny::getDefaultReactiveDomain()
@@ -313,7 +315,14 @@ set_showtext_dpi <- function(dev_name) {
       id = "showtext-high-res-cairopng"
     )
   }
-  showtext::showtext_opts(dpi = dpi * pixelratio)
+  .globals$showtext_opts <- showtext::showtext_opts(dpi = dpi * pixelratio)
+  .globals$showtext_opts
+}
+
+showtext_opts_restore <- function() {
+  if (is.null(.globals$showtext_opts)) return()
+  showtext::showtext_opts(.globals$showtext_opts)
+  rm("showtext_opts", envir = .globals)
 }
 
 # https://drafts.csswg.org/css-fonts-4/#generic-font-families
