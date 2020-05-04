@@ -23,6 +23,19 @@ mix_colors <- function(bg, fg, amount) {
   scales::colour_ramp(c(bg, fg), alpha = TRUE)(amount)
 }
 
+# Estimate the amount of mixture `bg` & `fg` is takes to get `color`
+amount_of_mixture <- function(color, bg, fg) {
+  bg_dist <- farver::compare_colour(
+    farver::decode_colour(color), farver::decode_colour(bg),
+    from_space = "rgb", method = "cie2000"
+  )
+  fg_dist <- farver::compare_colour(
+    farver::decode_colour(color), farver::decode_colour(fg),
+    from_space = "rgb", method = "cie2000"
+  )
+  as.numeric(bg_dist / (bg_dist + fg_dist))
+}
+
 # x should be of length 1
 parse_any_color <- function(x) {
   y <- tryCatch(
