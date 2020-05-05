@@ -153,7 +153,7 @@ shiny_output_info <- function() {
     }
     x()
   })
-  setNames(res, nms)
+  rlang::set_names(res, nms)
 }
 
 bs_theme_colors <- function() {
