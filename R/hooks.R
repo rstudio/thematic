@@ -288,42 +288,17 @@ maybe_register_showtext <- function(dev_name) {
   if ("RStudioGD" %in% dev_name) return()
 
   if (dev.cur() != 1) {
-    # https://github.com/yixuan/showtext/issues/33
-    showtext_opts_set(dev_name)
     showtext::showtext_begin()
+    # Let showtext know about res if it's coming from thematic_with_device()
+    if (is.numeric(res <- .globals$device$args$res)) {
+      showtext::showtext_opts(dpi = res)
+    }
   } else {
     maybe_warn(
       "showtext font rendering requires a device to be open before plotting.",
       id = "showtext-open-device"
     )
   }
-}
-
-showtext_opts_set <- function(dev_name) {
-  showtext_opts_restore()
-
-  # https://github.com/rstudio/shiny/issues/1832
-  dpi <- knitr::opts_current$get("dpi") %||% 96
-  session <- shiny::getDefaultReactiveDomain()
-  pixelratio <- session$clientData$pixelratio %||%
-    knitr::opts_current$get("fig.retina") %||% 1
-  if ("Cairo" == dev_name && pixelratio > 1) {
-    # https://github.com/yixuan/showtext/issues/33#issuecomment-620848077
-    maybe_warn(
-      "There are known issues with showtext and CairoPNG on ",
-      "high res displays. If fonts appear small, try using ",
-      "ragg::agg_png instead of CairoPNG.",
-      id = "showtext-high-res-cairopng"
-    )
-  }
-  .globals$showtext_opts <- showtext::showtext_opts(dpi = dpi * pixelratio)
-  .globals$showtext_opts
-}
-
-showtext_opts_restore <- function() {
-  if (is.null(.globals$showtext_opts)) return()
-  showtext::showtext_opts(.globals$showtext_opts)
-  rm("showtext_opts", envir = .globals)
 }
 
 # https://drafts.csswg.org/css-fonts-4/#generic-font-families

@@ -100,7 +100,6 @@ thematic_off <- function() {
   base_params_restore()
   base_palette_restore()
   knitr_dev_args_restore()
-  showtext_opts_restore()
   ggplot_theme_restore()
   ggplot_build_restore()
   lattice_print_restore()
