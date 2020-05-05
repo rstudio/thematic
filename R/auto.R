@@ -130,7 +130,30 @@ resolve_auto_theme <- function() {
 shiny_output_info <- function() {
   if (!is_installed("shiny")) return(NULL)
   info <- tryNULL(shiny::getCurrentOutputInfo())
-  info[c("bg", "fg", "accent", "font")]
+  # Return early if we're not in any output context
+  if (is.null(info)) return(NULL)
+  # Return early with a message to update shiny if the relevant
+  # info isn't populated
+  nms <- c("bg", "fg", "accent", "font")
+  missing <- setdiff(nms, names(info))
+  if (length(missing)) {
+    maybe_warn(
+      "Auto-theming with shiny requires v1.4.0.9900 or higher",
+      id = "upgrade-shiny"
+    )
+    return(NULL)
+  }
+  # This is what I get for announcing before shiny was ready
+  res <- lapply(info[nms], function(x) {
+    if (!shiny::is.reactive(x)) {
+      stop(
+        "Expected shiny::getCurrentOutputInfo() to return reactive expressions. ",
+        "Try upgrading shiny: remotes::install_github('rstudio/shiny#2740')"
+      )
+    }
+    x()
+  })
+  setNames(res, nms)
 }
 
 bs_theme_colors <- function() {
