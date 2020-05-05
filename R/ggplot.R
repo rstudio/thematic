@@ -60,76 +60,48 @@ update_ggtheme <- function(theme = .globals$theme) {
     strip.text = text
   )
 
-  # The rest depends on old fg/bg
-  # TODO: extend %OR% to also handle "transparent"?
-  old_bg <- old$plot.background$fill %OR% "white"
-  old_fg <- old$text$colour
-
-  # Panel bg
-  # TODO: abstract out the duplicated logic?
-  old$panel.background$fill <- old$panel.background$fill %OR% old_bg
-  panel_bg_fill <- if (!identical(old$panel.background$fill, old_bg)) {
-    "transparent"
-  } else {
-    mix_colors(new_bg, new_fg, amount_of_mixture(old$panel.background$fill, old_bg, old_fg))
+  # Like %OR%, but for transparent as well
+  `%missing%` <- function(x, y) {
+    if (identical(x, "transparent")) return(y)
+    x %OR% y
   }
-  ggplot2::theme_update(
-    panel.background = ggplot2::element_rect(fill = panel_bg_fill)
-  )
 
-  # Panel grid
-  old$panel.grid$colour <- old$panel.grid$colour %OR% old_bg
-  panel_grid_colour <- if (identical(old$panel.grid$colour, old$panel.background$fill)) {
-    "transparent"
-  } else {
-    mix_colors(new_bg, new_fg, amount_of_mixture(old$panel.grid$colour, old_bg, old_fg))
-  }
-  ggplot2::theme_update(
-    panel.grid = ggplot2::element_line(colour = panel_grid_colour)
-  )
+  # The remaining updates depend on the old fg/bg
+  old_bg <- old$plot.background$fill %missing% "white"
+  old_fg <- old$text$colour %missing% "black"
 
-  # Legend bg
-  old$legend.background$fill <- old$legend.background$fill %OR% old_bg
-  legend_fill <- if (identical(old$legend.background$fill, old_bg)) {
-    "transparent"
-  } else {
-    mix_colors(new_bg, new_fg, amount_of_mixture(old$legend.background$fill, old_bg, old_fg))
+  # Main idea: if a (top) color is visibly different from the color
+  # underneath it (bottom), then find the amount of mixture (of fg/bg)
+  # it took to obtain the top color (based on perceptual their distance),
+  # and apply that amount to the new fg/bg
+  update_top_color <- function(top, bottom) {
+    if (identical(top %missing% bottom, bottom)) {
+      return("transparent")
+    }
+    amt <- amount_of_mixture(top, old_bg, old_fg)
+    mix_colors(new_bg, new_fg, amt)
   }
-  ggplot2::theme_update(
-    legend.background = ggplot2::element_rect(fill = legend_fill)
-  )
 
-  # Legend box
-  old$legend.box.background$fill <- old$legend.box.background$fill %OR% old_bg
-  legend_box_fill <- if (identical(old$legend.box.background$fill, old_bg)) {
-    "transparent"
-  } else {
-    mix_colors(new_bg, new_fg, amount_of_mixture(old$legend.box.background$fill, old_bg, old_fg))
-  }
   ggplot2::theme_update(
-    legend.box.background = ggplot2::element_rect(fill = legend_box_fill)
-  )
-
-  # Legend key
-  old$legend.key$fill <- old$legend.key$fill %OR% old_bg
-  legend_key_fill <- if (identical(old$legend.key$fill, old_bg)) {
-    "transparent"
-  } else {
-    mix_colors(new_bg, new_fg, amount_of_mixture(old$legend.key$fill, old_bg, old_fg))
-  }
-  ggplot2::theme_update(
-    legend.key = ggplot2::element_rect(fill = legend_key_fill)
-  )
-
-  # TODO: should we be comparing to panel.background?
-  old$strip.background$fill <- old$strip.background$fill %OR% old_bg
-  strip_bg_fill <- if (identical(old$strip.background$fill, old_bg)) {
-    "transparent"
-  } else {
-    mix_colors(new_bg, new_fg, amount_of_mixture(old$strip.background$fill, old_bg, old_fg))
-  }
-  ggplot2::theme_update(
-    strip.background = ggplot2::element_rect(fill = strip_bg_fill)
+    panel.background = ggplot2::element_rect(
+      fill = update_top_color(old$panel.background$fill, old_bg)
+    ),
+    panel.grid = ggplot2::element_line(
+      colour = update_top_color(old$panel.grid$colour, old_bg)
+    ),
+    legend.background = ggplot2::element_rect(
+      fill = update_top_color(old$legend.background$fill, old_bg)
+    ),
+    legend.box.background = ggplot2::element_rect(
+      fill = update_top_color(old$legend.box.background$fill, old_bg)
+    ),
+    legend.key = ggplot2::element_rect(
+      fill = update_top_color(old$legend.key$fill, old_bg)
+    ),
+    # TODO: should we be comparing to panel.background?
+    strip.background = ggplot2::element_rect(
+      fill = update_top_color(old$strip.background$fill, old_bg)
+    )
   )
 
   old_theme
