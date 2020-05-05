@@ -12,7 +12,7 @@ thematic_with_device(
   ...
 )
 
-default_device(type = c("png", "tiff", "svg", "pdf"))
+default_device(type = c("png", "svg", "pdf", "tiff", "jpeg"))
 }
 \arguments{
 \item{expr}{an expression that produces a plot.}

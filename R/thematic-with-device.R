@@ -43,7 +43,7 @@ thematic_with_device <- function(expr, device = default_device(),
   }
 
   showtextOpts <- if (is.numeric(args$res) && is_installed("showtext")) {
-    showtext::showtext_opts(dpi = res)
+    showtext::showtext_opts(dpi = args$res)
   }
 
   args[[bg_arg]] <- args[[bg_arg]] %||%
