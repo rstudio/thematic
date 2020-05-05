@@ -254,8 +254,9 @@ get_device_function <- function(name) {
     agg_png = ragg::agg_png,
     agg_tiff = ragg::agg_tiff,
     agg_ppm = ragg::agg_ppm,
-    Cairo = getFromNamespace("Cairo", "Cairo"),
-    devSVG = getFromNamespace("svglite", "svglite"),
+    agg_jpeg = ragg::agg_jpeg,
+    Cairo = Cairo::Cairo,
+    devSVG = svglite::svglite,
     # TODO: support cairoDevices? tikz?
     stop(
       "thematic doesn't (yet) support the '", name, "' graphics device",
@@ -266,7 +267,7 @@ get_device_function <- function(name) {
 }
 
 is_ragg_device <- function(dev_name) {
-  dev_name %in% paste0("agg_", c("png", "tiff", "ppm"))
+  dev_name %in% paste0("agg_", c("png", "tiff", "ppm", "jpeg"))
 }
 
 dev_new <- function(filename) {

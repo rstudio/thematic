@@ -39,6 +39,7 @@ Suggests:
     svglite,
     jsonlite,
     curl,
+    Cairo,
     GGally,
     RColorBrewer,
     patchwork

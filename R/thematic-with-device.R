@@ -110,16 +110,25 @@ thematic_with_device <- function(expr, device = default_device(),
 #' @rdname thematic_with_device
 #' @param type the type of output format
 #' @export
-default_device <- function(type = c("png", "tiff", "svg", "pdf")) {
+default_device <- function(type = c("png", "svg", "pdf", "tiff", "jpeg")) {
   type <- match.arg(type)
 
-  if (type %in% c("png", "tiff") && is_installed("ragg")) {
+  if (type %in% c("png", "tiff", "jpeg") && is_installed("ragg")) {
     dev <- switch(
       type,
       png = ragg::agg_png,
-      tiff = ragg::agg_tiff
+      tiff = ragg::agg_tiff,
+      jpeg = ragg::agg_jpeg
     )
     return(dev)
+  }
+
+  png_dev <- if (capabilities("aqua")) {
+    grDevices::png
+  } else if (is_installed("Cairo")) {
+    Cairo::CairoPNG
+  } else {
+    grDevices::png
   }
 
   switch(
