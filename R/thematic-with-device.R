@@ -42,6 +42,10 @@ thematic_with_device <- function(expr, device = default_device(),
     )
   }
 
+  showtextOpts <- if (is.numeric(args$res) && is_installed("showtext")) {
+    showtext::showtext_opts(dpi = res)
+  }
+
   args[[bg_arg]] <- args[[bg_arg]] %||%
     thematic_get_option("bg", "white")
 
@@ -90,21 +94,26 @@ thematic_with_device <- function(expr, device = default_device(),
 
   # Evaluate the expression
   expr <- rlang::enquo(expr)
-  tryCatch({
-    result <- withVisible(rlang::eval_tidy(expr))
-    if (result$visible) {
-      capture.output(print(result$value))
+  tryCatch(
+    {
+      result <- withVisible(rlang::eval_tidy(expr))
+      if (result$visible) {
+        capture.output(print(result$value))
+      }
+      filename
+    },
+    error = function(e) {
+      try({
+        # i.e., if we _know_ this is a tempfile remove it before throwing
+        if (isTempFile && file.exists(filename))
+          unlink(filename)
+      })
+      stop(e)
+    },
+    finally = {
+      if (length(showtextOpts)) showtext::showtext_opts(showtextOpts)
     }
-    filename
-  },
-  error = function(e) {
-    try({
-      # i.e., if we _know_ this is a tempfile remove it before throwing
-      if (isTempFile && file.exists(filename))
-        unlink(filename)
-    })
-    stop(e)
-  })
+  )
 }
 
 #' @rdname thematic_with_device

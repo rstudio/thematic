@@ -289,10 +289,6 @@ maybe_register_showtext <- function(dev_name) {
 
   if (dev.cur() != 1) {
     showtext::showtext_begin()
-    # Let showtext know about res if it's coming from thematic_with_device()
-    if (is.numeric(res <- .globals$device$args$res)) {
-      showtext::showtext_opts(dpi = res)
-    }
   } else {
     maybe_warn(
       "showtext font rendering requires a device to be open before plotting.",
