@@ -21,7 +21,7 @@
   register_upgrade_message("htmltools", "0.4.0.9003")
   # these will take longer
   register_upgrade_message("rmarkdown", "2.2.0")
-  register_upgrade_message("shiny", "1.4.0.9900")
+  register_upgrade_message("shiny", "1.4.0.9003")
 
 
   if (!is_installed("knitr")) return()
