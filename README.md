@@ -30,7 +30,7 @@ In addition, for the auto-theming integration with **shiny**, you
 currently need:
 
 ``` r
-remotes::install_github("rstudio/shiny#2740")
+remotes::install_github("rstudio/shiny")
 ```
 
 And, for auto-theming in `rmarkdown::html_document()`:

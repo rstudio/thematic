@@ -66,7 +66,7 @@ And to change the accent color:
 tags$style(HTML("#ggplot a {color: red}"))
 ```
 
-By the way, if you're a **shiny** or **htmlwidget** developer, you can also take advantage of `shiny::getCurrentOutputInfo()` in your custom widgets (see [here](https://github.com/rstudio/shiny/pull/2740) for more info).
+By the way, if you're a **shiny** developer and wish to add similar auto-theming capabilities to a custom output, you can add a `.shiny-report-theme` class to the output container to obtain styles via `getCurrentOutputInfo()`. And similarly, if you're an **htmlwidgets** developer, you can simply set `reportTheme = TRUE` in `htmlwidgets::shinyWidgetOutput()`.
 
 ## Rendering Google Fonts {#gfont-rendering}
 
@@ -82,7 +82,9 @@ If you'd prefer to use **ragg** instead, which in some environments (especially 
 
 ```r
 # install.packages("ragg")
-shinyOptions(shiny.device = ragg::agg_png)
+library(ragg)
+shinyOptions(shiny.useragg = TRUE)
+thematic_on(font = "Pacifico")
 ```
 
 

@@ -12,17 +12,11 @@
     }
   )
 
-  # Suggested CRAN packages that we need recent versions of
-  register_upgrade_message("systemfonts", "0.2")
-
   # TODO: bump these to CRAN versions when released
-  register_upgrade_message("ragg", "0.1.5.9000")
-  register_upgrade_message("shinytest", "1.3.1.9003")
-  register_upgrade_message("htmltools", "0.4.0.9003")
-  # these will take longer
-  register_upgrade_message("rmarkdown", "2.2.0")
-  register_upgrade_message("shiny", "1.4.0.9003")
-
+  register_upgrade_message("shiny", "1.4.0.9003", "rstudio/shiny")
+  register_upgrade_message("ragg", "0.1.5.9000", "r-lib/ragg")
+  # This may take longer
+  register_upgrade_message("rmarkdown", "2.2.0", "rstudio/rmarkdown#1706")
 
   if (!is_installed("knitr")) return()
   if (is_installed("showtext")) {
@@ -38,23 +32,18 @@
 
 
 # Essentially verbatim from shiny:::register_upgrade_message
-register_upgrade_message <- function(pkg, version) {
-  # Is an out-dated version of this package installed?
-  needs_upgrade <- function() {
-    if (system.file(package = pkg) == "")
-      return(FALSE)
-    if (utils::packageVersion(pkg) >= version)
-      return(FALSE)
-    TRUE
-  }
+register_upgrade_message <- function(pkg, version, location = NULL) {
 
   msg <- sprintf(
-    "thematic is designed to work with '%s' >= %s.
-    Please upgrade via install.packages('%s').",
-    pkg, version, pkg
+    "This version of thematic is designed to work with %s version %s or higher. ",
+    pkg, version
   )
 
-  if (pkg %in% loadedNamespaces() && needs_upgrade()) {
+  if (length(location)) {
+    msg <- paste0(msg, sprintf("Consider upgrading via remotes::install_github('%s')", location))
+  }
+
+  if (pkg %in% loadedNamespaces() && !is_available(pkg, version)) {
     packageStartupMessage(msg)
   }
 
@@ -64,7 +53,14 @@ register_upgrade_message <- function(pkg, version) {
   setHook(
     packageEvent(pkg, "onLoad"),
     function(...) {
-      if (needs_upgrade()) packageStartupMessage(msg)
+      if (!is_available(pkg, version)) packageStartupMessage(msg)
     }
   )
+}
+is_available <- function(package, version = NULL) {
+  installed <- nzchar(system.file(package = package))
+  if (is.null(version)) {
+    return(installed)
+  }
+  installed && isTRUE(utils::packageVersion(package) >= version)
 }
