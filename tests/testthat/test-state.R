@@ -18,7 +18,7 @@ test_that("Setting and getting the theme", {
   expect_identical(x, y)
   expect_doppelganger("blue", function() { plot(1:10) })
   thematic_set_theme(y)
-  expect_identical(thematic_get_theme(), y)
+  expect_equal(thematic_get_theme(), y)
   expect_doppelganger("black", function() { plot(1:10) })
   thematic_set_theme(NULL)
   expect_null(thematic_get_theme())

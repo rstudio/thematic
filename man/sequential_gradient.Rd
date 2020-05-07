@@ -2,7 +2,7 @@
 % Please edit documentation in R/thematic.R
 \name{sequential_gradient}
 \alias{sequential_gradient}
-\title{Construct a sequential colorscale from fg, accent, and bg}
+\title{Control parameters of the sequential colorscale}
 \usage{
 sequential_gradient(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30)
 }
@@ -27,26 +27,24 @@ derived from the \code{fg}, \code{bg}, and \code{accent} color (defined in \code
 }
 \examples{
 
-if (requireNamespace("ggplot2", quietly = TRUE)) {
-  # Gradient from fg to accent
-  fg <- sequential_gradient(1, 0)
-  thematic_on("black", "white", "salmon", sequential = fg)
-  ggplot2::qplot(1:10, 1:10, color = 1:10)
+# Gradient from fg to accent
+fg <- sequential_gradient(1, 0)
+thematic_on("black", "white", "salmon", sequential = fg)
+ggplot2::qplot(1:10, 1:10, color = 1:10)
 
-  # Gradient from accent -> bg
-  bg <- sequential_gradient(0, 1)
-  thematic_on("black", "white", "salmon", sequential = bg)
-  ggplot2::qplot(1:10, 1:10, color = 1:10)
+# Gradient from accent -> bg
+bg <- sequential_gradient(0, 1)
+thematic_on("black", "white", "salmon", sequential = bg)
+ggplot2::qplot(1:10, 1:10, color = 1:10)
 
-  # Gradient from mix(accent, fg, 0.5) -> mix(accent, bg, 0.5)
-  mix <- sequential_gradient(0.5, 0.5)
-  thematic_on("black", "white", "salmon", sequential = mix)
-  ggplot2::qplot(1:10, 1:10, color = 1:10)
+# Gradient from mix(accent, fg, 0.5) -> mix(accent, bg, 0.5)
+mix <- sequential_gradient(0.5, 0.5)
+thematic_on("black", "white", "salmon", sequential = mix)
+ggplot2::qplot(1:10, 1:10, color = 1:10)
 
-  # Use fg (instead of bg) for high end of scale
-  mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
-  thematic_on("black", "white", "salmon", sequential = mix_flip)
-  ggplot2::qplot(1:10, 1:10, color = 1:10)
-}
+# Use fg (instead of bg) for high end of scale
+mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
+thematic_on("black", "white", "salmon", sequential = mix_flip)
+ggplot2::qplot(1:10, 1:10, color = 1:10)
 
 }

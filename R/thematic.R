@@ -1,23 +1,24 @@
-#' Automatic and consistent theming of static plots
+#' Enable (or disable) simplified theming of R graphics.
 #'
-#' Turn on (or off) automatic theming of ggplot2, lattice, and base graphics.
-#' While on, thematic registers [plot.new()]/[grid.newpage()] hooks
-#' that set relevant options (i.e., [graphics::par()], [grid::gpar()],
-#' [lattice::trellis.par.set()], [ggplot2::theme_set()], etc) based on
-#' the current context.
+#' A unified interface for styling **ggplot2**, **base**, and **lattice** graphics
+#' from a handful of options. In some cases, most notably in a **shiny** runtime,
+#' those options can derive automatically from the relevant CSS styles.
+#'
+#' @section Automatic values:
 #'
 #' The `bg`, `fg`, `accent`, and `font` arguments all support a value of `'auto'`,
-#' which are all resolved (just before plotting) based on the following (global)
-#' information, where available
+#' which are all resolved, at plot time, based on the execution environment. In particular,
+#' it use the following information, in order:
 #'
-#' 1. `shiny::getCurrentOutputInfo()`.
+#' 1. The CSS styles of the currently executing **shiny** output container (via `shiny::getCurrentOutputInfo()`).
 #' 2. [auto_defaults()].
-#' 3. `bootstraplib::bs_theme_get_variables()`.
-#' 4. `rstudioapi::getThemeInfo()`.
+#' 3. `bootstraplib::bs_theme_get_variables()` (if running inside `rmarkdown::html_document()`).
+#' 4. `rstudioapi::getThemeInfo()` (if the relevant graphics device is RStudioGD).
 #'
-#' Note that if the resolving of `'auto'` for some reason doesn't pick up the
-#' right information, you can always specify values in `thematic_on()`.
-#' Colors (e.g., `bg`, `fg`, `accent`) may be any value understood by [col2rgb()]
+#' If, for whatever reason, `'auto'` doesn't resolve to the right value,
+#' provide the desired values to `thematic_on()` or `auto_defaults()`.
+#'
+#' @details Colors (e.g., `bg`, `fg`, `accent`) may be any value understood by [col2rgb()]
 #' or `htmltools::parseCssColors()` (i.e., may be any valid R or CSS color string).
 #'
 #' @param bg a background color.
@@ -47,13 +48,13 @@
 #' plot(1:10, col = 1:10)
 #' lattice::show.settings()
 #'
-#' # use any color code
+#' # use any hex color string
 #' thematic_on("#444444", "#e4e4e4")
 #' plot(1:10)
 #' plot(1:10, col = 1:10)
 #' lattice::show.settings()
 #'
-#' # restores _original_ state
+#' # disables thematic (also restores global state)
 #' thematic_off()
 #' plot(1:10)
 #' lattice::show.settings()
@@ -115,20 +116,18 @@ thematic_off <- function() {
   invisible()
 }
 
-#' (Temporarily) setting and restoring themes
-#'
-#' Use these functions if you'd like to enable thematic for a single plot
-#' and/or want to program with thematic (i.e. add additional customization in
-#' a custom function):
+#' Tools for getting and restoring global state
 #'
 #' * [thematic_with_theme()]: similar to [thematic_on()], but for an single plot.
 #' * [thematic_set_theme()]: set a given `theme` object as the current theme.
-#' * [thematic_get_theme()]: return a `theme` object describing the
-#' current thematic theme.
-#' * [thematic_get_theme()]: get a particular `theme` option (with a sensible default
-#' if thematic is not enabled).
-#' * [thematic_get_mixture()]: get a mixture of `bg` and `fg`.
+#' * [thematic_get_theme()]: obtain the current `theme`.
+#' * [thematic_get_option()]: obtain a particular `theme` option (and provide a `default`
+#' if if no `theme` is active).
+#' * [thematic_get_mixture()]: obtain a mixture of the current `theme`'s `bg` and `fg`.
 #'
+#' @param expr R code that produces a plot.
+#' @param ... arguments passed along to [thematic_on()].
+#' @param default a default value to return in the event no thematic theme is active.
 #' @rdname theme-management
 #' @export
 #' @examples
@@ -151,23 +150,21 @@ thematic_off <- function() {
 #' }
 #' my_plot(plot(1:10))
 #'
-#' # Use thematic_get_option() if you want just part of the theme
-#' # object (and return a default value if thematic isn't enabled)
 #' thematic_off()
 #' thematic_get_option("bg", "white")
 #' thematic_on(bg = "red")
 #' thematic_get_option("bg", "white")
 #' thematic_off()
 #'
-#' # Use thematic_get_mixture() if you want to get a mixture of the
-#' # background and foreground colors
 #' thematic_with_theme(
 #'   scales::show_col(thematic_get_mixture(seq(0, 1, by = 0.1))),
 #'   "darkblue", "skyblue"
 #' )
 #'
-thematic_get_theme <- function() {
-  .globals$theme
+thematic_with_theme <- function(expr, ...) {
+  old <- thematic_on(...)
+  on.exit(thematic_set_theme(old), add = TRUE)
+  force(expr)
 }
 
 #' @rdname theme-management
@@ -188,18 +185,13 @@ thematic_set_theme <- function(theme) {
 }
 
 #' @rdname theme-management
-#' @param expr R code that produces a plot.
-#' @param ... arguments passed along to [thematic_on()].
 #' @export
-thematic_with_theme <- function(expr, ...) {
-  old <- thematic_on(...)
-  on.exit(thematic_set_theme(old), add = TRUE)
-  force(expr)
+thematic_get_theme <- function() {
+  .globals$theme
 }
 
 #' @rdname theme-management
 #' @param name a theme element name (e.g., `fg`, `bg`, etc.)
-#' @param default a default value to return in the event no thematic theme is active.
 #' @export
 thematic_get_option <- function(name = "", default = NULL) {
   if (length(name) != 1) {
@@ -220,7 +212,6 @@ thematic_get_option <- function(name = "", default = NULL) {
 
 #' @rdname theme-management
 #' @param amounts value(s) between 0 and 1 specifying how much to mix `bg` (0) and `fg` (1).
-#' @inheritParams thematic_get_option
 #' @export
 thematic_get_mixture <- function(amounts = 0.5, default = NULL) {
   if (any(amounts < 0 | amounts > 1)) {
@@ -298,7 +289,9 @@ is_default_spec <- function(font) {
 }
 
 
-#' Okabe Ito colorscale
+#' A color-blind safe qualitative colorscale (Okabe-Ito)
+#'
+#' This is the default `qualitative` colorscale in `thematic_on()`
 #'
 #' @param n number of colors.
 #'
@@ -311,7 +304,7 @@ okabe_ito <- function(n = NULL) {
   if (is.null(n)) okabeIto else okabeIto[seq_len(n)]
 }
 
-#' Construct a sequential colorscale from fg, accent, and bg
+#' Control parameters of the sequential colorscale
 #'
 #' Controls the default weighting and direction of the color gradient
 #' derived from the `fg`, `bg`, and `accent` color (defined in `thematic_on()`).
@@ -327,27 +320,25 @@ okabe_ito <- function(n = NULL) {
 #' @export
 #' @examples
 #'
-#' if (requireNamespace("ggplot2", quietly = TRUE)) {
-#'   # Gradient from fg to accent
-#'   fg <- sequential_gradient(1, 0)
-#'   thematic_on("black", "white", "salmon", sequential = fg)
-#'   ggplot2::qplot(1:10, 1:10, color = 1:10)
+#' # Gradient from fg to accent
+#' fg <- sequential_gradient(1, 0)
+#' thematic_on("black", "white", "salmon", sequential = fg)
+#' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
-#'   # Gradient from accent -> bg
-#'   bg <- sequential_gradient(0, 1)
-#'   thematic_on("black", "white", "salmon", sequential = bg)
-#'   ggplot2::qplot(1:10, 1:10, color = 1:10)
+#' # Gradient from accent -> bg
+#' bg <- sequential_gradient(0, 1)
+#' thematic_on("black", "white", "salmon", sequential = bg)
+#' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
-#'   # Gradient from mix(accent, fg, 0.5) -> mix(accent, bg, 0.5)
-#'   mix <- sequential_gradient(0.5, 0.5)
-#'   thematic_on("black", "white", "salmon", sequential = mix)
-#'   ggplot2::qplot(1:10, 1:10, color = 1:10)
+#' # Gradient from mix(accent, fg, 0.5) -> mix(accent, bg, 0.5)
+#' mix <- sequential_gradient(0.5, 0.5)
+#' thematic_on("black", "white", "salmon", sequential = mix)
+#' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
-#'   # Use fg (instead of bg) for high end of scale
-#'   mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
-#'   thematic_on("black", "white", "salmon", sequential = mix_flip)
-#'   ggplot2::qplot(1:10, 1:10, color = 1:10)
-#' }
+#' # Use fg (instead of bg) for high end of scale
+#' mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
+#' thematic_on("black", "white", "salmon", sequential = mix_flip)
+#' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
 sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30) {
   if (any(fg_weight > 1 | fg_weight < 0)) {

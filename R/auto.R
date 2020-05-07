@@ -3,14 +3,14 @@
 #' Auto theming defaults are used to resolve `"auto"` values outside
 #' of a **shiny** runtime (i.e., where auto theming might be based on
 #' imperfect heuristics). Setting of auto defaults is especially useful
-#' for developers of a custom rmarkdown format that wish to have better
-#' default auto-theming behavior. By having the output document call
-#' `auto_defaults()` "pre-knit" (and restoring the old defaults "post-knit"),
-#' users of the output document can then simply call `thematic_on()` within
-#' their document to adopt these defaults.
+#' for developers of a custom rmarkdown output document that wish to
+#' have more sensible auto theming behavior for users of the document.
+#' In particular, by having the output document call `auto_defaults()`
+#' "pre-knit" with the document's styling preferences (and restoring the
+#' old defaults "post-knit"), users of the output document can then simply
+#' call `thematic_on()` within their document to use those preferences.
 #'
 #' @details Call this function with no arguments to get the current auto defaults.
-#'
 #'
 #' @inheritParams thematic_on
 #' @export
