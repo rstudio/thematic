@@ -219,18 +219,20 @@ thematic_get_option <- function(name = "", default = NULL) {
 }
 
 #' @rdname theme-management
-#' @param amounts value(s) between 0 and 1 specifying how much to mix `fg` (0) and `bg` (1).
+#' @param amounts value(s) between 0 and 1 specifying how much to mix `bg` (0) and `fg` (1).
+#' @inheritParams thematic_get_option
 #' @export
-thematic_get_mixture <- function(amounts = 0.5) {
+thematic_get_mixture <- function(amounts = 0.5, default = NULL) {
   if (any(amounts < 0 | amounts > 1)) {
     stop("`amounts` must be between 0 and 1", call. = FALSE)
   }
   fg <- thematic_get_option("fg")
   bg <- thematic_get_option("bg")
-  if (!length(fg) || !length(bg)) {
-    return(NULL)
+  if (length(fg) && length(bg)) {
+    scales::colour_ramp(c(bg, fg))(amounts)
+  } else {
+    rep(default, length(amounts))
   }
-  scales::colour_ramp(c(fg, bg))(amounts)
 }
 
 #' Font specification
