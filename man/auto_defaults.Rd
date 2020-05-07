@@ -15,7 +15,7 @@ auto_defaults(bg = NULL, fg = NULL, accent = NULL, font = NULL)
 (e.g., the fitted line color for \code{\link[ggplot2:geom_smooth]{ggplot2::geom_smooth()}}).
 Can be 2 colors for lattice (stroke vs fill accent).}
 
-\item{font}{a \code{font_spec()} object. If missing, font defaults are not altered.}
+\item{font}{a \code{\link[=font_spec]{font_spec()}} object. If missing, font defaults are not altered.}
 }
 \description{
 Auto theming defaults are used to resolve \code{"auto"} values outside

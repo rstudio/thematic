@@ -25,7 +25,7 @@ thematic_off()
 (e.g., the fitted line color for \code{\link[ggplot2:geom_smooth]{ggplot2::geom_smooth()}}).
 Can be 2 colors for lattice (stroke vs fill accent).}
 
-\item{font}{a \code{font_spec()} object. If missing, font defaults are not altered.}
+\item{font}{a \code{\link[=font_spec]{font_spec()}} object. If missing, font defaults are not altered.}
 
 \item{sequential}{a color palette for graphical markers that encode
 numeric values. Can be a vector of color codes or a
@@ -37,6 +37,8 @@ levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.}
 }
 \value{
 Returns any information about the previously set theme (if any), invisibly.
+This value may be provided to \code{\link[=thematic_set_theme]{thematic_set_theme()}} to return to the previous
+global state.
 }
 \description{
 Turn on (or off) automatic theming of ggplot2, lattice, and base graphics.
@@ -87,5 +89,5 @@ thematic_off()
 
 }
 \seealso{
-\code{\link[=font_spec]{font_spec()}}, \code{\link[=thematic_with_device]{thematic_with_device()}}, \code{\link[=thematic_get]{thematic_get()}}
+\code{\link[=thematic_with_device]{thematic_with_device()}}, \code{\link[=thematic_with_theme]{thematic_with_theme()}}
 }

@@ -25,7 +25,7 @@
 #' @param accent a color for making certain graphical markers 'stand out'
 #' (e.g., the fitted line color for [ggplot2::geom_smooth()]).
 #' Can be 2 colors for lattice (stroke vs fill accent).
-#' @param font a `font_spec()` object. If missing, font defaults are not altered.
+#' @param font a [`font_spec()`] object. If missing, font defaults are not altered.
 #' @param sequential a color palette for graphical markers that encode
 #' numeric values. Can be a vector of color codes or a
 #' [sequential_gradient()] object.
@@ -34,9 +34,11 @@
 #' levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.
 #'
 #' @return Returns any information about the previously set theme (if any), invisibly.
+#' This value may be provided to [thematic_set_theme()] to return to the previous
+#' global state.
 #'
 #' @rdname thematic
-#' @seealso [font_spec()], [thematic_with_device()], [thematic_get()]
+#' @seealso [thematic_with_device()], [thematic_with_theme()]
 #' @export
 #' @examples
 #' # simple dark mode
@@ -68,11 +70,11 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
 
   old_theme <- .globals$theme
 
-  .globals$theme <- list(
+  .globals$theme <- structure(list(
     bg = tag_auto(bg), fg = tag_auto(fg), accent = tag_auto(accent),
     qualitative = qualitative, sequential_func = sequential,
     font = as_font_spec(font)
-  )
+  ), class = "thematic_theme")
 
   # Set knitr dev.args = list(bg = bg) now (instead of later)
   # so at least the _next_ chunk has the right bg color.
@@ -89,6 +91,10 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
   lattice_print_set()
 
   invisible(old_theme)
+}
+
+is_thematic_theme <- function(x) {
+  inherits(x, "thematic_theme")
 }
 
 #' @rdname thematic
@@ -109,27 +115,89 @@ thematic_off <- function() {
   invisible()
 }
 
-#' Query the current thematic theme
+#' (Temporarily) setting and restoring themes
 #'
-#' [thematic_get()] returns information about the entire theme,
-#' whereas [thematic_get_option()] returns information about a specific
-#' option.
+#' Use these functions if you'd like to enable thematic for a single plot
+#' and/or want to program with thematic (i.e. add additional customization in
+#' a custom function):
 #'
+#' * [thematic_with_theme()]: similar to [thematic_on()], but for an single plot.
+#' * [thematic_set_theme()]: set a given `theme` object as the current theme.
+#' * [thematic_get_theme()]: return a `theme` object describing the
+#' current thematic theme.
+#' * [thematic_get_theme()]: get a particular `theme` option (with a sensible default
+#' if thematic is not enabled).
+#' * [thematic_get_mixture()]: get a mixture of `bg` and `fg`.
+#'
+#' @rdname theme-management
 #' @export
 #' @examples
-#' thematic_get()
-#' thematic_on("darkblue", "skyblue")
-#' thematic_get_option("bg")
 #'
-#' if (interactive()) {
-#'   scales::show_col(thematic_get_mixture(seq(0, 1, by = 0.1)))
+#' # Use thematic_with_theme() for a one-time use of thematic
+#' thematic_with_theme(
+#'   plot(1:10, col = thematic_get_option("accent"), pch = 19),
+#'   "darkblue", "skyblue", accent = "red"
+#' )
+#'
+#' # Use thematic_set_theme() if doing something more complicated
+#' # like programming on top thematic (without causing side effects)
+#' my_plot <- function(expr, las = 3, ...) {
+#'   old_theme <- thematic_on("black", "white")
+#'   on.exit(thematic_set_theme(old_theme), add = TRUE)
+#'   opts <- par(las = las)
+#'   on.exit(par(opts), add = TRUE)
+#'   # Imagine some more customization with ...
+#'   force(expr)
 #' }
+#' my_plot(plot(1:10))
 #'
-thematic_get <- function() {
+#' # Use thematic_get_option() if you want just part of the theme
+#' # object (and return a default value if thematic isn't enabled)
+#' thematic_off()
+#' thematic_get_option("bg", "white")
+#' thematic_on(bg = "red")
+#' thematic_get_option("bg", "white")
+#' thematic_off()
+#'
+#' # Use thematic_get_mixture() if you want to get a mixture of the
+#' # background and foreground colors
+#' thematic_with_theme(
+#'   scales::show_col(thematic_get_mixture(seq(0, 1, by = 0.1))),
+#'   "darkblue", "skyblue"
+#' )
+#'
+thematic_get_theme <- function() {
   .globals$theme
 }
 
-#' @rdname thematic_get
+#' @rdname theme-management
+#' @param theme a `theme` object (as returned by [thematic_on] or [thematic_get_theme()])
+#' or `NULL` (in which case `thematic_off()` is called).
+#' @export
+thematic_set_theme <- function(theme) {
+  if (!length(theme)) {
+    return(thematic_off())
+  }
+  if (!is_thematic_theme(theme)) {
+    stop("`theme` must be a value returned by thematic_on() or thematic_get_theme().", call. = FALSE)
+  }
+  # This is here because sequential_func is not an arg
+  formals <- names(formals(thematic_on))
+  theme <- theme[names(theme) %in% formals]
+  do.call(thematic_on, theme)
+}
+
+#' @rdname theme-management
+#' @param expr R code that produces a plot.
+#' @param ... arguments passed along to [thematic_on()].
+#' @export
+thematic_with_theme <- function(expr, ...) {
+  old <- thematic_on(...)
+  on.exit(thematic_set_theme(old), add = TRUE)
+  force(expr)
+}
+
+#' @rdname theme-management
 #' @param name a theme element name (e.g., `fg`, `bg`, etc.)
 #' @param default a default value to return in the event no thematic theme is active.
 #' @export
@@ -150,7 +218,7 @@ thematic_get_option <- function(name = "", default = NULL) {
   .globals$theme[[name]] %||% default
 }
 
-#' @rdname thematic_get
+#' @rdname theme-management
 #' @param amounts value(s) between 0 and 1 specifying how much to mix `fg` (0) and `bg` (1).
 #' @export
 thematic_get_mixture <- function(amounts = 0.5) {
