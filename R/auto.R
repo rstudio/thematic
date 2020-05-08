@@ -229,7 +229,7 @@ rs_theme_colors <- function() {
 shiny_font_spec <- function(font) {
   if (!length(font)) return(NULL)
   font_spec(
-    c(font$renderedFamily, font$families),
+    font$families,
     scale = size_to_scale(font$size)
   )
 }

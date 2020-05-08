@@ -8,7 +8,7 @@ ui <- fluidPage(
   titlePanel("Hello"),
   tags$head(
     tags$link(href="https://fonts.googleapis.com/css?family=Pacifico", rel="stylesheet"),
-    tags$style(HTML("body{background-color:#444; color:#e4e4e4; font-family: Pacifico}")),
+    tags$style(HTML("body{background-color:#444444; color:#e4e4e4; font-family: Pacifico}")),
     tags$style(HTML("a{color:#e39777}"))
   ),
   plotOutput("p")
