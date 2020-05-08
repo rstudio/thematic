@@ -83,11 +83,10 @@ resolve_auto_theme <- function() {
     theme[[col]] <- as_auto(theme[[col]])
   }
 
-  # resolve sequential
-  theme$sequential <- if (is.function(theme$sequential_func)) {
-     do.call(theme$sequential_func, theme)
-  } else {
-    theme$sequential_func
+  # resolve sequential, if necessary
+  sequential_func <- attr(theme$sequential, "sequential_func")
+  if (is.function(sequential_func)) {
+    theme$sequential <- do.call(sequential_func, theme[c("bg", "fg", "accent")])
   }
 
   # Make sure we can parse any non-missing colors
@@ -96,6 +95,11 @@ resolve_auto_theme <- function() {
     val <- vapply(theme[[col]], parse_any_color, character(1), USE.NAMES = FALSE)
     # Retain auto class (see comment above)
     theme[[col]] <- if (is_auto(theme[[col]])) as_auto(val) else val
+  }
+
+  # Retain the function that created sequential codes, if ncessary
+  if (is.function(sequential_func)) {
+    theme$sequential <- structure(theme$sequential, sequential_func = sequential_func)
   }
 
   if (any(vapply(theme$font, is_auto, logical(1)))) {

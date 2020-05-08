@@ -33,6 +33,7 @@
 #' @param qualitative a color palette for graphical markers that encode
 #' qualitative values (won't be used in ggplot2 when the number of data
 #' levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.
+#' @param inherit should non-specified values inherit from the previous theme?
 #'
 #' @return Returns any information about the previously set theme (if any), invisibly.
 #' This value may be provided to [thematic_set_theme()] to return to the previous
@@ -67,15 +68,35 @@
 #'
 thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
                         font = NA, sequential = sequential_gradient(),
-                        qualitative = okabe_ito()) {
+                        qualitative = okabe_ito(), inherit = FALSE) {
 
-  old_theme <- .globals$theme
+  old_theme <- thematic_get_theme()
 
-  .globals$theme <- structure(list(
-    bg = tag_auto(bg), fg = tag_auto(fg), accent = tag_auto(accent),
-    qualitative = qualitative, sequential_func = sequential,
-    font = as_font_spec(font)
-  ), class = "thematic_theme")
+  if (inherit && length(old_theme)) {
+    if (missing(bg)) bg <- old_theme$bg
+    if (missing(fg)) fg <- old_theme$fg
+    if (missing(accent)) accent <- old_theme$accent
+    if (missing(font)) font <- old_theme$font
+    if (missing(sequential)) sequential <- old_theme$sequential
+    if (missing(qualitative)) qualitative <- old_theme$qualitative
+  }
+
+  # This function is called at plot time (with bg/fg/accent)
+  if (is.function(sequential)) {
+    sequential <- structure("", sequential_func = sequential)
+  }
+
+  .globals$theme <- structure(
+    list(
+      bg = tag_auto(bg),
+      fg = tag_auto(fg),
+      accent = tag_auto(accent),
+      qualitative = qualitative,
+      sequential = sequential,
+      font = as_font_spec(font)
+    ),
+    class = "thematic_theme"
+  )
 
   # Set knitr dev.args = list(bg = bg) now (instead of later)
   # so at least the _next_ chunk has the right bg color.
@@ -178,9 +199,6 @@ thematic_set_theme <- function(theme) {
   if (!is_thematic_theme(theme)) {
     stop("`theme` must be a value returned by thematic_on() or thematic_get_theme().", call. = FALSE)
   }
-  # This is here because sequential_func is not an arg
-  formals <- names(formals(thematic_on))
-  theme <- theme[names(theme) %in% formals]
   do.call(thematic_on, theme)
 }
 
