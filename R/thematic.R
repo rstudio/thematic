@@ -215,7 +215,8 @@ thematic_get_option <- function(name = "", default = NULL) {
   if (length(name) != 1) {
     stop("`name` must be length 1", call. = FALSE)
   }
-  theme_names <- names(.globals$theme)
+  theme <- thematic_get_theme()
+  theme_names <- names(theme)
   if (length(theme_names) && !name %in% theme_names) {
     stop(
       sprintf(
@@ -225,23 +226,25 @@ thematic_get_option <- function(name = "", default = NULL) {
       call. = FALSE
     )
   }
-  .globals$theme[[name]] %||% default
+  theme[[name]] %||% default
 }
 
 #' @rdname theme-management
 #' @param amounts value(s) between 0 and 1 specifying how much to mix `bg` (0) and `fg` (1).
 #' @export
 thematic_get_mixture <- function(amounts = 0.5, default = NULL) {
+  if (!length(thematic_get_theme())) {
+    if (length(default)) {
+      default <- rep_len(default, length(amounts))
+    }
+    return(default)
+  }
   if (any(amounts < 0 | amounts > 1)) {
     stop("`amounts` must be between 0 and 1", call. = FALSE)
   }
   fg <- thematic_get_option("fg")
   bg <- thematic_get_option("bg")
-  if (length(fg) && length(bg)) {
-    scales::colour_ramp(c(bg, fg))(amounts)
-  } else {
-    rep(default, length(amounts))
-  }
+  scales::colour_ramp(c(bg, fg))(amounts)
 }
 
 #' Font specification
