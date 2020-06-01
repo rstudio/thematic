@@ -111,7 +111,7 @@ jobs:
       - name: Install testing dependencies
         run: |
           # TODO: remove me after next release cycle
-          remotes::install_github(c('rstudio/htmltools', 'rstudio/shinytest', 'rstudio/shiny#2740', 'r-lib/ragg', 'rstudio/bootstraplib', 'rstudio/rmarkdown#1706', 'yixuan/showtext'))
+          remotes::install_github(c('rstudio/rmarkdown#1706', 'rstudio/shiny', 'rstudio/bootstraplib'))
           install.packages(c('sf', 'Cairo', 'patchwork', 'gridExtra', 'tinytex'))
           tinytex::install_tinytex()
           tinytex::tlmgr_install('luahbtex')
