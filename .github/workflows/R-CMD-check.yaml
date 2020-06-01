@@ -133,3 +133,59 @@ jobs:
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
+
+      # Mimic shinycoreci's approach to auto-generating GH branches
+      # for easy checkout and shinytest::view_test_diff()
+      - name: Create short sha
+        id: short_sha
+        run: >
+          Rscript
+          -e "cat('::set-output name=sha::', substr(paste0('${{ github.event.pull_request.head.sha }}', '${{ github.sha }}'), 1, 7), sep = '')"
+      - name: Create failure branch name
+        id: failed_branch
+        run: >
+          Rscript
+          -e "cat('::set-output name=name::', '${{ steps.short_sha.outputs.sha }}', '-', format(Sys.time(), '%Y_%m_%d_%H_%M'), sep = '')"
+      - name: Create GHA branch name (i.e., test run identifier)
+        id: gha_branch
+        run: >
+          Rscript
+          -e "cat('::set-output name=name::gha-', '${{ steps.failed_branch.outputs.name }}', '-', '${{ matrix.r }}',  '-', '${{ runner.os }}', sep = '')"
+
+      - name: Git config
+        if: failure()
+        shell: bash
+        # need to unset the extra header to allow for regular https push
+        run: |
+          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com" && \
+            git config --local user.name "${GITHUB_ACTOR}" && \
+            git config --local --unset http.https://github.com/.extraheader && \
+            git config --local --list
+
+      - name: Push test files to rstudio/shinycoreci-apps
+        if: failure()
+        shell: bash
+        # git checkout -B -- Creates the branch <new_branch> and start it at <start_point>; if it already exists, then reset it to <start_point>.
+        # git push --force -- JUST in case the prior branch existed
+        run: |
+          git checkout -B ${{ steps.gha_branch.outputs.name }}
+
+          git add zzz_shinycoreci && \
+            git commit -m '`test_runtests()` output - rstudio/shinycoreci@${{ steps.short_sha.outputs.sha }} ${{ matrix.shinycoreci.text }}' || \
+            echo "No test_runtests() changes to commit"
+
+          git add apps/sysinfo-* && \
+            git commit -m '`sysinfo` Changes - rstudio/shinycoreci@${{ steps.short_sha.outputs.sha }} ${{ matrix.shinycoreci.text }}' || \
+            echo "No apps/sysinfo-* changes to commit"
+
+          git add apps && \
+            git commit -m '`shinytest` Changes - rstudio/shinycoreci@${{ steps.short_sha.outputs.sha }} ${{ matrix.shinycoreci.text }}'|| \
+            echo "No shinytest changes to commit"
+
+          git log -n 4 --pretty=oneline --simplify-by-decoration
+
+          # if any commits occured, then push to repo (compare to sha of current execution)
+          echo "`git rev-list --count HEAD ^${{ steps.short_sha.outputs.sha }}`"
+          if (( `git rev-list --count HEAD ^${{ steps.short_sha.outputs.sha }}` > 0 )); then
+            git push --force https://cpsievert:${{secrets.GH_TOKEN}}@github.com/rstudio/thematic.git "HEAD:${{ steps.gha_branch.outputs.name }}"
+          fi
