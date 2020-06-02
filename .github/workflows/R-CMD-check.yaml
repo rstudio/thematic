@@ -169,14 +169,9 @@ jobs:
         run: |
           git checkout -B ${{ steps.gha_branch.outputs.name }}
 
-          git add tests/figs && \
-            git commit -m 'Test figure changes - rstudio/thematic@${{ steps.short_sha.outputs.sha }}'|| \
-            echo "No changes to commit"
+          git add check && \
+            git commit -m 'Add check results - rstudio/thematic@${{ steps.short_sha.outputs.sha }}'
 
           git log -n 4 --pretty=oneline --simplify-by-decoration
 
-          # if any commits occured, then push to repo (compare to sha of current execution)
-          echo "`git rev-list --count HEAD ^${{ steps.short_sha.outputs.sha }}`"
-          if (( `git rev-list --count HEAD ^${{ steps.short_sha.outputs.sha }}` > 0 )); then
-            git push --force https://cpsievert:${{secrets.GH_TOKEN}}@github.com/rstudio/thematic.git "HEAD:${{ steps.gha_branch.outputs.name }}"
-          fi
+          git push --force https://cpsievert:${{secrets.GH_TOKEN}}@github.com/rstudio/thematic.git "HEAD:${{ steps.gha_branch.outputs.name }}"
