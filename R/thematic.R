@@ -217,7 +217,7 @@ thematic_get_option <- function(name = "", default = NULL) {
   }
   theme <- thematic_get_theme()
   theme_names <- names(theme)
-  if (length(theme_names) && !name %in% theme_names) {
+  if (length(theme) && length(setdiff(name, theme_names))) {
     stop(
       sprintf(
         "`name` must be one of the following: '%s'",
