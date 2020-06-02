@@ -131,7 +131,7 @@ jobs:
         id: failed_branch
         run: >
           Rscript
-          -e "cat('::set-output name=name::', '${{ steps.short_sha.outputs.sha }}', '-', format(Sys.time(), '%Y_%m_%d_%H_%M'), sep = '')"
+          -e "cat('::set-output name=name::', format(Sys.time(), '%Y_%m_%d_%H_%M'), '-', '${{ steps.short_sha.outputs.sha }}', sep = '')"
       - name: Create GHA branch name (i.e., test run identifier)
         id: gha_branch
         run: >
