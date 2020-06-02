@@ -164,7 +164,7 @@ jobs:
           git checkout -B ${{ steps.gha_branch.outputs.name }}
 
           cp -r check/thematic.Rcheck/tests/figs/* tests/figs/
-          cp -r check/thematic.Rcheck/tests/testthat/* tests/figs/
+          cp -r check/thematic.Rcheck/tests/testthat/* tests/testthat/
 
           git add tests/ && \
             git commit -m 'Add test files - rstudio/thematic@${{ steps.short_sha.outputs.sha }}'
