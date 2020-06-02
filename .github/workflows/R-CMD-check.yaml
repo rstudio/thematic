@@ -153,7 +153,7 @@ jobs:
           -e "cat('::set-output name=name::gha-', '${{ steps.failed_branch.outputs.name }}', '-', '${{ matrix.r }}',  '-', '${{ runner.os }}', sep = '')"
 
       - name: Git config
-        if: failure()
+        if: always()
         shell: bash
         # need to unset the extra header to allow for regular https push
         run: |
@@ -162,25 +162,17 @@ jobs:
             git config --local --unset http.https://github.com/.extraheader && \
             git config --local --list
 
-      - name: Push test files to rstudio/shinycoreci-apps
-        if: failure()
+      - name: Push visual tests to a GH branch
+        if: always()
         shell: bash
         # git checkout -B -- Creates the branch <new_branch> and start it at <start_point>; if it already exists, then reset it to <start_point>.
         # git push --force -- JUST in case the prior branch existed
         run: |
           git checkout -B ${{ steps.gha_branch.outputs.name }}
 
-          git add zzz_shinycoreci && \
-            git commit -m '`test_runtests()` output - rstudio/shinycoreci@${{ steps.short_sha.outputs.sha }} ${{ matrix.shinycoreci.text }}' || \
-            echo "No test_runtests() changes to commit"
-
-          git add apps/sysinfo-* && \
-            git commit -m '`sysinfo` Changes - rstudio/shinycoreci@${{ steps.short_sha.outputs.sha }} ${{ matrix.shinycoreci.text }}' || \
-            echo "No apps/sysinfo-* changes to commit"
-
-          git add apps && \
-            git commit -m '`shinytest` Changes - rstudio/shinycoreci@${{ steps.short_sha.outputs.sha }} ${{ matrix.shinycoreci.text }}'|| \
-            echo "No shinytest changes to commit"
+          git add tests/figs && \
+            git commit -m 'Test figure changes - rstudio/thematic@${{ steps.short_sha.outputs.sha }}'|| \
+            echo "No changes to commit"
 
           git log -n 4 --pretty=oneline --simplify-by-decoration
 
