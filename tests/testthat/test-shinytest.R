@@ -84,6 +84,7 @@ test_that("Can render non-custom fonts in rmarkdown with CairoPNG", {
 })
 
 test_that("pdf_document compiles without error", {
+  skip_if_not(.Platform$OS.type != "windows")
   outfile <- rmarkdown::render("pdf.Rmd", quiet = TRUE)
   expect_true(file.exists(outfile))
   unlink(outfile)
