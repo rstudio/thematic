@@ -11,7 +11,8 @@ thematic_on(
   accent = "auto",
   font = NA,
   sequential = sequential_gradient(),
-  qualitative = okabe_ito()
+  qualitative = okabe_ito(),
+  inherit = FALSE
 )
 
 thematic_off()
@@ -34,6 +35,8 @@ numeric values. Can be a vector of color codes or a
 \item{qualitative}{a color palette for graphical markers that encode
 qualitative values (won't be used in ggplot2 when the number of data
 levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.}
+
+\item{inherit}{should non-specified values inherit from the previous theme?}
 }
 \value{
 Returns any information about the previously set theme (if any), invisibly.
