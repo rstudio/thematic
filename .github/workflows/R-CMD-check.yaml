@@ -149,27 +149,24 @@ jobs:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
 
-
-      - name: Git config
-        if: always()
+      - name: Push test files to a GH branch
+        if: failure()
         shell: bash
         # need to unset the extra header to allow for regular https push
+        # git checkout -B -- Creates the branch <new_branch> and start it at <start_point>; if it already exists, then reset it to <start_point>.
+        # git push --force -- JUST in case the prior branch existed
         run: |
           git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com" && \
             git config --local user.name "${GITHUB_ACTOR}" && \
             git config --local --unset http.https://github.com/.extraheader && \
             git config --local --list
 
-      - name: Push visual tests to a GH branch
-        if: always()
-        shell: bash
-        # git checkout -B -- Creates the branch <new_branch> and start it at <start_point>; if it already exists, then reset it to <start_point>.
-        # git push --force -- JUST in case the prior branch existed
-        run: |
           git checkout -B ${{ steps.gha_branch.outputs.name }}
 
-          git add check && \
-            git commit -m 'Add check results - rstudio/thematic@${{ steps.short_sha.outputs.sha }}'
+          cp -r check/tests/* tests/
+
+          git add tests/ && \
+            git commit -m 'Add test files - rstudio/thematic@${{ steps.short_sha.outputs.sha }}'
 
           git log -n 4 --pretty=oneline --simplify-by-decoration
 
