@@ -18,12 +18,11 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: windows-latest, r: 'release', vdiffr: true}
-          # TODO: change to `r: release` when once it's on 4.0
+          - {os: windows-latest, r: '4.0', vdiffr: true}
           - {os: macOS-latest, r: '4.0', vdiffr: true}
           - {os: macOS-latest, r: 'devel', vdiffr: false}
-          - {os: ubuntu-16.04, r: 'release', vdiffr: true, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04, r: 'oldrel', vdiffr: false, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04, r: '4.0', vdiffr: true, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04, r: '3.6', vdiffr: false, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
           - {os: ubuntu-16.04, r: '3.5', vdiffr: false, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
           - {os: ubuntu-16.04, r: '3.4', vdiffr: false, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
           - {os: ubuntu-16.04, r: '3.3', vdiffr: false, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
@@ -137,7 +136,7 @@ jobs:
         id: gha_branch
         run: >
           Rscript
-          -e "cat('::set-output name=name::gha-', '${{ steps.failed_branch.outputs.name }}', '-', '${{ matrix.r }}',  '-', '${{ runner.os }}', sep = '')"
+          -e "cat('::set-output name=name::gha-', '${{ steps.failed_branch.outputs.name }}', '-', '${{ matrix.config.r }}', '-', '${{ runner.os }}', sep = '')"
 
       - name: Check
         run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
