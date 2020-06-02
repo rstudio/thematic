@@ -17,3 +17,32 @@ navbar:
     href: articles/customize.html
   - text: Reference
     href: reference/index.html
+
+reference:
+- title: Enable (or disable) thematic
+  contents:
+    - thematic_on
+    - thematic_off
+- title: Customize fonts and colorscales
+  contents:
+    - font_spec
+    - sequential_gradient
+    - okabe_ito
+- title: Control automatic behavior
+  contents:
+    - auto_defaults
+- title: Manage global state
+  contents:
+    - thematic_with_theme
+    - thematic_set_theme
+    - thematic_get_theme
+    - thematic_get_option
+    - thematic_get_mixture
+- title: Save plots to a file
+  contents:
+    - thematic_with_device
+    - default_device
+- title: Manage the font cache location
+  contents:
+    - font_cache_set
+

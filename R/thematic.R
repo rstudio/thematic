@@ -1,23 +1,24 @@
-#' Automatic and consistent theming of static plots
+#' Enable (or disable) simplified theming of R graphics.
 #'
-#' Turn on (or off) automatic theming of ggplot2, lattice, and base graphics.
-#' While on, thematic registers [plot.new()]/[grid.newpage()] hooks
-#' that set relevant options (i.e., [graphics::par()], [grid::gpar()],
-#' [lattice::trellis.par.set()], [ggplot2::theme_set()], etc) based on
-#' the current context.
+#' A unified interface for styling **ggplot2**, **base**, and **lattice** graphics
+#' from a handful of options. In some cases, most notably in a **shiny** runtime,
+#' those options can derive automatically from the relevant CSS styles.
+#'
+#' @section Automatic values:
 #'
 #' The `bg`, `fg`, `accent`, and `font` arguments all support a value of `'auto'`,
-#' which are all resolved (just before plotting) based on the following (global)
-#' information, where available
+#' which are all resolved, at plot time, based on the execution environment. In particular,
+#' it use the following information, in order:
 #'
-#' 1. `shiny::getCurrentOutputInfo()`.
+#' 1. The CSS styles of the currently executing **shiny** output container (via `shiny::getCurrentOutputInfo()`).
 #' 2. [auto_defaults()].
-#' 3. `bootstraplib::bs_theme_get_variables()`.
-#' 4. `rstudioapi::getThemeInfo()`.
+#' 3. `bootstraplib::bs_theme_get_variables()` (if running inside `rmarkdown::html_document()`).
+#' 4. `rstudioapi::getThemeInfo()` (if the relevant graphics device is RStudioGD).
 #'
-#' Note that if the resolving of `'auto'` for some reason doesn't pick up the
-#' right information, you can always specify values in `thematic_on()`.
-#' Colors (e.g., `bg`, `fg`, `accent`) may be any value understood by [col2rgb()]
+#' If, for whatever reason, `'auto'` doesn't resolve to the right value,
+#' provide the desired values to `thematic_on()` or `auto_defaults()`.
+#'
+#' @details Colors (e.g., `bg`, `fg`, `accent`) may be any value understood by [col2rgb()]
 #' or `htmltools::parseCssColors()` (i.e., may be any valid R or CSS color string).
 #'
 #' @param bg a background color.
@@ -25,18 +26,21 @@
 #' @param accent a color for making certain graphical markers 'stand out'
 #' (e.g., the fitted line color for [ggplot2::geom_smooth()]).
 #' Can be 2 colors for lattice (stroke vs fill accent).
-#' @param font a `font_spec()` object. If missing, font defaults are not altered.
+#' @param font a [`font_spec()`] object. If missing, font defaults are not altered.
 #' @param sequential a color palette for graphical markers that encode
 #' numeric values. Can be a vector of color codes or a
 #' [sequential_gradient()] object.
 #' @param qualitative a color palette for graphical markers that encode
 #' qualitative values (won't be used in ggplot2 when the number of data
 #' levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.
+#' @param inherit should non-specified values inherit from the previous theme?
 #'
 #' @return Returns any information about the previously set theme (if any), invisibly.
+#' This value may be provided to [thematic_set_theme()] to return to the previous
+#' global state.
 #'
 #' @rdname thematic
-#' @seealso [font_spec()], [thematic_with_device()], [thematic_get()]
+#' @seealso [thematic_with_device()], [thematic_with_theme()]
 #' @export
 #' @examples
 #' # simple dark mode
@@ -45,13 +49,13 @@
 #' plot(1:10, col = 1:10)
 #' lattice::show.settings()
 #'
-#' # use any color code
+#' # use any hex color string
 #' thematic_on("#444444", "#e4e4e4")
 #' plot(1:10)
 #' plot(1:10, col = 1:10)
 #' lattice::show.settings()
 #'
-#' # restores _original_ state
+#' # disables thematic (also restores global state)
 #' thematic_off()
 #' plot(1:10)
 #' lattice::show.settings()
@@ -64,14 +68,34 @@
 #'
 thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
                         font = NA, sequential = sequential_gradient(),
-                        qualitative = okabe_ito()) {
+                        qualitative = okabe_ito(), inherit = FALSE) {
 
-  old_theme <- .globals$theme
+  old_theme <- thematic_get_theme()
 
-  .globals$theme <- list(
-    bg = tag_auto(bg), fg = tag_auto(fg), accent = tag_auto(accent),
-    qualitative = qualitative, sequential_func = sequential,
-    font = as_font_spec(font)
+  if (inherit && length(old_theme)) {
+    if (missing(bg)) bg <- old_theme$bg
+    if (missing(fg)) fg <- old_theme$fg
+    if (missing(accent)) accent <- old_theme$accent
+    if (missing(font)) font <- old_theme$font
+    if (missing(sequential)) sequential <- old_theme$sequential
+    if (missing(qualitative)) qualitative <- old_theme$qualitative
+  }
+
+  # This function is called at plot time (with bg/fg/accent)
+  if (is.function(sequential)) {
+    sequential <- structure("", sequential_func = sequential)
+  }
+
+  .globals$theme <- structure(
+    list(
+      bg = tag_auto(bg),
+      fg = tag_auto(fg),
+      accent = tag_auto(accent),
+      qualitative = qualitative,
+      sequential = sequential,
+      font = as_font_spec(font)
+    ),
+    class = "thematic_theme"
   )
 
   # Set knitr dev.args = list(bg = bg) now (instead of later)
@@ -89,6 +113,10 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
   lattice_print_set()
 
   invisible(old_theme)
+}
+
+is_thematic_theme <- function(x) {
+  inherits(x, "thematic_theme")
 }
 
 #' @rdname thematic
@@ -109,36 +137,87 @@ thematic_off <- function() {
   invisible()
 }
 
-#' Query the current thematic theme
+#' Tools for getting and restoring global state
 #'
-#' [thematic_get()] returns information about the entire theme,
-#' whereas [thematic_get_option()] returns information about a specific
-#' option.
+#' * [thematic_with_theme()]: similar to [thematic_on()], but for an single plot.
+#' * [thematic_set_theme()]: set a given `theme` object as the current theme.
+#' * [thematic_get_theme()]: obtain the current `theme`.
+#' * [thematic_get_option()]: obtain a particular `theme` option (and provide a `default`
+#' if if no `theme` is active).
+#' * [thematic_get_mixture()]: obtain a mixture of the current `theme`'s `bg` and `fg`.
 #'
+#' @param expr R code that produces a plot.
+#' @param ... arguments passed along to [thematic_on()].
+#' @param default a default value to return in the event no thematic theme is active.
+#' @rdname theme-management
 #' @export
 #' @examples
-#' thematic_get()
-#' thematic_on("darkblue", "skyblue")
-#' thematic_get_option("bg")
 #'
-#' if (interactive()) {
-#'   scales::show_col(thematic_get_mixture(seq(0, 1, by = 0.1)))
+#' # Use thematic_with_theme() for a one-time use of thematic
+#' thematic_with_theme(
+#'   plot(1:10, col = thematic_get_option("accent"), pch = 19),
+#'   "darkblue", "skyblue", accent = "red"
+#' )
+#'
+#' # Use thematic_set_theme() if doing something more complicated
+#' # like programming on top thematic (without causing side effects)
+#' my_plot <- function(expr, las = 3, ...) {
+#'   old_theme <- thematic_on("black", "white")
+#'   on.exit(thematic_set_theme(old_theme), add = TRUE)
+#'   opts <- par(las = las)
+#'   on.exit(par(opts), add = TRUE)
+#'   # Imagine some more customization with ...
+#'   force(expr)
 #' }
+#' my_plot(plot(1:10))
 #'
-thematic_get <- function() {
+#' thematic_off()
+#' thematic_get_option("bg", "white")
+#' thematic_on(bg = "red")
+#' thematic_get_option("bg", "white")
+#' thematic_off()
+#'
+#' thematic_with_theme(
+#'   scales::show_col(thematic_get_mixture(seq(0, 1, by = 0.1))),
+#'   "darkblue", "skyblue"
+#' )
+#'
+thematic_with_theme <- function(expr, ...) {
+  old <- thematic_on(...)
+  on.exit(thematic_set_theme(old), add = TRUE)
+  force(expr)
+}
+
+#' @rdname theme-management
+#' @param theme a `theme` object (as returned by [thematic_on] or [thematic_get_theme()])
+#' or `NULL` (in which case `thematic_off()` is called).
+#' @export
+thematic_set_theme <- function(theme) {
+  if (!length(theme)) {
+    return(thematic_off())
+  }
+  if (!is_thematic_theme(theme)) {
+    stop("`theme` must be a value returned by thematic_on() or thematic_get_theme().", call. = FALSE)
+  }
+  do.call(thematic_on, theme)
+}
+
+#' @rdname theme-management
+#' @export
+thematic_get_theme <- function() {
   .globals$theme
 }
 
-#' @rdname thematic_get
+#' @rdname theme-management
 #' @param name a theme element name (e.g., `fg`, `bg`, etc.)
-#' @param default a default value to return in the event no thematic theme is active.
 #' @export
 thematic_get_option <- function(name = "", default = NULL) {
   if (length(name) != 1) {
     stop("`name` must be length 1", call. = FALSE)
   }
-  theme_names <- names(.globals$theme)
-  if (length(theme_names) && !name %in% theme_names) {
+  theme <- thematic_get_theme()
+  theme_names <- names(theme)
+  if (length(theme) && length(setdiff(name, theme_names))) {
     stop(
       sprintf(
         "`name` must be one of the following: '%s'",
@@ -147,22 +226,25 @@ thematic_get_option <- function(name = "", default = NULL) {
       call. = FALSE
     )
   }
-  .globals$theme[[name]] %||% default
+  theme[[name]] %||% default
 }
 
-#' @rdname thematic_get
-#' @param amounts value(s) between 0 and 1 specifying how much to mix `fg` (0) and `bg` (1).
+#' @rdname theme-management
+#' @param amounts value(s) between 0 and 1 specifying how much to mix `bg` (0) and `fg` (1).
 #' @export
-thematic_get_mixture <- function(amounts = 0.5) {
+thematic_get_mixture <- function(amounts = 0.5, default = NULL) {
+  if (!length(thematic_get_theme())) {
+    if (length(default)) {
+      default <- rep_len(default, length(amounts))
+    }
+    return(default)
+  }
   if (any(amounts < 0 | amounts > 1)) {
     stop("`amounts` must be between 0 and 1", call. = FALSE)
   }
   fg <- thematic_get_option("fg")
   bg <- thematic_get_option("bg")
-  if (!length(fg) || !length(bg)) {
-    return(NULL)
-  }
-  scales::colour_ramp(c(fg, bg))(amounts)
+  scales::colour_ramp(c(bg, fg))(amounts)
 }
 
 #' Font specification
@@ -228,7 +310,9 @@ is_default_spec <- function(font) {
 }
 
 
-#' Okabe Ito colorscale
+#' A color-blind safe qualitative colorscale (Okabe-Ito)
+#'
+#' This is the default `qualitative` colorscale in `thematic_on()`
 #'
 #' @param n number of colors.
 #'
@@ -241,7 +325,7 @@ okabe_ito <- function(n = NULL) {
   if (is.null(n)) okabeIto else okabeIto[seq_len(n)]
 }
 
-#' Construct a sequential colorscale from fg, accent, and bg
+#' Control parameters of the sequential colorscale
 #'
 #' Controls the default weighting and direction of the color gradient
 #' derived from the `fg`, `bg`, and `accent` color (defined in `thematic_on()`).
@@ -257,27 +341,25 @@ okabe_ito <- function(n = NULL) {
 #' @export
 #' @examples
 #'
-#' if (requireNamespace("ggplot2", quietly = TRUE)) {
-#'   # Gradient from fg to accent
-#'   fg <- sequential_gradient(1, 0)
-#'   thematic_on("black", "white", "salmon", sequential = fg)
-#'   ggplot2::qplot(1:10, 1:10, color = 1:10)
+#' # Gradient from fg to accent
+#' fg <- sequential_gradient(1, 0)
+#' thematic_on("black", "white", "salmon", sequential = fg)
+#' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
-#'   # Gradient from accent -> bg
-#'   bg <- sequential_gradient(0, 1)
-#'   thematic_on("black", "white", "salmon", sequential = bg)
-#'   ggplot2::qplot(1:10, 1:10, color = 1:10)
+#' # Gradient from accent -> bg
+#' bg <- sequential_gradient(0, 1)
+#' thematic_on("black", "white", "salmon", sequential = bg)
+#' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
-#'   # Gradient from mix(accent, fg, 0.5) -> mix(accent, bg, 0.5)
-#'   mix <- sequential_gradient(0.5, 0.5)
-#'   thematic_on("black", "white", "salmon", sequential = mix)
-#'   ggplot2::qplot(1:10, 1:10, color = 1:10)
+#' # Gradient from mix(accent, fg, 0.5) -> mix(accent, bg, 0.5)
+#' mix <- sequential_gradient(0.5, 0.5)
+#' thematic_on("black", "white", "salmon", sequential = mix)
+#' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
-#'   # Use fg (instead of bg) for high end of scale
-#'   mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
-#'   thematic_on("black", "white", "salmon", sequential = mix_flip)
-#'   ggplot2::qplot(1:10, 1:10, color = 1:10)
-#' }
+#' # Use fg (instead of bg) for high end of scale
+#' mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
+#' thematic_on("black", "white", "salmon", sequential = mix_flip)
+#' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
 sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30) {
   if (any(fg_weight > 1 | fg_weight < 0)) {

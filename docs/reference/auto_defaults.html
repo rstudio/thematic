@@ -43,11 +43,12 @@
 <meta property="og:description" content="Auto theming defaults are used to resolve &quot;auto&quot; values outside
 of a shiny runtime (i.e., where auto theming might be based on
 imperfect heuristics). Setting of auto defaults is especially useful
-for developers of a custom rmarkdown format that wish to have better
-default auto-theming behavior. By having the output document call
-auto_defaults() &quot;pre-knit&quot; (and restoring the old defaults &quot;post-knit&quot;),
-users of the output document can then simply call thematic_on() within
-their document to adopt these defaults." />
+for developers of a custom rmarkdown output document that wish to
+have more sensible auto theming behavior for users of the document.
+In particular, by having the output document call auto_defaults()
+&quot;pre-knit&quot; with the document's styling preferences (and restoring the
+old defaults &quot;post-knit&quot;), users of the output document can then simply
+call thematic_on() within their document to use those preferences." />
 
 
 
@@ -130,11 +131,12 @@ their document to adopt these defaults." />
     <p>Auto theming defaults are used to resolve <code>"auto"</code> values outside
 of a <strong>shiny</strong> runtime (i.e., where auto theming might be based on
 imperfect heuristics). Setting of auto defaults is especially useful
-for developers of a custom rmarkdown format that wish to have better
-default auto-theming behavior. By having the output document call
-<code>auto_defaults()</code> "pre-knit" (and restoring the old defaults "post-knit"),
-users of the output document can then simply call <code><a href='thematic.html'>thematic_on()</a></code> within
-their document to adopt these defaults.</p>
+for developers of a custom rmarkdown output document that wish to
+have more sensible auto theming behavior for users of the document.
+In particular, by having the output document call <code>auto_defaults()</code>
+"pre-knit" with the document's styling preferences (and restoring the
+old defaults "post-knit"), users of the output document can then simply
+call <code><a href='thematic.html'>thematic_on()</a></code> within their document to use those preferences.</p>
     </div>
 
     <pre class="usage"><span class='fu'>auto_defaults</span>(<span class='kw'>bg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>accent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>

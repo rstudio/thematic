@@ -3,14 +3,14 @@
 #' Auto theming defaults are used to resolve `"auto"` values outside
 #' of a **shiny** runtime (i.e., where auto theming might be based on
 #' imperfect heuristics). Setting of auto defaults is especially useful
-#' for developers of a custom rmarkdown format that wish to have better
-#' default auto-theming behavior. By having the output document call
-#' `auto_defaults()` "pre-knit" (and restoring the old defaults "post-knit"),
-#' users of the output document can then simply call `thematic_on()` within
-#' their document to adopt these defaults.
+#' for developers of a custom rmarkdown output document that wish to
+#' have more sensible auto theming behavior for users of the document.
+#' In particular, by having the output document call `auto_defaults()`
+#' "pre-knit" with the document's styling preferences (and restoring the
+#' old defaults "post-knit"), users of the output document can then simply
+#' call `thematic_on()` within their document to use those preferences.
 #'
 #' @details Call this function with no arguments to get the current auto defaults.
-#'
 #'
 #' @inheritParams thematic_on
 #' @export
@@ -83,11 +83,10 @@ resolve_auto_theme <- function() {
     theme[[col]] <- as_auto(theme[[col]])
   }
 
-  # resolve sequential
-  theme$sequential <- if (is.function(theme$sequential_func)) {
-     do.call(theme$sequential_func, theme)
-  } else {
-    theme$sequential_func
+  # resolve sequential, if necessary
+  sequential_func <- attr(theme$sequential, "sequential_func")
+  if (is.function(sequential_func)) {
+    theme$sequential <- do.call(sequential_func, theme[c("bg", "fg", "accent")])
   }
 
   # Make sure we can parse any non-missing colors
@@ -96,6 +95,11 @@ resolve_auto_theme <- function() {
     val <- vapply(theme[[col]], parse_any_color, character(1), USE.NAMES = FALSE)
     # Retain auto class (see comment above)
     theme[[col]] <- if (is_auto(theme[[col]])) as_auto(val) else val
+  }
+
+  # Retain the function that created sequential codes, if ncessary
+  if (is.function(sequential_func)) {
+    theme$sequential <- structure(theme$sequential, sequential_func = sequential_func)
   }
 
   if (any(vapply(theme$font, is_auto, logical(1)))) {

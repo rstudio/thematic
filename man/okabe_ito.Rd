@@ -2,7 +2,7 @@
 % Please edit documentation in R/thematic.R
 \name{okabe_ito}
 \alias{okabe_ito}
-\title{Okabe Ito colorscale}
+\title{A color-blind safe qualitative colorscale (Okabe-Ito)}
 \usage{
 okabe_ito(n = NULL)
 }
@@ -13,7 +13,7 @@ okabe_ito(n = NULL)
 a vector of color codes.
 }
 \description{
-Okabe Ito colorscale
+This is the default \code{qualitative} colorscale in \code{thematic_on()}
 }
 \references{
 \url{https://jfly.uni-koeln.de/color/}

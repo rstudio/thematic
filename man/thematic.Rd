@@ -3,7 +3,7 @@
 \name{thematic_on}
 \alias{thematic_on}
 \alias{thematic_off}
-\title{Automatic and consistent theming of static plots}
+\title{Enable (or disable) simplified theming of R graphics.}
 \usage{
 thematic_on(
   bg = "auto",
@@ -25,7 +25,7 @@ thematic_off()
 (e.g., the fitted line color for \code{\link[ggplot2:geom_smooth]{ggplot2::geom_smooth()}}).
 Can be 2 colors for lattice (stroke vs fill accent).}
 
-\item{font}{a \code{font_spec()} object. If missing, font defaults are not altered.}
+\item{font}{a \code{\link[=font_spec]{font_spec()}} object. If missing, font defaults are not altered.}
 
 \item{sequential}{a color palette for graphical markers that encode
 numeric values. Can be a vector of color codes or a
@@ -37,30 +37,35 @@ levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.}
 }
 \value{
 Returns any information about the previously set theme (if any), invisibly.
+This value may be provided to \code{\link[=thematic_set_theme]{thematic_set_theme()}} to return to the previous
+global state.
 }
 \description{
-Turn on (or off) automatic theming of ggplot2, lattice, and base graphics.
-While on, thematic registers \code{\link[=plot.new]{plot.new()}}/\code{\link[=grid.newpage]{grid.newpage()}} hooks
-that set relevant options (i.e., \code{\link[graphics:par]{graphics::par()}}, \code{\link[grid:gpar]{grid::gpar()}},
-\code{\link[lattice:trellis.par.set]{lattice::trellis.par.set()}}, \code{\link[ggplot2:theme_set]{ggplot2::theme_set()}}, etc) based on
-the current context.
+A unified interface for styling \strong{ggplot2}, \strong{base}, and \strong{lattice} graphics
+from a handful of options. In some cases, most notably in a \strong{shiny} runtime,
+those options can derive automatically from the relevant CSS styles.
 }
 \details{
-The \code{bg}, \code{fg}, \code{accent}, and \code{font} arguments all support a value of \code{'auto'},
-which are all resolved (just before plotting) based on the following (global)
-information, where available
-\enumerate{
-\item \code{shiny::getCurrentOutputInfo()}.
-\item \code{\link[=auto_defaults]{auto_defaults()}}.
-\item \code{bootstraplib::bs_theme_get_variables()}.
-\item \code{rstudioapi::getThemeInfo()}.
-}
-
-Note that if the resolving of \code{'auto'} for some reason doesn't pick up the
-right information, you can always specify values in \code{thematic_on()}.
 Colors (e.g., \code{bg}, \code{fg}, \code{accent}) may be any value understood by \code{\link[=col2rgb]{col2rgb()}}
 or \code{htmltools::parseCssColors()} (i.e., may be any valid R or CSS color string).
 }
+\section{Automatic values}{
+
+
+The \code{bg}, \code{fg}, \code{accent}, and \code{font} arguments all support a value of \code{'auto'},
+which are all resolved, at plot time, based on the execution environment. In particular,
+it use the following information, in order:
+\enumerate{
+\item The CSS styles of the currently executing \strong{shiny} output container (via \code{shiny::getCurrentOutputInfo()}).
+\item \code{\link[=auto_defaults]{auto_defaults()}}.
+\item \code{bootstraplib::bs_theme_get_variables()} (if running inside \code{rmarkdown::html_document()}).
+\item \code{rstudioapi::getThemeInfo()} (if the relevant graphics device is RStudioGD).
+}
+
+If, for whatever reason, \code{'auto'} doesn't resolve to the right value,
+provide the desired values to \code{thematic_on()} or \code{auto_defaults()}.
+}
+
 \examples{
 # simple dark mode
 thematic_on("black", "white")
@@ -68,13 +73,13 @@ plot(1:10)
 plot(1:10, col = 1:10)
 lattice::show.settings()
 
-# use any color code
+# use any hex color string
 thematic_on("#444444", "#e4e4e4")
 plot(1:10)
 plot(1:10, col = 1:10)
 lattice::show.settings()
 
-# restores _original_ state
+# disables thematic (also restores global state)
 thematic_off()
 plot(1:10)
 lattice::show.settings()
@@ -87,5 +92,5 @@ thematic_off()
 
 }
 \seealso{
-\code{\link[=font_spec]{font_spec()}}, \code{\link[=thematic_with_device]{thematic_with_device()}}, \code{\link[=thematic_get]{thematic_get()}}
+\code{\link[=thematic_with_device]{thematic_with_device()}}, \code{\link[=thematic_with_theme]{thematic_with_theme()}}
 }
