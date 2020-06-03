@@ -161,9 +161,11 @@ thematic_off <- function() {
 thematic_with_theme <- function(theme, expr) {
   old_theme <- thematic_set_theme(theme)
   on.exit(thematic_set_theme(old_theme), add = TRUE)
-  force(expr)
+  expr <- rlang::enquo(expr)
+  result <- withVisible(rlang::eval_tidy(expr))
+  if (result$visible) print(result$value)
+  invisible(result$value)
 }
-
 
 #' @rdname theme-management
 #' @inheritParams thematic_on

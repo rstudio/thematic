@@ -45,6 +45,7 @@ test_that("Auto theming in shiny works", {
   expect_app_doppelganger("auto_theme_shiny/base")
   expect_app_doppelganger("auto_theme_shiny/lattice")
   expect_app_doppelganger("auto_theme_shiny/ggplot2")
+  expect_app_doppelganger("auto_theme_shiny/local")
 })
 
 test_that("Custom fonts with Cairo package", {
