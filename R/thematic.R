@@ -116,10 +116,12 @@ thematic_off <- function() {
 #' Tools for getting and restoring global state
 #'
 #' * [thematic_with_theme()]: similar to [thematic_on()], but for an single plot.
+#' * [thematic_local_theme()]: similar to [thematic_with_theme()], but de-couples
+#'   the theme from the plot expression.
 #' * [thematic_set_theme()]: set a given `theme` object as the current theme.
 #' * [thematic_get_theme()]: obtain the current `theme`.
 #' * [thematic_get_option()]: obtain a particular `theme` option (and provide a `default`
-#' if if no `theme` is active).
+#'   if if no `theme` is active).
 #' * [thematic_get_mixture()]: obtain a mixture of the current `theme`'s `bg` and `fg`.
 #'
 #' @param theme a [thematic_theme()] object.
@@ -169,13 +171,10 @@ thematic_with_theme <- function(theme, expr) {
 
 #' @rdname theme-management
 #' @export
-thematic_local_theme <- function(theme, expr) {
+thematic_local_theme <- function(theme, .local_envir = parent.frame()) {
   old_theme <- thematic_set_theme(theme)
-  withr::defer(thematic_set_theme(old_theme))
-  expr <- rlang::enquo(expr)
-  result <- withVisible(rlang::eval_tidy(expr))
-  if (result$visible) print(result$value)
-  invisible(result$value)
+  withr::defer(thematic_set_theme(old_theme), envir = .local_envir)
+  invisible(old_theme)
 }
 
 #' @rdname theme-management
