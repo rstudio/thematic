@@ -168,6 +168,17 @@ thematic_with_theme <- function(theme, expr) {
 }
 
 #' @rdname theme-management
+#' @export
+thematic_local_theme <- function(theme, expr) {
+  old_theme <- thematic_set_theme(theme)
+  withr::defer(thematic_set_theme(old_theme))
+  expr <- rlang::enquo(expr)
+  result <- withVisible(rlang::eval_tidy(expr))
+  if (result$visible) print(result$value)
+  invisible(result$value)
+}
+
+#' @rdname theme-management
 #' @inheritParams thematic_on
 #' @export
 thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
