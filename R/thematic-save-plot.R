@@ -5,6 +5,8 @@
 #' (specified through [font_spec()]) are guaranteed to work, as long as
 #' one of either the showtext or ragg package(s) are installed.
 #'
+#' @return the `filename` of the produced plot.
+#'
 #' @param expr an expression that produces a plot.
 #' @param device a graphics device to use for capturing the plot.
 #' @param filename a filename for the produced plot. The file extension should
@@ -16,10 +18,10 @@
 #' library(thematic)
 #' font <- font_spec("Rock Salt", scale = 1.25)
 #' thematic_on("black", "white", font = font)
-#' file <- thematic_with_device(plot(1:10), res = 144)
+#' file <- thematic_save_plot(plot(1:10), res = 144)
 #' if (interactive()) browseURL(file)
-thematic_with_device <- function(expr, device = default_device(),
-                                 filename = tempfile(fileext = ".png"), ...) {
+thematic_save_plot <- function(expr, device = default_device(),
+                               filename = tempfile(fileext = ".png"), ...) {
   # N.B. implementation is quite similar to htmltools::capturePlot
   if (!is.function(device)) {
     stop(call. = FALSE, "The `device` argument should be a function, e.g. `ragg::agg_png`")
@@ -37,7 +39,7 @@ thematic_with_device <- function(expr, device = default_device(),
     stop(
       "Wasn't able to detect the background color argument for the given device, ",
       "so thematic won't automatically set it for you, but you can also set it yourself ",
-      "by doing `thematic_with_device(expr, bg_color_arg = thematic_get_option('bg'))`",
+      "by doing `thematic_save_plot(expr, bg_color_arg = thematic_get_option('bg'))`",
       call. = FALSE
     )
   }
@@ -116,7 +118,13 @@ thematic_with_device <- function(expr, device = default_device(),
   )
 }
 
-#' @rdname thematic_with_device
+#' @export
+thematic_with_device <- function(...) {
+  .Deprecated("thematic_save_plot")
+  thematic_save_plot(...)
+}
+
+#' @rdname thematic_save_plot
 #' @param type the type of output format
 #' @export
 default_device <- function(type = c("png", "svg", "pdf", "tiff", "jpeg")) {
@@ -132,20 +140,14 @@ default_device <- function(type = c("png", "svg", "pdf", "tiff", "jpeg")) {
     return(dev)
   }
 
-  png_dev <- if (capabilities("aqua")) {
-    grDevices::png
-  } else if (is_installed("Cairo")) {
-    Cairo::CairoPNG
-  } else {
-    grDevices::png
-  }
+  use_cairo <- is_installed("Cairo") && !capabilities("aqua")
 
   switch(
     type,
-    png = grDevices::png,
-    tiff = grDevices::tiff,
-    svg = grDevices::svg,
-    pdf = grDevices::pdf,
-    stop("'", type, "' graphics device not available.", call. = )
+    png = if (use_cairo) Cairo::CairoPNG else grDevices::png,
+    svg = if (use_cairo) Cairo::CairoSVG else grDevices::svg,
+    pdf = if (use_cairo) Cairo::CairoPDF else grDevices::pdf,
+    tiff = if (use_cairo) Cairo::CairoTIFF else grDevices::tiff,
+    jpeg = if (use_cairo) Cairo::CairoJPEG else grDevices::jpeg
   )
 }

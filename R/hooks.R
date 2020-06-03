@@ -271,7 +271,7 @@ is_ragg_device <- function(dev_name) {
 }
 
 dev_new <- function(filename) {
-  # If this is called via thematic_with_device(), then we know
+  # If this is called via thematic_save_plot(), then we know
   # exactly what function and args to use to clone the device
   if (length(.globals$device)) {
     do.call(.globals$device$fun, .globals$device$args)

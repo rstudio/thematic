@@ -44,5 +44,5 @@ by the default, but is a \href{https://fonts.google.com/}{Google Font} and
 for use the \strong{showtext} and \strong{ragg} packages.
 }
 \seealso{
-\code{\link[=thematic_with_device]{thematic_with_device()}}, \code{\link[=thematic_on]{thematic_on()}}, \code{\link[=font_cache_set]{font_cache_set()}}
+\code{\link[=thematic_save_plot]{thematic_save_plot()}}, \code{\link[=thematic_on]{thematic_on()}}, \code{\link[=font_cache_set]{font_cache_set()}}
 }

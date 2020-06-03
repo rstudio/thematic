@@ -95,5 +95,5 @@ thematic_off()
 
 }
 \seealso{
-\code{\link[=thematic_with_device]{thematic_with_device()}}, \code{\link[=thematic_with_theme]{thematic_with_theme()}}
+\code{\link[=thematic_save_plot]{thematic_save_plot()}}, \code{\link[=thematic_with_theme]{thematic_with_theme()}}
 }

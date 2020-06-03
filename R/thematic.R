@@ -40,7 +40,7 @@
 #' global state.
 #'
 #' @rdname thematic
-#' @seealso [thematic_with_device()], [thematic_with_theme()]
+#' @seealso [thematic_save_plot()], [thematic_with_theme()]
 #' @export
 #' @examples
 #' # simple dark mode
@@ -72,30 +72,10 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
 
   old_theme <- thematic_get_theme()
 
-  if (inherit && length(old_theme)) {
-    if (missing(bg)) bg <- old_theme$bg
-    if (missing(fg)) fg <- old_theme$fg
-    if (missing(accent)) accent <- old_theme$accent
-    if (missing(font)) font <- old_theme$font
-    if (missing(sequential)) sequential <- old_theme$sequential
-    if (missing(qualitative)) qualitative <- old_theme$qualitative
-  }
-
-  # This function is called at plot time (with bg/fg/accent)
-  if (is.function(sequential)) {
-    sequential <- structure("", sequential_func = sequential)
-  }
-
-  .globals$theme <- structure(
-    list(
-      bg = tag_auto(bg),
-      fg = tag_auto(fg),
-      accent = tag_auto(accent),
-      qualitative = qualitative,
-      sequential = sequential,
-      font = as_font_spec(font)
-    ),
-    class = "thematic_theme"
+  .globals$theme <- thematic_theme(
+    bg = bg, fg = fg, accent = accent, font = font,
+    sequential = sequential, qualitative = qualitative,
+    inherit = inherit
   )
 
   # Set knitr dev.args = list(bg = bg) now (instead of later)
@@ -113,10 +93,6 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
   lattice_print_set()
 
   invisible(old_theme)
-}
-
-is_thematic_theme <- function(x) {
-  inherits(x, "thematic_theme")
 }
 
 #' @rdname thematic
@@ -146,8 +122,8 @@ thematic_off <- function() {
 #' if if no `theme` is active).
 #' * [thematic_get_mixture()]: obtain a mixture of the current `theme`'s `bg` and `fg`.
 #'
+#' @param theme a [thematic_theme()] object.
 #' @param expr R code that produces a plot.
-#' @param ... arguments passed along to [thematic_on()].
 #' @param default a default value to return in the event no thematic theme is active.
 #' @rdname theme-management
 #' @export
@@ -155,8 +131,8 @@ thematic_off <- function() {
 #'
 #' # Use thematic_with_theme() for a one-time use of thematic
 #' thematic_with_theme(
-#'   plot(1:10, col = thematic_get_option("accent"), pch = 19),
-#'   "darkblue", "skyblue", accent = "red"
+#'   thematic_theme("darkblue", "skyblue", accent = "red"),
+#'   plot(1:10, col = thematic_get_option("accent"), pch = 19)
 #' )
 #'
 #' # Use thematic_set_theme() if doing something more complicated
@@ -178,18 +154,63 @@ thematic_off <- function() {
 #' thematic_off()
 #'
 #' thematic_with_theme(
-#'   scales::show_col(thematic_get_mixture(seq(0, 1, by = 0.1))),
-#'   "darkblue", "skyblue"
+#'   thematic_theme("darkblue", "skyblue"),
+#'   scales::show_col(thematic_get_mixture(seq(0, 1, by = 0.1)))
 #' )
 #'
-thematic_with_theme <- function(expr, ...) {
-  old <- thematic_on(...)
-  on.exit(thematic_set_theme(old), add = TRUE)
+thematic_with_theme <- function(theme, expr) {
+  old_theme <- thematic_set_theme(theme)
+  on.exit(thematic_set_theme(old_theme), add = TRUE)
   force(expr)
 }
 
+
 #' @rdname theme-management
-#' @param theme a `theme` object (as returned by [thematic_on] or [thematic_get_theme()])
+#' @inheritParams thematic_on
+#' @export
+thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
+                           font = NA, sequential = sequential_gradient(),
+                           qualitative = okabe_ito(), inherit = FALSE) {
+
+  # This function is called at plot time (with bg/fg/accent)
+  if (is.function(sequential)) {
+    sequential <- structure("", sequential_func = sequential)
+  }
+
+  new <- structure(
+    list(
+      bg = tag_auto(bg),
+      fg = tag_auto(fg),
+      accent = tag_auto(accent),
+      qualitative = qualitative,
+      sequential = sequential,
+      font = as_font_spec(font)
+    ),
+    class = "thematic_theme"
+  )
+
+  # Newly _specified_ theme elements override old elements
+  old <- thematic_get_theme()
+  if (isTRUE(inherit) && length(old)) {
+    fmls <- formals(thematic_theme)
+    if (identical(bg, fmls$bg)) new$bg <- NULL
+    if (identical(fg, fmls$fg)) new$fg <- NULL
+    if (identical(accent, fmls$accent)) new$accent <- NULL
+    if (identical(sequential, fmls$sequential)) new$sequential <- NULL
+    if (identical(qualitative, fmls$qualitative)) new$qualitative <- NULL
+    new <- utils::modifyList(old, new)
+    new <- structure(new, class = "thematic_theme")
+  }
+
+  new
+}
+
+is_thematic_theme <- function(x) {
+  inherits(x, "thematic_theme")
+}
+
+#' @rdname theme-management
+#' @param theme a `thematic_theme()` object (or a return value of [thematic_on]/[thematic_get_theme()])
 #' or `NULL` (in which case `thematic_off()` is called).
 #' @export
 thematic_set_theme <- function(theme) {
@@ -282,7 +303,7 @@ thematic_get_mixture <- function(amounts = 0.5, default = NULL) {
 #' @param quiet whether to suppress download messages.
 #'
 #' @return the input arguments as a list.
-#' @seealso [thematic_with_device()], [thematic_on()], [font_cache_set()]
+#' @seealso [thematic_save_plot()], [thematic_on()], [font_cache_set()]
 #'
 #' @export
 font_spec <- function(families = "", scale = 1, install = is_installed("ragg") || is_installed("showtext"),

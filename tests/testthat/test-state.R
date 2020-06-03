@@ -4,7 +4,10 @@ test_that("thematic_with_theme()", {
   expect_null(thematic_get_theme())
   expect_doppelganger("scatter-no-theme", function() { plot(1:10) })
   expect_doppelganger("scatter-with-theme", function() {
-    thematic_with_theme(plot(1:10), "black", "white", NA)
+    thematic_with_theme(
+      thematic_theme("black", "white", NA),
+      plot(1:10)
+    )
   })
   expect_doppelganger("scatter-no-theme2", function() { plot(1:10) })
 })

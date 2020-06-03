@@ -40,7 +40,7 @@ reference:
     - thematic_get_mixture
 - title: Save plots to a file
   contents:
-    - thematic_with_device
+    - thematic_save_plot
     - default_device
 - title: Manage the font cache location
   contents:
