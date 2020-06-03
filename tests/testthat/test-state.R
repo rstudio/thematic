@@ -31,7 +31,9 @@ test_that("Setting and getting the theme", {
 
 test_that("Theme inheritance works", {
   thematic_on("black", "red", "green")
+  white <- thematic_theme(fg = "white", inherit = TRUE)
   thematic_on(fg = "white", inherit = TRUE)
+  expect_equal(thematic_get_theme(), white)
   expect_doppelganger("white-green", qplot(1:10, 1:10, color = 1:10))
   thematic_on(accent = "red", inherit = TRUE)
   expect_doppelganger("white-red", qplot(1:10, 1:10, color = 1:10))
@@ -54,3 +56,5 @@ test_that("Getting options", {
   )
   thematic_off()
 })
+
+
