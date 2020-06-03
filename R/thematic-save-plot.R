@@ -118,7 +118,12 @@ thematic_save_plot <- function(expr, device = default_device(),
   )
 }
 
+#' Capture a plot with a graphics device
+#'
+#' This function is deprecated. Use [thematic_save_plot()] instead.
+#'
 #' @export
+#' @keywords internal
 thematic_with_device <- function(...) {
   .Deprecated("thematic_save_plot")
   thematic_save_plot(...)
