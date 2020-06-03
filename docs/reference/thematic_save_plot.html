@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Font specification — font_spec • thematic</title>
+<title>Capture a thematic plot as a saved file — thematic_save_plot • thematic</title>
 
 
 <!-- jquery -->
@@ -39,13 +39,11 @@
 
 
 
-<meta property="og:title" content="Font specification — font_spec" />
-<meta property="og:description" content="Specify a collection of font families. The first font family supported
-by the relevant device (i.e., the device that is open, or will be opened, at
-plotting time) is used by thematic. If a given font family is not supported
-by the default, but is a Google Font and
-install = TRUE, the font will be downloaded, cached, and registered
-for use the showtext and ragg packages." />
+<meta property="og:title" content="Capture a thematic plot as a saved file — thematic_save_plot" />
+<meta property="og:description" content="Uses a device to capture the result of an expression (expr)
+that produces a plot. If default_device() is used, custom fonts
+(specified through font_spec()) are guaranteed to work, as long as
+one of either the showtext or ragg package(s) are installed." />
 
 
 
@@ -119,69 +117,64 @@ for use the showtext and ragg packages." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Font specification</h1>
-    <small class="dont-index">Source: <a href='https://github.com/rstudio/thematic/blob/master/R/thematic.R'><code>R/thematic.R</code></a></small>
-    <div class="hidden name"><code>font_spec.Rd</code></div>
+    <h1>Capture a thematic plot as a saved file</h1>
+    <small class="dont-index">Source: <a href='https://github.com/rstudio/thematic/blob/master/R/thematic-save-plot.R'><code>R/thematic-save-plot.R</code></a></small>
+    <div class="hidden name"><code>thematic_save_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Specify a collection of font families. The first font family supported
-by the relevant device (i.e., the device that is open, or will be opened, at
-plotting time) is used by thematic. If a given font family is not supported
-by the default, but is a <a href='https://fonts.google.com/'>Google Font</a> and
-<code>install = TRUE</code>, the font will be downloaded, cached, and registered
-for use the <strong>showtext</strong> and <strong>ragg</strong> packages.</p>
+    <p>Uses a <code>device</code> to capture the result of an expression (<code>expr</code>)
+that produces a plot. If <code>default_device()</code> is used, custom fonts
+(specified through <code><a href='font_spec.html'>font_spec()</a></code>) are guaranteed to work, as long as
+one of either the showtext or ragg package(s) are installed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>font_spec</span>(
-  <span class='kw'>families</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>install</span> <span class='kw'>=</span> <span class='fu'>is_installed</span>(<span class='st'>"ragg"</span>) <span class='kw'>||</span> <span class='fu'>is_installed</span>(<span class='st'>"showtext"</span>),
-  <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
-)</pre>
+    <pre class="usage"><span class='fu'>thematic_save_plot</span>(
+  <span class='no'>expr</span>,
+  <span class='kw'>device</span> <span class='kw'>=</span> <span class='fu'>default_device</span>(),
+  <span class='kw'>filename</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".png"</span>),
+  <span class='no'>...</span>
+)
+
+<span class='fu'>default_device</span>(<span class='kw'>type</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"png"</span>, <span class='st'>"svg"</span>, <span class='st'>"pdf"</span>, <span class='st'>"tiff"</span>, <span class='st'>"jpeg"</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>families</th>
-      <td><p>a character vector of font families.</p></td>
+      <th>expr</th>
+      <td><p>an expression that produces a plot.</p></td>
     </tr>
     <tr>
-      <th>scale</th>
-      <td><p>numerical constant applied to font sizes.</p></td>
+      <th>device</th>
+      <td><p>a graphics device to use for capturing the plot.</p></td>
     </tr>
     <tr>
-      <th>install</th>
-      <td><p>whether to download and register font <code>families</code>
-available via <a href='https://fonts.google.com/'>Google Fonts</a> (but unavailable to R).
-After a successful download, fonts are cached (in a directory which
-can be managed via <code><a href='font_cache_set.html'>font_cache_set()</a></code>), and registered for use with
-the <strong>showtext</strong> and <strong>ragg</strong> packages. If installation fails with
-a valid internet connection, you may need to fetch the latest Google
-Font information prior to installation (i.e., set <code>update = TRUE</code>).</p></td>
+      <th>filename</th>
+      <td><p>a filename for the produced plot. The file extension should
+match the relevant <code>device</code>.</p></td>
     </tr>
     <tr>
-      <th>update</th>
-      <td><p>if <code>TRUE</code>, the latest Google Fonts are fetched and
-any out-dated font cache is updated. Fetching the latest fonts requires
-a Google Font API key (one is bundled with the package, but you can
-set your own via an environment variable, <code>GFONT_KEY</code>).</p></td>
+      <th>...</th>
+      <td><p>arguments passed along to the graphics <code>device</code>.</p></td>
     </tr>
     <tr>
-      <th>quiet</th>
-      <td><p>whether to suppress download messages.</p></td>
+      <th>type</th>
+      <td><p>the type of output format</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>the input arguments as a list.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+    <p>the <code>filename</code> of the produced plot.</p>
 
-    <div class='dont-index'><p><code><a href='thematic_save_plot.html'>thematic_save_plot()</a></code>, <code><a href='thematic.html'>thematic_on()</a></code>, <code><a href='font_cache_set.html'>font_cache_set()</a></code></p></div>
-
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>thematic</span>)
+<span class='no'>font</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='font_spec.html'>font_spec</a></span>(<span class='st'>"Rock Salt"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1.25</span>)
+<span class='fu'><a href='thematic.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='no'>font</span>)
+<span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='fu'>thematic_save_plot</span>(<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>), <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>144</span>)
+<span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) <span class='fu'><a href='https://rdrr.io/r/utils/browseURL.html'>browseURL</a></span>(<span class='no'>file</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

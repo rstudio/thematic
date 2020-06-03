@@ -133,7 +133,8 @@ those options can derive automatically from the relevant CSS styles.</p>
   <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
   <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
   <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
-  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>()
+  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>(),
+  <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
 <span class='fu'>thematic_off</span>()</pre>
@@ -171,6 +172,10 @@ numeric values. Can be a vector of color codes or a
 qualitative values (won't be used in ggplot2 when the number of data
 levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.</p></td>
     </tr>
+    <tr>
+      <th>inherit</th>
+      <td><p>should non-specified values inherit from the previous theme?</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -200,7 +205,7 @@ it use the following information, in order:</p><ol>
 provide the desired values to <code>thematic_on()</code> or <code><a href='auto_defaults.html'>auto_defaults()</a></code>.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='thematic_with_device.html'>thematic_with_device()</a></code>, <code><a href='theme-management.html'>thematic_with_theme()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='thematic_save_plot.html'>thematic_save_plot()</a></code>, <code><a href='theme-management.html'>thematic_with_theme()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple dark mode</span>

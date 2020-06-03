@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Capture a thematic plot as a saved file — thematic_with_device • thematic</title>
+<title>Capture a thematic plot as a saved file — thematic_save_plot • thematic</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="Capture a thematic plot as a saved file — thematic_with_device" />
+<meta property="og:title" content="Capture a thematic plot as a saved file — thematic_save_plot" />
 <meta property="og:description" content="Uses a device to capture the result of an expression (expr)
 that produces a plot. If default_device() is used, custom fonts
 (specified through font_spec()) are guaranteed to work, as long as
@@ -119,7 +119,7 @@ one of either the showtext or ragg package(s) are installed." />
     <div class="page-header">
     <h1>Capture a thematic plot as a saved file</h1>
     <small class="dont-index">Source: <a href='https://github.com/rstudio/thematic/blob/master/R/thematic-with-device.R'><code>R/thematic-with-device.R</code></a></small>
-    <div class="hidden name"><code>thematic_with_device.Rd</code></div>
+    <div class="hidden name"><code>thematic_save_plot.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -129,7 +129,7 @@ that produces a plot. If <code>default_device()</code> is used, custom fonts
 one of either the showtext or ragg package(s) are installed.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>thematic_with_device</span>(
+    <pre class="usage"><span class='fu'>thematic_save_plot</span>(
   <span class='no'>expr</span>,
   <span class='kw'>device</span> <span class='kw'>=</span> <span class='fu'>default_device</span>(),
   <span class='kw'>filename</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".png"</span>),
@@ -170,7 +170,7 @@ match the relevant <code>device</code>.</p></td>
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>thematic</span>)
 <span class='no'>font</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='font_spec.html'>font_spec</a></span>(<span class='st'>"Rock Salt"</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1.25</span>)
 <span class='fu'><a href='thematic.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='no'>font</span>)
-<span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='fu'>thematic_with_device</span>(<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>), <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>144</span>)
+<span class='no'>file</span> <span class='kw'>&lt;-</span> <span class='fu'>thematic_save_plot</span>(<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>), <span class='kw'>res</span> <span class='kw'>=</span> <span class='fl'>144</span>)
 <span class='kw'>if</span> (<span class='fu'><a href='https://rdrr.io/r/base/interactive.html'>interactive</a></span>()) <span class='fu'><a href='https://rdrr.io/r/utils/browseURL.html'>browseURL</a></span>(<span class='no'>file</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
