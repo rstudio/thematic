@@ -58,6 +58,7 @@ auto_config <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL,
 }
 
 #' @rdname auto-config
+#' @param config a `auto_config()` object.
 #' @export
 auto_config_set <- function(config) {
   if (!inherits(config, "thematic_auto_config")) {
@@ -92,7 +93,7 @@ priorities <- function() {
 #' @seealso [auto_config_set()]
 #' @examples
 #'
-#' auto_config_set(bg = "black", fg = "white")
+#' old_config <- auto_config_set(auto_config(bg = "black", fg = "white"))
 #'
 #' # Resolving auto values in local theme objects
 #' theme <- thematic_theme()
@@ -106,6 +107,8 @@ priorities <- function() {
 #' thematic_get_option("bg", resolve = FALSE)
 #' thematic_get_option("bg")
 #' thematic_off()
+#'
+#' auto_config_set(old_config)
 #'
 auto_resolve_theme <- function(theme) {
   if (!length(theme)) {

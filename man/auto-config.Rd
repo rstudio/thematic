@@ -38,6 +38,8 @@ Possible values include:
 to resolve auto values (only relevant when knitr is in progress).
 \item \code{"rstudio"}: use \code{\link[rstudioapi:getThemeInfo]{rstudioapi::getThemeInfo()}} values (if any) to resolve auto values.
 }}
+
+\item{config}{a \code{auto_config()} object.}
 }
 \description{
 Auto theming is really only "guaranteed" to work inside of a \strong{shiny}

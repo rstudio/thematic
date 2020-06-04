@@ -117,6 +117,7 @@ thematic_off <- function() {
 }
 
 #' @rdname thematic
+#' @param session see [shiny::onStop()].
 #' @export
 thematic_on_app <- function(..., session = shiny::getDefaultReactiveDomain()) {
   old_theme <- thematic_on(...)
@@ -225,6 +226,7 @@ thematic_with_theme <- function(theme, expr) {
 }
 
 #' @rdname theme-management
+#' @param .local_envir The environment to use for scoping.
 #' @export
 thematic_local_theme <- function(theme, .local_envir = parent.frame()) {
   old_theme <- thematic_set_theme(theme)

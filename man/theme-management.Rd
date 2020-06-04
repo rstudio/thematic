@@ -27,6 +27,8 @@ or \code{NULL} (in which case \code{thematic_off()} is called).}
 
 \item{expr}{R code that produces a plot.}
 
+\item{.local_envir}{The environment to use for scoping.}
+
 \item{resolve}{whether or not \code{'auto'} values should be resolved before returning}
 
 \item{name}{a theme element name (e.g., \code{fg}, \code{bg}, etc.)}

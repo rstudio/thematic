@@ -26,6 +26,8 @@ thematic_theme(
 \arguments{
 \item{...}{arguments passed along to \code{thematic_theme()}.}
 
+\item{session}{see \code{\link[shiny:onStop]{shiny::onStop()}}.}
+
 \item{bg}{a background color.}
 
 \item{fg}{a foreground color.}

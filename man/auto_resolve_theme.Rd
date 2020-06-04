@@ -18,7 +18,7 @@ and configuration (i.e., \code{\link[=auto_config_get]{auto_config_get()}}).
 }
 \examples{
 
-auto_config_set(bg = "black", fg = "white")
+old_config <- auto_config_set(auto_config(bg = "black", fg = "white"))
 
 # Resolving auto values in local theme objects
 theme <- thematic_theme()
@@ -32,6 +32,8 @@ thematic_on()
 thematic_get_option("bg", resolve = FALSE)
 thematic_get_option("bg")
 thematic_off()
+
+auto_config_set(old_config)
 
 }
 \seealso{
