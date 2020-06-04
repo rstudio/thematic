@@ -3,7 +3,6 @@
 \name{thematic_with_theme}
 \alias{thematic_with_theme}
 \alias{thematic_local_theme}
-\alias{thematic_theme}
 \alias{thematic_set_theme}
 \alias{thematic_get_theme}
 \alias{thematic_get_option}
@@ -12,23 +11,13 @@
 \usage{
 thematic_with_theme(theme, expr)
 
-thematic_local_theme(theme, expr)
-
-thematic_theme(
-  bg = "auto",
-  fg = "auto",
-  accent = "auto",
-  font = NA,
-  sequential = sequential_gradient(),
-  qualitative = okabe_ito(),
-  inherit = FALSE
-)
+thematic_local_theme(theme, .local_envir = parent.frame())
 
 thematic_set_theme(theme)
 
-thematic_get_theme()
+thematic_get_theme(resolve = TRUE)
 
-thematic_get_option(name = "", default = NULL)
+thematic_get_option(name = "", default = NULL, resolve = TRUE)
 
 thematic_get_mixture(amounts = 0.5, default = NULL)
 }
@@ -38,25 +27,7 @@ or \code{NULL} (in which case \code{thematic_off()} is called).}
 
 \item{expr}{R code that produces a plot.}
 
-\item{bg}{a background color.}
-
-\item{fg}{a foreground color.}
-
-\item{accent}{a color for making certain graphical markers 'stand out'
-(e.g., the fitted line color for \code{\link[ggplot2:geom_smooth]{ggplot2::geom_smooth()}}).
-Can be 2 colors for lattice (stroke vs fill accent).}
-
-\item{font}{a \code{\link[=font_spec]{font_spec()}} object. If missing, font defaults are not altered.}
-
-\item{sequential}{a color palette for graphical markers that encode
-numeric values. Can be a vector of color codes or a
-\code{\link[=sequential_gradient]{sequential_gradient()}} object.}
-
-\item{qualitative}{a color palette for graphical markers that encode
-qualitative values (won't be used in ggplot2 when the number of data
-levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.}
-
-\item{inherit}{should non-specified values inherit from the previous theme?}
+\item{resolve}{whether or not \code{'auto'} values should be resolved before returning}
 
 \item{name}{a theme element name (e.g., \code{fg}, \code{bg}, etc.)}
 
@@ -67,6 +38,8 @@ levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.}
 \description{
 \itemize{
 \item \code{\link[=thematic_with_theme]{thematic_with_theme()}}: similar to \code{\link[=thematic_on]{thematic_on()}}, but for an single plot.
+\item \code{\link[=thematic_local_theme]{thematic_local_theme()}}: similar to \code{\link[=thematic_with_theme]{thematic_with_theme()}}, but de-couples
+the theme from the plot expression.
 \item \code{\link[=thematic_set_theme]{thematic_set_theme()}}: set a given \code{theme} object as the current theme.
 \item \code{\link[=thematic_get_theme]{thematic_get_theme()}}: obtain the current \code{theme}.
 \item \code{\link[=thematic_get_option]{thematic_get_option()}}: obtain a particular \code{theme} option (and provide a \code{default}

@@ -1,26 +1,36 @@
 #' Enable (or disable) simplified theming of R graphics.
 #'
-#' A unified interface for styling **ggplot2**, **base**, and **lattice** graphics
-#' from a handful of options. In some cases, most notably in a **shiny** runtime,
-#' those options can derive automatically from the relevant CSS styles.
+#' A unified interface for theming **ggplot2**, **base**, and **lattice** graphics
+#' based on a handful of styling options. In some cases (most notably in a **shiny** runtime),
+#' these options can automatically resolve to relevant CSS styles (see the "Auto theming"
+#' section below).
 #'
-#' @section Automatic values:
+#' @section Auto theming:
 #'
 #' The `bg`, `fg`, `accent`, and `font` arguments all support a value of `'auto'`,
-#' which are all resolved, at plot time, based on the execution environment. In particular,
-#' it use the following information, in order:
+#' which are all resolved, at plot time, based on the execution environment. In a
+#' **shiny** runtime, resolution of auto values should always work as expect; but
+#' in other contexts, auto values may lead to wrong or surprising results. In that
+#' case, auto resolution logic can be customized, see [auto_config_set()] for more details.
 #'
-#' 1. The CSS styles of the currently executing **shiny** output container (via `shiny::getCurrentOutputInfo()`).
-#' 2. [auto_defaults()].
-#' 3. `bootstraplib::bs_theme_get_variables()` (if running inside `rmarkdown::html_document()`).
-#' 4. `rstudioapi::getThemeInfo()` (if the relevant graphics device is RStudioGD).
+#' Note also that `'auto'` values are completely optional; in other words
+#' provide the desired values to `thematic_on()` or `auto_config()`.
 #'
-#' If, for whatever reason, `'auto'` doesn't resolve to the right value,
-#' provide the desired values to `thematic_on()` or `auto_defaults()`.
+#' @section Global vs. local theming:
 #'
-#' @details Colors (e.g., `bg`, `fg`, `accent`) may be any value understood by [col2rgb()]
+#' `thematic_on()` enables thematic in a global fashion (that is, it impacts all
+#' future plots, up until `thematic_off()` is called). To use thematic in local fashion,
+#' first create a theme with [thematic_theme()], then provide it to [thematic_with_theme()]
+#' (or similar). To use thematic in a global fashion up until a **shiny**
+#' app exits, use `thematic_on_app()` (which uses [shiny::onStop()] to clean up after itself
+#' when the app exits).
+#'
+#' @section Color values:
+#'
+#' Colors (e.g., `bg`, `fg`, `accent`) may be any value understood by [col2rgb()]
 #' or `htmltools::parseCssColors()` (i.e., may be any valid R or CSS color string).
 #'
+#' @param ... arguments passed along to `thematic_theme()`.
 #' @param bg a background color.
 #' @param fg a foreground color.
 #' @param accent a color for making certain graphical markers 'stand out'
@@ -32,15 +42,18 @@
 #' [sequential_gradient()] object.
 #' @param qualitative a color palette for graphical markers that encode
 #' qualitative values (won't be used in ggplot2 when the number of data
-#' levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.
+#' levels exceeds the max allowed colors). Defaults to [okabe_ito()].
 #' @param inherit should non-specified values inherit from the previous theme?
 #'
-#' @return Returns any information about the previously set theme (if any), invisibly.
+#' @return [thematic_theme()] returns a list object with a special class.
+#' The other functions listed here return the previous global theme object.
+#'
+#' Returns any information about the previously set theme (if any), invisibly.
 #' This value may be provided to [thematic_set_theme()] to return to the previous
 #' global state.
 #'
 #' @rdname thematic
-#' @seealso [thematic_save_plot()], [thematic_with_theme()]
+#' @seealso [sequential_gradient()], [thematic_with_theme()], [thematic_save_plot()]
 #' @export
 #' @examples
 #' # simple dark mode
@@ -66,27 +79,16 @@
 #' lattice::show.settings()
 #' thematic_off()
 #'
-thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
-                        font = NA, sequential = sequential_gradient(),
-                        qualitative = okabe_ito(), inherit = FALSE) {
-
+thematic_on <- function(...) {
   old_theme <- thematic_get_theme()
-
-  .globals$theme <- thematic_theme(
-    bg = bg, fg = fg, accent = accent, font = font,
-    sequential = sequential, qualitative = qualitative,
-    inherit = inherit
-  )
-
+  .globals$theme <- thematic_theme(...)
   # Set knitr dev.args = list(bg = bg) now (instead of later)
   # so at least the _next_ chunk has the right bg color.
   knitr_dev_args_set()
-
   # Remove any existing hooks before registering them
   # (otherwise, repeated calls to set_hooks will keep adding them)
   remove_hooks()
   set_hooks()
-
   # Override ggplot build method mainly because we currently need access to
   # the plot object in order to set Geom/Scale defaults
   ggplot_build_set()
@@ -108,10 +110,63 @@ thematic_off <- function() {
   ggplot_build_restore()
   lattice_print_restore()
 
-  if (!is.null(.globals$theme)) rm("theme", envir = .globals)
+  theme <- .globals$theme
+  if (!is.null(theme)) rm("theme", envir = .globals)
 
-  invisible()
+  invisible(theme)
 }
+
+#' @rdname thematic
+#' @export
+thematic_on_app <- function(..., session = shiny::getDefaultReactiveDomain()) {
+  old_theme <- thematic_on(...)
+  shiny::onStop(function() thematic_set_theme(old_theme), session = session)
+  invisible(old_theme)
+}
+
+#' @rdname thematic
+#' @export
+thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
+                           font = NA, sequential = sequential_gradient(),
+                           qualitative = okabe_ito(), inherit = FALSE) {
+
+  # This function is called at plot time (with bg/fg/accent)
+  if (is.function(sequential)) {
+    sequential <- structure("", sequential_func = sequential)
+  }
+
+  new <- structure(
+    list(
+      bg = tag_auto(bg),
+      fg = tag_auto(fg),
+      accent = tag_auto(accent),
+      qualitative = qualitative,
+      sequential = sequential,
+      font = as_font_spec(font)
+    ),
+    class = "thematic_theme"
+  )
+
+  # Newly _specified_ theme elements override old elements
+  old <- thematic_get_theme()
+  if (isTRUE(inherit) && length(old)) {
+    fmls <- formals(thematic_theme)
+    if (identical(bg, fmls$bg)) new$bg <- NULL
+    if (identical(fg, fmls$fg)) new$fg <- NULL
+    if (identical(accent, fmls$accent)) new$accent <- NULL
+    if (identical(sequential, fmls$sequential)) new$sequential <- NULL
+    if (identical(qualitative, fmls$qualitative)) new$qualitative <- NULL
+    new <- utils::modifyList(old, new)
+    new <- structure(new, class = "thematic_theme")
+  }
+
+  new
+}
+
+is_thematic_theme <- function(x) {
+  inherits(x, "thematic_theme")
+}
+
 
 #' Tools for getting and restoring global state
 #'
@@ -178,50 +233,6 @@ thematic_local_theme <- function(theme, .local_envir = parent.frame()) {
 }
 
 #' @rdname theme-management
-#' @inheritParams thematic_on
-#' @export
-thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
-                           font = NA, sequential = sequential_gradient(),
-                           qualitative = okabe_ito(), inherit = FALSE) {
-
-  # This function is called at plot time (with bg/fg/accent)
-  if (is.function(sequential)) {
-    sequential <- structure("", sequential_func = sequential)
-  }
-
-  new <- structure(
-    list(
-      bg = tag_auto(bg),
-      fg = tag_auto(fg),
-      accent = tag_auto(accent),
-      qualitative = qualitative,
-      sequential = sequential,
-      font = as_font_spec(font)
-    ),
-    class = "thematic_theme"
-  )
-
-  # Newly _specified_ theme elements override old elements
-  old <- thematic_get_theme()
-  if (isTRUE(inherit) && length(old)) {
-    fmls <- formals(thematic_theme)
-    if (identical(bg, fmls$bg)) new$bg <- NULL
-    if (identical(fg, fmls$fg)) new$fg <- NULL
-    if (identical(accent, fmls$accent)) new$accent <- NULL
-    if (identical(sequential, fmls$sequential)) new$sequential <- NULL
-    if (identical(qualitative, fmls$qualitative)) new$qualitative <- NULL
-    new <- utils::modifyList(old, new)
-    new <- structure(new, class = "thematic_theme")
-  }
-
-  new
-}
-
-is_thematic_theme <- function(x) {
-  inherits(x, "thematic_theme")
-}
-
-#' @rdname theme-management
 #' @param theme a `thematic_theme()` object (or a return value of [thematic_on]/[thematic_get_theme()])
 #' or `NULL` (in which case `thematic_off()` is called).
 #' @export
@@ -236,9 +247,14 @@ thematic_set_theme <- function(theme) {
 }
 
 #' @rdname theme-management
+#' @param resolve whether or not `'auto'` values should be resolved before returning
 #' @export
-thematic_get_theme <- function() {
-  .globals$theme
+thematic_get_theme <- function(resolve = TRUE) {
+  if (resolve) {
+    auto_resolve_theme(.globals$theme)
+  } else {
+    .globals$theme
+  }
 }
 
 #' Get a thematic theme
@@ -254,11 +270,11 @@ thematic_get <- function() {
 #' @rdname theme-management
 #' @param name a theme element name (e.g., `fg`, `bg`, etc.)
 #' @export
-thematic_get_option <- function(name = "", default = NULL) {
+thematic_get_option <- function(name = "", default = NULL, resolve = TRUE) {
   if (length(name) != 1) {
     stop("`name` must be length 1", call. = FALSE)
   }
-  theme <- thematic_get_theme()
+  theme <- thematic_get_theme(resolve = resolve)
   theme_names <- names(theme)
   if (length(theme) && length(setdiff(name, theme_names))) {
     stop(

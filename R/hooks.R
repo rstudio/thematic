@@ -16,8 +16,7 @@ remove_hook <- function(name, hook) {
 
 
 base_before_hook <- function() {
-  # resolves 'auto' values in .globals$theme
-  resolve_auto_theme()
+  .globals$theme <- auto_resolve_theme(.globals$theme)
   # populates .globals$theme$font$family based on the first families we can support
   resolve_font_family(type = "base")
   # update the device's bg color
@@ -28,8 +27,7 @@ base_before_hook <- function() {
 }
 
 grid_before_hook <- function() {
-  # resolves 'auto' values in .globals$theme
-  resolve_auto_theme()
+  .globals$theme <- auto_resolve_theme(.globals$theme)
   # populates .globals$theme$font$family based on the first families we can support
   resolve_font_family(type = "grid")
   # update the device's bg color
