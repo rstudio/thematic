@@ -37,6 +37,7 @@ auto_defaults <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL) {
 
 resolve_auto_theme <- function() {
   theme <- .globals$theme
+  if (!length(theme)) return()
   outputInfo <- shiny_output_info()
   autoDefaults <- auto_defaults()
   bsThemeColors <- bs_theme_colors()

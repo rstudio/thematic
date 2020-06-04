@@ -12,9 +12,9 @@ thematic_with_theme(expr, ...)
 
 thematic_set_theme(theme)
 
-thematic_get_theme()
+thematic_get_theme(resolve = TRUE)
 
-thematic_get_option(name = "", default = NULL)
+thematic_get_option(name = "", default = NULL, resolve = TRUE)
 
 thematic_get_mixture(amounts = 0.5, default = NULL)
 }
@@ -25,6 +25,8 @@ thematic_get_mixture(amounts = 0.5, default = NULL)
 
 \item{theme}{a \code{theme} object (as returned by \link{thematic_on} or \code{\link[=thematic_get_theme]{thematic_get_theme()}})
 or \code{NULL} (in which case \code{thematic_off()} is called).}
+
+\item{resolve}{whether or not \code{'auto'} values should be resolved before returning}
 
 \item{name}{a theme element name (e.g., \code{fg}, \code{bg}, etc.)}
 

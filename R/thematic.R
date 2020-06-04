@@ -203,19 +203,23 @@ thematic_set_theme <- function(theme) {
 }
 
 #' @rdname theme-management
+#' @param resolve whether or not `'auto'` values should be resolved before returning
 #' @export
-thematic_get_theme <- function() {
+thematic_get_theme <- function(resolve = TRUE) {
+  if (resolve) {
+    resolve_auto_theme()
+  }
   .globals$theme
 }
 
 #' @rdname theme-management
 #' @param name a theme element name (e.g., `fg`, `bg`, etc.)
 #' @export
-thematic_get_option <- function(name = "", default = NULL) {
+thematic_get_option <- function(name = "", default = NULL, resolve = TRUE) {
   if (length(name) != 1) {
     stop("`name` must be length 1", call. = FALSE)
   }
-  theme <- thematic_get_theme()
+  theme <- thematic_get_theme(resolve = resolve)
   theme_names <- names(theme)
   if (length(theme) && length(setdiff(name, theme_names))) {
     stop(
