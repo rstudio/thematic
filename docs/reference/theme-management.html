@@ -43,6 +43,8 @@
 <meta property="og:description" content="
 
 thematic_with_theme(): similar to thematic_on(), but for an single plot.
+thematic_local_theme(): similar to thematic_with_theme(), but de-couples
+the theme from the plot expression.
 thematic_set_theme(): set a given theme object as the current theme.
 thematic_get_theme(): obtain the current theme.
 thematic_get_option(): obtain a particular theme option (and provide a default
@@ -132,6 +134,8 @@ thematic_get_mixture(): obtain a mixture of the current theme's bg and fg.
     
 <ul>
 <li><p><code>thematic_with_theme()</code>: similar to <code><a href='thematic.html'>thematic_on()</a></code>, but for an single plot.</p></li>
+<li><p><code>thematic_local_theme()</code>: similar to <code>thematic_with_theme()</code>, but de-couples
+the theme from the plot expression.</p></li>
 <li><p><code>thematic_set_theme()</code>: set a given <code>theme</code> object as the current theme.</p></li>
 <li><p><code>thematic_get_theme()</code>: obtain the current <code>theme</code>.</p></li>
 <li><p><code>thematic_get_option()</code>: obtain a particular <code>theme</code> option (and provide a <code>default</code>
@@ -143,23 +147,13 @@ if if no <code>theme</code> is active).</p></li>
 
     <pre class="usage"><span class='fu'>thematic_with_theme</span>(<span class='no'>theme</span>, <span class='no'>expr</span>)
 
-<span class='fu'>thematic_local_theme</span>(<span class='no'>theme</span>, <span class='no'>expr</span>)
-
-<span class='fu'>thematic_theme</span>(
-  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
-  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>(),
-  <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+<span class='fu'>thematic_local_theme</span>(<span class='no'>theme</span>, <span class='kw'>.local_envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())
 
 <span class='fu'>thematic_set_theme</span>(<span class='no'>theme</span>)
 
-<span class='fu'>thematic_get_theme</span>()
+<span class='fu'>thematic_get_theme</span>(<span class='kw'>resolve</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'>thematic_get_option</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+<span class='fu'>thematic_get_option</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>resolve</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
 <span class='fu'>thematic_get_mixture</span>(<span class='kw'>amounts</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
@@ -168,7 +162,7 @@ if if no <code>theme</code> is active).</p></li>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>theme</th>
-      <td><p>a <code>thematic_theme()</code> object (or a return value of <a href='thematic.html'>thematic_on</a>/<code>thematic_get_theme()</code>)
+      <td><p>a <code><a href='thematic.html'>thematic_theme()</a></code> object (or a return value of <a href='thematic.html'>thematic_on</a>/<code>thematic_get_theme()</code>)
 or <code>NULL</code> (in which case <code><a href='thematic.html'>thematic_off()</a></code> is called).</p></td>
     </tr>
     <tr>
@@ -176,38 +170,8 @@ or <code>NULL</code> (in which case <code><a href='thematic.html'>thematic_off()
       <td><p>R code that produces a plot.</p></td>
     </tr>
     <tr>
-      <th>bg</th>
-      <td><p>a background color.</p></td>
-    </tr>
-    <tr>
-      <th>fg</th>
-      <td><p>a foreground color.</p></td>
-    </tr>
-    <tr>
-      <th>accent</th>
-      <td><p>a color for making certain graphical markers 'stand out'
-(e.g., the fitted line color for <code><a href='https://ggplot2.tidyverse.org/reference/geom_smooth.html'>ggplot2::geom_smooth()</a></code>).
-Can be 2 colors for lattice (stroke vs fill accent).</p></td>
-    </tr>
-    <tr>
-      <th>font</th>
-      <td><p>a <code><a href='font_spec.html'>font_spec()</a></code> object. If missing, font defaults are not altered.</p></td>
-    </tr>
-    <tr>
-      <th>sequential</th>
-      <td><p>a color palette for graphical markers that encode
-numeric values. Can be a vector of color codes or a
-<code><a href='sequential_gradient.html'>sequential_gradient()</a></code> object.</p></td>
-    </tr>
-    <tr>
-      <th>qualitative</th>
-      <td><p>a color palette for graphical markers that encode
-qualitative values (won't be used in ggplot2 when the number of data
-levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.</p></td>
-    </tr>
-    <tr>
-      <th>inherit</th>
-      <td><p>should non-specified values inherit from the previous theme?</p></td>
+      <th>resolve</th>
+      <td><p>whether or not <code>'auto'</code> values should be resolved before returning</p></td>
     </tr>
     <tr>
       <th>name</th>
@@ -228,8 +192,8 @@ levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.</p
     <pre class="examples"><div class='input'>
 <span class='co'># Use thematic_with_theme() for a one-time use of thematic</span>
 <span class='fu'>thematic_with_theme</span>(
-  <span class='fu'>thematic_theme</span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"red"</span>),
-  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>thematic_get_option</span>(<span class='st'>"accent"</span>), <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>19</span>)
+  <span class='fu'><a href='thematic.html'>thematic_theme</a></span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"red"</span>),
+  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>thematic_get_option</span>(<span class='st'>"accent"</span>), <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>19</span>)
 )</div><div class='img'><img src='theme-management-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; NULL</div><div class='input'>
 <span class='co'># Use thematic_set_theme() if doing something more complicated</span>
 <span class='co'># like programming on top thematic (without causing side effects)</span>
@@ -241,13 +205,13 @@ levels exceeds the max allowed colors). Defaults to the Okabe-Ito colorscale.</p
   <span class='co'># Imagine some more customization with ...</span>
   <span class='fu'><a href='https://rdrr.io/r/base/force.html'>force</a></span>(<span class='no'>expr</span>)
 }
-<span class='fu'>my_plot</span>(<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>))</div><div class='img'><img src='theme-management-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>my_plot</span>(<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>))</div><div class='img'><img src='theme-management-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='fu'><a href='thematic.html'>thematic_off</a></span>()
 <span class='fu'>thematic_get_option</span>(<span class='st'>"bg"</span>, <span class='st'>"white"</span>)</div><div class='output co'>#&gt; [1] "white"</div><div class='input'><span class='fu'><a href='thematic.html'>thematic_on</a></span>(<span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"red"</span>)
 <span class='fu'>thematic_get_option</span>(<span class='st'>"bg"</span>, <span class='st'>"white"</span>)</div><div class='output co'>#&gt; [1] "red"</div><div class='input'><span class='fu'><a href='thematic.html'>thematic_off</a></span>()
 
 <span class='fu'>thematic_with_theme</span>(
-  <span class='fu'>thematic_theme</span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>),
+  <span class='fu'><a href='thematic.html'>thematic_theme</a></span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>),
   <span class='kw pkg'>scales</span><span class='kw ns'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/show_col.html'>show_col</a></span>(<span class='fu'>thematic_get_mixture</span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)))
 )</div><div class='img'><img src='theme-management-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; NULL</div><div class='input'>
 </div></pre>

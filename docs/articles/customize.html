@@ -76,7 +76,7 @@
       <h1 data-toc-skip>Customizing thematic</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-06-03</h4>
+            <h4 class="date">2020-06-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/customize.Rmd"><code>vignettes/customize.Rmd</code></a></small>
       <div class="hidden name"><code>customize.Rmd</code></div>
@@ -241,7 +241,7 @@
 <p>Similar to <strong>lattice</strong>, <strong>base</strong> R graphics doesn’t have a global distinction between a <code>qualitative</code> and <code>sequential</code> colorscales, it just has <code><a href="https://rdrr.io/r/grDevices/palette.html">palette()</a></code> (which is closest, semantically, to <code>qualitative</code>):</p>
 <div class="sourceCode" id="cb17"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))
 <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span>(<span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span>(<span class="fl">100</span>))
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>:<span class="fl">5</span>, <span class="kw">each</span> <span class="kw">=</span> <span class="fl">5</span>), <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>:<span class="fl">5</span>, <span class="fl">5</span>), <span class="kw">col</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">25</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">25</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></body></html></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>:<span class="fl">5</span>, <span class="kw">each</span> <span class="kw">=</span> <span class="fl">5</span>), <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span>(<span class="fl">1</span>:<span class="fl">5</span>, <span class="fl">5</span>), <span class="kw">col</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">25</span>, <span class="kw">pch</span> <span class="kw">=</span> <span class="fl">1</span>:<span class="fl">25</span>, <span class="kw">cex</span> <span class="kw">=</span> <span class="fl">5</span>)</pre></body></html></div>
 <p><img src="customize_files/figure-html/unnamed-chunk-18-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>However, do know that you can supply the current sequential colorscale to individual plotting functions by doing something like <code>col = thematic_get_option("sequential")</code>:</p>
 <div class="sourceCode" id="cb18"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span>(<span class="kw">mfrow</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">1</span>, <span class="fl">2</span>))

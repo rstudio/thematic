@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Set auto theming defaults — auto_defaults • thematic</title>
+<title>Set auto theming defaults — auto_config • thematic</title>
 
 
 <!-- jquery -->
@@ -39,13 +39,13 @@
 
 
 
-<meta property="og:title" content="Set auto theming defaults — auto_defaults" />
+<meta property="og:title" content="Set auto theming defaults — auto_config" />
 <meta property="og:description" content="Auto theming defaults are used to resolve &quot;auto&quot; values outside
 of a shiny runtime (i.e., where auto theming might be based on
 imperfect heuristics). Setting of auto defaults is especially useful
 for developers of a custom rmarkdown output document that wish to
 have more sensible auto theming behavior for users of the document.
-In particular, by having the output document call auto_defaults()
+In particular, by having the output document call auto_config()
 &quot;pre-knit&quot; with the document's styling preferences (and restoring the
 old defaults &quot;post-knit&quot;), users of the output document can then simply
 call thematic_on() within their document to use those preferences." />
@@ -124,7 +124,7 @@ call thematic_on() within their document to use those preferences." />
     <div class="page-header">
     <h1>Set auto theming defaults</h1>
     <small class="dont-index">Source: <a href='https://github.com/rstudio/thematic/blob/master/R/auto.R'><code>R/auto.R</code></a></small>
-    <div class="hidden name"><code>auto_defaults.Rd</code></div>
+    <div class="hidden name"><code>auto_config.Rd</code></div>
     </div>
 
     <div class="ref-description">
@@ -133,13 +133,13 @@ of a <strong>shiny</strong> runtime (i.e., where auto theming might be based on
 imperfect heuristics). Setting of auto defaults is especially useful
 for developers of a custom rmarkdown output document that wish to
 have more sensible auto theming behavior for users of the document.
-In particular, by having the output document call <code>auto_defaults()</code>
+In particular, by having the output document call <code>auto_config()</code>
 "pre-knit" with the document's styling preferences (and restoring the
 old defaults "post-knit"), users of the output document can then simply
 call <code><a href='thematic.html'>thematic_on()</a></code> within their document to use those preferences.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>auto_defaults</span>(<span class='kw'>bg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>accent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>auto_config</span>(<span class='kw'>bg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>fg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>accent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>font</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,9 +169,9 @@ Can be 2 colors for lattice (stroke vs fill accent).</p></td>
     <p>Call this function with no arguments to get the current auto defaults.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>auto_defaults</span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
+    <pre class="examples"><div class='input'><span class='fu'>auto_config</span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
 <span class='fu'><a href='thematic.html'>thematic_on</a></span>()
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_defaults()` is set.</span></div><div class='img'><img src='auto_defaults-1.png' alt='' width='700' height='433' /></div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config()` is set.</span></div><div class='img'><img src='auto_config-1.png' alt='' width='700' height='433' /></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
