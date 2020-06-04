@@ -57,5 +57,3 @@ test_that("Getting options", {
   )
   thematic_off()
 })
-
-
