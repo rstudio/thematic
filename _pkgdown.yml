@@ -22,8 +22,8 @@ reference:
 - title: Enable (or disable) thematic
   contents:
     - thematic_on
-    - thematic_on_app
     - thematic_off
+    - thematic_shiny
     - thematic_theme
 - title: Customize fonts and colorscales
   contents:

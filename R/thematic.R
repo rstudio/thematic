@@ -11,10 +11,7 @@
 #' which are all resolved, at plot time, based on the execution environment. In a
 #' **shiny** runtime, resolution of auto values should always work as expect; but
 #' in other contexts, auto values may lead to wrong or surprising results. In that
-#' case, auto resolution logic can be customized, see [auto_config_set()] for more details.
-#'
-#' Note also that `'auto'` values are completely optional; in other words
-#' provide the desired values to `thematic_on()` or `auto_config()`.
+#' case, auto resolution logic can be customized (see [auto_config_set()] for more details).
 #'
 #' @section Global vs. local theming:
 #'
@@ -22,8 +19,8 @@
 #' future plots, up until `thematic_off()` is called). To use thematic in local fashion,
 #' first create a theme with [thematic_theme()], then provide it to [thematic_with_theme()]
 #' (or similar). To use thematic in a global fashion up until a **shiny**
-#' app exits, use `thematic_on_app()` (which uses [shiny::onStop()] to clean up after itself
-#' when the app exits).
+#' app exits, use `thematic_shiny()` (which cleans up after itself after the next shiny
+#' app that exits using [shiny::onStop()]).
 #'
 #' @section Color values:
 #'
@@ -45,12 +42,11 @@
 #' levels exceeds the max allowed colors). Defaults to [okabe_ito()].
 #' @param inherit should non-specified values inherit from the previous theme?
 #'
-#' @return [thematic_theme()] returns a list object with a special class.
-#' The other functions listed here return the previous global theme object.
+#' @return [thematic_theme()] returns a theme object as a list (which can be
+#' activated with [thematic_with_theme()] or [thematic_set_theme()]).
 #'
-#' Returns any information about the previously set theme (if any), invisibly.
-#' This value may be provided to [thematic_set_theme()] to return to the previous
-#' global state.
+#' [thematic_on()], [thematic_off()], and [thematic_shiny()] all return
+#' the previous global theme.
 #'
 #' @rdname thematic
 #' @seealso [sequential_gradient()], [thematic_with_theme()], [thematic_save_plot()]
@@ -85,6 +81,11 @@ thematic_on <- function(...) {
   # Set knitr dev.args = list(bg = bg) now (instead of later)
   # so at least the _next_ chunk has the right bg color.
   knitr_dev_args_set()
+  # Also set base params now, essentially because par("bg") can
+  # be modified via the graphics device, so we store the state of bg
+  # now before it's potentially too late
+  .globals$base_params$bg <- par("bg")
+
   # Remove any existing hooks before registering them
   # (otherwise, repeated calls to set_hooks will keep adding them)
   remove_hooks()
@@ -114,15 +115,6 @@ thematic_off <- function() {
   if (!is.null(theme)) rm("theme", envir = .globals)
 
   invisible(theme)
-}
-
-#' @rdname thematic
-#' @param session see [shiny::onStop()].
-#' @export
-thematic_on_app <- function(..., session = shiny::getDefaultReactiveDomain()) {
-  old_theme <- thematic_on(...)
-  shiny::onStop(function() thematic_set_theme(old_theme), session = session)
-  invisible(old_theme)
 }
 
 #' @rdname thematic
@@ -166,6 +158,15 @@ thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
 
 is_thematic_theme <- function(x) {
   inherits(x, "thematic_theme")
+}
+
+#' @rdname thematic
+#' @param session see [shiny::onStop()].
+#' @export
+thematic_shiny <- function(..., session = shiny::getDefaultReactiveDomain()) {
+  old_theme <- thematic_on(...)
+  shiny::onStop(function() thematic_set_theme(old_theme), session = session)
+  invisible(old_theme)
 }
 
 

@@ -3,15 +3,13 @@
 \name{thematic_on}
 \alias{thematic_on}
 \alias{thematic_off}
-\alias{thematic_on_app}
 \alias{thematic_theme}
+\alias{thematic_shiny}
 \title{Enable (or disable) simplified theming of R graphics.}
 \usage{
 thematic_on(...)
 
 thematic_off()
-
-thematic_on_app(..., session = shiny::getDefaultReactiveDomain())
 
 thematic_theme(
   bg = "auto",
@@ -22,11 +20,11 @@ thematic_theme(
   qualitative = okabe_ito(),
   inherit = FALSE
 )
+
+thematic_shiny(..., session = shiny::getDefaultReactiveDomain())
 }
 \arguments{
 \item{...}{arguments passed along to \code{thematic_theme()}.}
-
-\item{session}{see \code{\link[shiny:onStop]{shiny::onStop()}}.}
 
 \item{bg}{a background color.}
 
@@ -47,14 +45,15 @@ qualitative values (won't be used in ggplot2 when the number of data
 levels exceeds the max allowed colors). Defaults to \code{\link[=okabe_ito]{okabe_ito()}}.}
 
 \item{inherit}{should non-specified values inherit from the previous theme?}
+
+\item{session}{see \code{\link[shiny:onStop]{shiny::onStop()}}.}
 }
 \value{
-\code{\link[=thematic_theme]{thematic_theme()}} returns a list object with a special class.
-The other functions listed here return the previous global theme object.
+\code{\link[=thematic_theme]{thematic_theme()}} returns a theme object as a list (which can be
+activated with \code{\link[=thematic_with_theme]{thematic_with_theme()}} or \code{\link[=thematic_set_theme]{thematic_set_theme()}}).
 
-Returns any information about the previously set theme (if any), invisibly.
-This value may be provided to \code{\link[=thematic_set_theme]{thematic_set_theme()}} to return to the previous
-global state.
+\code{\link[=thematic_on]{thematic_on()}}, \code{\link[=thematic_off]{thematic_off()}}, and \code{\link[=thematic_shiny]{thematic_shiny()}} all return
+the previous global theme.
 }
 \description{
 A unified interface for theming \strong{ggplot2}, \strong{base}, and \strong{lattice} graphics
@@ -69,10 +68,7 @@ The \code{bg}, \code{fg}, \code{accent}, and \code{font} arguments all support a
 which are all resolved, at plot time, based on the execution environment. In a
 \strong{shiny} runtime, resolution of auto values should always work as expect; but
 in other contexts, auto values may lead to wrong or surprising results. In that
-case, auto resolution logic can be customized, see \code{\link[=auto_config_set]{auto_config_set()}} for more details.
-
-Note also that \code{'auto'} values are completely optional; in other words
-provide the desired values to \code{thematic_on()} or \code{auto_config()}.
+case, auto resolution logic can be customized (see \code{\link[=auto_config_set]{auto_config_set()}} for more details).
 }
 
 \section{Global vs. local theming}{
@@ -82,8 +78,8 @@ provide the desired values to \code{thematic_on()} or \code{auto_config()}.
 future plots, up until \code{thematic_off()} is called). To use thematic in local fashion,
 first create a theme with \code{\link[=thematic_theme]{thematic_theme()}}, then provide it to \code{\link[=thematic_with_theme]{thematic_with_theme()}}
 (or similar). To use thematic in a global fashion up until a \strong{shiny}
-app exits, use \code{thematic_on_app()} (which uses \code{\link[shiny:onStop]{shiny::onStop()}} to clean up after itself
-when the app exits).
+app exits, use \code{thematic_shiny()} (which cleans up after itself after the next shiny
+app that exits using \code{\link[shiny:onStop]{shiny::onStop()}}).
 }
 
 \section{Color values}{
