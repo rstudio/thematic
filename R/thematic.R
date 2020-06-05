@@ -19,8 +19,9 @@
 #' future plots, up until `thematic_off()` is called). To use thematic in local fashion,
 #' first create a theme with [thematic_theme()], then provide it to [thematic_with_theme()]
 #' (or similar). To use thematic in a global fashion up until a **shiny**
-#' app exits, use `thematic_shiny()` (which cleans up after itself after the next shiny
-#' app that exits using [shiny::onStop()]).
+#' app exits, use `thematic_shiny()` (which cleans up after itself once the next shiny
+#' app that exits using [shiny::onStop()]). To use thematic in a global fashion up until
+#' a **rmarkdown** document finishes rendering, use `thematic_rmd()`.
 #'
 #' @section Color values:
 #'
@@ -166,6 +167,19 @@ is_thematic_theme <- function(x) {
 thematic_shiny <- function(..., session = shiny::getDefaultReactiveDomain()) {
   old_theme <- thematic_on(...)
   shiny::onStop(function() thematic_set_theme(old_theme), session = session)
+  invisible(old_theme)
+}
+
+
+#' @rdname thematic
+#' @export
+thematic_rmd <- function(...) {
+  old_theme <- thematic_on(...)
+  document_hook <- knitr::knit_hooks$get("document")
+  knitr::knit_hooks$set(document = function(x) {
+    thematic_set_theme(old_theme)
+    document_hook(x)
+  })
   invisible(old_theme)
 }
 

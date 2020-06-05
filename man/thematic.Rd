@@ -5,6 +5,7 @@
 \alias{thematic_off}
 \alias{thematic_theme}
 \alias{thematic_shiny}
+\alias{thematic_rmd}
 \title{Enable (or disable) simplified theming of R graphics.}
 \usage{
 thematic_on(...)
@@ -22,6 +23,8 @@ thematic_theme(
 )
 
 thematic_shiny(..., session = shiny::getDefaultReactiveDomain())
+
+thematic_rmd(...)
 }
 \arguments{
 \item{...}{arguments passed along to \code{thematic_theme()}.}
