@@ -208,6 +208,16 @@ thematic_get_theme <- function() {
   .globals$theme
 }
 
+#' Get a thematic theme
+#'
+#' This function is deprecated. Use [thematic_get_theme()].
+#'
+#' @export
+thematic_get <- function() {
+  .Deprecated("thematic_get_theme")
+  thematic_get_theme()
+}
+
 #' @rdname theme-management
 #' @param name a theme element name (e.g., `fg`, `bg`, etc.)
 #' @export
