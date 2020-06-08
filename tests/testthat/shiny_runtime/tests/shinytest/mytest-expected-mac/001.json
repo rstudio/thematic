@@ -4,13 +4,13 @@
   },
   "output": {
     "__reactivedoc__": {
-      "html": "[html data sha1: 755aa20844b090ed4171dbf418dfdf37c635d879]",
+      "html": "[html data sha1: 44ca10c46b8ef7ed31c2c22bbd5c2110a37ae42f]",
       "deps": [
         {
           "name": "header-attrs",
-          "version": "2.2.0",
+          "version": "2.2",
           "src": {
-            "href": "header-attrs-2.2.0"
+            "href": "header-attrs-2.2"
           },
           "meta": null,
           "script": "header-attrs.js",
@@ -22,29 +22,33 @@
         },
         {
           "name": "jquery",
-          "version": "3.5.0",
+          "version": "1.11.3",
           "src": {
-            "href": "https://code.jquery.com"
+            "href": "jquery-1.11.3"
           },
           "meta": null,
-          "script": "jquery-3.5.0.min.js",
+          "script": "jquery.min.js",
           "stylesheet": null,
           "head": null,
           "attachment": null,
+          "package": null,
           "all_files": true
         },
         {
           "name": "bootstrap",
-          "version": "3.4.1",
+          "version": "3.3.5",
           "src": {
-            "href": "bootstrap-3.4.1"
+            "href": "bootstrap-3.3.5"
           },
           "meta": {
-            "name": "viewport",
-            "content": "width=device-width, initial-scale=1, shrink-to-fit=no"
+            "viewport": "width=device-width, initial-scale=1"
           },
-          "script": "bootstrap.min.js",
-          "stylesheet": "bootstrap-custom.min.css",
+          "script": [
+            "js/bootstrap.min.js",
+            "shim/html5shiv.min.js",
+            "shim/respond.min.js"
+          ],
+          "stylesheet": "css/darkly.min.css",
           "head": null,
           "attachment": null,
           "package": null,

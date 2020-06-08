@@ -4,7 +4,7 @@
   },
   "output": {
     "base": {
-      "src": "[image data sha1: 1026f88d673aaff4c59eb9c4de8d56c03550ad20]",
+      "src": "[image data sha1: d0b33c98e8337c7825c718637b7cbee55d565264]",
       "width": 962,
       "height": 400,
       "coordmap": {
@@ -38,7 +38,7 @@
       }
     },
     "ggplot": {
-      "src": "[image data sha1: db496b1dae5cfcdc44d449579271c6892815589a]",
+      "src": "[image data sha1: 147785169dc3fe23d9efccb352ac69d5b3ef299c]",
       "width": 962,
       "height": 400,
       "coordmap": {
@@ -72,7 +72,7 @@
       }
     },
     "lattice": {
-      "src": "[image data sha1: 61826ec957b246af522e875b0b499045077aadf0]",
+      "src": "[image data sha1: 1a0dde02c24130d96abf89f92f75d188a08732f2]",
       "width": 962,
       "height": 400,
       "coordmap": {
