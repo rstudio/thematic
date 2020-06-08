@@ -23,24 +23,30 @@ reference:
   contents:
     - thematic_on
     - thematic_off
+    - thematic_shiny
+    - thematic_theme
 - title: Customize fonts and colorscales
   contents:
     - font_spec
     - sequential_gradient
     - okabe_ito
-- title: Control automatic behavior
+- title: Configure resolution of auto values
   contents:
-    - auto_defaults
+    - auto_config
+    - auto_config_set
+    - auto_config_get
+    - auto_resolve_theme
 - title: Manage global state
   contents:
     - thematic_with_theme
+    - thematic_local_theme
     - thematic_set_theme
     - thematic_get_theme
     - thematic_get_option
     - thematic_get_mixture
 - title: Save plots to a file
   contents:
-    - thematic_with_device
+    - thematic_save_plot
     - default_device
 - title: Manage the font cache location
   contents:

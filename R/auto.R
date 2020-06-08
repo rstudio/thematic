@@ -1,11 +1,15 @@
-#' Set auto theming defaults
+#' Configure auto theming behavior
 #'
-#' Auto theming defaults are used to resolve `"auto"` values outside
-#' of a **shiny** runtime (i.e., where auto theming might be based on
-#' imperfect heuristics). Setting of auto defaults is especially useful
+#' Auto theming is really only "guaranteed" to work inside of a **shiny**
+#' runtime. In any other context, auto theming is based on a set of heuristics,
+#' which won't fit every use case. As a workaround, this function allows one
+#' to configure both a preference for specific auto values (e.g., `bg`, `fg`, etc)
+#' as well as the `priority` that certain information should receive.
+#'
+#' @details Configuring auto theming behavior is especially useful
 #' for developers of a custom rmarkdown output document that wish to
 #' have more sensible auto theming behavior for users of the document.
-#' In particular, by having the output document call `auto_defaults()`
+#' In particular, by having the output document call `auto_config_set()`
 #' "pre-knit" with the document's styling preferences (and restoring the
 #' old defaults "post-knit"), users of the output document can then simply
 #' call `thematic_on()` within their document to use those preferences.
@@ -13,63 +17,122 @@
 #' @details Call this function with no arguments to get the current auto defaults.
 #'
 #' @inheritParams thematic_on
+#' @param priority the order of priority to use when resolving auto values.
+#' Possible values include:
+#'   * `"shiny"`: use [shiny::getCurrentOutputInfo()] values (if any) to resolve auto values.
+#'   * `"config"`: use the values provided to this function (if any) to resolve auto values.
+#'   * `"bootstraplib"`: use [bootstraplib::bs_theme_get_variables()] values (if any)
+#'     to resolve auto values (only relevant when knitr is in progress).
+#'   * `"rstudio"`: use [rstudioapi::getThemeInfo()] values (if any) to resolve auto values.
+#'
+#' @rdname auto-config
 #' @export
 #' @examples
-#' auto_defaults("black", "white")
-#' thematic_on()
-#' plot(1:10, 1:10)
-
-auto_defaults <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL) {
+#' old_config <- auto_config_set(auto_config("black", "white"))
+#' thematic_with_theme(
+#'   thematic_theme(), {
+#'     plot(1:10, 1:10)
+#'  })
+#' auto_config_set(old_config)
+auto_config <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL,
+                        priority = c("shiny", "config", "bootstraplib", "rstudio")) {
   cols <- dropNulls(list(bg = bg, fg = fg, accent = accent))
-  defaults <- lapply(cols, function(x) {
+  config <- lapply(cols, function(x) {
     if (isTRUE(is.na(x))) x else parse_any_color(x)
   })
   if (!is.null(font)) {
-    defaults$font <- as_font_spec(font)
+    config$font <- as_font_spec(font)
   }
-  oldPrefs <- .globals$auto_defaults
-  if (length(defaults)) {
-    .globals$auto_defaults <- defaults
-  }
-  invisible(oldPrefs)
+  priority <- priority %||% priorities()
+  config$priority <- match.arg(priority, priorities(), several.ok = TRUE)
+  structure(config, class = "thematic_auto_config")
 }
 
+#' @rdname auto-config
+#' @param config a `auto_config()` object.
+#' @export
+auto_config_set <- function(config) {
+  if (!inherits(config, "thematic_auto_config")) {
+    stop("`config` must be a `auto_config()` object", call. = FALSE)
+  }
+  old_config <- auto_config_get()
+  .globals$auto_config <- config
+  invisible(old_config)
+}
 
-resolve_auto_theme <- function() {
-  theme <- .globals$theme
-  outputInfo <- shiny_output_info()
-  autoDefaults <- auto_defaults()
-  bsThemeColors <- bs_theme_colors()
-  rsThemeColors <- rs_theme_colors()
+#' @rdname auto-config
+#' @export
+auto_config_get <- function() {
+  # This should contain priority even if a config hasn't been set
+  config <- utils::modifyList(auto_config(), .globals$auto_config %||% list())
+  structure(config, class = "thematic_auto_config")
+}
+
+priorities <- function() {
+  c("shiny", "config", "bootstraplib", "rstudio")
+}
+
+#' Resolve auto values
+#'
+#' Resolves `'auto'` values based on the current execution environment
+#' and configuration (i.e., [auto_config_get()]).
+#'
+#' @return The `theme` object with resolved `'auto'` values.
+#'
+#' @param theme a `thematic_theme()` object.
+#' @export
+#' @seealso [auto_config_set()]
+#' @examples
+#'
+#' old_config <- auto_config_set(auto_config(bg = "black", fg = "white"))
+#'
+#' # Resolving auto values in local theme objects
+#' theme <- thematic_theme()
+#' theme[c("bg", "fg")]
+#' theme <- auto_resolve_theme(theme)
+#' theme[c("bg", "fg")]
+#'
+#' # By default, auto values are resolved when accessing
+#' # global theme options
+#' thematic_on()
+#' thematic_get_option("bg", resolve = FALSE)
+#' thematic_get_option("bg")
+#' thematic_off()
+#'
+#' auto_config_set(old_config)
+#'
+auto_resolve_theme <- function(theme) {
+  if (length(theme) == 0) {
+    return(theme)
+  }
+  if (!is_thematic_theme(theme)) {
+    stop("`theme` must be a `thematic_theme()` object", call. = FALSE)
+  }
+
+  auto_color_info <- lapply(auto_config_get()$priority, function(x) {
+    switch(
+      x,
+      shiny = shiny_output_info(),
+      config = auto_config_get(),
+      bootstraplib = bs_theme_colors(),
+      rstudio = rs_theme_colors(),
+      stop("`priority` of '", x, "' is not implemented", call. = FALSE)
+    )
+  })
 
   # Resolve auto colors, if relevant
   for (col in c("bg", "fg", "accent")) {
     if (!is_auto(theme[[col]])) {
       next
     }
-    # shiny::getCurrentOutputInfo() gets 1st priority, since its
-    # *output* level styles, whereas autoDefaults are intended for
-    # the *document* level (i.e., defaults for a custom rmarkdown
-    # format). Perhaps there are situations where shiny::getCurrentOutputInfo()
-    # doesn't give you quite what you want, but in that case, you should be
-    # styling the containing div with your desired styles!
-    #
-    # Also, importantly, bsThemeColors contains Bootstrap Sass info
-    # only _if_ a knit is in progress (we don't necessary want to use
-    # a bs_theme_get_variable() info unless we know it's going to be
-    # relevant for the final output)
-    theme[[col]] <- outputInfo[[col]] %||%
-      autoDefaults[[col]] %||%
-      bsThemeColors[[col]] %||%
-      rsThemeColors[[col]] %||%
-      theme[[col]]
+    theme[[col]] <- Reduce(`%||%`, lapply(auto_color_info, `[[`, col)) %||% theme[[col]]
     if (isTRUE("auto" == theme[[col]])) {
       maybe_warn(
         "thematic was unable to resolve `", col, "='auto'`. ",
         "Try providing an actual color (or `NA`) to the `", col, "` argument of `thematic_on()`. ",
         "By the way, 'auto' is only officially supported in `shiny::renderPlot()`, ",
         "some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), ",
-        "in RStudio, or if `auto_defaults()` is set.",
+        "in RStudio, or if `auto_config_set()` is used.",
         id = paste0("auto-detection-failure-", col)
       )
       theme[[col]] <- switch(col, bg = "white", fg = "black", NA)
@@ -97,18 +160,25 @@ resolve_auto_theme <- function() {
     theme[[col]] <- if (is_auto(theme[[col]])) as_auto(val) else val
   }
 
-  # Retain the function that created sequential codes, if ncessary
+  # Retain the function that created sequential codes, if necessary
   if (is.function(sequential_func)) {
     theme$sequential <- structure(theme$sequential, sequential_func = sequential_func)
   }
 
+  # Resolve fonts
   if (any(vapply(theme$font, is_auto, logical(1)))) {
-    # Note how this matches the order of priority for colors, as well
-    spec <- shiny_font_spec(outputInfo$font) %||%
-      autoDefaults$font %||%
-      bs_font_spec() %||%
-      rs_font_spec() %||%
-      font_spec()
+    # Note the similarity to resolution of auto colors
+    auto_font_info <- lapply(auto_config_get()$priority, function(x) {
+      switch(
+        x,
+        shiny = shiny_font_spec(shiny_output_info()$font),
+        config = auto_config_get()$font,
+        bootstraplib = bs_font_spec(),
+        rstudio = rs_font_spec(),
+        stop("`priority` of '", x, "' is not implemented", call. = FALSE)
+      )
+    })
+    spec <- Reduce(`%||%`, auto_font_info) %||% font_spec()
 
     # As with colors above, make sure to retain the auto class so that the
     # _next_ time this hook gets called we know to resolve the value again
@@ -122,9 +192,7 @@ resolve_auto_theme <- function() {
     theme$font <- as_font_spec(theme$font)
   }
 
-  .globals$theme <- theme
-
-  invisible()
+  theme
 }
 
 # ------------------------------------------------------------
@@ -375,6 +443,7 @@ tag_auto <- function(x) {
 }
 
 as_auto <- function(x) {
+  if (is_auto(x)) return(x)
   oldClass(x) <- c("thematic_auto", oldClass(x))
   x
 }

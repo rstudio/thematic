@@ -1,0 +1,112 @@
+{
+  "input": {
+
+  },
+  "output": {
+    "base": {
+      "src": "[image data sha1: d0b33c98e8337c7825c718637b7cbee55d565264]",
+      "width": 962,
+      "height": 400,
+      "coordmap": {
+        "panels": [
+          {
+            "domain": {
+              "left": 0.64,
+              "right": 10.36,
+              "bottom": 0.64,
+              "top": 10.36
+            },
+            "range": {
+              "left": 59.04,
+              "right": 931.76,
+              "bottom": 325.56,
+              "top": 58.04
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "mapping": {
+
+            }
+          }
+        ],
+        "dims": {
+          "width": 962,
+          "height": 400
+        }
+      }
+    },
+    "ggplot": {
+      "src": "[image data sha1: 147785169dc3fe23d9efccb352ac69d5b3ef299c]",
+      "width": 962,
+      "height": 400,
+      "coordmap": {
+        "panels": [
+          {
+            "domain": {
+              "left": -0.04,
+              "right": 1.04,
+              "bottom": -0.04,
+              "top": 1.04
+            },
+            "range": {
+              "left": 0,
+              "right": 962,
+              "bottom": 399,
+              "top": -1
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "mapping": {
+
+            }
+          }
+        ],
+        "dims": {
+          "width": 962,
+          "height": 400
+        }
+      }
+    },
+    "lattice": {
+      "src": "[image data sha1: 1a0dde02c24130d96abf89f92f75d188a08732f2]",
+      "width": 962,
+      "height": 400,
+      "coordmap": {
+        "panels": [
+          {
+            "domain": {
+              "left": -0.04,
+              "right": 1.04,
+              "bottom": -0.04,
+              "top": 1.04
+            },
+            "range": {
+              "left": 0,
+              "right": 962,
+              "bottom": 399,
+              "top": -1
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "mapping": {
+
+            }
+          }
+        ],
+        "dims": {
+          "width": 962,
+          "height": 400
+        }
+      }
+    }
+  },
+  "export": {
+
+  }
+}

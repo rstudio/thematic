@@ -2,29 +2,34 @@
 % Please edit documentation in R/thematic.R
 \name{thematic_with_theme}
 \alias{thematic_with_theme}
+\alias{thematic_local_theme}
 \alias{thematic_set_theme}
 \alias{thematic_get_theme}
 \alias{thematic_get_option}
 \alias{thematic_get_mixture}
 \title{Tools for getting and restoring global state}
 \usage{
-thematic_with_theme(expr, ...)
+thematic_with_theme(theme, expr)
+
+thematic_local_theme(theme, .local_envir = parent.frame())
 
 thematic_set_theme(theme)
 
-thematic_get_theme()
+thematic_get_theme(resolve = TRUE)
 
-thematic_get_option(name = "", default = NULL)
+thematic_get_option(name = "", default = NULL, resolve = TRUE)
 
 thematic_get_mixture(amounts = 0.5, default = NULL)
 }
 \arguments{
+\item{theme}{a \code{thematic_theme()} object (or a return value of \link{thematic_on}/\code{\link[=thematic_get_theme]{thematic_get_theme()}})
+or \code{NULL} (in which case \code{thematic_off()} is called).}
+
 \item{expr}{R code that produces a plot.}
 
-\item{...}{arguments passed along to \code{\link[=thematic_on]{thematic_on()}}.}
+\item{.local_envir}{The environment to use for scoping.}
 
-\item{theme}{a \code{theme} object (as returned by \link{thematic_on} or \code{\link[=thematic_get_theme]{thematic_get_theme()}})
-or \code{NULL} (in which case \code{thematic_off()} is called).}
+\item{resolve}{whether or not \code{'auto'} values should be resolved before returning}
 
 \item{name}{a theme element name (e.g., \code{fg}, \code{bg}, etc.)}
 
@@ -35,6 +40,8 @@ or \code{NULL} (in which case \code{thematic_off()} is called).}
 \description{
 \itemize{
 \item \code{\link[=thematic_with_theme]{thematic_with_theme()}}: similar to \code{\link[=thematic_on]{thematic_on()}}, but for an single plot.
+\item \code{\link[=thematic_local_theme]{thematic_local_theme()}}: similar to \code{\link[=thematic_with_theme]{thematic_with_theme()}}, but de-couples
+the theme from the plot expression.
 \item \code{\link[=thematic_set_theme]{thematic_set_theme()}}: set a given \code{theme} object as the current theme.
 \item \code{\link[=thematic_get_theme]{thematic_get_theme()}}: obtain the current \code{theme}.
 \item \code{\link[=thematic_get_option]{thematic_get_option()}}: obtain a particular \code{theme} option (and provide a \code{default}
@@ -46,8 +53,8 @@ if if no \code{theme} is active).
 
 # Use thematic_with_theme() for a one-time use of thematic
 thematic_with_theme(
-  plot(1:10, col = thematic_get_option("accent"), pch = 19),
-  "darkblue", "skyblue", accent = "red"
+  thematic_theme("darkblue", "skyblue", accent = "red"),
+  plot(1:10, col = thematic_get_option("accent"), pch = 19)
 )
 
 # Use thematic_set_theme() if doing something more complicated
@@ -69,8 +76,8 @@ thematic_get_option("bg", "white")
 thematic_off()
 
 thematic_with_theme(
-  scales::show_col(thematic_get_mixture(seq(0, 1, by = 0.1))),
-  "darkblue", "skyblue"
+  thematic_theme("darkblue", "skyblue"),
+  scales::show_col(thematic_get_mixture(seq(0, 1, by = 0.1)))
 )
 
 }

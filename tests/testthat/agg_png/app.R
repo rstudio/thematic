@@ -17,7 +17,7 @@ render_image <- function(expr) {
 
 server <- function(input, output, session) {
   output$ragg_png <- render_image({
-    file <- thematic_with_device(
+    file <- thematic_save_plot(
       qplot(1:10) + ggtitle("ragg::agg_png"),
       device = ragg::agg_png,
       width = 800, height = 400

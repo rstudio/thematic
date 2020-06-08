@@ -4,7 +4,10 @@ test_that("thematic_with_theme()", {
   expect_null(thematic_get_theme())
   expect_doppelganger("scatter-no-theme", function() { plot(1:10) })
   expect_doppelganger("scatter-with-theme", function() {
-    thematic_with_theme(plot(1:10), "black", "white", NA)
+    thematic_with_theme(
+      thematic_theme("black", "white", NA),
+      plot(1:10)
+    )
   })
   expect_doppelganger("scatter-no-theme2", function() { plot(1:10) })
 })
@@ -28,7 +31,10 @@ test_that("Setting and getting the theme", {
 
 test_that("Theme inheritance works", {
   thematic_on("black", "red", "green")
+  white <- thematic_theme(fg = "white", inherit = TRUE)
   thematic_on(fg = "white", inherit = TRUE)
+  expect_equal(thematic_get_theme(resolve = FALSE), white)
+  expect_equal(thematic_get_theme(), auto_resolve_theme(white))
   expect_doppelganger("white-green", qplot(1:10, 1:10, color = 1:10))
   thematic_on(accent = "red", inherit = TRUE)
   expect_doppelganger("white-red", qplot(1:10, 1:10, color = 1:10))
