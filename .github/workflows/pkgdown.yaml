@@ -36,6 +36,7 @@ jobs:
       - name: Install dependencies
         run: |
           install.packages("remotes")
+          install.packages("vctrs")
           remotes::install_github("rstudio/bootstraplib")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_dev("pkgdown")
