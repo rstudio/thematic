@@ -60,7 +60,7 @@ download_file <- function(url, dest, ...) {
   )
 }
 
-is_rstudio <- function(version_needed) {
+is_rstudio <- function(version_needed = NULL) {
   rstudioapi::isAvailable(version_needed)
 }
 
