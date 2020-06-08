@@ -28,7 +28,6 @@
 #' Colors (e.g., `bg`, `fg`, `accent`) may be any value understood by [col2rgb()]
 #' or `htmltools::parseCssColors()` (i.e., may be any valid R or CSS color string).
 #'
-#' @param ... arguments passed along to `thematic_theme()`.
 #' @param bg a background color.
 #' @param fg a foreground color.
 #' @param accent a color for making certain graphical markers 'stand out'
@@ -168,6 +167,7 @@ is_thematic_theme <- function(x) {
 }
 
 #' @rdname thematic
+#' @inheritParams thematic_on
 #' @param session see [shiny::onStop()].
 #' @export
 thematic_shiny <- function(bg = "auto", fg = "auto", accent = "auto",
@@ -185,6 +185,7 @@ thematic_shiny <- function(bg = "auto", fg = "auto", accent = "auto",
 
 
 #' @rdname thematic
+#' @inheritParams thematic_on
 #' @export
 thematic_rmd <- function(bg = "auto", fg = "auto", accent = "auto",
                          font = NA, sequential = sequential_gradient(),

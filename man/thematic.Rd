@@ -8,7 +8,15 @@
 \alias{thematic_rmd}
 \title{Enable (or disable) simplified theming of R graphics.}
 \usage{
-thematic_on(...)
+thematic_on(
+  bg = "auto",
+  fg = "auto",
+  accent = "auto",
+  font = NA,
+  sequential = sequential_gradient(),
+  qualitative = okabe_ito(),
+  inherit = FALSE
+)
 
 thematic_off()
 
@@ -22,13 +30,28 @@ thematic_theme(
   inherit = FALSE
 )
 
-thematic_shiny(..., session = shiny::getDefaultReactiveDomain())
+thematic_shiny(
+  bg = "auto",
+  fg = "auto",
+  accent = "auto",
+  font = NA,
+  sequential = sequential_gradient(),
+  qualitative = okabe_ito(),
+  inherit = FALSE,
+  session = shiny::getDefaultReactiveDomain()
+)
 
-thematic_rmd(...)
+thematic_rmd(
+  bg = "auto",
+  fg = "auto",
+  accent = "auto",
+  font = NA,
+  sequential = sequential_gradient(),
+  qualitative = okabe_ito(),
+  inherit = FALSE
+)
 }
 \arguments{
-\item{...}{arguments passed along to \code{thematic_theme()}.}
-
 \item{bg}{a background color.}
 
 \item{fg}{a foreground color.}
@@ -81,8 +104,9 @@ case, auto resolution logic can be customized (see \code{\link[=auto_config_set]
 future plots, up until \code{thematic_off()} is called). To use thematic in local fashion,
 first create a theme with \code{\link[=thematic_theme]{thematic_theme()}}, then provide it to \code{\link[=thematic_with_theme]{thematic_with_theme()}}
 (or similar). To use thematic in a global fashion up until a \strong{shiny}
-app exits, use \code{thematic_shiny()} (which cleans up after itself after the next shiny
-app that exits using \code{\link[shiny:onStop]{shiny::onStop()}}).
+app exits, use \code{thematic_shiny()} (which cleans up after itself once the next shiny
+app that exits using \code{\link[shiny:onStop]{shiny::onStop()}}). To use thematic in a global fashion up until
+a \strong{rmarkdown} document finishes rendering, use \code{thematic_rmd()}.
 }
 
 \section{Color values}{
