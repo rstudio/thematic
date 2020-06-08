@@ -194,7 +194,7 @@ ggplot(diamonds[sample(nrow(diamonds), 1000), ], aes(carat, price)) +
 
 ## Rendering of custom fonts
 
-Rendering of 'custom' Google Fonts (i.e., Google Fonts not generally available to R) requires either the **showtext** or the **ragg** package to be installed. For Google Font rendering to work 'out-of-the-box' with both **shiny** and **rmarkdown**, make sure **showtext** is installed. If you want a plot with custom fonts outside of **shiny** and **rmarkdown**, consider using `thematic_with_device()` as RStudio's graphics device currently doesn't support custom fonts at all (if you'd like to preview the file that `thematic_with_device()` generates in RStudio, you can use `file.show()`).
+Rendering of 'custom' Google Fonts (i.e., Google Fonts not generally available to R) requires either the **showtext** or the **ragg** package to be installed. For Google Font rendering to work 'out-of-the-box' with both **shiny** and **rmarkdown**, make sure **showtext** is installed. If you want a plot with custom fonts outside of **shiny** and **rmarkdown**, consider using `thematic_save_plot()` as RStudio's graphics device currently doesn't support custom fonts at all (if you'd like to preview the file that `thematic_save_plot()` generates in RStudio, you can use `file.show()`).
 
 If you want custom font(s) that aren't hosted by Google Fonts, you'll currently need to download and register them with R yourself. After downloading the font files, you can use `sysfonts::font_add()` (for **showtext**) and/or `systemfonts::register_font()` (for **ragg**) to register them with R. Another, more expensive, but more permanent (i.e., you only have to do it once, instead of everytime you start a new R session) solution to make custom fonts available to R is via `extrafont::import_font()` and `extrafont::loadfonts()`.
 
@@ -208,6 +208,6 @@ To learn more about **thematic**, see the [demos article](https://rstudio.github
 
 <hr/>
 
-1. Auto theming works in **rmarkdown** with `runtime: shiny` and also in `html_document_base()` based output formats with a non-`NULL` `theme` (i.e., powered by **bootstraplib**). With time, hopefully most other **rmarkdown** output formats will use `auto_defaults()` (internally) so that `'auto'` values can work the way you'd expect them to (at least by default). Note also that `accent='auto'` and `font='auto'` currently doesn't work with custom RStudio themes.
+1. Auto theming works in **rmarkdown** with `runtime: shiny` and also in `html_document_base()` based output formats with a non-`NULL` `theme` (i.e., powered by **bootstraplib**). With time, hopefully most other **rmarkdown** output formats will use `auto_config()` (internally) so that `'auto'` values can work the way you'd expect them to (at least by default). Note also that `accent='auto'` and `font='auto'` currently doesn't work with custom RStudio themes.
 
 -->

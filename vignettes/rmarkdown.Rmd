@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 1. A `runtime: shiny` document where plots are generated via `renderPlot()` (or `renderImage`).
 2. An output format that builds on `html_document_base()` with a non-`NULL` `theme`.
-3. Other output formats that call `auto_defaults()` for you.
+3. Other output formats that call `auto_config_set()` for you.
 
 
 ## Auto detection in `html_document`
@@ -106,4 +106,4 @@ Note that `dev = "ragg_png"` requires **knitr** v1.29 or higher (if you can't us
 
 ## Auto detection in other output formats
 
-Auto detecting in other output formats can in theory work if the output format sets `auto_defaults()`.
+Auto detecting in other output formats can in theory work if the output format sets `auto_config_set()`.

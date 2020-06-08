@@ -1,0 +1,24 @@
+---
+runtime: shiny
+output: 
+  html_document:
+    theme: darkly
+---
+
+```{r setup, include=FALSE}
+library(thematic)
+thematic_on()
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+<style>
+  body{color: red}
+</style>
+
+## ggplot
+
+```{r}
+renderPlot({
+  ggplot2::qplot(1:10)
+})
+```

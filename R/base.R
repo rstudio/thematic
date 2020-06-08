@@ -41,6 +41,7 @@ base_params_set <- function(theme = .globals$theme) {
       cex.sub = font$scale
     ))
   }
+
   .globals$base_params <- params
 }
 

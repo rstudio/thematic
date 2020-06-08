@@ -17,7 +17,7 @@ render_image <- function(expr) {
 
 server <- function(input, output, session) {
   output$svg <- render_image({
-    file <- thematic_with_device(
+    file <- thematic_save_plot(
       qplot(1:10) + ggtitle("grDevices::svg"),
       device = grDevices::svg, filename = tempfile(fileext = ".svg"),
       antialias = "none",

@@ -17,7 +17,7 @@ render_image <- function(expr) {
 
 server <- function(input, output, session) {
   output$png <- render_image({
-    file <- thematic_with_device(
+    file <- thematic_save_plot(
       qplot(1:10) + ggtitle("grDevices::png"),
       device = grDevices::png, type = "cairo",
       antialias = "none",
