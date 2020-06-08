@@ -43,17 +43,8 @@ auto_config <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL,
   if (!is.null(font)) {
     config$font <- as_font_spec(font)
   }
-  if (!is.character(priority) || length(priority) < 1) {
-    stop("`priority` must be a character vector of length 1 or more", call. = FALSE)
-  }
-  missing_priority <- setdiff(priority, priorities())
-  if (length(missing_priority)) {
-    stop(
-      "Didn't recognize the following priority values: '",
-      paste(missing_priority, collapse = "', '"), "'", call. = FALSE
-    )
-  }
-  config$priority <- priority
+  priority <- priority %||% priorities()
+  config$priority <- match.arg(priority, priorities(), several.ok = TRUE)
   structure(config, class = "thematic_auto_config")
 }
 
@@ -78,7 +69,7 @@ auto_config_get <- function() {
 }
 
 priorities <- function() {
-  eval(formals(auto_config)$priority)
+  c("shiny", "config", "bootstraplib", "rstudio")
 }
 
 #' Resolve auto values
@@ -111,20 +102,23 @@ priorities <- function() {
 #' auto_config_set(old_config)
 #'
 auto_resolve_theme <- function(theme) {
-  if (!length(theme)) {
+  if (length(theme) == 0) {
     return(theme)
   }
   if (!is_thematic_theme(theme)) {
     stop("`theme` must be a `thematic_theme()` object", call. = FALSE)
   }
 
-  auto_color_info <- list(
-    shiny = shiny_output_info(),
-    config = auto_config_get(),
-    bootstraplib = bs_theme_colors(),
-    rstudio = rs_theme_colors()
-  )
-  auto_color_info <- auto_color_info[auto_config_get()$priority]
+  auto_color_info <- lapply(auto_config_get()$priority, function(x) {
+    switch(
+      x,
+      shiny = shiny_output_info(),
+      config = auto_config_get(),
+      bootstraplib = bs_theme_colors(),
+      rstudio = rs_theme_colors(),
+      stop("`priority` of '", x, "' is not implemented", call. = FALSE)
+    )
+  })
 
   # Resolve auto colors, if relevant
   for (col in c("bg", "fg", "accent")) {
@@ -174,13 +168,16 @@ auto_resolve_theme <- function(theme) {
   # Resolve fonts
   if (any(vapply(theme$font, is_auto, logical(1)))) {
     # Note the similarity to resolution of auto colors
-    auto_font_info <- list(
-      shiny = shiny_font_spec(shiny_output_info()$font),
-      config = auto_config_get()$font,
-      bootstraplib = bs_font_spec(),
-      rstudio = rs_font_spec()
-    )
-    auto_font_info <- auto_font_info[auto_config_get()$priority]
+    auto_font_info <- lapply(auto_config_get()$priority, function(x) {
+      switch(
+        x,
+        shiny = shiny_font_spec(shiny_output_info()$font),
+        config = auto_config_get()$font,
+        bootstraplib = bs_font_spec(),
+        rstudio = rs_font_spec(),
+        stop("`priority` of '", x, "' is not implemented", call. = FALSE)
+      )
+    })
     spec <- Reduce(`%||%`, auto_font_info) %||% font_spec()
 
     # As with colors above, make sure to retain the auto class so that the
@@ -446,6 +443,7 @@ tag_auto <- function(x) {
 }
 
 as_auto <- function(x) {
+  if (is_auto(x)) return(x)
   oldClass(x) <- c("thematic_auto", oldClass(x))
   x
 }

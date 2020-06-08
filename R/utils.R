@@ -60,8 +60,8 @@ download_file <- function(url, dest, ...) {
   )
 }
 
-is_rstudio <- function() {
-  identical("1", Sys.getenv("RSTUDIO", NA))
+is_rstudio <- function(version_needed) {
+  rstudioapi::isAvailable(version_needed)
 }
 
 dropNulls <- function(x) {

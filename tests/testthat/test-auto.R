@@ -1,6 +1,7 @@
 context("auto-config")
 
 test_that("Can influence auto resolution with config", {
+  # TODO: add test(s) with different priority settings
   old_config <- auto_config_set(auto_config("black", "white", NA, font = "Pacifico"))
   on.exit(auto_config_set(old_config), add = TRUE)
 
@@ -15,4 +16,6 @@ test_that("Can influence auto resolution with config", {
   expect_true(theme$font$families == "Pacifico")
 })
 
-# TODO: add a test(s) for different priority settings?
+test_that("priorities() values match priority arg", {
+  expect_equal(priorities(), eval(formals(auto_config)$priority))
+})

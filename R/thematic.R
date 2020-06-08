@@ -76,15 +76,21 @@
 #' lattice::show.settings()
 #' thematic_off()
 #'
-thematic_on <- function(...) {
+thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
+                        font = NA, sequential = sequential_gradient(),
+                        qualitative = okabe_ito(), inherit = FALSE) {
   old_theme <- thematic_get_theme()
-  .globals$theme <- thematic_theme(...)
+  .globals$theme <- thematic_theme(
+    bg = bg, fg = fg, accent = accent,
+    font = font, sequential = sequential,
+    qualitative = qualitative, inherit = inherit
+  )
   # Set knitr dev.args = list(bg = bg) now (instead of later)
   # so at least the _next_ chunk has the right bg color.
   knitr_dev_args_set()
-  # Also set base params now, essentially because par("bg") can
-  # be modified via the graphics device, so we store the state of bg
-  # now before it's potentially too late
+  # Remember par("bg") now since bg can be modified by the opening of a
+  # graphics device, and if that happens before plot time, it'd be too late
+  # to base_restore_params()/base_set_params() at plot time
   .globals$base_params$bg <- par("bg")
 
   # Remove any existing hooks before registering them
@@ -164,8 +170,15 @@ is_thematic_theme <- function(x) {
 #' @rdname thematic
 #' @param session see [shiny::onStop()].
 #' @export
-thematic_shiny <- function(..., session = shiny::getDefaultReactiveDomain()) {
-  old_theme <- thematic_on(...)
+thematic_shiny <- function(bg = "auto", fg = "auto", accent = "auto",
+                           font = NA, sequential = sequential_gradient(),
+                           qualitative = okabe_ito(), inherit = FALSE,
+                           session = shiny::getDefaultReactiveDomain()) {
+  old_theme <- thematic_on(
+    bg = bg, fg = fg, accent = accent,
+    font = font, sequential = sequential,
+    qualitative = qualitative, inherit = inherit
+  )
   shiny::onStop(function() thematic_set_theme(old_theme), session = session)
   invisible(old_theme)
 }
@@ -173,8 +186,14 @@ thematic_shiny <- function(..., session = shiny::getDefaultReactiveDomain()) {
 
 #' @rdname thematic
 #' @export
-thematic_rmd <- function(...) {
-  old_theme <- thematic_on(...)
+thematic_rmd <- function(bg = "auto", fg = "auto", accent = "auto",
+                         font = NA, sequential = sequential_gradient(),
+                         qualitative = okabe_ito(), inherit = FALSE) {
+  old_theme <- thematic_on(
+    bg = bg, fg = fg, accent = accent,
+    font = font, sequential = sequential,
+    qualitative = qualitative, inherit = inherit
+  )
   document_hook <- knitr::knit_hooks$get("document")
   knitr::knit_hooks$set(document = function(x) {
     thematic_set_theme(old_theme)
@@ -234,6 +253,8 @@ thematic_rmd <- function(...) {
 thematic_with_theme <- function(theme, expr) {
   old_theme <- thematic_set_theme(theme)
   on.exit(thematic_set_theme(old_theme), add = TRUE)
+  # This is here so that users don't have to explictly call print()
+  # on ggplot2/lattice objects (e.g., `renderPlot(thematic_with_theme(theme, qplot(1:10)))`)
   expr <- rlang::enquo(expr)
   result <- withVisible(rlang::eval_tidy(expr))
   if (result$visible) print(result$value)
