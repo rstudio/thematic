@@ -25,6 +25,7 @@ update_ggtheme <- function(theme = .globals$theme) {
     c(
       "text", "plot.background",
       "panel.background", "panel.grid",
+      "panel.grid.major", "panel.grid.minor",
       "legend.background", "legend.box.background", "legend.key",
       "strip.background"
     ),
@@ -50,7 +51,7 @@ update_ggtheme <- function(theme = .globals$theme) {
   )
   line <- ggplot2::element_line(colour = new_fg)
 
-  # TODO: should probably be (conditionally) updating?
+  # TODO: should probably be (conditionally) updating (see below)?
   update_non_blank_elements(
     line = line,
     text = text,
@@ -82,25 +83,41 @@ update_ggtheme <- function(theme = .globals$theme) {
     mix_colors(new_bg, new_fg, amt)
   }
 
+  #browser()
+  # TODO:
+  # 1. do we need to update plot.background?
   ggplot2::theme_update(
+
     panel.background = ggplot2::element_rect(
-      fill = update_top_color(old$panel.background$fill, old_bg)
+      fill = update_top_color(old$panel.background$fill, old_bg),
+      colour = update_top_color(old$panel.background$colour, old_bg)
     ),
+    # TODO: compare to panel.background fill?
     panel.grid = ggplot2::element_line(
-      colour = update_top_color(old$panel.grid$colour, old_bg)
+      colour = update_top_color(old$panel.grid$colour, old$panel.background$fill)
+    ),
+    panel.grid.major = ggplot2::element_line(
+      colour = update_top_color(old$panel.grid.major$colour, old$panel.background$fill)
+    ),
+    panel.grid.minor = ggplot2::element_line(
+      colour = update_top_color(old$panel.grid.minor$colour, old$panel.background$fill)
     ),
     legend.background = ggplot2::element_rect(
-      fill = update_top_color(old$legend.background$fill, old_bg)
+      fill = update_top_color(old$legend.background$fill, old_bg),
+      colour = update_top_color(old$legend.background$colour, old_bg)
     ),
     legend.box.background = ggplot2::element_rect(
-      fill = update_top_color(old$legend.box.background$fill, old_bg)
+      fill = update_top_color(old$legend.box.background$fill, old_bg),
+      colour = update_top_color(old$legend.box.background$colour, old_bg)
     ),
     legend.key = ggplot2::element_rect(
-      fill = update_top_color(old$legend.key$fill, old_bg)
+      fill = update_top_color(old$legend.key$fill, old_bg),
+      colour = update_top_color(old$legend.key$colour, old_bg)
     ),
     # TODO: should we be comparing to panel.background?
     strip.background = ggplot2::element_rect(
-      fill = update_top_color(old$strip.background$fill, old_bg)
+      fill = update_top_color(old$strip.background$fill, old_bg),
+      colour = update_top_color(old$strip.background$colour, old_bg)
     )
   )
 
