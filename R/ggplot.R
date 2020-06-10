@@ -20,6 +20,7 @@ update_ggtheme <- function(theme = .globals$theme) {
   # and we should try our best to respect those design choices
   # TODO: exit early with warning if current theme is incomplete?
   old_theme <- ggplot2::theme_get()
+
   old_theme_computed <- computed_theme_elements(old_theme)
 
   # Like %OR%, but for transparent as well
@@ -48,7 +49,6 @@ update_ggtheme <- function(theme = .globals$theme) {
   }
 
   update_element.element_text <- function(element, ggtheme, name) {
-    # TODO: font size and family...change regardless of old value?
     new_element <- ggplot2::element_text(
       colour = update_color(ggtheme[[name]]$colour),
       family = if (!identical(theme$font$family, "")) theme$font$family,
@@ -73,6 +73,15 @@ update_ggtheme <- function(theme = .globals$theme) {
   }
 
   update_element.element_blank <- function(element, ggtheme, name) {
+    # Make sure plot.background is always defined; since otherwise,
+    # we'd have to depend on par("bg") being set (and the device respecting it)
+    if (name %in% "plot.background") {
+      ggplot2::theme_update(
+        plot.background = ggplot2::element_rect(
+          fill = new_bg, colour = "transparent"
+        )
+      )
+    }
     invisible()
   }
 
@@ -90,6 +99,11 @@ update_ggtheme <- function(theme = .globals$theme) {
 # Get all the computed theme elements from a given theme definition
 computed_theme_elements <- function(theme) {
   elements <- names(ggplot2::get_element_tree())
+  # If this isn't a complete theme, make it one
+  # (fixes cases like ggthemes::theme_pander() which isn't complete)
+  if (identical(attr(theme, "complete"), FALSE)) {
+    theme <- ggplot2::theme_gray() + theme
+  }
   computed <- setNames(lapply(elements, calc_element_safe, theme), elements)
   dropNulls(computed)
 }
