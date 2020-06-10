@@ -9,7 +9,7 @@ test_that("Global ggthemes are respected", {
 
   with_ggtheme <- function(theme, expr) {
     old_theme <- theme_set(theme)
-    on.exit(old_theme, add = TRUE)
+    on.exit(theme_set(old_theme), add = TRUE)
     thematic_with_theme(thematic_theme("black", "white"), expr)
   }
 
