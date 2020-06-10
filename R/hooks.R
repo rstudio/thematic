@@ -42,7 +42,7 @@ grid_before_hook <- function() {
 resolve_font_family <- function(type = c("base", "grid")) {
   font <- .globals$theme$font
   families <- font$families
-  is_default_font <- is_default_spec(font)
+  is_default_font <- identical(families, "")
 
   # Return early if default font family
   if (is_default_font) return()

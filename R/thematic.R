@@ -403,10 +403,6 @@ as_font_spec <- function(font) {
   stop("`font` must be either `NA`, a `font_spec()` object, or a character vector", call. = FALSE)
 }
 
-is_default_spec <- function(font) {
-  identical(as_font_spec(font), font_spec())
-}
-
 
 #' A color-blind safe qualitative colorscale (Okabe-Ito)
 #'
