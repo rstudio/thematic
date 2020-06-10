@@ -50,7 +50,7 @@ update_ggtheme <- function(theme = .globals$theme) {
       family = if (!identical(theme$font$family, "")) theme$font$family,
       size = element$size * theme$font$scale
     )
-    do.call(ggplot2::theme_update, setNames(list(new_element), name))
+    do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
   }
 
   update_element.element_rect <- function(element, ggtheme, name) {
@@ -58,14 +58,14 @@ update_ggtheme <- function(theme = .globals$theme) {
       fill = update_color(ggtheme[[name]]$fill),
       colour = update_color(ggtheme[[name]]$colour)
     )
-    do.call(ggplot2::theme_update, setNames(list(new_element), name))
+    do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
   }
 
   update_element.element_line <- function(element, ggtheme, name) {
     new_element <- ggplot2::element_line(
       colour = update_color(ggtheme[[name]]$colour)
     )
-    do.call(ggplot2::theme_update, setNames(list(new_element), name))
+    do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
   }
 
   update_element.element_blank <- function(element, ggtheme, name) {
@@ -100,7 +100,7 @@ computed_theme_elements <- function(ggtheme) {
   if (identical(attr(ggtheme, "complete"), FALSE)) {
     ggtheme <- ggplot2::theme_gray() + ggtheme
   }
-  computed <- setNames(lapply(elements, calc_element_safe, ggtheme), elements)
+  computed <- rlang::set_names(lapply(elements, calc_element_safe, ggtheme), elements)
   dropNulls(computed)
 }
 
