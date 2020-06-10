@@ -20,46 +20,7 @@ update_ggtheme <- function(theme = .globals$theme) {
   # and we should try our best to respect those design choices
   # TODO: exit early with warning if current theme is incomplete?
   old_theme <- ggplot2::theme_get()
-
-  old <- computed_theme_elements(
-    c(
-      "text", "plot.background",
-      "panel.background", "panel.grid",
-      "panel.grid.major", "panel.grid.minor",
-      "legend.background", "legend.box.background", "legend.key",
-      "strip.background"
-    ),
-    old_theme
-  )
-
-  new_fg <- theme$fg
-  new_bg <- theme$bg
-
-  # *Always* define the plot background
-  ggplot2::theme_update(
-    plot.background = ggplot2::element_rect(
-      fill = new_bg,
-      colour = "transparent"
-    )
-  )
-
-  # TODO: make sure default family doesn't override a specified family
-  text <- ggplot2::element_text(
-    colour = new_fg,
-    family = if (!identical(theme$font$family, "")) theme$font$family,
-    size = old$text$size * theme$font$scale
-  )
-  line <- ggplot2::element_line(colour = new_fg)
-
-  # TODO: should probably be (conditionally) updating (see below)?
-  update_non_blank_elements(
-    line = line,
-    text = text,
-    axis.title = text,
-    axis.text = text,
-    axis.ticks = line,
-    strip.text = text
-  )
+  old_theme_computed <- computed_theme_elements(old_theme)
 
   # Like %OR%, but for transparent as well
   `%missing%` <- function(x, y) {
@@ -68,74 +29,74 @@ update_ggtheme <- function(theme = .globals$theme) {
   }
 
   # The remaining updates depend on the old fg/bg
-  old_bg <- old$plot.background$fill %missing% "white"
-  old_fg <- old$text$colour %missing% "black"
+  old_bg <- old_theme_computed$plot.background$fill %missing% "white"
+  old_fg <- old_theme_computed$title$colour %missing% "black"
 
-  # Main idea: if a (top) color is visibly different from the color
-  # underneath it (bottom), then find the amount of mixture (of fg/bg)
-  # it took to obtain the top color (based on perceptual their distance),
-  # and apply that amount to the new fg/bg
-  update_top_color <- function(top, bottom) {
-    if (identical(top %missing% bottom, bottom)) {
-      return("transparent")
-    }
-    amt <- amount_of_mixture(top, old_bg, old_fg)
+  new_fg <- theme$fg
+  new_bg <- theme$bg
+
+  # Main idea: theme colors are comprised of mixtures of bg and fg
+  # So, given a color, get it's perceptual distance between bg <-> fg
+  # and use that 'amount of mixture' to inform a new color
+  update_color <- function(color) {
+    amt <- amount_of_mixture(color, old_bg, old_fg)
     mix_colors(new_bg, new_fg, amt)
   }
 
-  #browser()
-  # TODO:
-  # 1. do we need to update plot.background?
-  ggplot2::theme_update(
+  update_element <- function(element, ggtheme, name) {
+    UseMethod("update_element")
+  }
 
-    panel.background = ggplot2::element_rect(
-      fill = update_top_color(old$panel.background$fill, old_bg),
-      colour = update_top_color(old$panel.background$colour, old_bg)
-    ),
-    # TODO: compare to panel.background fill?
-    panel.grid = ggplot2::element_line(
-      colour = update_top_color(old$panel.grid$colour, old$panel.background$fill)
-    ),
-    panel.grid.major = ggplot2::element_line(
-      colour = update_top_color(old$panel.grid.major$colour, old$panel.background$fill)
-    ),
-    panel.grid.minor = ggplot2::element_line(
-      colour = update_top_color(old$panel.grid.minor$colour, old$panel.background$fill)
-    ),
-    legend.background = ggplot2::element_rect(
-      fill = update_top_color(old$legend.background$fill, old_bg),
-      colour = update_top_color(old$legend.background$colour, old_bg)
-    ),
-    legend.box.background = ggplot2::element_rect(
-      fill = update_top_color(old$legend.box.background$fill, old_bg),
-      colour = update_top_color(old$legend.box.background$colour, old_bg)
-    ),
-    legend.key = ggplot2::element_rect(
-      fill = update_top_color(old$legend.key$fill, old_bg),
-      colour = update_top_color(old$legend.key$colour, old_bg)
-    ),
-    # TODO: should we be comparing to panel.background?
-    strip.background = ggplot2::element_rect(
-      fill = update_top_color(old$strip.background$fill, old_bg),
-      colour = update_top_color(old$strip.background$colour, old_bg)
+  update_element.element_text <- function(element, ggtheme, name) {
+    # TODO: font size and family...change regardless of old value?
+    new_element <- ggplot2::element_text(
+      colour = update_color(ggtheme[[name]]$colour),
+      family = if (!identical(theme$font$family, "")) theme$font$family,
+      size = element$size * theme$font$scale
     )
-  )
+    do.call(ggplot2::theme_update, setNames(list(new_element), name))
+  }
+
+  update_element.element_rect <- function(element, ggtheme, name) {
+    new_element <- ggplot2::element_rect(
+      fill = update_color(ggtheme[[name]]$fill),
+      colour = update_color(ggtheme[[name]]$colour)
+    )
+    do.call(ggplot2::theme_update, setNames(list(new_element), name))
+  }
+
+  update_element.element_line <- function(element, ggtheme, name) {
+    new_element <- ggplot2::element_line(
+      colour = update_color(ggtheme[[name]]$colour)
+    )
+    do.call(ggplot2::theme_update, setNames(list(new_element), name))
+  }
+
+  update_element.element_blank <- function(element, ggtheme, name) {
+    invisible()
+  }
+
+  update_element.default <- function(element, ggtheme, name) {
+    invisible()
+  }
+
+  Map(function(x, y) {
+    update_element(x, old_theme_computed, y)
+  }, old_theme_computed, names(old_theme_computed))
 
   old_theme
 }
 
-
-computed_theme_elements <- function(x, theme) {
-  setNames(lapply(x, ggplot2::calc_element, theme), x)
+# Get all the computed theme elements from a given theme definition
+computed_theme_elements <- function(theme) {
+  elements <- names(ggplot2::get_element_tree())
+  computed <- setNames(lapply(elements, calc_element_safe, theme), elements)
+  dropNulls(computed)
 }
 
-# Update only the non-blank elements in `theme`
-update_non_blank_elements <- function(...) {
-  is_blank <- vapply(ggplot2::theme_get(), inherits, logical(1), "element_blank")
-  blank_elements <- names(is_blank)[is_blank]
-  elements <- list(...)
-  elements <- elements[setdiff(names(elements), blank_elements)]
-  do.call(ggplot2::theme_update, elements)
+# It's not safe to calc all elements (e.g., plot.margin)
+calc_element_safe <- function(...) {
+  tryNULL(ggplot2::calc_element(...))
 }
 
 
