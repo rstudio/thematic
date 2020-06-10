@@ -97,7 +97,7 @@ computed_theme_elements <- function(ggtheme) {
   elements <- names(ggplot2::get_element_tree())
   # If this isn't a complete theme, make it one
   # (fixes cases like ggthemes::theme_pander() which isn't complete)
-  if (identical(attr(theme, "complete"), FALSE)) {
+  if (identical(attr(ggtheme, "complete"), FALSE)) {
     ggtheme <- ggplot2::theme_gray() + ggtheme
   }
   computed <- setNames(lapply(elements, calc_element_safe, ggtheme), elements)
