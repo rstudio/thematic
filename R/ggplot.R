@@ -14,16 +14,12 @@ ggplot_theme_restore <- function() {
   rm("ggplot_theme", envir = .globals)
 }
 
+# Updates relevant colors and fonts in the global ggplot2 theme
 update_ggtheme <- function(theme = .globals$theme) {
-  # Behavior depends on the currently set theme's use of fg/bg
-  # For example, theme_bw() uses fg/bg much differently than theme_gray()
-  # and we should try our best to respect those design choices
-  # TODO: exit early with warning if current theme is incomplete?
   old_theme <- ggplot2::theme_get()
-
   old_theme_computed <- computed_theme_elements(old_theme)
 
-  # Like %OR%, but for transparent as well
+  # Handles any missing color value (e.g., NULL, NA, 'transparent')
   `%missing%` <- function(x, y) {
     if (identical(x, "transparent")) return(y)
     x %OR% y
@@ -97,14 +93,14 @@ update_ggtheme <- function(theme = .globals$theme) {
 }
 
 # Get all the computed theme elements from a given theme definition
-computed_theme_elements <- function(theme) {
+computed_theme_elements <- function(ggtheme) {
   elements <- names(ggplot2::get_element_tree())
   # If this isn't a complete theme, make it one
   # (fixes cases like ggthemes::theme_pander() which isn't complete)
   if (identical(attr(theme, "complete"), FALSE)) {
-    theme <- ggplot2::theme_gray() + theme
+    ggtheme <- ggplot2::theme_gray() + ggtheme
   }
-  computed <- setNames(lapply(elements, calc_element_safe, theme), elements)
+  computed <- setNames(lapply(elements, calc_element_safe, ggtheme), elements)
   dropNulls(computed)
 }
 

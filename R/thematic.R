@@ -482,11 +482,11 @@ sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE
 
     fg_dist <- farver::compare_colour(
       farver::decode_colour(fg), farver::decode_colour(accent),
-      from_space = "rgb", method = "cie2000"
+      from_space = "rgb", method = "cmc"
     )
     bg_dist <- farver::compare_colour(
       farver::decode_colour(bg), farver::decode_colour(accent),
-      from_space = "rgb", method = "cie2000"
+      from_space = "rgb", method = "cmc"
     )
     total_dist <- bg_dist + fg_dist
 
