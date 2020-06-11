@@ -26,7 +26,7 @@ update_ggtheme <- function(theme = .globals$theme) {
   }
 
   # The remaining updates depend on the old fg/bg
-  old_bg <- old_theme_computed$plot.background$fill %missing% "white"
+  old_bg <- old_theme_computed$plot.background$fill %missing% .globals$base_params$bg %missing% "white"
   old_fg <- old_theme_computed$title$colour %missing% "black"
 
   new_fg <- theme$fg
@@ -40,35 +40,35 @@ update_ggtheme <- function(theme = .globals$theme) {
     mix_colors(new_bg, new_fg, amt)
   }
 
-  update_element <- function(element, ggtheme, name) {
+  update_element <- function(element, name) {
     UseMethod("update_element")
   }
 
-  update_element.element_text <- function(element, ggtheme, name) {
+  update_element.element_text <- function(element, name) {
     new_element <- ggplot2::element_text(
-      colour = update_color(ggtheme[[name]]$colour),
+      colour = update_color(element$colour),
       family = if (!identical(theme$font$family, "")) theme$font$family,
       size = element$size * theme$font$scale
     )
     do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
   }
 
-  update_element.element_rect <- function(element, ggtheme, name) {
+  update_element.element_rect <- function(element, name) {
     new_element <- ggplot2::element_rect(
-      fill = update_color(ggtheme[[name]]$fill),
-      colour = update_color(ggtheme[[name]]$colour)
+      fill = update_color(element$fill),
+      colour = update_color(element$colour)
     )
     do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
   }
 
-  update_element.element_line <- function(element, ggtheme, name) {
+  update_element.element_line <- function(element, name) {
     new_element <- ggplot2::element_line(
-      colour = update_color(ggtheme[[name]]$colour)
+      colour = update_color(element$colour)
     )
     do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
   }
 
-  update_element.element_blank <- function(element, ggtheme, name) {
+  update_element.element_blank <- function(element, name) {
     # Make sure plot.background is always defined; since otherwise,
     # we'd have to depend on par("bg") being set (and the device respecting it)
     if (name %in% "plot.background") {
@@ -81,24 +81,29 @@ update_ggtheme <- function(theme = .globals$theme) {
     invisible()
   }
 
-  update_element.default <- function(element, ggtheme, name) {
+  update_element.default <- function(element, name) {
+    message("Unknown theme element of class: ", class(element)[1])
     invisible()
   }
 
-  Map(function(x, y) {
-    update_element(x, old_theme_computed, y)
-  }, old_theme_computed, names(old_theme_computed))
+  Map(function(x, y) update_element(x, y), old_theme_computed, names(old_theme_computed))
 
   old_theme
 }
 
 # Get all the computed theme elements from a given theme definition
 computed_theme_elements <- function(ggtheme) {
-  elements <- names(ggplot2::get_element_tree())
+  theme_default <- ggplot2::theme_grey()
+  # ggplot2 3.3. introduced extensibe theme elements
+  elements <- if (packageVersion("ggplot2") >= "3.3.0") {
+    names(ggplot2::get_element_tree())
+  } else {
+    names(theme_default)
+  }
   # If this isn't a complete theme, make it one
   # (fixes cases like ggthemes::theme_pander() which isn't complete)
   if (identical(attr(ggtheme, "complete"), FALSE)) {
-    ggtheme <- ggplot2::theme_gray() + ggtheme
+    ggtheme <- theme_default + ggtheme
   }
   computed <- rlang::set_names(lapply(elements, calc_element_safe, ggtheme), elements)
   dropNulls(computed)
