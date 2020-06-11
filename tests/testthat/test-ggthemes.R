@@ -14,7 +14,6 @@ test_that("Global ggthemes are respected", {
   }
 
   expect_doppelganger("wsj", function() with_ggtheme(theme_wsj(), p))
-  expect_doppelganger("economist_white", function() with_ggtheme(theme_economist_white(), p))
   expect_doppelganger("base", function() with_ggtheme(theme_base(), p))
   expect_doppelganger("solid", function() with_ggtheme(theme_solid(), p))
   expect_doppelganger("solarized", function() with_ggtheme(theme_solarized(), p))
@@ -36,4 +35,6 @@ test_that("Global ggthemes are respected", {
   expect_doppelganger("stata", function() with_ggtheme(theme_stata(), p))
   expect_doppelganger("hc", function() with_ggtheme(theme_hc(), p))
 
+  skip_if_not_installed("dplyr")
+  expect_doppelganger("economist_white", function() with_ggtheme(theme_economist_white(), p))
 })
