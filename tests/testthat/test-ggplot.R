@@ -165,8 +165,6 @@ test_that("Scale defaults can be overridden", {
       scale_fill_brewer(palette = "Accent")
   })
 
-
-
 })
 
 test_that("sf integration", {
@@ -207,4 +205,6 @@ test_that("patchwork integration", {
   thematic_on(bg = "black", fg = "white", accent = "salmon", font = font_spec("Oxanium", scale = 1.25))
   expect_doppelganger("patchwork", p1 + p2)
 })
+
+thematic_off()
 

@@ -42,6 +42,7 @@ Suggests:
     curl,
     Cairo,
     GGally,
+    ggthemes,
     RColorBrewer,
     patchwork
 License: MIT + file LICENSE

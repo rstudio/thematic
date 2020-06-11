@@ -7,6 +7,20 @@
       "html": "[html data sha1: 755aa20844b090ed4171dbf418dfdf37c635d879]",
       "deps": [
         {
+          "name": "header-attrs",
+          "version": "2.2.0",
+          "src": {
+            "href": "header-attrs-2.2.0"
+          },
+          "meta": null,
+          "script": "header-attrs.js",
+          "stylesheet": null,
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
           "name": "jquery",
           "version": "3.5.0",
           "src": {
@@ -81,8 +95,8 @@
       ]
     },
     "outebe7b267c0420ad8": {
-      "src": "[image data sha1: c69ed93dadab6bb586c60e4de37abab0b619ae78]",
-      "width": 976,
+      "src": "[image data sha1: 7e2cd8f6db80a4922c071cbd7bcfba014da15b65]",
+      "width": 910,
       "height": 400,
       "coordmap": {
         "panels": [
@@ -108,15 +122,15 @@
               "x": "1:10"
             },
             "range": {
-              "left": 44.7488294627568,
-              "right": 970.520547945205,
-              "bottom": 366.471385380993,
+              "left": 40.4669939067266,
+              "right": 904.520547945205,
+              "bottom": 368.509178173071,
               "top": 5.47945205479452
             }
           }
         ],
         "dims": {
-          "width": 976,
+          "width": 910,
           "height": 400
         }
       }
