@@ -81,7 +81,7 @@
       ]
     },
     "outebe7b267c0420ad8": {
-      "src": "[image data sha1: c69ed93dadab6bb586c60e4de37abab0b619ae78]",
+      "src": "[image data sha1: adbd30ae78dcdeeae1c74223338bc88b55ca684a]",
       "width": 976,
       "height": 400,
       "coordmap": {
@@ -108,9 +108,9 @@
               "x": "1:10"
             },
             "range": {
-              "left": 44.7488294627568,
+              "left": 40.4669939067266,
               "right": 970.520547945205,
-              "bottom": 366.471385380993,
+              "bottom": 368.509178173071,
               "top": 5.47945205479452
             }
           }
