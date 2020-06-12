@@ -13,6 +13,16 @@ test_that("Global ggthemes are respected", {
     thematic_with_theme(thematic_theme("black", "white", NA), expr)
   }
 
+  # ggplot2 themes
+  expect_doppelganger("bw", function() with_ggtheme(theme_bw(), p))
+  expect_doppelganger("dark", function() with_ggtheme(theme_dark(), p))
+  expect_doppelganger("minimal", function() with_ggtheme(theme_minimal(), p))
+  expect_doppelganger("classic", function() with_ggtheme(theme_classic(), p))
+  expect_doppelganger("light", function() with_ggtheme(theme_light(), p))
+  expect_doppelganger("linedraw", function() with_ggtheme(theme_linedraw(), p))
+  expect_doppelganger("void", function() with_ggtheme(theme_void(), p))
+
+  # ggthemes
   expect_doppelganger("wsj", function() with_ggtheme(theme_wsj(), p))
   expect_doppelganger("base", function() with_ggtheme(theme_base(), p))
   expect_doppelganger("solid", function() with_ggtheme(theme_solid(), p))
