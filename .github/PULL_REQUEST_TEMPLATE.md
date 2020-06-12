@@ -12,5 +12,7 @@ Before you submit a pull request, please ensure you've completed the following c
 
 - [ ] Run `devtools::check()` (or, equivalently, click on Build->Check Package in the RStudio IDE) to make sure your change did not add any messages, warnings, or errors.
     * Note there is a decent chance that some tests were already failing before your changes. Just make sure you haven't introduced any new ones.
+    
+- [ ] Ensure your code changes follow the style outlined in http://r-pkgs.had.co.nz/style.html
 
 - [ ] Add an entry to NEWS.md concisely describing what you changed.
