@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>NA • thematic</title>
+<title>Contributing • thematic</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,7 @@
 
 
 
-<meta property="og:title" content="NA" />
+<meta property="og:title" content="Contributing" />
 
 
 
@@ -113,34 +113,27 @@
 <div class="row">
   <div class="contents col-md-9">
     <div class="page-header">
-      <h1>NA</h1>
+      <h1>Contributing</h1>
     </div>
 
-<div id="pull-request" class="section level2">
+<div id="contributing" class="section level1">
+
+<p>When contributing to this repository, please first discuss the change you wish to make via a <a href="https://github.com/rstudio/thematic/issues/new">new issue</a>, email, or any other method with the owners of this repository before <a href="https://github.com/rstudio/thematic/blob/master/.github/PULL_REQUEST_TEMPLATE.md">making a change</a>.</p>
+<p>Please note we have a <a href="CODE_OF_CONDUCT.html">code of conduct</a>, please follow it in all your interactions with the project.</p>
+<div id="managing-visual-tests" class="section level2">
 <h2 class="hasAnchor">
-<a href="#pull-request" class="anchor"></a>Pull Request</h2>
-<p>Before you submit a pull request, please ensure you’ve completed the following checklist</p>
-<ul>
-<li><p><input type="checkbox" disabled>
-Ensure there is an already open and relevant <a href="https://github.com/rstudio/thematic/issues/new">GitHub issue</a> describing the problem in detail and you’ve already received some indication from the maintainers that they are welcome to a contribution to fix the problem. This helps us to prevent wasting anyone’s time.</p></li>
-<li><p><input type="checkbox" disabled>
-Ensure that you have signed the <a href="https://rstudioblog.files.wordpress.com/2017/05/rstudio_individual_contributor_agreement.pdf">individual</a> or <a href="https://rstudioblog.files.wordpress.com/2017/05/rstudio_corporate_contributor_agreement.pdf">corporate</a> contributor agreement as appropriate. You can send the signed copy to <a href="mailto:jj@rstudio.com" class="email">jj@rstudio.com</a>.</p></li>
-<li><p><input type="checkbox" disabled>
-Add unit tests in the tests/testthat directory.</p></li>
-<li><p><input type="checkbox" disabled>
-This project uses <a href="http://r-pkgs.had.co.nz/man.html">roxygen2 for documentation</a>. If you’ve made changes to documentation, run <code><a href="https://devtools.r-lib.org//reference/document.html">devtools::document()</a></code>.</p></li>
-<li>
-<p><input type="checkbox" disabled>
-Run <code><a href="https://devtools.r-lib.org//reference/check.html">devtools::check()</a></code> (or, equivalently, click on Build-&gt;Check Package in the RStudio IDE) to make sure your change did not add any messages, warnings, or errors.</p>
-<ul>
-<li>Note there is a decent chance that some tests were already failing before your changes. Just make sure you haven’t introduced any new ones.</li>
-</ul>
-</li>
-<li><p><input type="checkbox" disabled>
-Ensure your code changes follow the style outlined in <a href="http://r-pkgs.had.co.nz/style.html" class="uri">http://r-pkgs.had.co.nz/style.html</a></p></li>
-<li><p><input type="checkbox" disabled>
-Add an entry to NEWS.md concisely describing what you changed.</p></li>
-</ul>
+<a href="#managing-visual-tests" class="anchor"></a>Managing visual tests</h2>
+<p>After the <a href="https://github.com/rstudio/thematic/actions?query=workflow%3AR-CMD-check">R-CMD-check workflow</a> (i.e., automated testting) runs on GitHub Actions, any differences in visual (<strong>shinytest</strong> and/or <strong>vdiffr</strong>) baselines are pushed to a new GitHub branch. This makes it easier to approve and incorporate “false positive” or otherwise acceptable changes in those visual tests across platforms and R versions. To fetch and view the changes in the visual tests for a particular <code>$GHA_BRANCH</code>, run the following terminal commands:</p>
+<pre class="shell"><code>git fetch
+git checkout $GHA_BRANCH
+R -e "thematic:::view_shinytest_diffs()"</code></pre>
+<p>Then, after approving relevant differences, to incorporate the changes into <code>$MY_BRANCH</code>, do:</p>
+<pre class="shell"><code>git add -u tests
+git commit -m "Approve new baselines"
+git checkout $MY_BRANCH
+git merge $GHA_BRANCH
+git push origin $MY_BRANCH</code></pre>
+</div>
 </div>
 
   </div>
