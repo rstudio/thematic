@@ -78,12 +78,27 @@ update_ggtheme <- function(theme = .globals$theme) {
         )
       )
     }
-    invisible()
+  }
+
+  # known classes where we know there is nothing relevant to update
+  update_element.simpleUnit <- function(element, name) {}
+  update_element.margin <- function(element, name) {}
+  update_element.logical <- function(element, name) {}
+
+  # It's possible someone could be registering a character theme element that we don't
+  # know about and also needs updating...here are the known "standard" cases that are safe to ignore
+  known_elements <- c(
+    "legend.position", "legend.direction", "legend.justification", "legend.box", "strip.placement",
+    "strip.placement.x", "strip.placement.y", "plot.title.position", "plot.caption.position", "plot.tag.position"
+  )
+  update_element.character <- function(element, name) {
+    if (!name %in% known_elements) {
+      message("Unknown theme element (of class character): ", name)
+    }
   }
 
   update_element.default <- function(element, name) {
-    message("Unknown theme element of class: ", class(element)[1])
-    invisible()
+    message("Unknown theme element ", name, " of class: ", class(element)[1])
   }
 
   Map(function(x, y) update_element(x, y), old_theme_computed, names(old_theme_computed))
