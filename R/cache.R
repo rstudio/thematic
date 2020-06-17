@@ -31,7 +31,7 @@ font_cache_set <- function(path, cleanup = FALSE) {
   if (cleanup) {
     unlink(file.path(old_home, font_files), recursive = TRUE)
   }
-  Sys.setenv("THEMATIC_FONT_CACHE_DIR", path)
+  Sys.setenv("THEMATIC_FONT_CACHE_DIR" = path)
   invisible(old_home)
 }
 
