@@ -76,7 +76,7 @@
       <h1 data-toc-skip>thematic in RStudio</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-06-12</h4>
+            <h4 class="date">2020-06-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/RStudio.Rmd"><code>vignettes/RStudio.Rmd</code></a></small>
       <div class="hidden name"><code>RStudio.Rmd</code></div>
@@ -85,16 +85,20 @@
 
     
     
-<p><code><a href="../reference/thematic.html">thematic_on()</a></code> works everywhere in RStudio so long as you specify the colors and fonts (<a href="#gfont-rendering">rendering Google Fonts</a> requires very recent build of RStudio, though). Here’s a snippet of my <code>.Rprofile</code>, which applies automatic colors and the <a href="https://fonts.google.com/specimen/Fira+Sans+Condensed">Fira Sans Condensed</a> Google Font (a font that’s similar, but intentionally not the same my RStudio editor font, <a href="https://github.com/tonsky/FiraCode">FiraCode</a>). Note also that my <a href="https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes">RStudio theme</a> in this screenshot is Tomorrow Night 80s, but since the colors are automatic, they adjust to whatever theme I happen to be using (the only exception is that <code>accent='auto'</code> doesn’t currently work with <em>custom</em> RStudio themes). It’s also worth noting that automatic font detection (i.e. <code>font='auto'</code>) is supported on RStudio 1.4 or higher, but actual rendering of that font only works if it resolves to a Google Font (or a font that R/<strong>ragg</strong> already knows about).</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="kw">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/interactive.html">interactive</a></span>() <span class="kw">&amp;&amp;</span> <span class="kw pkg">rstudioapi</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/rstudioapi/man/isAvailable.html">isAvailable</a></span>()) {
-  <span class="kw pkg">thematic</span><span class="kw ns">::</span><span class="fu"><a href="../reference/thematic.html">thematic_on</a></span>(<span class="kw">font</span> <span class="kw">=</span> <span class="st">"Fira Sans Condensed"</span>)
-}</pre></body></html></div>
+<p><code><a href="../reference/thematic_on.html">thematic_on()</a></code> works everywhere in RStudio so long as you specify the colors and fonts (<a href="#gfont-rendering">rendering Google Fonts</a> requires very recent build of RStudio, though). Here’s a snippet of my <code>.Rprofile</code>, which applies automatic colors and the <a href="https://fonts.google.com/specimen/Fira+Sans+Condensed">Fira Sans Condensed</a> Google Font (a font that’s similar, but intentionally not the same my RStudio editor font, <a href="https://github.com/tonsky/FiraCode">FiraCode</a>). Note also that my <a href="https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes">RStudio theme</a> in this screenshot is Tomorrow Night 80s, but since the colors are automatic, they adjust to whatever theme I happen to be using (the only exception is that <code>accent='auto'</code> doesn’t currently work with <em>custom</em> RStudio themes). It’s also worth noting that automatic font detection (i.e. <code>font='auto'</code>) is supported on RStudio 1.4 or higher, but actual rendering of that font only works if it resolves to a Google Font (or a font that R/<strong>ragg</strong> already knows about).</p>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="co">if</span> (<span class="fu"><a href="https://rdrr.io/r/base/interactive.html">interactive</a></span>() <span class="op">&amp;&amp;</span> <span class="kw">rstudioapi</span>::<span class="fu"><a href="https://rdrr.io/pkg/rstudioapi/man/isAvailable.html">isAvailable</a></span>()) {
+  <span class="kw">thematic</span>::<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span>(font = <span class="st">"Fira Sans Condensed"</span>)
+}
+</pre></div>
 <p><img src="RStudio.png" width="1678"></p>
 <div id="gfont-rendering" class="section level2">
 <h2 class="hasAnchor">
 <a href="#gfont-rendering" class="anchor"></a>Rendering Google Fonts</h2>
 <p>Rendering Google Fonts in RStudio requires RStudio 1.4 (currently only available in the <a href="https://dailies.rstudio.com/">daily release</a>) with an AGG graphics device backend, which requires the <strong>ragg</strong> package:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># install.packages("ragg")</span></pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># install.packages("ragg")</span>
+</pre></div>
 <p>To set the AGG backend, in RStudio, go to Tools -&gt; Global Options -&gt; Graphics -&gt; Backend:</p>
 <p><img src="backend.png" width="609"></p>
 </div>

@@ -76,7 +76,7 @@
       <h1 data-toc-skip>thematic in rmarkdown</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-06-12</h4>
+            <h4 class="date">2020-06-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/rmarkdown.Rmd"><code>vignettes/rmarkdown.Rmd</code></a></small>
       <div class="hidden name"><code>rmarkdown.Rmd</code></div>
@@ -85,11 +85,11 @@
 
     
     
-<p><code><a href="../reference/thematic.html">thematic_on()</a></code> works everywhere in <strong>rmarkdown</strong> so long as you specify the colors and fonts (<a href="#gfont-rendering">rendering Google Fonts</a> may require some additional setup, though). When it comes to auto detection, there are 3 situations where it <em>can</em> work:</p>
+<p><code><a href="../reference/thematic_on.html">thematic_on()</a></code> works everywhere in <strong>rmarkdown</strong> so long as you specify the colors and fonts (<a href="#gfont-rendering">rendering Google Fonts</a> may require some additional setup, though). When it comes to auto detection, there are 3 situations where it <em>can</em> work:</p>
 <ol style="list-style-type: decimal">
-<li>A <code>runtime: shiny</code> document where plots are generated via <code>renderPlot()</code> (or <code>renderImage</code>).</li>
+<li>A <code>runtime: shiny</code> document where plots are generated via <code><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot()</a></code> (or <code>renderImage</code>).</li>
 <li>An output format that builds on <code>html_document_base()</code> with a non-<code>NULL</code> <code>theme</code>.</li>
-<li>Other output formats that call <code><a href="../reference/auto-config.html">auto_config_set()</a></code> for you.</li>
+<li>Other output formats that call <code><a href="../reference/auto_config.html">auto_config_set()</a></code> for you.</li>
 </ol>
 <div id="auto-detection-in-html_document" class="section level2">
 <h2 class="hasAnchor">
@@ -136,25 +136,31 @@
 <span id="cb2-2"><a href="#cb2-2"></a>  body{<span class="kw">font-family</span>: Pacifico} </span>
 <span id="cb2-3"><a href="#cb2-3"></a><span class="kw">&lt;/style&gt;</span></span></code></pre></div>
 <p>However, if you instead style the document via <strong>bootstraplib</strong> code inside the document, then auto detection can pick up on that custom styling (see <a href="https://rstudio.github.io/bootstraplib/articles/recipes.html">here</a> for more info on styling via <strong>bootstraplib</strong>):</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="kw pkg">bootstraplib</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/bootstraplib/man/bs_theme_fonts.html">bs_theme_fonts</a></span>(<span class="st">"Pacifico"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="kw">bootstraplib</span>::<span class="fu"><a href="https://rdrr.io/pkg/bootstraplib/man/bs_theme_fonts.html">bs_theme_fonts</a></span>(<span class="st">"Pacifico"</span>)
+</pre></div>
 <p><img src="https://i.imgur.com/eWXYtis.gif"><!-- --></p>
 </div>
 <div id="gfont-rendering" class="section level2">
 <h2 class="hasAnchor">
 <a href="#gfont-rendering" class="anchor"></a>Rendering Google Fonts</h2>
 <p>Rendering Google Fonts in <strong>rmarkdown</strong> requires either <strong>showtext</strong> or <strong>ragg</strong> to be installed. <strong>showtext</strong> works with <strong>rmarkdown</strong>’s default graphics devices, so make sure it’s installed to render Google Fonts on those devices in <strong>rmarkdown</strong>. If, for some reason, rendering fails, you might need to also make sure the <code>fig.showtext</code> <a href="https://yihui.org/knitr/options/">option</a> is set to <code>TRUE</code>.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="co"># install.packages("showtext")</span>
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span>$<span class="fu">set</span>(<span class="kw">fig.showtext</span> <span class="kw">=</span> <span class="fl">TRUE</span>)</pre></body></html></div>
-<p><strong>thematic</strong> will do this for you when it’s loaded (i.e., on <code><a href="https://rdrr.io/pkg/thematic/man">library(thematic)</a></code>), but that also means you can’t start using <strong>showtext</strong> until the <em>next</em> code chunk.</p>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="co"># install.packages("showtext")</span>
+<span class="kw">knitr</span>::<span class="kw"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span>(fig.showtext = <span class="fl">TRUE</span>)
+</pre></div>
+<p><strong>thematic</strong> will do this for you when it’s loaded (i.e., on <code><a href="https://rstudio.github.io/thematic">library(thematic)</a></code>), but that also means you can’t start using <strong>showtext</strong> until the <em>next</em> code chunk.</p>
 <p>To use <strong>ragg</strong>’s png device instead, which in some environments (especially hosted ones) can produce higher quality and consistent output in less time (see <a href="https://ragg.r-lib.org/">here</a> for more details), do the following in a setup code chunk:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="co"># install.packages("ragg")</span>
-<span class="kw pkg">knitr</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span>$<span class="fu">set</span>(<span class="kw">dev</span> <span class="kw">=</span> <span class="st">"ragg_png"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="co"># install.packages("ragg")</span>
+<span class="kw">knitr</span>::<span class="kw"><a href="https://rdrr.io/pkg/knitr/man/opts_chunk.html">opts_chunk</a></span><span class="op">$</span><span class="fu">set</span>(dev = <span class="st">"ragg_png"</span>)
+</pre></div>
 <p>Note that <code>dev = "ragg_png"</code> requires <strong>knitr</strong> v1.29 or higher (if you can’t use that recent of a version you can also <a href="https://github.com/r-lib/ragg/issues/29">set the device yourself</a>)</p>
 </div>
 <div id="auto-detection-in-other-output-formats" class="section level2">
 <h2 class="hasAnchor">
 <a href="#auto-detection-in-other-output-formats" class="anchor"></a>Auto detection in other output formats</h2>
-<p>Auto detecting in other output formats can in theory work if the output format sets <code><a href="../reference/auto-config.html">auto_config_set()</a></code>.</p>
+<p>Auto detecting in other output formats can in theory work if the output format sets <code><a href="../reference/auto_config.html">auto_config_set()</a></code>.</p>
 </div>
   </div>
 

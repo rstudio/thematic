@@ -133,12 +133,12 @@ by the default, but is a <a href='https://fonts.google.com/'>Google Font</a> and
 for use the <strong>showtext</strong> and <strong>ragg</strong> packages.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>font_spec</span>(
-  <span class='kw'>families</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>scale</span> <span class='kw'>=</span> <span class='fl'>1</span>,
-  <span class='kw'>install</span> <span class='kw'>=</span> <span class='fu'>is_installed</span>(<span class='st'>"ragg"</span>) <span class='kw'>||</span> <span class='fu'>is_installed</span>(<span class='st'>"showtext"</span>),
-  <span class='kw'>update</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>quiet</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>
+    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/font_spec.html'>font_spec</a></span>(
+  families = <span class='st'>""</span>,
+  scale = <span class='fl'>1</span>,
+  install = <span class='fu'>is_installed</span>(<span class='st'>"ragg"</span>) <span class='op'>||</span> <span class='fu'>is_installed</span>(<span class='st'>"showtext"</span>),
+  update = <span class='fl'>FALSE</span>,
+  quiet = <span class='fl'>TRUE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -157,7 +157,7 @@ for use the <strong>showtext</strong> and <strong>ragg</strong> packages.</p>
       <td><p>whether to download and register font <code>families</code>
 available via <a href='https://fonts.google.com/'>Google Fonts</a> (but unavailable to R).
 After a successful download, fonts are cached (in a directory which
-can be managed via <code><a href='font_cache_set.html'>font_cache_set()</a></code>), and registered for use with
+can be managed via <code><a href='https://rdrr.io/pkg/thematic/man/font_cache_set.html'>font_cache_set()</a></code>), and registered for use with
 the <strong>showtext</strong> and <strong>ragg</strong> packages. If installation fails with
 a valid internet connection, you may need to fetch the latest Google
 Font information prior to installation (i.e., set <code>update = TRUE</code>).</p></td>
@@ -180,7 +180,7 @@ set your own via an environment variable, <code>GFONT_KEY</code>).</p></td>
     <p>the input arguments as a list.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='thematic_save_plot.html'>thematic_save_plot()</a></code>, <code><a href='thematic.html'>thematic_on()</a></code>, <code><a href='font_cache_set.html'>font_cache_set()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/thematic/man/thematic_save_plot.html'>thematic_save_plot()</a></code>, <code><a href='https://rdrr.io/pkg/thematic/man/thematic.html'>thematic_on()</a></code>, <code><a href='https://rdrr.io/pkg/thematic/man/font_cache_set.html'>font_cache_set()</a></code></p></div>
 
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
