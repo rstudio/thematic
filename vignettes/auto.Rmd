@@ -9,6 +9,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 resource_files:
+  - html-document.svg
   - tabsets.svg
   - tufte.svg
 ---
@@ -130,7 +131,7 @@ knitr::include_graphics("tabsets-geom-raster.png")
 Keep in mind that **thematic** works by changing _global defaults_, so you can always [customize](custom.html) with plot-specific code (e.g., by adding `theme()` to a plot object `p`). That said, to use **thematic** with a different complete **ggplot2** theme (e.g., `theme_minimal()`, `theme_bw()`, etc), you should do so by setting that theme globally.
 
 ```r
-theme_set(theme_minimal())
+ggplot2::theme_set(ggplot2::theme_minimal())
 shinyApp(ui, server)
 ```
 
