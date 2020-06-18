@@ -208,11 +208,11 @@ ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .g
 
   # Modify scaling defaults
   scale_defaults <- list()
-  if (!identical(qualitative, NA)) {
+  if (!is_na_scalar(qualitative)) {
     scale_defaults$ggplot2.discrete.colour <- qualitative
     scale_defaults$ggplot2.discrete.fill <- qualitative
   }
-  if (!identical(sequential, NA)) {
+  if (!is_na_scalar(sequential)) {
     scale_defaults$ggplot2.continuous.colour <- function(...) {
       ggplot2::scale_colour_gradientn(..., colours = sequential)
     }
@@ -235,7 +235,7 @@ ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .g
     # This isn't an officially supported way of setting default scales, but
     # `scales_add_defaults()` first looks in the plot_env to find default scales
     # https://github.com/tidyverse/ggplot2/blob/a7b3135/R/layer.r#L214
-    if (!identical(sequential, NA)) {
+    if (!is_na_scalar(sequential)) {
       if (!p$scales$has_scale("colour")) {
         # TODO: distinguish between existing/NULL
         colour_continuous <- tryGet("scale_colour_continuous", envir = p$plot_env)
@@ -252,7 +252,7 @@ ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .g
         }, add = TRUE)
       }
     }
-    if (!identical(qualitative, NA)) {
+    if (!is_na_scalar(qualitative)) {
       if (!p$scales$has_scale("colour")) {
         colour_discrete <- tryGet("scale_colour_discrete", envir = p$plot_env)
         assign(
@@ -302,4 +302,11 @@ qualitative_pal <- function(codes) {
       scales::hue_pal()(n)
     }
   }
+}
+
+is_na_scalar <- function(x) {
+  if (length(x) != 1) {
+    return(FALSE)
+  }
+  is.na(x)
 }
