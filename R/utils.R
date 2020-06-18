@@ -41,6 +41,9 @@ amount_of_mixture <- function(color, bg, fg) {
 
 # x should be of length 1
 parse_any_color <- function(x) {
+  if (length(x) != 1) {
+    stop("Internal thematic error. parse_any_color() should be used on length 1 input")
+  }
   y <- tryCatch(
     col2rgb(x),
     error = function(e) {
