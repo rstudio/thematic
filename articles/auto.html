@@ -154,7 +154,7 @@
 <p><img src="tabsets-geom-raster.png" width="70%" style="display: block; margin: auto;"></p>
 <p>Keep in mind that <strong>thematic</strong> works by changing <em>global defaults</em>, so you can always <a href="custom.html">customize</a> with plot-specific code (e.g., by adding <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> to a plot object <code>p</code>). That said, to use <strong>thematic</strong> with a different complete <strong>ggplot2</strong> theme (e.g., <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw()</a></code>, etc), you should do so by setting that theme globally.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>())
+<span class="kw">ggplot2</span>::<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="kw">ggplot2</span>::<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>())
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="kw">ui</span>, <span class="kw">server</span>)
 </pre></div>
 <p><img src="tabsets-darkly-thematic-minimal.png" width="70%" style="display: block; margin: auto;"></p>
