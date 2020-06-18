@@ -279,12 +279,16 @@
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span>(type = <span class="st">"qual"</span>)
 </pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-21-1.png" width="70%" style="display: block; margin: auto;"></p>
-<p>As a side note, when it comes to 3rd party <strong>ggplot2</strong> extension packages, <strong>thematic</strong> should work as expected (<a href="https://github.com/rstudio/thematic">let us know if it doesn’t</a>) as long as those extension packages aren’t hard coding defaults in un-expected ways.</p>
+</div>
+<div id="third-party-extensions" class="section level3">
+<h3 class="hasAnchor">
+<a href="#third-party-extensions" class="anchor"></a>Third party extensions</h3>
+<p>As a side note, when it comes to third party <strong>ggplot2</strong> extension packages, <strong>thematic</strong> should work as expected (<a href="https://github.com/rstudio/thematic">let us know if it doesn’t</a>) as long as those extension packages aren’t hard coding defaults in un-expected ways.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://ggobi.github.io/ggally">GGally</a></span>)
 <span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span>(<span class="kw">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(color = <span class="kw">Species</span>))
 </pre></div>
-<p><img src="custom_files/figure-html/unnamed-chunk-22-1.png" width="70%" style="display: block; margin: auto;"></p>
+<p><img src="custom_files/figure-html/unnamed-chunk-22-1.png" width="85%" style="display: block; margin: auto;"></p>
 </div>
 </div>
 <div id="theming-with-lattice" class="section level2">

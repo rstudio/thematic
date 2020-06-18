@@ -156,13 +156,8 @@
 <a href="#several-time-use" class="anchor"></a>Several-time use</h3>
 <p>To apply <strong>thematic</strong> to several plots at a time, consider using <code><a href="../reference/thematic_on.html">thematic_on()</a></code> to modify state and <code><a href="../reference/thematic_with_theme.html">thematic_set_theme()</a></code> to restore state. Since <code><a href="../reference/thematic_on.html">thematic_on()</a></code> returns a theme object that represents the previously set theme (and, if none, returns <code>NULL</code>), we can use a pattern like this to set a theme for two plots, then restore the previous theme:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">old_theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span>(<span class="st">"black"</span>, <span class="st">"white"</span>)
+<span class="kw">old_theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span>(<span class="st">"black"</span>, <span class="st">"white"</span>, accent = <span class="fl">NA</span>)
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">10</span>)
-<span class="co">#&gt; Warning: thematic was unable to resolve `accent='auto'`. Try providing an</span>
-<span class="co">#&gt; actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way,</span>
-<span class="co">#&gt; 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown</span>
-<span class="co">#&gt; scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or</span>
-<span class="co">#&gt; if `auto_config_set()` is used.</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html">qplot</a></span>(<span class="fl">1</span><span class="op">:</span><span class="fl">10</span>)
 <span class="co"># equivalent of thematic_off() if old_theme is NULL</span>
 <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_set_theme</a></span>(<span class="kw">old_theme</span>)
