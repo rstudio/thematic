@@ -222,9 +222,11 @@ ggplot(economics_long) +
   scale_color_brewer(type = "qual")
 ```
 
-As a side note, when it comes to 3rd party **ggplot2** extension packages, **thematic** should work as expected ([let us know if it doesn't](https://github.com/rstudio/thematic)) as long as those extension packages aren't hard coding defaults in un-expected ways.
+### Third party extensions
 
-```{r, fig.asp = 0.8}
+As a side note, when it comes to third party **ggplot2** extension packages, **thematic** should work as expected ([let us know if it doesn't](https://github.com/rstudio/thematic)) as long as those extension packages aren't hard coding defaults in un-expected ways.
+
+```{r, fig.asp = 0.8, fig.width = 8, out.width="85%"}
 library(GGally)
 ggpairs(iris, aes(color = Species))
 ```

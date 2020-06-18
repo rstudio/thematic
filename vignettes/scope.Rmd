@@ -104,7 +104,7 @@ shinyApp(ui, server)
 To apply **thematic** to several plots at a time, consider using `thematic_on()` to modify state and `thematic_set_theme()` to restore state. Since `thematic_on()` returns a theme object that represents the previously set theme (and, if none, returns `NULL`), we can use a pattern like this to set a theme for two plots, then restore the previous theme:
 
 ```{r}
-old_theme <- thematic_on("black", "white")
+old_theme <- thematic_on("black", "white", accent = NA)
 plot(1:10)
 qplot(1:10)
 # equivalent of thematic_off() if old_theme is NULL
