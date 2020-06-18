@@ -5,9 +5,12 @@
 ggplot_theme_update <- function(theme = .globals$theme) {
   if (!is_installed("ggplot2")) return(NULL)
   old_theme <- update_ggtheme(theme)
-  # If this is an initial update, store the original theme so we can restore it
+  # The first time we modify the theme
   .globals$ggplot_theme <- .globals$ggplot_theme %||% old_theme
-  old_theme
+  # Only update the restoration value if the *user* has modified the theme
+  if (!identical(.globals$ggplot_theme, old_theme)) {
+    .globals$ggplot_theme <- old_theme
+  }
 }
 
 ggplot_theme_restore <- function() {
@@ -49,7 +52,8 @@ update_ggtheme <- function(theme = .globals$theme) {
   update_element.element_text <- function(element, name) {
     new_element <- ggplot2::element_text(
       colour = update_color(element$colour),
-      family = if (!identical(theme$font$family, "")) theme$font$family,
+      family = if (identical(theme$font$family, "") &&
+                   identical(element$family %OR% NA, "")) theme$font$family,
       size = element$size * theme$font$scale
     )
     do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
