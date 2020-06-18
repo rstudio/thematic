@@ -1,20 +1,18 @@
-template:
-  params:
-    bootswatch: darkly
+#template:params:bootswatch: darkly
 
 destination: docs
 
 navbar:
   type: default
   left:
-  - text: Shiny
-    href: articles/Shiny.html
-  - text: R Markdown
-    href: articles/rmarkdown.html
-  - text: RStudio
-    href: articles/RStudio.html
-  - text: Customize
-    href: articles/customize.html
+  - text: Auto theming
+    href: articles/auto.html
+  - text: Custom themes
+    href: articles/custom.html
+  - text: Fonts
+    href: articles/fonts.html
+  - text: Scoping
+    href: articles/scope.html
   - text: Reference
     href: reference/index.html
 
