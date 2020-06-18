@@ -2,10 +2,12 @@
 # Theme management
 # ---------------------------------------------------------------
 
-ggplot_theme_set <- function(theme = .globals$theme) {
+ggplot_theme_update <- function(theme = .globals$theme) {
   if (!is_installed("ggplot2")) return(NULL)
-  ggplot_theme_restore()
-  .globals$ggplot_theme <- update_ggtheme(theme)
+  old_theme <- update_ggtheme(theme)
+  # If this is an initial update, store the original theme so we can restore it
+  .globals$ggplot_theme <- .globals$ggplot_theme %||% old_theme
+  old_theme
 }
 
 ggplot_theme_restore <- function() {
