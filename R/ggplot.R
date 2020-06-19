@@ -81,6 +81,7 @@ update_ggtheme <- function(theme = .globals$theme) {
   }
 
   # known classes where we know there is nothing relevant to update
+  update_element.unit <- function(element, name) {}
   update_element.simpleUnit <- function(element, name) {}
   update_element.margin <- function(element, name) {}
   update_element.logical <- function(element, name) {}
@@ -291,7 +292,7 @@ restore_scale <- function(name, x, envir) {
 # https://github.com/tidyverse/ggplot2/pull/3828
 # https://github.com/tidyverse/ggplot2/pull/3833
 has_proper_ggplot_scale_defaults <- function() {
-  packageVersion("ggplot2") > "4.0.0"
+  packageVersion("ggplot2") >= "3.3.2"
 }
 
 qualitative_pal <- function(codes) {
