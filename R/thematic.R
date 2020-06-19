@@ -77,12 +77,14 @@
 #'
 thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
                         font = NA, sequential = sequential_gradient(),
-                        qualitative = okabe_ito(), inherit = FALSE) {
+                        qualitative = okabe_ito(), inherit = FALSE,
+                        ggtheme = NULL) {
   old_theme <- thematic_get_theme()
   .globals$theme <- thematic_theme(
     bg = bg, fg = fg, accent = accent,
     font = font, sequential = sequential,
-    qualitative = qualitative, inherit = inherit
+    qualitative = qualitative, inherit = inherit,
+    ggtheme = ggtheme
   )
   # Set knitr dev.args = list(bg = bg) now (instead of later)
   # so at least the _next_ chunk has the right bg color.
@@ -96,6 +98,12 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
   # (otherwise, repeated calls to set_hooks will keep adding them)
   remove_hooks()
   set_hooks()
+
+  # Call this now (instead of at plot time) so we remember the global
+  # theme to restore...this is should probably be done for other global
+  # state as well, but par(bg = "auto") will error
+  ggplot_theme_set()
+
   # Override ggplot build method mainly because we currently need access to
   # the plot object in order to set Geom/Scale defaults
   ggplot_build_set()
@@ -127,7 +135,8 @@ thematic_off <- function() {
 #' @export
 thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
                            font = NA, sequential = sequential_gradient(),
-                           qualitative = okabe_ito(), inherit = FALSE) {
+                           qualitative = okabe_ito(), inherit = FALSE,
+                           ggtheme = NULL) {
 
   # This function is called at plot time (with bg/fg/accent)
   if (is.function(sequential)) {
@@ -141,7 +150,8 @@ thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
       accent = tag_auto(accent),
       qualitative = qualitative,
       sequential = sequential,
-      font = as_font_spec(font)
+      font = as_font_spec(font),
+      ggtheme = ggtheme
     ),
     class = "thematic_theme"
   )
@@ -155,6 +165,7 @@ thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
     if (identical(accent, fmls$accent)) new$accent <- NULL
     if (identical(sequential, fmls$sequential)) new$sequential <- NULL
     if (identical(qualitative, fmls$qualitative)) new$qualitative <- NULL
+    if (identical(ggtheme, fmls$ggtheme)) new$ggtheme <- NULL
     new <- utils::modifyList(old, new)
     new <- structure(new, class = "thematic_theme")
   }
@@ -172,12 +183,13 @@ is_thematic_theme <- function(x) {
 #' @export
 thematic_shiny <- function(bg = "auto", fg = "auto", accent = "auto",
                            font = NA, sequential = sequential_gradient(),
-                           qualitative = okabe_ito(), inherit = FALSE,
+                           qualitative = okabe_ito(), inherit = FALSE, ggtheme = NULL,
                            session = shiny::getDefaultReactiveDomain()) {
   old_theme <- thematic_on(
     bg = bg, fg = fg, accent = accent,
     font = font, sequential = sequential,
-    qualitative = qualitative, inherit = inherit
+    qualitative = qualitative, inherit = inherit,
+    ggtheme = ggtheme
   )
   shiny::onStop(function() thematic_set_theme(old_theme), session = session)
   invisible(old_theme)
@@ -189,11 +201,13 @@ thematic_shiny <- function(bg = "auto", fg = "auto", accent = "auto",
 #' @export
 thematic_rmd <- function(bg = "auto", fg = "auto", accent = "auto",
                          font = NA, sequential = sequential_gradient(),
-                         qualitative = okabe_ito(), inherit = FALSE) {
+                         qualitative = okabe_ito(), inherit = FALSE,
+                         ggtheme = NULL) {
   old_theme <- thematic_on(
     bg = bg, fg = fg, accent = accent,
     font = font, sequential = sequential,
-    qualitative = qualitative, inherit = inherit
+    qualitative = qualitative, inherit = inherit,
+    ggtheme = ggtheme
   )
   document_hook <- knitr::knit_hooks$get("document")
   knitr::knit_hooks$set(document = function(x) {
