@@ -156,13 +156,11 @@ ggsmooth
 
 ### Complete themes
 
-Complete **ggplot2** themes are `theme()` objects that fully specify every possible `theme()` element. The default **ggplot2** theme, `theme_gray()`, is a complete theme, and **ggplot2** provides some other useful complete themes such as `theme_bw()`, `theme_minimal()`, and `theme_classic()`. As we saw in the auto theming article, **thematic** can play nicely with complete themes __so long as they are set globally via `theme_set()`__. This is because **thematic**'s philosophy is to only ever impact global defaults (i.e., **thematic** updates colors and fonts in the global **ggplot2** theme), and never impact plot-specific code (which should always take precedence over the global defaults).
+Complete **ggplot2** themes are `theme()` objects that fully specify every possible `theme()` element. The default **ggplot2** theme, `theme_gray()`, is a complete theme, and **ggplot2** provides some other useful complete themes such as `theme_bw()`, `theme_minimal()`, and `theme_classic()`. As we saw in the auto theming article, **thematic** can play nicely with complete themes so long as they are provided to the **thematic** theme. This is because plot-specific code overrides the defaults that **thematic** sets, and so by adding a complete theme to a plot (i.e., `ggsmooth + theme_classic()`) it would override all the `theme()`-specific defaults set by **thematic**, which likely isn't what you want.
 
 ```{r}
-# Sets theme_classic() as the global ggplot2 theme just for this plot
-old_theme <- theme_set(theme_classic())
+thematic_on(bg = "#222222", fg = "white", ggtheme = theme_classic())
 ggsmooth
-theme_set(old_theme)
 ```
 
 Other **ggplot2** extension packages such as **ggthemes** also provide useful complete themes. The image below links to a Shiny app that allows you to preview how various **ggthemes** themes look both before and after **thematic** in a Shiny app with some custom CSS.

@@ -41,6 +41,7 @@
 #' qualitative values (won't be used in ggplot2 when the number of data
 #' levels exceeds the max allowed colors). Defaults to [okabe_ito()].
 #' @param inherit should non-specified values inherit from the previous theme?
+#' @param ggtheme a complete **ggplot2** theme to inherit defaults from.
 #'
 #' @return [thematic_theme()] returns a theme object as a list (which can be
 #' activated with [thematic_with_theme()] or [thematic_set_theme()]).
