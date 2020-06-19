@@ -6,9 +6,8 @@ ggplot_theme_set <- function(theme = .globals$theme) {
   if (!is_installed("ggplot2")) return(NULL)
   # Do nothing the first time; otherwise, restore to original state
   ggplot_theme_restore()
-  # Now that we're back to original state, store it
-  .globals$ggplot_theme <- ggplot2::theme_get()
-  update_ggtheme(theme)
+  # Now that we're back to original state, this'll return the original state
+  .globals$ggplot_theme <- update_ggtheme(theme)
 }
 
 ggplot_theme_restore <- function() {
@@ -19,11 +18,11 @@ ggplot_theme_restore <- function() {
 
 # Updates relevant colors and fonts in the global ggplot2 theme
 update_ggtheme <- function(theme = .globals$theme) {
-  ggtheme <- theme$ggtheme %||% .globals$ggplot_theme
-  # The theme were basing the update on must be set in order for
-  # missing values to be meaningful
-  ggplot2::theme_set(ggtheme)
-  ggtheme_computed <- computed_theme_elements(ggtheme)
+  original_ggtheme <- ggplot2::theme_get()
+  new_ggtheme <- theme$ggtheme %||% original_ggtheme
+  # The theme were basing the update on should be set (in order for missing values to be meaningful)
+  ggplot2::theme_set(new_ggtheme)
+  new_ggtheme_computed <- computed_theme_elements(new_ggtheme)
 
   # Handles any missing color value (e.g., NULL, NA, 'transparent')
   `%missing%` <- function(x, y) {
@@ -32,8 +31,8 @@ update_ggtheme <- function(theme = .globals$theme) {
   }
 
   # The remaining updates depend on the old fg/bg
-  old_bg <- ggtheme_computed$plot.background$fill %missing% .globals$base_params$bg %missing% "white"
-  old_fg <- ggtheme_computed$title$colour %missing% "black"
+  old_bg <- new_ggtheme_computed$plot.background$fill %missing% .globals$base_params$bg %missing% "white"
+  old_fg <- new_ggtheme_computed$title$colour %missing% "black"
 
   new_fg <- theme$fg
   new_bg <- theme$bg
@@ -107,7 +106,9 @@ update_ggtheme <- function(theme = .globals$theme) {
     message("Unknown theme element ", name, " of class: ", class(element)[1])
   }
 
-  Map(function(x, y) update_element(x, y), ggtheme_computed, names(ggtheme_computed))
+  Map(function(x, y) update_element(x, y), new_ggtheme_computed, names(new_ggtheme_computed))
+
+  original_ggtheme
 }
 
 # Get all the computed theme elements from a given theme definition

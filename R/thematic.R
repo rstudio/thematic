@@ -100,11 +100,6 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
   remove_hooks()
   set_hooks()
 
-  # Call this now (instead of at plot time) so we remember the global
-  # theme to restore...this is should probably be done for other global
-  # state as well, but par(bg = "auto") will error
-  ggplot_theme_set()
-
   # Override ggplot build method mainly because we currently need access to
   # the plot object in order to set Geom/Scale defaults
   ggplot_build_set()

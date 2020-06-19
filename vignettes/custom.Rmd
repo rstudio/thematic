@@ -1,5 +1,5 @@
 ---
-title: "Customizing thematic"
+title: "Custom themes"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

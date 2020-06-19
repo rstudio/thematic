@@ -1,5 +1,5 @@
 ---
-title: "Auto themes"
+title: "Auto theming"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
 output: 
