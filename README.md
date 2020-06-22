@@ -104,8 +104,9 @@ of `thematic_on()` which temporarily apply the given theme:
 ## Learn more
 
   - See the [auto theming
-    article](https://rstudio.github.io/thematic/articles/auto.html) for
-    a better understanding of how it works as well as its limitations.
+    article](https://rstudio.github.io/thematic/articles/auto.html) to
+    gain an understanding of how auto theming make styling R plots
+    easier in Shiny, R Markdown, and RStudio.
   - See the [custom themes
     article](https://rstudio.github.io/thematic/articles/custom.html)
     for more on **thematic**’s theming options as well as how they

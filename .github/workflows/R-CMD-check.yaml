@@ -37,8 +37,6 @@ jobs:
       SHINYTEST_RUN_TESTS: ${{ matrix.config.vdiffr }}
       VDIFFR_LOG_PATH: "../vdiffr.Rout.fail"
 
-
-
     steps:
       - name: Windows git setup
         if: runner.os == 'Windows'

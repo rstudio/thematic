@@ -2,12 +2,7 @@
 title: "Scoping themes"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
-output: 
-  rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Manual themes}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: rmarkdown::html_vignette
 ---
 
 ```{r, include = FALSE}
