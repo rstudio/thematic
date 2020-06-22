@@ -132,7 +132,7 @@ and configuration (i.e., <code><a href='https://rdrr.io/pkg/thematic/man/auto-co
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>theme</th>
-      <td><p>a <code><a href='https://rdrr.io/pkg/thematic/man/thematic.html'>thematic_theme()</a></code> object.</p></td>
+      <td><p>a <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_theme()</a></code> object.</p></td>
     </tr>
     </table>
 
@@ -148,7 +148,7 @@ and configuration (i.e., <code><a href='https://rdrr.io/pkg/thematic/man/auto-co
 <span class='kw'>old_config</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/auto-config.html'>auto_config_set</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/auto-config.html'>auto_config</a></span>(bg = <span class='st'>"black"</span>, fg = <span class='st'>"white"</span>))
 
 <span class='co'># Resolving auto values in local theme objects</span>
-<span class='kw'>theme</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic.html'>thematic_theme</a></span>()
+<span class='kw'>theme</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_theme</a></span>()
 <span class='kw'>theme</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bg"</span>, <span class='st'>"fg"</span>)]</div><div class='output co'>#&gt; $bg
 #&gt; [1] "auto"
 #&gt; attr(,"class")
@@ -171,12 +171,12 @@ and configuration (i.e., <code><a href='https://rdrr.io/pkg/thematic/man/auto-co
 #&gt; </div><div class='input'>
 <span class='co'># By default, auto values are resolved when accessing</span>
 <span class='co'># global theme options</span>
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic.html'>thematic_on</a></span>()
+<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>()
 <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/theme-management.html'>thematic_get_option</a></span>(<span class='st'>"bg"</span>, resolve = <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] "auto"
 #&gt; attr(,"class")
 #&gt; [1] "thematic_auto"</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/theme-management.html'>thematic_get_option</a></span>(<span class='st'>"bg"</span>)</div><div class='output co'>#&gt; [1] "black"
 #&gt; attr(,"class")
-#&gt; [1] "thematic_auto"</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic.html'>thematic_off</a></span>()
+#&gt; [1] "thematic_auto"</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_off</a></span>()
 
 <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/auto-config.html'>auto_config_set</a></span>(<span class='kw'>old_config</span>)
 </div></pre>

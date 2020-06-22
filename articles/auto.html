@@ -5,13 +5,13 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auto themes • thematic</title>
+<title>Auto theming • thematic</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
 <script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
-<script src="../pkgdown.js"></script><meta property="og:title" content="Auto themes">
+<script src="../pkgdown.js"></script><meta property="og:title" content="Auto theming">
 <meta property="og:description" content="thematic">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -73,10 +73,10 @@
       </header><script src="auto_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1 data-toc-skip>Auto themes</h1>
+      <h1 data-toc-skip>Auto theming</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-06-19</h4>
+            <h4 class="date">2020-06-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/auto.Rmd"><code>vignettes/auto.Rmd</code></a></small>
       <div class="hidden name"><code>auto.Rmd</code></div>
@@ -85,11 +85,11 @@
 
     
     
-<p>The most magical aspect of <strong>thematic</strong> is its auto theming capabilities, which gives R plots to ability to style themselves in <a href="https://rstudio.github.io/thematic/articles/auto.html#shiny">Shiny</a> (via CSS), <a href="https://rstudio.github.io/thematic/articles/auto.html#rmd">R Markdown</a> (via <strong>bootstraplib</strong>), and <a href="https://rstudio.github.io/thematic/articles/auto.html#rstudio">RStudio</a> (via <a href="https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes">RStudio themes</a>). To gain a sense for how auto theming works, it’s recommended you read through the next section, which walks through several variants on a basic Shiny app, and demonstrates how auto theming allows the R plots to be reactive to the changes in CSS styling. Also, as discussed in <a href="#other">other scenarios</a>, it possible to configure the information <strong>thematic</strong> uses for auto theming, but you can also opt-out of auto theming by providing desired colors and fonts to <strong>thematic</strong> (as discussed on <a href="custom.html">custom themes</a>).</p>
+<p>The most magical aspect of <strong>thematic</strong> is its auto theming capabilities, which gives R plots to ability to style themselves in <a href="https://rstudio.github.io/thematic/articles/auto.html#shiny">Shiny</a> (via CSS), <a href="https://rstudio.github.io/thematic/articles/auto.html#rmd">R Markdown</a> (via <strong>bootstraplib</strong>), and <a href="https://rstudio.github.io/thematic/articles/auto.html#rstudio">RStudio</a> (via <a href="https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes">RStudio themes</a>). To gain a sense for how auto theming works, it’s recommended you read through the next section, which walks through several variants on a basic Shiny app, and demonstrates how auto theming makes R plots responsive to changes in CSS styling. Also, as discussed in <a href="#other">other scenarios</a>, it possible to configure the information <strong>thematic</strong> uses for auto theming, but you can also opt-out of auto theming by providing desired colors and fonts to <strong>thematic</strong> (as discussed on <a href="custom.html">custom themes</a>).</p>
 <div id="shiny" class="section level2">
 <h2 class="hasAnchor">
 <a href="#shiny" class="anchor"></a>Shiny</h2>
-<p>One frustrating thing about styling Shiny apps is that R plots know nothing about CSS. That means, if you write <a href="(https://shiny.rstudio.com/articles/css.html)">custom CSS to style the app</a>, you’ll likely also want to translate those same styles to the R graphics. You may have never noticed this problem before if you just use the default styles in both systems because they’re quite similar. Here’s the default styles in a Shiny app with a few R plots inside a <code><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">tabsetPanel()</a></code>:</p>
+<p>One frustrating thing about styling Shiny apps is that R plots know nothing about CSS. That means, if you write <a href="https://shiny.rstudio.com/articles/css.html">custom CSS to style the app</a>, you’ll likely also want to translate those same styles to the R graphics. You may have never noticed this problem before if you just use the default styles in both systems because they’re quite similar. Here’s the default styles in a Shiny app with a few R plots inside a <code><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">tabsetPanel()</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://shiny.rstudio.com">shiny</a></span>)
 <span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span>)
@@ -129,16 +129,16 @@
 <p><img src="tabsets-darkly.png" width="70%" style="display: block; margin: auto;"></p>
 <p>By activating <strong>thematic</strong> auto coloring (as shown below), R plot(s) generated by the Shiny app gain new color defaults based on the surrounding CSS styles. This works because, at plot time, <strong>thematic</strong> grabs CSS styles from the plot(s) HTML container (via <code><a href="https://rdrr.io/pkg/shiny/man/getCurrentOutputInfo.html">shiny::getCurrentOutputInfo()</a></code>)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and uses that info to set new R styling defaults.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="kw">thematic</span>::<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span>()
+<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span>()
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="kw">ui</span>, <span class="kw">server</span>)
 </pre></div>
 <p><img src="tabsets-darkly-thematic.png" width="70%" style="display: block; margin: auto;"></p>
-<p>From the <strong>ggplot2</strong> example above, we can see <code><a href="../reference/thematic_on.html">thematic_on()</a></code> has done the following for us:</p>
+<p>From the <strong>ggplot2</strong> example above, we can see <code><a href="../reference/thematic_on.html">thematic_shiny()</a></code> has done the following for us:</p>
 <ul>
 <li>Set new <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">ggplot2::theme()</a></code>-ing defaults based on the background and foreground colors (as well as appropriate mixtures of these colors for the panel background).</li>
 <li>Set a new color-blind safe default for <code><a href="https://ggplot2.tidyverse.org/reference/scale_hue.html">scale_color_discrete()</a></code> (and <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html">scale_fill_discrete()</a></code>).</li>
 </ul>
-<p>Now, if we change our <code><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">tabsetPanel()</a></code> from <code>type="pills"</code> to <code>type="tabs"</code> and look at a couple other <strong>ggplot2</strong> examples, we can see that <code><a href="../reference/thematic_on.html">thematic_on()</a></code> does a few more things:</p>
+<p>Now, if we change our <code><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">tabsetPanel()</a></code> from <code>type="pills"</code> to <code>type="tabs"</code> and look at a couple other <strong>ggplot2</strong> examples, we can see that <code><a href="../reference/thematic_on.html">thematic_shiny()</a></code> does a few more things:</p>
 <ul>
 <li>Sets new <code>geom_*()</code> defaults using the new foreground (in this case, <code><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point()</a></code>’s <code>color</code>) and accent color (in this case, <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth()</a></code>’s color).
 <ul>
@@ -152,9 +152,9 @@
 <li>Uses the background, foreground, and accent colors to construct a new default for <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html">scale_fill_continuous()</a></code> (and <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html">scale_color_continuous()</a></code>).</li>
 </ul>
 <p><img src="tabsets-geom-raster.png" width="70%" style="display: block; margin: auto;"></p>
-<p>Keep in mind that <strong>thematic</strong> works by changing <em>global defaults</em>, so you can always <a href="custom.html">customize</a> with plot-specific code (e.g., by adding <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> to a plot object <code>p</code>). That said, to use <strong>thematic</strong> with a different complete <strong>ggplot2</strong> theme (e.g., <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw()</a></code>, etc), you should do so by setting that theme globally.</p>
+<p>As you’ll learn in the <a href="custom.html">custom themes article</a>, you can always override the defaults set by <strong>thematic</strong> by using plot-specific code (i.e., by adding <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> elements to the plot). However, if you want to use a different <em>complete</em> <strong>ggplot2</strong> theme (e.g., <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal()</a></code> instead of the default <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray()</a></code>), you can pass the complete theme as part of the <strong>thematic</strong> theme:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="kw">ggplot2</span>::<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="kw">ggplot2</span>::<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>())
+<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span>(ggtheme = <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>())
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="kw">ui</span>, <span class="kw">server</span>)
 </pre></div>
 <p><img src="tabsets-darkly-thematic-minimal.png" width="70%" style="display: block; margin: auto;"></p>
@@ -172,6 +172,7 @@
   <span class="kw">tabs</span>, <span class="fu"><a href="https://rdrr.io/pkg/bootstraplib/man/bootstrap.html">bootstrap</a></span>(),
   <span class="kw">tags</span><span class="op">$</span><span class="fu">link</span>(href=<span class="st">"https://fonts.googleapis.com/css?family=Pacifico"</span>, rel=<span class="st">"stylesheet"</span>)
 )
+<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span>()
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="kw">ui</span>, <span class="kw">server</span>)
 </pre></div>
 <p><img src="tabsets-custom.png" width="70%" style="display: block; margin: auto;"></p>
