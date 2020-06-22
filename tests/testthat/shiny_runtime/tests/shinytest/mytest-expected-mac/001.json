@@ -81,8 +81,8 @@
       ]
     },
     "outebe7b267c0420ad8": {
-      "src": "[image data sha1: adbd30ae78dcdeeae1c74223338bc88b55ca684a]",
-      "width": 976,
+      "src": "[image data sha1: 6a39a5e0004e12be373ac548595a0125c7ef668b]",
+      "width": 910,
       "height": 400,
       "coordmap": {
         "panels": [
@@ -109,14 +109,14 @@
             },
             "range": {
               "left": 40.4669939067266,
-              "right": 970.520547945205,
+              "right": 904.520547945205,
               "bottom": 368.509178173071,
               "top": 5.47945205479452
             }
           }
         ],
         "dims": {
-          "width": 976,
+          "width": 910,
           "height": 400
         }
       }
