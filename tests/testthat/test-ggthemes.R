@@ -1,7 +1,8 @@
 context("ggthemes")
 
+library(ggplot2)
+
 test_that("Global ggthemes are respected", {
-  library(ggplot2)
   library(ggthemes)
 
   p <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color =  Species)) +
@@ -47,4 +48,14 @@ test_that("Global ggthemes are respected", {
 
   skip_if_not_installed("dplyr")
   expect_doppelganger("economist_white", function() with_ggtheme(theme_economist_white(), p))
+})
+
+test_that("ggtheme argument works as expected", {
+  font <- font_spec(scale = 1.5)
+  thematic_on("black", "white", font = font, ggtheme = theme_void())
+  expect_doppelganger("ggtheme-void", qplot(1:10))
+  thematic_on("black", "white", font = font, ggtheme = theme_minimal())
+  expect_doppelganger("ggtheme-minimal", qplot(1:10))
+  thematic_off()
+  expect_doppelganger("ggtheme-off", qplot(1:10))
 })

@@ -19,3 +19,11 @@ test_that("Can influence auto resolution with config", {
 test_that("priorities() values match priority arg", {
   expect_equal(priorities(), eval(formals(auto_config)$priority))
 })
+
+test_that("thematic_theme() default values are consistent", {
+  expect_equal(formals(thematic_on), formals(thematic_theme))
+  expect_equal(formals(thematic_on), formals(thematic_rmd))
+  fmls <- formals(thematic_shiny)
+  fmls$session <- NULL
+  expect_equal(formals(thematic_on), fmls)
+})

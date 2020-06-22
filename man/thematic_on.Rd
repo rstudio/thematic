@@ -15,7 +15,8 @@ thematic_on(
   font = NA,
   sequential = sequential_gradient(),
   qualitative = okabe_ito(),
-  inherit = FALSE
+  inherit = FALSE,
+  ggtheme = NULL
 )
 
 thematic_off()
@@ -27,7 +28,8 @@ thematic_theme(
   font = NA,
   sequential = sequential_gradient(),
   qualitative = okabe_ito(),
-  inherit = FALSE
+  inherit = FALSE,
+  ggtheme = NULL
 )
 
 thematic_shiny(
@@ -38,6 +40,7 @@ thematic_shiny(
   sequential = sequential_gradient(),
   qualitative = okabe_ito(),
   inherit = FALSE,
+  ggtheme = NULL,
   session = shiny::getDefaultReactiveDomain()
 )
 
@@ -48,7 +51,8 @@ thematic_rmd(
   font = NA,
   sequential = sequential_gradient(),
   qualitative = okabe_ito(),
-  inherit = FALSE
+  inherit = FALSE,
+  ggtheme = NULL
 )
 }
 \arguments{
@@ -71,6 +75,8 @@ qualitative values (won't be used in ggplot2 when the number of data
 levels exceeds the max allowed colors). Defaults to \code{\link[=okabe_ito]{okabe_ito()}}.}
 
 \item{inherit}{should non-specified values inherit from the previous theme?}
+
+\item{ggtheme}{a complete \strong{ggplot2} theme to inherit defaults from.}
 
 \item{session}{see \code{\link[shiny:onStop]{shiny::onStop()}}.}
 }

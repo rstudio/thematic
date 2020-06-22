@@ -86,7 +86,7 @@ In addition to `thematic_on()`, which applies the provided theme to all plots (u
 
 ## Learn more
 
-* See the [auto theming article](https://rstudio.github.io/thematic/articles/auto.html) for a better understanding of how it works as well as its limitations.
+* See the [auto theming article](https://rstudio.github.io/thematic/articles/auto.html) to gain an understanding of how auto theming make styling R plots easier in Shiny, R Markdown, and RStudio.
 * See the [custom themes article](https://rstudio.github.io/thematic/articles/custom.html) for more on **thematic**'s theming options as well as how they interact with **ggplot2**, **lattice**, and **base**.
 * See the [fonts article](https://rstudio.github.io/thematic/articles/fonts.html) for more on using Google Fonts with **thematic**.
 * See the [scoping article](https://rstudio.github.io/thematic/articles/scope.html) for more about restoring state after using **thematic**.
