@@ -424,8 +424,9 @@ okabe_ito <- function(n = NULL) {
 #' color should be mixed into the colorscale.
 #' @param bg_weight a number (between 0 and 1) defining much of the `bg`
 #' color should be mixed into the colorscale.
-#' @param fg_low if `TRUE` (the default), the `fg` color is used for the
-#' low end of the colorscale (rather than the high end).
+#' @param bg_high should the `bg` color define the high (`TRUE`)  or low (`FALSE`)
+#' end of the color gradient? The default, `'auto'`, sets `bg_high = FALSE`
+#' when `bg` is a dark color, but `bg_high = TRUE` when `bg` is a light color.
 #' @param n number of color codes.
 #' @return a list of options for passing to the `sequential` argument of [thematic_on()].
 #' @export
@@ -447,11 +448,11 @@ okabe_ito <- function(n = NULL) {
 #' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
 #' # Use fg (instead of bg) for high end of scale
-#' mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
+#' mix_flip <- sequential_gradient(0.5, 0.5, bg_high = FALSE)
 #' thematic_on("black", "white", "salmon", sequential = mix_flip)
 #' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
-sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30) {
+sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, bg_high = "auto", n = 30) {
   if (any(fg_weight > 1 | fg_weight < 0)) {
     stop("`fg_weight` must be between 0 and 1.", call. = FALSE)
   }
@@ -461,8 +462,8 @@ sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE
   if (n < 3) {
     stop("`n` must be 3 or more.", call. = FALSE)
   }
-  if (!is.logical(fg_low)) {
-    stop("`fg_low` must be `TRUE` or `FALSE`", call. = FALSE)
+  if (!is.logical(bg_high) && !identical(bg_high, "auto")) {
+    stop("`bg_high` must be either `'auto'`, `TRUE` or `FALSE`", call. = FALSE)
   }
 
   # Main idea: Interpolate between [fg+accent -> accent -> bg+accent]
@@ -471,6 +472,10 @@ sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE
   function(fg, accent, bg, ...) {
     accent <- accent[1]
     if (anyNA(c(fg, accent, bg))) return(NA)
+
+    if (identical(bg_high, "auto")) {
+      bg_high <- color_yiq_islight(bg)
+    }
 
     fg_dist <- farver::compare_colour(
       farver::decode_colour(fg), farver::decode_colour(accent),
@@ -482,7 +487,7 @@ sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE
     )
     total_dist <- bg_dist + fg_dist
 
-    rng <- if (fg_low) {
+    rng <- if (bg_high) {
       c(
         -fg_weight * as.numeric(fg_dist / total_dist),
         bg_weight * as.numeric(bg_dist / total_dist)
@@ -497,8 +502,15 @@ sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE
       seq(0, 1, length.out = n),
       to = pmax(pmin(rng + 0.5, 1), 0)
     )
-    cols <- if (fg_low) c(fg, accent, bg) else c(bg, accent, fg)
+    cols <- if (bg_high) c(fg, accent, bg) else c(bg, accent, fg)
     scales::colour_ramp(cols, alpha = TRUE)(grid)
   }
 }
 
+# Same as bootstraplib:::color_yiq_islight()
+# https://github.com/rstudio/bootstraplib/blob/729b115/R/utils.R#L56-L65
+color_yiq_islight <- function(color, threshold = 150) {
+  rgb <- col2rgb(color)
+  yiq <- ((rgb[1] * 299) + (rgb[2] * 587) + (rgb[3] * 114)) / 1000
+  isTRUE(yiq >= threshold)
+}

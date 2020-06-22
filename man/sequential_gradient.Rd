@@ -4,7 +4,12 @@
 \alias{sequential_gradient}
 \title{Control parameters of the sequential colorscale}
 \usage{
-sequential_gradient(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30)
+sequential_gradient(
+  fg_weight = 0.75,
+  bg_weight = 0.5,
+  bg_high = "auto",
+  n = 30
+)
 }
 \arguments{
 \item{fg_weight}{a number (between 0 and 1) defining much of the \code{fg}
@@ -13,8 +18,9 @@ color should be mixed into the colorscale.}
 \item{bg_weight}{a number (between 0 and 1) defining much of the \code{bg}
 color should be mixed into the colorscale.}
 
-\item{fg_low}{if \code{TRUE} (the default), the \code{fg} color is used for the
-low end of the colorscale (rather than the high end).}
+\item{bg_high}{should the \code{bg} color define the high (\code{TRUE})  or low (\code{FALSE})
+end of the color gradient? The default, \code{'auto'}, sets \code{bg_high = FALSE}
+when \code{bg} is a dark color, but \code{bg_high = TRUE} when \code{bg} is a light color.}
 
 \item{n}{number of color codes.}
 }
@@ -43,7 +49,7 @@ thematic_on("black", "white", "salmon", sequential = mix)
 ggplot2::qplot(1:10, 1:10, color = 1:10)
 
 # Use fg (instead of bg) for high end of scale
-mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
+mix_flip <- sequential_gradient(0.5, 0.5, bg_high = FALSE)
 thematic_on("black", "white", "salmon", sequential = mix_flip)
 ggplot2::qplot(1:10, 1:10, color = 1:10)
 
