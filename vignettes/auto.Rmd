@@ -41,11 +41,11 @@ include_vimeo <- function(id, width = "100%", height = "400") {
 }
 ```
 
-The most magical aspect of **thematic** is its auto theming capabilities, which gives R plots to ability to style themselves in [Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny) (via CSS), [R Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd) (via **bootstraplib**), and [RStudio](https://rstudio.github.io/thematic/articles/auto.html#rstudio) (via [RStudio themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes)). To gain a sense for how auto theming works, it's recommended you read through the next section, which walks through several variants on a basic Shiny app, and demonstrates how auto theming allows the R plots to be reactive to the changes in CSS styling. Also, as discussed in [other scenarios](#other), it possible to configure the information **thematic** uses for auto theming, but you can also opt-out of auto theming by providing desired colors and fonts to **thematic** (as discussed on [custom themes](custom.html)).
+The most magical aspect of **thematic** is its auto theming capabilities, which gives R plots to ability to style themselves in [Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny) (via CSS), [R Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd) (via **bootstraplib**), and [RStudio](https://rstudio.github.io/thematic/articles/auto.html#rstudio) (via [RStudio themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes)). To gain a sense for how auto theming works, it's recommended you read through the next section, which walks through several variants on a basic Shiny app, and demonstrates how auto theming makes R plots responsive to changes in CSS styling. Also, as discussed in [other scenarios](#other), it possible to configure the information **thematic** uses for auto theming, but you can also opt-out of auto theming by providing desired colors and fonts to **thematic** (as discussed on [custom themes](custom.html)).
 
 ## Shiny {#shiny}
 
-One frustrating thing about styling Shiny apps is that R plots know nothing about CSS. That means, if you write [custom CSS to style the app]((https://shiny.rstudio.com/articles/css.html)), you'll likely also want to translate those same styles to the R graphics. You may have never noticed this problem before if you just use the default styles in both systems because they're quite similar. Here's the default styles in a Shiny app with a few R plots inside a `tabsetPanel()`:
+One frustrating thing about styling Shiny apps is that R plots know nothing about CSS. That means, if you write [custom CSS to style the app](https://shiny.rstudio.com/articles/css.html), you'll likely also want to translate those same styles to the R graphics. You may have never noticed this problem before if you just use the default styles in both systems because they're quite similar. Here's the default styles in a Shiny app with a few R plots inside a `tabsetPanel()`:
 
 ```r
 library(shiny)
@@ -98,7 +98,7 @@ By activating **thematic** auto coloring (as shown below), R plot(s) generated b
 [^1]: If you're a **shiny** developer and wish to add similar auto theming capabilities to a custom output, you can add a `.shiny-report-theme` class to the output container to obtain styles via `getCurrentOutputInfo()`. And similarly, if you're an **htmlwidgets** developer, you can just set `reportTheme = TRUE` in `htmlwidgets::shinyWidgetOutput()`.
 
 ```r
-thematic::thematic_shiny()
+thematic_shiny()
 shinyApp(ui, server)
 ```
 
@@ -106,12 +106,12 @@ shinyApp(ui, server)
 knitr::include_graphics("tabsets-darkly-thematic.png")
 ```
 
-From the **ggplot2** example above, we can see `thematic_on()` has done the following for us:
+From the **ggplot2** example above, we can see `thematic_shiny()` has done the following for us:
 
 * Set new `ggplot2::theme()`-ing defaults based on the background and foreground colors (as well as appropriate mixtures of these colors for the panel background).
 * Set a new color-blind safe default for `scale_color_discrete()` (and `scale_fill_discrete()`).
 
-Now, if we change our `tabsetPanel()` from `type="pills"` to `type="tabs"` and look at a couple other **ggplot2** examples, we can see that `thematic_on()` does a few more things:
+Now, if we change our `tabsetPanel()` from `type="pills"` to `type="tabs"` and look at a couple other **ggplot2** examples, we can see that `thematic_shiny()` does a few more things:
 
 * Sets new `geom_*()` defaults using the new foreground (in this case, `geom_point()`'s `color`) and accent color (in this case, `geom_smooth()`'s color).
   * The accent color comes from the hyperlink color of the plot's HTML container. It just so happens that this [darkly](https://bootswatch.com/darkly) theme colors `type="tabs"` the same as hyperlinks, but `type="pills"` is colored differently.
@@ -128,10 +128,10 @@ Also:
 knitr::include_graphics("tabsets-geom-raster.png")
 ```
 
-As you'll learn in the [custom themes article](custom.html), you can always override the defaults set by **thematic** by using plot-specific code (i.e., by adding `theme()` elements to the plot). However, if you want to use a different _complete_ **ggplot2** theme (e.g., `theme_minimal()` instead of the default `theme_gray()`), you need to declare that complete theme as part of the **thematic** theme:
+As you'll learn in the [custom themes article](custom.html), you can always override the defaults set by **thematic** by using plot-specific code (i.e., by adding `theme()` elements to the plot). However, if you want to use a different _complete_ **ggplot2** theme (e.g., `theme_minimal()` instead of the default `theme_gray()`), you can pass the complete theme as part of the **thematic** theme:
 
 ```r
-thematic_on(ggtheme = ggplot2::theme_minimal())
+thematic_shiny(ggtheme = theme_minimal())
 shinyApp(ui, server)
 ```
 
@@ -156,6 +156,7 @@ ui <- fluidPage(
   tabs, bootstrap(),
   tags$link(href="https://fonts.googleapis.com/css?family=Pacifico", rel="stylesheet")
 )
+thematic_shiny()
 shinyApp(ui, server)
 ```
 
