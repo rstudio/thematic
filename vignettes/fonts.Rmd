@@ -2,12 +2,7 @@
 title: "Font rendering"
 author: "Carson Sievert"
 date: "`r Sys.Date()`"
-output: 
-  rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{Font rendering}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: rmarkdown::html_vignette
 resource_files:
   - svglite.svg
 ---

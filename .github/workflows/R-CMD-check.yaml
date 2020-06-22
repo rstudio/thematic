@@ -37,8 +37,6 @@ jobs:
       SHINYTEST_RUN_TESTS: ${{ matrix.config.vdiffr }}
       VDIFFR_LOG_PATH: "../vdiffr.Rout.fail"
 
-
-
     steps:
       - name: Windows git setup
         if: runner.os == 'Windows'
@@ -140,7 +138,7 @@ jobs:
           -e "cat('::set-output name=name::gha-', '${{ steps.failed_branch.outputs.name }}', '-', '${{ matrix.config.r }}', '-', '${{ runner.os }}', sep = '')"
 
       - name: Check
-        run: rcmdcheck::rcmdcheck(args = c("--no-manual", "--no-vignettes"), error_on = "warning", check_dir = "check")
+        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
         shell: Rscript {0}
 
       - name: Upload check results
