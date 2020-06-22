@@ -49,7 +49,6 @@
 #' [thematic_on()], [thematic_off()], and [thematic_shiny()] all return
 #' the previous global theme.
 #'
-#' @rdname thematic
 #' @seealso [sequential_gradient()], [thematic_with_theme()], [thematic_save_plot()]
 #' @export
 #' @examples
@@ -108,7 +107,7 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
   invisible(old_theme)
 }
 
-#' @rdname thematic
+#' @rdname thematic_on
 #' @export
 thematic_off <- function() {
   remove_hooks()
@@ -127,7 +126,7 @@ thematic_off <- function() {
   invisible(theme)
 }
 
-#' @rdname thematic
+#' @rdname thematic_on
 #' @export
 thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
                            font = NA, sequential = sequential_gradient(),
@@ -173,7 +172,7 @@ is_thematic_theme <- function(x) {
   inherits(x, "thematic_theme")
 }
 
-#' @rdname thematic
+#' @rdname thematic_on
 #' @inheritParams thematic_on
 #' @param session see [shiny::onStop()].
 #' @export
@@ -192,7 +191,7 @@ thematic_shiny <- function(bg = "auto", fg = "auto", accent = "auto",
 }
 
 
-#' @rdname thematic
+#' @rdname thematic_on
 #' @inheritParams thematic_on
 #' @export
 thematic_rmd <- function(bg = "auto", fg = "auto", accent = "auto",
