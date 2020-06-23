@@ -7,33 +7,39 @@
 # managing scale defaults management, but it's unclear whether we'll have the same
 # for Geoms (this PR might do it, but it might not https://github.com/tidyverse/ggplot2/pull/2749)
 # -----------------------------------------------------------------------------------
-
 ggplot_build_set <- function() {
   if (!is_installed("ggplot2")) return(NULL)
-  ggplot_build_restore()
-  # Note that assignInNamespace() does S3 method registration, but to
-  # find the relevant generic, it looks in the parent.frame()...
-  # so this line here is prevent that from failing if ggplot2 hasn't been attached
-  # https://github.com/wch/r-source/blob/d0ede8/src/library/utils/R/objects.R#L472
-  ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
-  .globals$ggplot_build <- getFromNamespace("ggplot_build.ggplot", "ggplot2")
   assign_in_namespace <- assignInNamespace
-  assign_in_namespace("ggplot_build.ggplot", ggthematic_build, "ggplot2")
+  assign_in_namespace("ggplot_build", ggthematic_build, "ggplot2")
 }
 
 ggplot_build_restore <- function() {
-  if (is.function(.globals$ggplot_build)) {
-    ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
-    assign_in_namespace <- assignInNamespace
-    assign_in_namespace("ggplot_build.ggplot", .globals$ggplot_build, "ggplot2")
-    rm("ggplot_build", envir = .globals)
-  }
+  assign_in_namespace <- assignInNamespace
+  assign_in_namespace("ggplot_build", ggplot_build_, "ggplot2")
 }
 
-# Careful, be aware that plotly uses this!
-ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .globals$theme) {
+#' Build a ggplot with thematic's theming
+#'
+#' Not intended for use by most users. It's mainly here to allow ggplot2 extension
+#' packages to leverage thematic's ability to set ggplot2 defaults based on a thematic theme.
+#'
+#' This function does the following:
+#'   1. Sets new ggplot2 defaults based on the current thematic theme.
+#'   2. Calls [ggplot2::ggplot_build(p)] with the new defaults
+#'   3. Restores the old defaults before exiting
+#'
+#' @return Returns a built ggplot using defaults informed by the current thematic theme.
+#' @param p a ggplot-like object.
+#' @export
+ggthematic_build <- function(p) {
+  UseMethod("ggthematic_build")
+}
+
+#' @export
+ggthematic_build.ggplot <- function(p) {
+  theme <- thematic_get_theme()
   if (!length(theme)) {
-    return(ggplot_build(p))
+    return(ggplot_build_(p))
   }
   fg <- theme$fg
   bg <- theme$bg
@@ -150,13 +156,14 @@ ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .g
   p$theme <- NULL
   p <- p + theme_thematic(theme) + user_theme
 
-  ggplot_build(p)
+  ggplot_build_(p)
 }
-
 
 
 # ----------------------------------------------------------------------
 # Returns a modified version of the global theme based on thematic theme
+# N.B. if and when ggplot2 gets the ability to set geom and scale defaults
+# from a theme object, then it might make sense to export this function
 # ----------------------------------------------------------------------
 theme_thematic <- function(theme = .globals$theme) {
   # Calculate elements so we know the "final form" of each element
