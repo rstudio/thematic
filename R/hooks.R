@@ -33,7 +33,6 @@ grid_before_hook <- function() {
   # update the device's bg color
   knitr_dev_args_set()
   # update ggplot2/lattice defaults
-  ggplot_theme_set()
   ggplot_build_set()
   lattice_print_set()
 }

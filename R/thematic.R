@@ -41,7 +41,6 @@
 #' qualitative values (won't be used in ggplot2 when the number of data
 #' levels exceeds the max allowed colors). Defaults to [okabe_ito()].
 #' @param inherit should non-specified values inherit from the previous theme?
-#' @param ggtheme a complete **ggplot2** theme to inherit defaults from.
 #'
 #' @return [thematic_theme()] returns a theme object as a list (which can be
 #' activated with [thematic_with_theme()] or [thematic_set_theme()]).
@@ -77,14 +76,12 @@
 #'
 thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
                         font = NA, sequential = sequential_gradient(),
-                        qualitative = okabe_ito(), inherit = FALSE,
-                        ggtheme = NULL) {
+                        qualitative = okabe_ito(), inherit = FALSE) {
   old_theme <- thematic_get_theme()
   .globals$theme <- thematic_theme(
     bg = bg, fg = fg, accent = accent,
     font = font, sequential = sequential,
-    qualitative = qualitative, inherit = inherit,
-    ggtheme = ggtheme
+    qualitative = qualitative, inherit = inherit
   )
   # Set knitr dev.args = list(bg = bg) now (instead of later)
   # so at least the _next_ chunk has the right bg color.
@@ -116,7 +113,6 @@ thematic_off <- function() {
   base_params_restore()
   base_palette_restore()
   knitr_dev_args_restore()
-  ggplot_theme_restore()
   ggplot_build_restore()
   lattice_print_restore()
 
@@ -130,8 +126,7 @@ thematic_off <- function() {
 #' @export
 thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
                            font = NA, sequential = sequential_gradient(),
-                           qualitative = okabe_ito(), inherit = FALSE,
-                           ggtheme = NULL) {
+                           qualitative = okabe_ito(), inherit = FALSE) {
 
   # This function is called at plot time (with bg/fg/accent)
   if (is.function(sequential)) {
@@ -145,8 +140,7 @@ thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
       accent = tag_auto(accent),
       qualitative = qualitative,
       sequential = sequential,
-      font = as_font_spec(font),
-      ggtheme = ggtheme
+      font = as_font_spec(font)
     ),
     class = "thematic_theme"
   )
@@ -160,7 +154,6 @@ thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
     if (identical(accent, fmls$accent)) new$accent <- NULL
     if (identical(sequential, fmls$sequential)) new$sequential <- NULL
     if (identical(qualitative, fmls$qualitative)) new$qualitative <- NULL
-    if (identical(ggtheme, fmls$ggtheme)) new$ggtheme <- NULL
     new <- utils::modifyList(old, new)
     new <- structure(new, class = "thematic_theme")
   }
@@ -178,13 +171,12 @@ is_thematic_theme <- function(x) {
 #' @export
 thematic_shiny <- function(bg = "auto", fg = "auto", accent = "auto",
                            font = NA, sequential = sequential_gradient(),
-                           qualitative = okabe_ito(), inherit = FALSE, ggtheme = NULL,
+                           qualitative = okabe_ito(), inherit = FALSE,
                            session = shiny::getDefaultReactiveDomain()) {
   old_theme <- thematic_on(
     bg = bg, fg = fg, accent = accent,
     font = font, sequential = sequential,
-    qualitative = qualitative, inherit = inherit,
-    ggtheme = ggtheme
+    qualitative = qualitative, inherit = inherit
   )
   shiny::onStop(function() thematic_set_theme(old_theme), session = session)
   invisible(old_theme)
@@ -196,13 +188,11 @@ thematic_shiny <- function(bg = "auto", fg = "auto", accent = "auto",
 #' @export
 thematic_rmd <- function(bg = "auto", fg = "auto", accent = "auto",
                          font = NA, sequential = sequential_gradient(),
-                         qualitative = okabe_ito(), inherit = FALSE,
-                         ggtheme = NULL) {
+                         qualitative = okabe_ito(), inherit = FALSE) {
   old_theme <- thematic_on(
     bg = bg, fg = fg, accent = accent,
     font = font, sequential = sequential,
-    qualitative = qualitative, inherit = inherit,
-    ggtheme = ggtheme
+    qualitative = qualitative, inherit = inherit
   )
   document_hook <- knitr::knit_hooks$get("document")
   knitr::knit_hooks$set(document = function(x) {
