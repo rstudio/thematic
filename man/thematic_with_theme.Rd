@@ -38,17 +38,26 @@ or \code{NULL} (in which case \code{thematic_off()} is called).}
 \item{amounts}{value(s) between 0 and 1 specifying how much to mix \code{bg} (0) and \code{fg} (1).}
 }
 \description{
+These functions are helpful for getting and/or temporarily activating a
+\code{\link[=thematic_theme]{thematic_theme()}}.
+}
+\section{Functions}{
 \itemize{
-\item \code{\link[=thematic_with_theme]{thematic_with_theme()}}: similar to \code{\link[=thematic_on]{thematic_on()}}, but for an single plot.
-\item \code{\link[=thematic_local_theme]{thematic_local_theme()}}: similar to \code{\link[=thematic_with_theme]{thematic_with_theme()}}, but de-couples
+\item \code{thematic_with_theme}: similar to \code{\link[=thematic_on]{thematic_on()}}, but for an single plot.
+
+\item \code{thematic_local_theme}: similar to \code{\link[=thematic_with_theme]{thematic_with_theme()}}, but de-couples
 the theme from the plot expression.
-\item \code{\link[=thematic_set_theme]{thematic_set_theme()}}: set a given \code{theme} object as the current theme.
-\item \code{\link[=thematic_get_theme]{thematic_get_theme()}}: obtain the current \code{theme}.
-\item \code{\link[=thematic_get_option]{thematic_get_option()}}: obtain a particular \code{theme} option (and provide a \code{default}
-if if no \code{theme} is active).
-\item \code{\link[=thematic_get_mixture]{thematic_get_mixture()}}: obtain a mixture of the current \code{theme}'s \code{bg} and \code{fg}.
-}
-}
+
+\item \code{thematic_set_theme}: set a given \code{theme} object as the current theme.
+
+\item \code{thematic_get_theme}: obtain the current \code{theme}.
+
+\item \code{thematic_get_option}: obtain a particular \code{theme} option (and provide a \code{default}
+if no \code{theme} is active).
+
+\item \code{thematic_get_mixture}: obtain a mixture of the current \code{theme}'s \code{bg} and \code{fg}.
+}}
+
 \examples{
 
 # Use thematic_with_theme() for a one-time use of thematic

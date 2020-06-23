@@ -205,19 +205,14 @@ thematic_rmd <- function(bg = "auto", fg = "auto", accent = "auto",
 
 #' Tools for getting and restoring global state
 #'
-#' * [thematic_with_theme()]: similar to [thematic_on()], but for an single plot.
-#' * [thematic_local_theme()]: similar to [thematic_with_theme()], but de-couples
-#'   the theme from the plot expression.
-#' * [thematic_set_theme()]: set a given `theme` object as the current theme.
-#' * [thematic_get_theme()]: obtain the current `theme`.
-#' * [thematic_get_option()]: obtain a particular `theme` option (and provide a `default`
-#'   if if no `theme` is active).
-#' * [thematic_get_mixture()]: obtain a mixture of the current `theme`'s `bg` and `fg`.
+#' These functions are helpful for getting and/or temporarily activating a
+#' [thematic_theme()].
+#'
+#' @describeIn thematic_with_theme similar to [thematic_on()], but for an single plot.
 #'
 #' @param theme a [thematic_theme()] object.
 #' @param expr R code that produces a plot.
 #' @param default a default value to return in the event no thematic theme is active.
-#' @rdname thematic_with_theme
 #' @export
 #' @examples
 #'
@@ -261,7 +256,8 @@ thematic_with_theme <- function(theme, expr) {
   invisible(result$value)
 }
 
-#' @rdname thematic_with_theme
+#' @describeIn thematic_with_theme similar to [thematic_with_theme()], but de-couples
+#'   the theme from the plot expression.
 #' @param .local_envir The environment to use for scoping.
 #' @export
 thematic_local_theme <- function(theme, .local_envir = parent.frame()) {
@@ -270,7 +266,7 @@ thematic_local_theme <- function(theme, .local_envir = parent.frame()) {
   invisible(old_theme)
 }
 
-#' @rdname thematic_with_theme
+#' @describeIn thematic_with_theme set a given `theme` object as the current theme.
 #' @param theme a `thematic_theme()` object (or a return value of [thematic_on]/[thematic_get_theme()])
 #' or `NULL` (in which case `thematic_off()` is called).
 #' @export
@@ -284,7 +280,7 @@ thematic_set_theme <- function(theme) {
   do.call(thematic_on, theme)
 }
 
-#' @rdname thematic_with_theme
+#' @describeIn thematic_with_theme obtain the current `theme`.
 #' @param resolve whether or not `'auto'` values should be resolved before returning
 #' @export
 thematic_get_theme <- function(resolve = TRUE) {
@@ -305,7 +301,8 @@ thematic_get <- function() {
   thematic_get_theme()
 }
 
-#' @rdname thematic_with_theme
+#' @describeIn thematic_with_theme obtain a particular `theme` option (and provide a `default`
+#'   if no `theme` is active).
 #' @param name a theme element name (e.g., `fg`, `bg`, etc.)
 #' @export
 thematic_get_option <- function(name = "", default = NULL, resolve = TRUE) {
@@ -326,7 +323,7 @@ thematic_get_option <- function(name = "", default = NULL, resolve = TRUE) {
   theme[[name]] %||% default
 }
 
-#' @rdname thematic_with_theme
+#' @describeIn thematic_with_theme obtain a mixture of the current `theme`'s `bg` and `fg`.
 #' @param amounts value(s) between 0 and 1 specifying how much to mix `bg` (0) and `fg` (1).
 #' @export
 thematic_get_mixture <- function(amounts = 0.5, default = NULL) {
