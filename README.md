@@ -35,7 +35,7 @@ Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny),
 you’ll need **shiny** v.1.5.0 or higher.
 
 ``` r
-remotes::install_github("rstudio/shiny")
+install.packages("shiny")
 ```
 
 For [auto theming in R

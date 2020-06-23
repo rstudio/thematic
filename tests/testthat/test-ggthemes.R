@@ -50,12 +50,14 @@ test_that("Global ggthemes are respected", {
   expect_doppelganger("economist_white", function() with_ggtheme(theme_economist_white(), p))
 })
 
-test_that("ggtheme argument works as expected", {
-  font <- font_spec(scale = 1.5)
-  thematic_on("black", "white", font = font, ggtheme = theme_void())
+test_that("works as expected with global ggthemes", {
+  ggtheme <- theme_get()
+  on.exit(theme_set(ggtheme), add = TRUE)
+  theme_set(theme_void())
+  thematic_on("black", "white", font = font_spec(scale = 1.5))
   expect_doppelganger("ggtheme-void", qplot(1:10))
-  thematic_on("black", "white", font = font, ggtheme = theme_minimal())
+  theme_set(theme_minimal())
   expect_doppelganger("ggtheme-minimal", qplot(1:10))
   thematic_off()
-  expect_doppelganger("ggtheme-off", qplot(1:10))
+  expect_doppelganger("ggtheme-minimal-off", qplot(1:10))
 })

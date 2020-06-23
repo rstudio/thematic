@@ -123,10 +123,11 @@ Also:
 knitr::include_graphics("tabsets-geom-raster.png")
 ```
 
-As you'll learn in the [custom themes article](custom.html), you can always override the defaults set by **thematic** by using plot-specific code (i.e., by adding `theme()` elements to the plot). However, if you want to use a different _complete_ **ggplot2** theme (e.g., `theme_minimal()` instead of the default `theme_gray()`), you can pass the complete theme as part of the **thematic** theme:
+As you'll learn in the [custom themes article](custom.html), you can always override the defaults set by **thematic** by using plot-specific code (i.e., by adding `theme()` elements to the plot). However, if you want to use a different _complete_ **ggplot2** theme (e.g., `theme_minimal()` instead of the default `theme_gray()`), you should set the theme globally with `ggplot2::theme_set()`.
 
 ```r
-thematic_shiny(ggtheme = theme_minimal())
+ggplot2::theme_set(ggplot2::theme_minimal())
+thematic_shiny()
 shinyApp(ui, server)
 ```
 
