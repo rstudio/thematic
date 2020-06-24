@@ -293,7 +293,7 @@ resolve_theme_inheritance <- function(p_theme) {
 # TODO: could consider memoising if this proves to be a bottleneck
 theme_relationships <- function() {
   inherits <- vapply(ggplot2::get_element_tree(), function(x) { x$inherit %||% "" }, character(1))
-  relations <- data.frame(child = names(inherits), parent = inherits)
+  relations <- data.frame(child = names(inherits), parent = inherits, stringsAsFactors = FALSE)
   relations[relations$parent != "", ]
 }
 
