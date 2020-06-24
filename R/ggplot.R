@@ -41,6 +41,7 @@ ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
   if (!length(theme)) {
     return(ggplot_build(p))
   }
+
   fg <- theme$fg
   bg <- theme$bg
   # Accent can be of length 2 because lattice
@@ -161,8 +162,9 @@ ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
       new = theme_user[[name]], old = theme_final[[name]]
     )
   }
+  p$theme <- theme_final
 
-  ggplot_build(p + theme_final)
+  ggplot_build(p)
 }
 
 # ----------------------------------------------------------------------
