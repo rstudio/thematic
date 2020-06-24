@@ -61,3 +61,13 @@ test_that("works as expected with global ggthemes", {
   thematic_off()
   expect_doppelganger("ggtheme-minimal-off", qplot(1:10))
 })
+
+
+test_that("works as expected with plot-specific themes", {
+  thematic_on(bg = "#222222", fg = "white")
+  p <- ggplot(mtcars, aes(wt, mpg)) +
+    geom_point() +
+    facet_wrap(~cyl)
+  p <- p + theme(strip.background = element_rect(fill = "purple"))
+  expect_doppelganger("purple-strip", p)
+})
