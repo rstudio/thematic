@@ -76,4 +76,10 @@ test_that("works as expected with plot-specific themes", {
     axis.text.x = element_text(size = 50)
   )
   expect_doppelganger("axis-interitance", p)
+
+  p <- qplot(1:10) + theme(
+    text = element_text(colour = "red", size = 5),
+    axis.text.x.bottom = element_text(size = 50)
+  )
+  expect_doppelganger("axis-interitance-distant", p)
 })
