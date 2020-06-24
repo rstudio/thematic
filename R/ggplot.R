@@ -32,7 +32,12 @@ ggplot_build_restore <- function() {
 
 # N.B. If you make changes here, plotly might have to as well!
 # https://github.com/ropensci/plotly/pull/1801/files#diff-3afd3a8e6a2cbc84a7afc6d2d06ec5e3R429
-ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .globals$theme) {
+ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
+  theme <- theme %||% thematic_get_theme()
+  ggplot_build <- ggplot_build %||% .globals$ggplot_build
+  if (!is.function(ggplot_build)) {
+    stop("`ggplot_build` must be a function", call. = FALSE)
+  }
   if (!length(theme)) {
     return(ggplot_build(p))
   }
@@ -147,22 +152,28 @@ ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .g
   }
 
   # Since thematic_theme() wants to define elements that could possibly be
-  # parents of the user's theme elements, we 'expand' the user's theme so
-  # that theme inheritance works the way you'd expect it to...
-  # This might seem like a weird way to approach the problem (it is); after all,
-  # this _could_ be done more easily by setting the global theme. However,
-  # since ggplot_gtable() also uses the global theme, that can't be done locally,
-  # and as we've learned before modifying the global theme has
-  user_theme <- lapply(names(p$theme), function(x) {
-    kid_names <- find_descendants(x)
-    kid_elements <- lapply(kid_names, function(y) p$theme[[y]] %||% p$theme[[x]])
-    rlang::set_names(kid_elements, kid_names)
-  })
-  user_theme <- unlist(user_theme, recursive = FALSE)
-  user_theme <- user_theme[!duplicated(names(user_theme))]
-  p <- p + theme_thematic(theme) + do.call(ggplot2::theme, user_theme %||% list())
+  # parents of the user's theme elements, we iterate through each generation of the
+  # tree and merge the user theme elements with thematic_theme()
+  inherits <- lapply(get_element_tree(), function(x) { x$inherit %||% "" })
+  relations <- tibble::tibble(child = names(inherits), parent = as.character(inherits))
+  theme_cur <- theme_thematic(theme)
 
-  ggplot_build(p)
+  while(nrow(relations) > 0) {
+    this_idx <- relations$parent %in% relations$child
+    this_levels <- relations$child[!this_idx]
+    relations <- relations[this_idx, ]
+    for (this_level in this_levels) {
+      if (!this_level %in% names(p$theme)) next
+      kid_names <- find_descendants(this_level)
+      for (kid_name in kid_names) {
+        theme_cur[[kid_name]] <- ggplot2::merge_element(
+          p$theme[[this_level]], theme_cur[[kid_name]]
+        )
+      }
+    }
+  }
+
+  ggplot_build(p + theme_cur)
 }
 
 find_descendants <- function(parents, children = NULL) {
