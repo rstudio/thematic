@@ -279,6 +279,7 @@ resolve_theme_inheritance <- function(p_theme) {
         parent_el
       }
     }
+    # remove relationships that have been inspected
     relationships <- relationships[!idx, ]
   }
   p_theme
