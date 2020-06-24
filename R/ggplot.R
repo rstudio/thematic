@@ -258,8 +258,8 @@ computed_theme_elements <- function(ggtheme) {
 resolve_theme_inheritance <- function(p_theme) {
   relationships <- theme_relationships()
   while(nrow(relationships) > 0) {
-    # Start from the bottom of the tree (i.e., elements that don't have a parent)
-    # and work our way up, merging the child with the parent (if both are defined)
+    # Start from the top of the tree (i.e., elements that don't have a parent)
+    # and work our way down, merging the child with the parent (if both are defined)
     idx <- !relationships$parent %in% relationships$child
     for (i in which(idx)) {
       this_relationship <- relationships[i, ]
