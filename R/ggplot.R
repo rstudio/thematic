@@ -1,140 +1,3 @@
-# ---------------------------------------------------------------
-# Theme management
-# ---------------------------------------------------------------
-
-ggplot_theme_set <- function(theme = .globals$theme) {
-  if (!is_installed("ggplot2")) return(NULL)
-  # Do nothing the first time; otherwise, restore to original state
-  ggplot_theme_restore()
-  # Now that we're back to original state, this'll return the original state
-  .globals$ggplot_theme <- update_ggtheme(theme)
-}
-
-ggplot_theme_restore <- function() {
-  if (is.null(.globals$ggplot_theme)) return()
-  ggplot2::theme_set(.globals$ggplot_theme)
-  rm("ggplot_theme", envir = .globals)
-}
-
-# Updates relevant colors and fonts in the global ggplot2 theme
-update_ggtheme <- function(theme = .globals$theme) {
-  original_ggtheme <- ggplot2::theme_get()
-  new_ggtheme <- theme$ggtheme %||% original_ggtheme
-  # The theme were basing the update on should be set (in order for missing values to be meaningful)
-  ggplot2::theme_set(new_ggtheme)
-  new_ggtheme_computed <- computed_theme_elements(new_ggtheme)
-
-  # Handles any missing color value (e.g., NULL, NA, 'transparent')
-  `%missing%` <- function(x, y) {
-    if (identical(x, "transparent")) return(y)
-    x %OR% y
-  }
-
-  # The remaining updates depend on the old fg/bg
-  old_bg <- new_ggtheme_computed$plot.background$fill %missing% .globals$base_params$bg %missing% "white"
-  old_fg <- new_ggtheme_computed$title$colour %missing% "black"
-
-  new_fg <- theme$fg
-  new_bg <- theme$bg
-
-  # Main idea: theme colors are comprised of mixtures of bg and fg
-  # So, given a color, get it's perceptual distance between bg <-> fg
-  # and use that 'amount of mixture' to inform a new color
-  update_color <- function(color) {
-    amt <- amount_of_mixture(color, old_bg, old_fg)
-    mix_colors(new_bg, new_fg, amt)
-  }
-
-  update_element <- function(element, name) {
-    UseMethod("update_element")
-  }
-
-  update_element.element_text <- function(element, name) {
-    new_element <- ggplot2::element_text(
-      colour = update_color(element$colour),
-      family = if (!identical(theme$font$family, "")) theme$font$family,
-      size = element$size * theme$font$scale
-    )
-    do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
-  }
-
-  update_element.element_rect <- function(element, name) {
-    new_element <- ggplot2::element_rect(
-      fill = update_color(element$fill),
-      colour = update_color(element$colour)
-    )
-    do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
-  }
-
-  update_element.element_line <- function(element, name) {
-    new_element <- ggplot2::element_line(
-      colour = update_color(element$colour)
-    )
-    do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
-  }
-
-  update_element.element_blank <- function(element, name) {
-    # Make sure plot.background is always defined; since otherwise,
-    # we'd have to depend on par("bg") being set (and the device respecting it)
-    if (name %in% c("plot.background", "panel.background")) {
-      new_element <- ggplot2::element_rect(
-        fill = new_bg, colour = new_bg
-      )
-      do.call(ggplot2::theme_update, rlang::set_names(list(new_element), name))
-    }
-  }
-
-  # known classes where we know there is nothing relevant to update
-  update_element.unit <- function(element, name) {}
-  update_element.simpleUnit <- function(element, name) {}
-  update_element.margin <- function(element, name) {}
-  update_element.logical <- function(element, name) {}
-
-  # It's possible someone could be registering a character theme element that we don't
-  # know about and also needs updating...here are the known "standard" cases that are safe to ignore
-  known_elements <- c(
-    "legend.position", "legend.direction", "legend.justification", "legend.box", "strip.placement",
-    "strip.placement.x", "strip.placement.y", "plot.title.position", "plot.caption.position", "plot.tag.position"
-  )
-  update_element.character <- function(element, name) {
-    if (!name %in% known_elements) {
-      message("Unknown theme element (of class character): ", name)
-    }
-  }
-
-  update_element.default <- function(element, name) {
-    message("Unknown theme element ", name, " of class: ", class(element)[1])
-  }
-
-  Map(function(x, y) update_element(x, y), new_ggtheme_computed, names(new_ggtheme_computed))
-
-  original_ggtheme
-}
-
-# Get all the computed theme elements from a given theme definition
-computed_theme_elements <- function(ggtheme) {
-  theme_default <- ggplot2::theme_grey()
-  # ggplot2 3.3.0 introduced extensible theme elements
-  elements <- if (packageVersion("ggplot2") >= "3.3.0") {
-    names(ggplot2::get_element_tree())
-  } else {
-    names(theme_default)
-  }
-  # If this isn't a complete theme, make it one
-  # (fixes cases like ggthemes::theme_pander() which isn't complete)
-  if (identical(attr(ggtheme, "complete"), FALSE)) {
-    ggtheme <- theme_default + ggtheme
-  }
-  computed <- rlang::set_names(lapply(elements, calc_element_safe, ggtheme), elements)
-  dropNulls(computed)
-}
-
-# It's not safe to calc all elements (e.g., plot.margin)
-calc_element_safe <- function(...) {
-  tryNULL(ggplot2::calc_element(...))
-}
-
-
 # -----------------------------------------------------------------------------------
 # Custom ggplot_build()
 #
@@ -167,10 +30,14 @@ ggplot_build_restore <- function() {
   }
 }
 
-
-
-
-ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .globals$theme) {
+# N.B. If you make changes here, plotly might have to as well!
+# https://github.com/ropensci/plotly/pull/1801/files#diff-3afd3a8e6a2cbc84a7afc6d2d06ec5e3R429
+ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
+  theme <- theme %||% thematic_get_theme()
+  ggplot_build <- ggplot_build %||% .globals$ggplot_build
+  if (!is.function(ggplot_build)) {
+    stop("`ggplot_build` must be a function", call. = FALSE)
+  }
   if (!length(theme)) {
     return(ggplot_build(p))
   }
@@ -284,7 +151,150 @@ ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .g
     }
   }
 
-  ggplot_build(p)
+  # Since thematic_theme() wants to define elements that could possibly be
+  # parents of the user's theme elements, we iterate through each generation of the
+  # tree and merge the user theme elements with thematic_theme()
+  theme_final <- theme_thematic(theme)
+  theme_user <- resolve_theme_inheritance(p$theme)
+  for (name in names(theme_user)) {
+    theme_final[[name]] <- ggplot2::merge_element(
+      new = theme_user[[name]], old = theme_final[[name]]
+    )
+  }
+
+  ggplot_build(p + theme_final)
+}
+
+# ----------------------------------------------------------------------
+# Returns a modified version of the global theme based on thematic theme
+# N.B. if and when ggplot2 gets the ability to set geom and scale defaults
+# from a theme object, then it might make sense to export this function
+# ----------------------------------------------------------------------
+theme_thematic <- function(theme = .globals$theme) {
+  # Calculate elements so we know the "final form" of each element
+  # (i.e., takes care of inheritance)
+  ggtheme <- computed_theme_elements(ggplot2::theme_get())
+
+  # Handles any missing color value (e.g., NULL, NA, 'transparent')
+  `%missing%` <- function(x, y) {
+    if (identical(x, "transparent")) return(y)
+    x %OR% y
+  }
+
+  # The remaining updates depend on the old fg/bg
+  old_bg <- ggtheme$plot.background$fill %missing% .globals$base_params$bg %missing% "white"
+  old_fg <- ggtheme$title$colour %missing% "black"
+
+  new_fg <- theme$fg
+  new_bg <- theme$bg
+
+  # Main idea: theme colors are comprised of mixtures of bg and fg
+  # So, given a color, get it's perceptual distance between bg <-> fg
+  # and use that 'amount of mixture' to inform a new color
+  update_color <- function(color) {
+    amt <- amount_of_mixture(color, old_bg, old_fg)
+    mix_colors(new_bg, new_fg, amt)
+  }
+
+  update_element <- function(element, name) {
+    UseMethod("update_element")
+  }
+
+  update_element.element_text <- function(element, name) {
+    ggplot2::element_text(
+      colour = update_color(element$colour),
+      size = element$size * theme$font$scale,
+      family = if (!identical(theme$font$family, "")) theme$font$family
+    )
+  }
+
+  update_element.element_rect <- function(element, name) {
+    ggplot2::element_rect(
+      fill = update_color(element$fill),
+      colour = update_color(element$colour)
+    )
+  }
+
+  update_element.element_line <- function(element, name) {
+    ggplot2::element_line(
+      colour = update_color(element$colour)
+    )
+  }
+
+  update_element.element_blank <- function(element, name) {
+    # Make sure plot.background is always defined; since otherwise,
+    # we'd have to depend on par("bg") being set (and the device respecting it)
+    if (name %in% c("plot.background", "panel.background")) {
+      element <- ggplot2::element_rect(fill = new_bg, colour = new_bg)
+    }
+    element
+  }
+
+  update_element.default <- function(element, name) NULL
+
+  ggtheme <- Map(function(x, y) update_element(x, y), ggtheme, names(ggtheme))
+  do.call(ggplot2::theme, dropNulls(ggtheme))
+}
+
+# Get all the computed theme elements from a given theme definition
+computed_theme_elements <- function(ggtheme) {
+  theme_default <- ggplot2::theme_grey()
+  # ggplot2 3.3.0 introduced extensible theme elements
+  elements <- if (packageVersion("ggplot2") >= "3.3.0") {
+    names(ggplot2::get_element_tree())
+  } else {
+    names(theme_default)
+  }
+  # If this isn't a complete theme, make it one
+  # (fixes cases like ggthemes::theme_pander() which isn't complete)
+  if (identical(attr(ggtheme, "complete"), FALSE)) {
+    ggtheme <- theme_default + ggtheme
+  }
+  computed <- rlang::set_names(lapply(elements, calc_element_safe, ggtheme), elements)
+  dropNulls(computed)
+}
+
+
+resolve_theme_inheritance <- function(p_theme) {
+  relationships <- theme_relationships()
+  while(nrow(relationships) > 0) {
+    # Start from the top of the tree (i.e., elements that don't have a parent)
+    # and work our way down, merging the child with the parent (if both are defined)
+    idx <- !relationships$parent %in% relationships$child
+    for (i in which(idx)) {
+      this_relationship <- relationships[i, ]
+      this_kid <- this_relationship$child
+      this_parent <- this_relationship$parent
+      parent_el <- p_theme[[this_parent]]
+      kid_el <- p_theme[[this_kid]]
+      # parent doesn't exist so do nothing
+      if (!length(parent_el)) {
+        next
+      }
+      p_theme[[this_kid]] <- if (length(kid_el)) {
+        # both parent & child exist
+        ggplot2::merge_element(new = kid_el, old = parent_el)
+      } else {
+        # parent exists but child doesnt
+        parent_el
+      }
+    }
+    # remove relationships that have been inspected
+    relationships <- relationships[!idx, ]
+  }
+  p_theme
+}
+
+# TODO: could consider memoising if this proves to be a bottleneck
+theme_relationships <- function() {
+  inherits <- vapply(get_element_tree(), function(x) { x$inherit %||% "" }, character(1))
+  relations <- data.frame(child = names(inherits), parent = inherits)
+  relations[relations$parent != "", ]
+}
+
+# It's not safe to calc all elements (e.g., plot.margin)
+calc_element_safe <- function(x, ...) {
+  tryCatch(ggplot2::calc_element(x, ...), error = function(e) x)
 }
 
 restore_scale <- function(name, x, envir) {

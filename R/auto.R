@@ -243,8 +243,6 @@ bs_theme_colors <- function() {
 
 rs_theme_colors <- function() {
   if (!is_rstudio()) return(NULL)
-  # Only apply RStudio theme if the device is (or will be) RStudio
-  if (!"RStudioGD" %in% infer_device()) return(NULL)
 
   # Hopefully someday this'll return font/accent info
   # https://github.com/rstudio/rstudioapi/issues/174
