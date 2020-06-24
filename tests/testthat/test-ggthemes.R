@@ -82,4 +82,5 @@ test_that("works as expected with plot-specific themes", {
     axis.text.x.bottom = element_text(size = 50)
   )
   expect_doppelganger("axis-interitance-distant", p)
+  expect_doppelganger("axis-interitance-distant2", last_plot())
 })
