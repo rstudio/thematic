@@ -1,5 +1,3 @@
- ggplot_build_ <- NULL
-
 .onLoad <- function(libname, pkgname) {
   # Leverage rsconnect's pre-deployment hook to copy the font
   # cache over to a directory that we can use on the server
@@ -19,16 +17,6 @@
   register_upgrade_message("ragg", "0.1.5.9000", "r-lib/ragg")
   # This may take longer
   register_upgrade_message("rmarkdown", "2.2.0", "rstudio/rmarkdown#1706")
-
-  # If and when we have access to ggplot_build, store a copy of it (for ggthematic_build)
-  if (is_installed("ggplot2")) {
-    ggplot_build_ <<- ggplot2::ggplot_build
-  } else {
-    setHook(
-      packageEvent("ggplot2", "onLoad"),
-      function() { ggplot_build_ <<- ggplot2::ggplot_build }
-    )
-  }
 
   if (!is_installed("knitr")) return()
   if (is_installed("showtext")) {

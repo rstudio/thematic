@@ -7,39 +7,34 @@
 # managing scale defaults management, but it's unclear whether we'll have the same
 # for Geoms (this PR might do it, but it might not https://github.com/tidyverse/ggplot2/pull/2749)
 # -----------------------------------------------------------------------------------
+
 ggplot_build_set <- function() {
   if (!is_installed("ggplot2")) return(NULL)
+  ggplot_build_restore()
+  # Note that assignInNamespace() does S3 method registration, but to
+  # find the relevant generic, it looks in the parent.frame()...
+  # so this line here is prevent that from failing if ggplot2 hasn't been attached
+  # https://github.com/wch/r-source/blob/d0ede8/src/library/utils/R/objects.R#L472
+  ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
+  .globals$ggplot_build <- getFromNamespace("ggplot_build.ggplot", "ggplot2")
   assign_in_namespace <- assignInNamespace
-  assign_in_namespace("ggplot_build", ggthematic_build, "ggplot2")
+  assign_in_namespace("ggplot_build.ggplot", ggthematic_build, "ggplot2")
 }
 
 ggplot_build_restore <- function() {
-  assign_in_namespace <- assignInNamespace
-  assign_in_namespace("ggplot_build", ggplot_build_, "ggplot2")
+  if (is.function(.globals$ggplot_build)) {
+    ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
+    assign_in_namespace <- assignInNamespace
+    assign_in_namespace("ggplot_build.ggplot", .globals$ggplot_build, "ggplot2")
+    rm("ggplot_build", envir = .globals)
+  }
 }
 
-#' Build a ggplot with thematic's theming
-#'
-#' Not intended for use by most users. It's mainly here to allow ggplot2 extension
-#' packages to leverage thematic's ability to set ggplot2 defaults based on a thematic theme.
-#'
-#' This function does the following:
-#'   1. Sets new ggplot2 defaults based on the current thematic theme.
-#'   2. Calls [ggplot2::ggplot_build(p)] with the new defaults
-#'   3. Restores the old defaults before exiting
-#'
-#' @return Returns a built ggplot using defaults informed by the current thematic theme.
-#' @param p a ggplot-like object.
-#' @export
-ggthematic_build <- function(p) {
-  UseMethod("ggthematic_build")
-}
-
-#' @export
-ggthematic_build.ggplot <- function(p) {
-  theme <- thematic_get_theme()
+# N.B. If you make changes here, plotly might have to as well!
+# https://github.com/ropensci/plotly/pull/1801/files#diff-3afd3a8e6a2cbc84a7afc6d2d06ec5e3R429
+ggthematic_build <- function(p, ggplot_build = .globals$ggplot_build, theme = .globals$theme) {
   if (!length(theme)) {
-    return(ggplot_build_(p))
+    return(ggplot_build(p))
   }
   fg <- theme$fg
   bg <- theme$bg
@@ -151,9 +146,13 @@ ggthematic_build.ggplot <- function(p) {
     }
   }
 
-  # Since thematic_theme() wants to elements that could possible be
-  # parents of the user's theme elements, 'expand' the user's theme so
-  # that theme inheritance works the way they'd expect it to
+  # Since thematic_theme() wants to define elements that could possibly be
+  # parents of the user's theme elements, we 'expand' the user's theme so
+  # that theme inheritance works the way you'd expect it to...
+  # This might seem like a weird way to approach the problem (it is); after all,
+  # this _could_ be done more easily by setting the global theme. However,
+  # since ggplot_gtable() also uses the global theme, that can't be done locally,
+  # and as we've learned before modifying the global theme has
   user_theme <- lapply(names(p$theme), function(x) {
     kid_names <- find_descendants(x)
     kid_elements <- lapply(kid_names, function(y) p$theme[[y]] %||% p$theme[[x]])
@@ -163,7 +162,7 @@ ggthematic_build.ggplot <- function(p) {
   user_theme <- user_theme[!duplicated(names(user_theme))]
   p <- p + theme_thematic(theme) + do.call(ggplot2::theme, user_theme %||% list())
 
-  ggplot_build_(p)
+  ggplot_build(p)
 }
 
 find_descendants <- function(parents, children = NULL) {
