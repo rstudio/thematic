@@ -1,0 +1,92 @@
+{
+  "input": {
+
+  },
+  "output": {
+    "__reactivedoc__": {
+      "html": "[html data sha1: 755aa20844b090ed4171dbf418dfdf37c635d879]",
+      "deps": [
+        {
+          "name": "jquery",
+          "version": "3.5.0",
+          "src": {
+            "href": "https://code.jquery.com"
+          },
+          "meta": null,
+          "script": "jquery-3.5.0.min.js",
+          "stylesheet": null,
+          "head": null,
+          "attachment": null,
+          "all_files": true
+        },
+        {
+          "name": "bootstrap",
+          "version": "3.4.1",
+          "src": {
+            "href": "bootstrap-3.4.1"
+          },
+          "meta": {
+            "name": "viewport",
+            "content": "width=device-width, initial-scale=1, shrink-to-fit=no"
+          },
+          "script": "bootstrap.min.js",
+          "stylesheet": "bootstrap-custom.min.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "navigation",
+          "version": "1.1",
+          "src": {
+            "href": "navigation-1.1"
+          },
+          "meta": null,
+          "script": "tabsets.js",
+          "stylesheet": null,
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "highlightjs",
+          "version": "9.12.0",
+          "src": {
+            "href": "highlightjs-9.12.0"
+          },
+          "meta": null,
+          "script": "highlight.js",
+          "stylesheet": "default.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "rmarkdown-performance",
+          "version": "0.1",
+          "src": {
+            "href": "rmarkdown-performance-0.1"
+          },
+          "meta": null,
+          "script": "rmd_perf.js",
+          "stylesheet": "rmd_perf.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        }
+      ]
+    },
+    "outebe7b267c0420ad8": {
+      "message": "could not find function \"get_element_tree\"",
+      "call": "get_element_tree()",
+      "type": null
+    }
+  },
+  "export": {
+
+  }
+}
