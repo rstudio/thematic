@@ -156,21 +156,36 @@ ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
   # tree and merge the user theme elements with thematic_theme()
   inherits <- lapply(get_element_tree(), function(x) { x$inherit %||% "" })
   relations <- tibble::tibble(child = names(inherits), parent = as.character(inherits))
+  relations <- relations[relations$parent != "", ]
   theme_cur <- theme_thematic(theme)
 
+  p_theme <- p$theme
   while(nrow(relations) > 0) {
     this_idx <- relations$parent %in% relations$child
-    this_levels <- relations$child[!this_idx]
+    this_parents <- relations$parent[!this_idx]
+    this_kids <- relations$child[!this_idx]
     relations <- relations[this_idx, ]
-    for (this_level in this_levels) {
-      if (!this_level %in% names(p$theme)) next
-      kid_names <- find_descendants(this_level)
-      for (kid_name in kid_names) {
-        theme_cur[[kid_name]] <- ggplot2::merge_element(
-          p$theme[[this_level]], theme_cur[[kid_name]]
-        )
+    for (i in seq_along(this_kids)) {
+      this_kid <- this_kids[[i]]
+      this_parent <- this_parents[[i]]
+      parent_el <- p_theme[[this_parent]]
+      kid_el <- p_theme[[this_kid]]
+      # parent doesn't exist don't merge at all
+      if (!length(parent_el)) next
+      p_theme[[this_kid]] <- if (length(kid_el)) {
+        # both parent & child exist
+        ggplot2::merge_element(new = kid_el, old = parent_el)
+      } else {
+        # parent exists but child doesnt
+        parent_el
       }
     }
+  }
+
+  for (name in names(p_theme)) {
+    theme_cur[[name]] <- ggplot2::merge_element(
+      new = p_theme[[name]], old = theme_cur[[name]]
+    )
   }
 
   ggplot_build(p + theme_cur)
