@@ -256,6 +256,9 @@ computed_theme_elements <- function(ggtheme) {
 
 
 resolve_theme_inheritance <- function(p_theme) {
+  if (!length(p_theme)) {
+    return(p_theme)
+  }
   relationships <- theme_relationships()
   while(nrow(relationships) > 0) {
     # Start from the top of the tree (i.e., elements that don't have a parent)
