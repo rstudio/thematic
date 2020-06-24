@@ -151,14 +151,31 @@ ggthematic_build.ggplot <- function(p) {
     }
   }
 
-  # User theme should able to override thematic's theme defaults
-  user_theme <- p$theme
-  p$theme <- NULL
-  p <- p + theme_thematic(theme) + user_theme
+  # Since thematic_theme() wants to elements that could possible be
+  # parents of the user's theme elements, 'expand' the user's theme so
+  # that theme inheritance works the way they'd expect it to
+  user_theme <- lapply(names(p$theme), function(x) {
+    kid_names <- find_descendants(x)
+    kid_elements <- lapply(kid_names, function(y) p$theme[[y]] %||% p$theme[[x]])
+    rlang::set_names(kid_elements, kid_names)
+  })
+  user_theme <- unlist(user_theme, recursive = FALSE)
+  user_theme <- user_theme[!duplicated(names(user_theme))]
+  p <- p + theme_thematic(theme) + do.call(ggplot2::theme, user_theme %||% list())
 
   ggplot_build_(p)
 }
 
+find_descendants <- function(parents, children = NULL) {
+  tree <- ggplot2::get_element_tree()
+  elements <- names(tree)
+  these_kids <- elements[vapply(tree, function(x) any(parents %in% x$inherit), logical(1))]
+  if (length(these_kids)) {
+    find_descendants(these_kids, c(children, these_kids))
+  } else {
+    children
+  }
+}
 
 # ----------------------------------------------------------------------
 # Returns a modified version of the global theme based on thematic theme

@@ -158,6 +158,8 @@ Complete **ggplot2** themes are `theme()` objects that fully specify every possi
 ggplot2::theme_set(ggplot2::theme_classic())
 thematic_on(bg = "#222222", fg = "white")
 ggsmooth
+# Now go back to the default
+ggplot2::theme_set(ggplot2::theme_gray())
 ```
 
 Other **ggplot2** extension packages such as **ggthemes** also provide useful complete themes. The image below links to a Shiny app that allows you to preview how various **ggthemes** themes look both before and after **thematic** in a Shiny app with some custom CSS.
