@@ -122,10 +122,10 @@ derived from the fg, bg, and accent color (defined in thematic_on())." />
 
     <div class="ref-description">
     <p>Controls the default weighting and direction of the color gradient
-derived from the <code>fg</code>, <code>bg</code>, and <code>accent</code> color (defined in <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on()</a></code>).</p>
+derived from the <code>fg</code>, <code>bg</code>, and <code>accent</code> color (defined in <code><a href='thematic_on.html'>thematic_on()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient</a></span>(fg_weight = <span class='fl'>0.75</span>, bg_weight = <span class='fl'>0.5</span>, fg_low = <span class='fl'>TRUE</span>, n = <span class='fl'>30</span>)</pre>
+    <pre class="usage"><span class='fu'>sequential_gradient</span>(<span class='kw'>fg_weight</span> <span class='kw'>=</span> <span class='fl'>0.75</span>, <span class='kw'>bg_weight</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>fg_low</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>30</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -153,26 +153,27 @@ low end of the colorscale (rather than the high end).</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a list of options for passing to the <code>sequential</code> argument of <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on()</a></code>.</p>
+    <p>a list of options for passing to the <code>sequential</code> argument of <code><a href='thematic_on.html'>thematic_on()</a></code>.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># Gradient from fg to accent</span>
-<span class='kw'>fg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient</a></span>(<span class='fl'>1</span>, <span class='fl'>0</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, sequential = <span class='kw'>fg</span>)
-<span class='kw'>ggplot2</span>::<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, color = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)</div><div class='img'><img src='sequential_gradient-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>fg</span> <span class='kw'>&lt;-</span> <span class='fu'>sequential_gradient</span>(<span class='fl'>1</span>, <span class='fl'>0</span>)
+<span class='fu'><a href='thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>fg</span>)
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='sequential_gradient-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Gradient from accent -&gt; bg</span>
-<span class='kw'>bg</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, sequential = <span class='kw'>bg</span>)
-<span class='kw'>ggplot2</span>::<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, color = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)</div><div class='img'><img src='sequential_gradient-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>bg</span> <span class='kw'>&lt;-</span> <span class='fu'>sequential_gradient</span>(<span class='fl'>0</span>, <span class='fl'>1</span>)
+<span class='fu'><a href='thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>bg</span>)
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='sequential_gradient-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Gradient from mix(accent, fg, 0.5) -&gt; mix(accent, bg, 0.5)</span>
-<span class='kw'>mix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient</a></span>(<span class='fl'>0.5</span>, <span class='fl'>0.5</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, sequential = <span class='kw'>mix</span>)
-<span class='kw'>ggplot2</span>::<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, color = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)</div><div class='img'><img src='sequential_gradient-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>mix</span> <span class='kw'>&lt;-</span> <span class='fu'>sequential_gradient</span>(<span class='fl'>0.5</span>, <span class='fl'>0.5</span>)
+<span class='fu'><a href='thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>mix</span>)
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='sequential_gradient-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Use fg (instead of bg) for high end of scale</span>
-<span class='kw'>mix_flip</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient</a></span>(<span class='fl'>0.5</span>, <span class='fl'>0.5</span>, fg_low = <span class='fl'>FALSE</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, sequential = <span class='kw'>mix_flip</span>)
-<span class='kw'>ggplot2</span>::<span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, color = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)</div><div class='img'><img src='sequential_gradient-4.png' alt='' width='700' height='433' /></div><div class='input'></div></pre>
+<span class='no'>mix_flip</span> <span class='kw'>&lt;-</span> <span class='fu'>sequential_gradient</span>(<span class='fl'>0.5</span>, <span class='fl'>0.5</span>, <span class='kw'>fg_low</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)
+<span class='fu'><a href='thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>, <span class='st'>"salmon"</span>, <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='no'>mix_flip</span>)
+<span class='kw pkg'>ggplot2</span><span class='kw ns'>::</span><span class='fu'><a href='https://ggplot2.tidyverse.org/reference/qplot.html'>qplot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>color</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='sequential_gradient-4.png' alt='' width='700' height='433' /></div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -188,7 +189,7 @@ low end of the colorscale (rather than the high end).</p></td>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

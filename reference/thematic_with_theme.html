@@ -122,28 +122,28 @@ thematic_theme()." />
 
     <div class="ref-description">
     <p>These functions are helpful for getting and/or temporarily activating a
-<code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_theme()</a></code>.</p>
+<code><a href='thematic_on.html'>thematic_theme()</a></code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_with_theme</a></span>(<span class='kw'>theme</span>, <span class='kw'>expr</span>)
+    <pre class="usage"><span class='fu'>thematic_with_theme</span>(<span class='no'>theme</span>, <span class='no'>expr</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_local_theme</a></span>(<span class='kw'>theme</span>, .local_envir = <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())
+<span class='fu'>thematic_local_theme</span>(<span class='no'>theme</span>, <span class='kw'>.local_envir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())
 
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_set_theme</a></span>(<span class='kw'>theme</span>)
+<span class='fu'>thematic_set_theme</span>(<span class='no'>theme</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_get_theme</a></span>(resolve = <span class='fl'>TRUE</span>)
+<span class='fu'>thematic_get_theme</span>(<span class='kw'>resolve</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_get_option</a></span>(name = <span class='st'>""</span>, default = <span class='kw'>NULL</span>, resolve = <span class='fl'>TRUE</span>)
+<span class='fu'>thematic_get_option</span>(<span class='kw'>name</span> <span class='kw'>=</span> <span class='st'>""</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>resolve</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
 
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_get_mixture</a></span>(amounts = <span class='fl'>0.5</span>, default = <span class='kw'>NULL</span>)</pre>
+<span class='fu'>thematic_get_mixture</span>(<span class='kw'>amounts</span> <span class='kw'>=</span> <span class='fl'>0.5</span>, <span class='kw'>default</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>theme</th>
-      <td><p>a <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_theme()</a></code> object (or a return value of <a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a>/<code><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_get_theme()</a></code>)
-or <code>NULL</code> (in which case <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_off()</a></code> is called).</p></td>
+      <td><p>a <code><a href='thematic_on.html'>thematic_theme()</a></code> object (or a return value of <a href='thematic_on.html'>thematic_on</a>/<code>thematic_get_theme()</code>)
+or <code>NULL</code> (in which case <code><a href='thematic_on.html'>thematic_off()</a></code> is called).</p></td>
     </tr>
     <tr>
       <th>expr</th>
@@ -175,8 +175,8 @@ or <code>NULL</code> (in which case <code><a href='https://rdrr.io/pkg/thematic/
 
     
 <ul>
-<li><p><code>thematic_with_theme</code>: similar to <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on()</a></code>, but for an single plot.</p></li>
-<li><p><code>thematic_local_theme</code>: similar to <code><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_with_theme()</a></code>, but de-couples
+<li><p><code>thematic_with_theme</code>: similar to <code><a href='thematic_on.html'>thematic_on()</a></code>, but for an single plot.</p></li>
+<li><p><code>thematic_local_theme</code>: similar to <code>thematic_with_theme()</code>, but de-couples
 the theme from the plot expression.</p></li>
 <li><p><code>thematic_set_theme</code>: set a given <code>theme</code> object as the current theme.</p></li>
 <li><p><code>thematic_get_theme</code>: obtain the current <code>theme</code>.</p></li>
@@ -188,29 +188,30 @@ if no <code>theme</code> is active).</p></li>
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
 <span class='co'># Use thematic_with_theme() for a one-time use of thematic</span>
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_with_theme</a></span>(
-  <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_theme</a></span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, accent = <span class='st'>"red"</span>),
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, col = <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_get_option</a></span>(<span class='st'>"accent"</span>), pch = <span class='fl'>19</span>)
+<span class='fu'>thematic_with_theme</span>(
+  <span class='fu'><a href='thematic_on.html'>thematic_theme</a></span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"red"</span>),
+  <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'>thematic_get_option</span>(<span class='st'>"accent"</span>), <span class='kw'>pch</span> <span class='kw'>=</span> <span class='fl'>19</span>)
 )</div><div class='img'><img src='thematic_with_theme-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; NULL</div><div class='input'>
 <span class='co'># Use thematic_set_theme() if doing something more complicated</span>
 <span class='co'># like programming on top thematic (without causing side effects)</span>
-<span class='kw'>my_plot</span> <span class='op'>&lt;-</span> <span class='fu'>function</span>(<span class='kw'>expr</span>, <span class='kw'>las</span> = <span class='fl'>3</span>, <span class='kw'>...</span>) {
-  <span class='kw'>old_theme</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/on.exit.html'>on.exit</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_set_theme</a></span>(<span class='kw'>old_theme</span>), add = <span class='fl'>TRUE</span>)
-  <span class='kw'>opts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(las = <span class='kw'>las</span>)
-  <span class='fu'><a href='https://rdrr.io/r/base/on.exit.html'>on.exit</a></span>(<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>opts</span>), add = <span class='fl'>TRUE</span>)
+<span class='no'>my_plot</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>expr</span>, <span class='no'>las</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>) {
+  <span class='no'>old_theme</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/on.exit.html'>on.exit</a></span>(<span class='fu'>thematic_set_theme</span>(<span class='no'>old_theme</span>), <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+  <span class='no'>opts</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='kw'>las</span> <span class='kw'>=</span> <span class='no'>las</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/on.exit.html'>on.exit</a></span>(<span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span>(<span class='no'>opts</span>), <span class='kw'>add</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
   <span class='co'># Imagine some more customization with ...</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/force.html'>force</a></span>(<span class='kw'>expr</span>)
+  <span class='fu'><a href='https://rdrr.io/r/base/force.html'>force</a></span>(<span class='no'>expr</span>)
 }
-<span class='fu'>my_plot</span>(<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>))</div><div class='img'><img src='thematic_with_theme-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_off</a></span>()
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_get_option</a></span>(<span class='st'>"bg"</span>, <span class='st'>"white"</span>)</div><div class='output co'>#&gt; [1] "white"</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>(bg = <span class='st'>"red"</span>)
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_get_option</a></span>(<span class='st'>"bg"</span>, <span class='st'>"white"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `fg='auto'`. Try providing an actual color (or `NA`) to the `fg` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span></div><div class='output co'>#&gt; [1] "red"</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_off</a></span>()
+<span class='fu'>my_plot</span>(<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>))</div><div class='img'><img src='thematic_with_theme-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='thematic_on.html'>thematic_off</a></span>()
+<span class='fu'>thematic_get_option</span>(<span class='st'>"bg"</span>, <span class='st'>"white"</span>)</div><div class='output co'>#&gt; [1] "white"</div><div class='input'><span class='fu'><a href='thematic_on.html'>thematic_on</a></span>(<span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"red"</span>)
+<span class='fu'>thematic_get_option</span>(<span class='st'>"bg"</span>, <span class='st'>"white"</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `fg='auto'`. Try providing an actual color (or `NA`) to the `fg` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span></div><div class='output co'>#&gt; [1] "red"</div><div class='input'><span class='fu'><a href='thematic_on.html'>thematic_off</a></span>()
 
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_with_theme</a></span>(
-  <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_theme</a></span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>),
-  <span class='kw'>scales</span>::<span class='fu'><a href='https://scales.r-lib.org//reference/show_col.html'>show_col</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_get_mixture</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, by = <span class='fl'>0.1</span>)))
-)</div><div class='img'><img src='thematic_with_theme-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; NULL</div><div class='input'></div></pre>
+<span class='fu'>thematic_with_theme</span>(
+  <span class='fu'><a href='thematic_on.html'>thematic_theme</a></span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>),
+  <span class='kw pkg'>scales</span><span class='kw ns'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/show_col.html'>show_col</a></span>(<span class='fu'>thematic_get_mixture</span>(<span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.1</span>)))
+)</div><div class='img'><img src='thematic_with_theme-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; NULL</div><div class='input'>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -226,7 +227,7 @@ if no <code>theme</code> is active).</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

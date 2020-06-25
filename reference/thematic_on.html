@@ -129,47 +129,47 @@ these options can automatically resolve to relevant CSS styles (see the "Auto th
 section below).</p>
     </div>
 
-    <pre class="usage"><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>(
-  bg = <span class='st'>"auto"</span>,
-  fg = <span class='st'>"auto"</span>,
-  accent = <span class='st'>"auto"</span>,
-  font = <span class='fl'>NA</span>,
-  sequential = <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient</a></span>(),
-  qualitative = <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/okabe_ito.html'>okabe_ito</a></span>(),
-  inherit = <span class='fl'>FALSE</span>
+    <pre class="usage"><span class='fu'>thematic_on</span>(
+  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
+  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>(),
+  <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_off</a></span>()
+<span class='fu'>thematic_off</span>()
 
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_theme</a></span>(
-  bg = <span class='st'>"auto"</span>,
-  fg = <span class='st'>"auto"</span>,
-  accent = <span class='st'>"auto"</span>,
-  font = <span class='fl'>NA</span>,
-  sequential = <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient</a></span>(),
-  qualitative = <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/okabe_ito.html'>okabe_ito</a></span>(),
-  inherit = <span class='fl'>FALSE</span>
+<span class='fu'>thematic_theme</span>(
+  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
+  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>(),
+  <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_shiny</a></span>(
-  bg = <span class='st'>"auto"</span>,
-  fg = <span class='st'>"auto"</span>,
-  accent = <span class='st'>"auto"</span>,
-  font = <span class='fl'>NA</span>,
-  sequential = <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient</a></span>(),
-  qualitative = <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/okabe_ito.html'>okabe_ito</a></span>(),
-  inherit = <span class='fl'>FALSE</span>,
-  session = <span class='kw'>shiny</span>::<span class='fu'><a href='https://rdrr.io/pkg/shiny/man/domains.html'>getDefaultReactiveDomain</a></span>()
+<span class='fu'>thematic_shiny</span>(
+  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
+  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>(),
+  <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>session</span> <span class='kw'>=</span> <span class='kw pkg'>shiny</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/domains.html'>getDefaultReactiveDomain</a></span>()
 )
 
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_rmd</a></span>(
-  bg = <span class='st'>"auto"</span>,
-  fg = <span class='st'>"auto"</span>,
-  accent = <span class='st'>"auto"</span>,
-  font = <span class='fl'>NA</span>,
-  sequential = <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient</a></span>(),
-  qualitative = <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/okabe_ito.html'>okabe_ito</a></span>(),
-  inherit = <span class='fl'>FALSE</span>
+<span class='fu'>thematic_rmd</span>(
+  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
+  <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
+  <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
+  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>(),
+  <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -191,19 +191,19 @@ Can be 2 colors for lattice (stroke vs fill accent).</p></td>
     </tr>
     <tr>
       <th>font</th>
-      <td><p>a <code><a href='https://rdrr.io/pkg/thematic/man/font_spec.html'>font_spec()</a></code> object. If missing, font defaults are not altered.</p></td>
+      <td><p>a <code><a href='font_spec.html'>font_spec()</a></code> object. If missing, font defaults are not altered.</p></td>
     </tr>
     <tr>
       <th>sequential</th>
       <td><p>a color palette for graphical markers that encode
 numeric values. Can be a vector of color codes or a
-<code><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient()</a></code> object.</p></td>
+<code><a href='sequential_gradient.html'>sequential_gradient()</a></code> object.</p></td>
     </tr>
     <tr>
       <th>qualitative</th>
       <td><p>a color palette for graphical markers that encode
 qualitative values (won't be used in ggplot2 when the number of data
-levels exceeds the max allowed colors). Defaults to <code><a href='https://rdrr.io/pkg/thematic/man/okabe_ito.html'>okabe_ito()</a></code>.</p></td>
+levels exceeds the max allowed colors). Defaults to <code><a href='okabe_ito.html'>okabe_ito()</a></code>.</p></td>
     </tr>
     <tr>
       <th>inherit</th>
@@ -217,9 +217,9 @@ levels exceeds the max allowed colors). Defaults to <code><a href='https://rdrr.
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_theme()</a></code> returns a theme object as a list (which can be
-activated with <code><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_with_theme()</a></code> or <code><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_set_theme()</a></code>).</p>
-<p><code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on()</a></code>, <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_off()</a></code>, and <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_shiny()</a></code> all return
+    <p><code>thematic_theme()</code> returns a theme object as a list (which can be
+activated with <code><a href='thematic_with_theme.html'>thematic_with_theme()</a></code> or <code><a href='thematic_with_theme.html'>thematic_set_theme()</a></code>).</p>
+<p><code>thematic_on()</code>, <code>thematic_off()</code>, and <code>thematic_shiny()</code> all return
 the previous global theme.</p>
     <h2 class="hasAnchor" id="auto-theming"><a class="anchor" href="#auto-theming"></a>Auto theming</h2>
 
@@ -230,19 +230,19 @@ the previous global theme.</p>
 which are all resolved, at plot time, based on the execution environment. In a
 <strong>shiny</strong> runtime, resolution of auto values should always work as expect; but
 in other contexts, auto values may lead to wrong or surprising results. In that
-case, auto resolution logic can be customized (see <code><a href='https://rdrr.io/pkg/thematic/man/auto-config.html'>auto_config_set()</a></code> for more details).</p>
+case, auto resolution logic can be customized (see <code><a href='auto-config.html'>auto_config_set()</a></code> for more details).</p>
     <h2 class="hasAnchor" id="global-vs-local-theming"><a class="anchor" href="#global-vs-local-theming"></a>Global vs. local theming</h2>
 
     
 
 
-<p><code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on()</a></code> enables thematic in a global fashion (that is, it impacts all
-future plots, up until <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_off()</a></code> is called). To use thematic in local fashion,
-first create a theme with <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_theme()</a></code>, then provide it to <code><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_with_theme()</a></code>
+<p><code>thematic_on()</code> enables thematic in a global fashion (that is, it impacts all
+future plots, up until <code>thematic_off()</code> is called). To use thematic in local fashion,
+first create a theme with <code>thematic_theme()</code>, then provide it to <code><a href='thematic_with_theme.html'>thematic_with_theme()</a></code>
 (or similar). To use thematic in a global fashion up until a <strong>shiny</strong>
-app exits, use <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_shiny()</a></code> (which cleans up after itself once the next shiny
+app exits, use <code>thematic_shiny()</code> (which cleans up after itself once the next shiny
 app that exits using <code><a href='https://rdrr.io/pkg/shiny/man/onStop.html'>shiny::onStop()</a></code>). To use thematic in a global fashion up until
-a <strong>rmarkdown</strong> document finishes rendering, use <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_rmd()</a></code>.</p>
+a <strong>rmarkdown</strong> document finishes rendering, use <code>thematic_rmd()</code>.</p>
     <h2 class="hasAnchor" id="color-values"><a class="anchor" href="#color-values"></a>Color values</h2>
 
     
@@ -252,21 +252,20 @@ a <strong>rmarkdown</strong> document finishes rendering, use <code><a href='htt
 or <code><a href='https://rdrr.io/pkg/htmltools/man/parseCssColors.html'>htmltools::parseCssColors()</a></code> (i.e., may be any valid R or CSS color string).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/thematic/man/sequential_gradient.html'>sequential_gradient()</a></code>, <code><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_with_theme()</a></code>, <code><a href='https://rdrr.io/pkg/thematic/man/thematic_save_plot.html'>thematic_save_plot()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='sequential_gradient.html'>sequential_gradient()</a></code>, <code><a href='thematic_with_theme.html'>thematic_with_theme()</a></code>, <code><a href='thematic_save_plot.html'>thematic_save_plot()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple dark mode</span>
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, col = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>lattice</span>::<span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>thematic_on</span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># use any hex color string</span>
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>(<span class='st'>"#444444"</span>, <span class='st'>"#e4e4e4"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, col = <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>lattice</span>::<span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>thematic_on</span>(<span class='st'>"#444444"</span>, <span class='st'>"#e4e4e4"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># disables thematic (also restores global state)</span>
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_off</a></span>()
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>lattice</span>::<span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-8.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_on</a></span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, <span class='st'>"orange"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span>(<span class='kw'>volcano</span>)</div><div class='img'><img src='thematic_on-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span>(<span class='kw'>volcano</span>, col = <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_get_option</a></span>(<span class='st'>"sequential"</span>))</div><div class='img'><img src='thematic_on-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw'>lattice</span>::<span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_off</a></span>()
-</div></pre>
+<span class='fu'>thematic_off</span>()
+<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-8.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>thematic_on</span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, <span class='st'>"orange"</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span>(<span class='no'>volcano</span>)</div><div class='img'><img src='thematic_on-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span>(<span class='no'>volcano</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='thematic_with_theme.html'>thematic_get_option</a></span>(<span class='st'>"sequential"</span>))</div><div class='img'><img src='thematic_on-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>thematic_off</span>()</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -282,7 +281,7 @@ or <code><a href='https://rdrr.io/pkg/htmltools/man/parseCssColors.html'>htmltoo
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
