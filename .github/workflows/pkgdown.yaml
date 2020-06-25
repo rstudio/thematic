@@ -32,13 +32,12 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-2-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-2-
 
       - name: Install dependencies
         run: |
-          install.packages("remotes")
-          install.packages("vctrs")
+          install.packages(c("remotes", "vctrs", "pkgdown"))
           remotes::install_github("rstudio/bootstraplib")
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
