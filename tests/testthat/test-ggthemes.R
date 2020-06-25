@@ -1,7 +1,8 @@
 context("ggthemes")
 
-library(ggplot2)
+skip_if_not_installed("ggplot2")
 
+library(ggplot2)
 
 test_that("works as expected with global ggthemes", {
   ggtheme <- theme_get()

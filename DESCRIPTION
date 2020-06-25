@@ -39,6 +39,7 @@ Suggests:
     bootstraplib,
     testthat,
     vdiffr,
+    svglite,
     jsonlite,
     curl
 License: MIT + file LICENSE

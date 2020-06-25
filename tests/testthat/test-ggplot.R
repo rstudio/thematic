@@ -1,5 +1,7 @@
 context("ggplot")
 
+skip_if_not_installed("ggplot2")
+
 test_that("ggplot baselines", {
   library(ggplot2)
 

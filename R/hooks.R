@@ -253,7 +253,7 @@ get_device_function <- function(name) {
     agg_ppm = ragg::agg_ppm,
     agg_jpeg = ragg::agg_jpeg,
     Cairo = Cairo::Cairo,
-    devSVG = getFromNamespace("svglite", "svglite"),
+    devSVG = svglite::svglite,
     # TODO: support cairoDevices? tikz?
     stop(
       "thematic doesn't (yet) support the '", name, "' graphics device",
