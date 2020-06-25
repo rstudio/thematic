@@ -38,9 +38,38 @@
       }
     },
     "ggplot": {
-      "message": "could not find function \"get_element_tree\"",
-      "call": "get_element_tree()",
-      "type": null
+      "src": "[image data sha1: 2ca44e4a1f6cfe63be8c6f337131c54eff8814cc]",
+      "width": 962,
+      "height": 400,
+      "coordmap": {
+        "panels": [
+          {
+            "domain": {
+              "left": -0.04,
+              "right": 1.04,
+              "bottom": -0.04,
+              "top": 1.04
+            },
+            "range": {
+              "left": 0,
+              "right": 962,
+              "bottom": 399,
+              "top": -1
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "mapping": {
+
+            }
+          }
+        ],
+        "dims": {
+          "width": 962,
+          "height": 400
+        }
+      }
     },
     "lattice": {
       "src": "[image data sha1: 61826ec957b246af522e875b0b499045077aadf0]",
