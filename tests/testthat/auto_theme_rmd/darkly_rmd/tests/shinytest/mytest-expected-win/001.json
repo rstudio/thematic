@@ -3,7 +3,9 @@
 
   },
   "output": {
-    "p": null
+    "base": null,
+    "ggplot": null,
+    "lattice": null
   },
   "export": {
 

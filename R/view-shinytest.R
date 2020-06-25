@@ -1,4 +1,6 @@
 # view all shinytest differences inside package tests
+# (only for internal use)
+# https://github.com/rstudio/thematic/blob/master/CONTRIBUTING.md
 view_shinytest_diffs <- function(path = ".", suffix = "auto", ...) {
   if (identical(suffix, "auto")) {
     branch <- system("git rev-parse --abbrev-ref HEAD", intern = TRUE)
@@ -17,6 +19,6 @@ view_shinytest_diffs <- function(path = ".", suffix = "auto", ...) {
   test_dirs <- grep("tests/shinytest/.*-current", list.dirs(test_path), value = TRUE)
   app_dirs <- dirname(dirname(dirname(test_dirs)))
   for (dir in app_dirs) {
-    shinytest::viewTestDiff(appDir = dir, suffix = suffix, interactive = TRUE, ...)
+    getFromNamespace("viewTestDiff", "shinytest")(appDir = dir, suffix = suffix, interactive = TRUE, ...)
   }
 }

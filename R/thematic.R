@@ -451,7 +451,7 @@ okabe_ito <- function(n = NULL) {
 #' thematic_on("black", "white", "salmon", sequential = mix_flip)
 #' ggplot2::qplot(1:10, 1:10, color = 1:10)
 #'
-sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30) {
+sequential_gradient <- function(fg_weight = 0.9, bg_weight = 0, fg_low = TRUE, n = 30) {
   if (any(fg_weight > 1 | fg_weight < 0)) {
     stop("`fg_weight` must be between 0 and 1.", call. = FALSE)
   }
