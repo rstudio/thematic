@@ -12,6 +12,10 @@ test_that("thematic_with_theme()", {
   expect_doppelganger("scatter-no-theme2", function() { plot(1:10) })
 })
 
+skip_if_not_installed("ggplot2")
+
+library(ggplot2)
+
 test_that("Setting and getting the theme", {
   expect_null(thematic_get_theme())
   thematic_on("black", "white", "green")

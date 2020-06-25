@@ -24,7 +24,9 @@ shinytest_suffix <- function() {
 }
 
 expect_app_doppelganger <- function(appDir) {
-  shinytest::expect_pass(shinytest::testApp(appDir, suffix = shinytest_suffix()))
+  expect_pass <- getFromNamespace("expect_pass", "shinytest")
+  testApp <- getFromNamespace("testApp", "shinytest")
+  expect_pass(testApp(appDir, suffix = shinytest_suffix()))
 }
 
 

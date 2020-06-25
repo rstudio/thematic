@@ -1,7 +1,8 @@
 context("ggplot")
 
+skip_if_not_installed("ggplot2")
+
 test_that("ggplot baselines", {
-  skip_if_not_installed("ggplot2")
   library(ggplot2)
 
   font <- font_spec("Oxanium", scale = 1.25, update = TRUE)

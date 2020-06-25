@@ -4,7 +4,7 @@
 \alias{sequential_gradient}
 \title{Control parameters of the sequential colorscale}
 \usage{
-sequential_gradient(fg_weight = 0.75, bg_weight = 0.5, fg_low = TRUE, n = 30)
+sequential_gradient(fg_weight = 0.9, bg_weight = 0, fg_low = TRUE, n = 30)
 }
 \arguments{
 \item{fg_weight}{a number (between 0 and 1) defining much of the \code{fg}
