@@ -76,7 +76,7 @@
       <h1 data-toc-skip>Auto theming</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-06-22</h4>
+            <h4 class="date">2020-06-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/auto.Rmd"><code>vignettes/auto.Rmd</code></a></small>
       <div class="hidden name"><code>auto.Rmd</code></div>
@@ -152,9 +152,10 @@
 <li>Uses the background, foreground, and accent colors to construct a new default for <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html">scale_fill_continuous()</a></code> (and <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html">scale_color_continuous()</a></code>).</li>
 </ul>
 <p><img src="tabsets-geom-raster.png" width="70%" style="display: block; margin: auto;"></p>
-<p>As you’ll learn in the <a href="custom.html">custom themes article</a>, you can always override the defaults set by <strong>thematic</strong> by using plot-specific code (i.e., by adding <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> elements to the plot). However, if you want to use a different <em>complete</em> <strong>ggplot2</strong> theme (e.g., <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal()</a></code> instead of the default <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray()</a></code>), you can pass the complete theme as part of the <strong>thematic</strong> theme:</p>
+<p>As you’ll learn in the <a href="custom.html">custom themes article</a>, you can always override the defaults set by <strong>thematic</strong> by using plot-specific code (i.e., by adding <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> elements to the plot). However, if you want to use a different <em>complete</em> <strong>ggplot2</strong> theme (e.g., <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal()</a></code> instead of the default <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray()</a></code>), you should set the theme globally with <code><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">ggplot2::theme_set()</a></code>.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span>(ggtheme = <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>())
+<span class="kw">ggplot2</span>::<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="kw">ggplot2</span>::<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>())
+<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span>()
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="kw">ui</span>, <span class="kw">server</span>)
 </pre></div>
 <p><img src="tabsets-darkly-thematic-minimal.png" width="70%" style="display: block; margin: auto;"></p>
@@ -258,7 +259,7 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by Carson Sievert, Joe Cheng.</p>
+  <p>Developed by Carson Sievert, Barret Schloerke, Joe Cheng.</p>
 </div>
 
 <div class="pkgdown">

@@ -194,10 +194,10 @@ call <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>old_config</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/auto-config.html'>auto_config_set</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/auto-config.html'>auto_config</a></span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>))
-<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/theme-management.html'>thematic_with_theme</a></span>(
+<span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_with_theme.html'>thematic_with_theme</a></span>(
   <span class='fu'><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_theme</a></span>(), {
     <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span>(<span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>)
- })</div><div class='output co'>#&gt; <span class='message'>This version of thematic is designed to work with shiny version 1.4.0.9003 or higher. Consider upgrading via remotes::install_github('rstudio/shiny')</span></div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span></div><div class='img'><img src='auto-config-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/auto-config.html'>auto_config_set</a></span>(<span class='kw'>old_config</span>)</div></pre>
+ })</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span></div><div class='img'><img src='auto-config-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'><a href='https://rdrr.io/pkg/thematic/man/auto-config.html'>auto_config_set</a></span>(<span class='kw'>old_config</span>)</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -209,7 +209,7 @@ call <code><a href='https://rdrr.io/pkg/thematic/man/thematic_on.html'>thematic_
 
       <footer>
       <div class="copyright">
-  <p>Developed by Carson Sievert, Joe Cheng.</p>
+  <p>Developed by Carson Sievert, Barret Schloerke, Joe Cheng.</p>
 </div>
 
 <div class="pkgdown">
