@@ -463,7 +463,7 @@ sequential_gradient <- function(fg_weight = 0.75, bg_weight = 0.5, bg_high = "au
     stop("`n` must be 3 or more.", call. = FALSE)
   }
   if (!(is.logical(bg_high) || identical(bg_high, "auto"))) {
-    stop("`bg_high` must be either `'auto'`, `TRUE` or `FALSE`", call. = FALSE)
+    stop("`bg_high` must be either `'auto'`, `TRUE`, or `FALSE`", call. = FALSE)
   }
 
   # Main idea: Interpolate between [fg+accent -> accent -> bg+accent]
