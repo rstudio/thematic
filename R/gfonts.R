@@ -57,23 +57,23 @@ try_register_gfont_cache <- function(family, upgrade) {
   italic <- font_file("italic")
   bolditalic <- font_file("bolditalic")
 
-  try(
-    systemfonts::register_font(
+  if (is_installed("systemfonts")) {
+    try(systemfonts::register_font(
       family, regular,
       bold = bold,
       italic = italic,
       bolditalic = bolditalic
-    )
-  )
+    ))
+  }
 
-  try(
-    getFromNamespace("font_add", "sysfonts")(
+  if (is_installed("sysfonts")) {
+    try(sysfonts::font_add(
       family, regular,
       bold = bold,
       italic = italic,
       bolditalic = bolditalic
-    )
-  )
+    ))
+  }
 }
 
 get_google_fonts <- function() {
