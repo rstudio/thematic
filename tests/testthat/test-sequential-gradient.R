@@ -1,7 +1,6 @@
 context("sequential_gradient")
 
 test_that("Sequential gradients works as expected", {
-  skip_if_not_installed("ggplot2")
   library(ggplot2)
 
   # Gradient from fg to accent

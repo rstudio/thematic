@@ -2,53 +2,6 @@ context("ggthemes")
 
 library(ggplot2)
 
-test_that("Global ggthemes are respected", {
-  library(ggthemes)
-
-  p <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color =  Species)) +
-    geom_point()
-
-  with_ggtheme <- function(theme, expr) {
-    old_theme <- theme_set(theme)
-    on.exit(theme_set(old_theme), add = TRUE)
-    thematic_with_theme(thematic_theme("black", "white", NA), expr)
-  }
-
-  # ggplot2 themes
-  expect_doppelganger("bw", function() with_ggtheme(theme_bw(), p))
-  expect_doppelganger("dark", function() with_ggtheme(theme_dark(), p))
-  expect_doppelganger("minimal", function() with_ggtheme(theme_minimal(), p))
-  expect_doppelganger("classic", function() with_ggtheme(theme_classic(), p))
-  expect_doppelganger("light", function() with_ggtheme(theme_light(), p))
-  expect_doppelganger("linedraw", function() with_ggtheme(theme_linedraw(), p))
-  expect_doppelganger("void", function() with_ggtheme(theme_void(), p))
-
-  # ggthemes
-  expect_doppelganger("wsj", function() with_ggtheme(theme_wsj(), p))
-  expect_doppelganger("base", function() with_ggtheme(theme_base(), p))
-  expect_doppelganger("solid", function() with_ggtheme(theme_solid(), p))
-  expect_doppelganger("solarized", function() with_ggtheme(theme_solarized(), p))
-  expect_doppelganger("economist", function() with_ggtheme(theme_economist(), p))
-  expect_doppelganger("calc", function() with_ggtheme(theme_calc(), p))
-  expect_doppelganger("fivethirtyeight", function() with_ggtheme(theme_fivethirtyeight(), p))
-  expect_doppelganger("map", function() with_ggtheme(theme_map(), p))
-  expect_doppelganger("excel", function() with_ggtheme(theme_excel(), p))
-  expect_doppelganger("clean", function() with_ggtheme(theme_clean(), p))
-  expect_doppelganger("excel_new", function() with_ggtheme(theme_excel_new(), p))
-  expect_doppelganger("igray", function() with_ggtheme(theme_igray(), p))
-  expect_doppelganger("foundation", function() with_ggtheme(theme_foundation(), p))
-  expect_doppelganger("few", function() with_ggtheme(theme_few(), p))
-  expect_doppelganger("pander", function() with_ggtheme(theme_pander(), p))
-  expect_doppelganger("solarized_2", function() with_ggtheme(theme_solarized_2(), p))
-  expect_doppelganger("gdocs", function() with_ggtheme(theme_gdocs(), p))
-  expect_doppelganger("tufte", function() with_ggtheme(theme_tufte(), p))
-  expect_doppelganger("par", function() with_ggtheme(theme_par(), p))
-  expect_doppelganger("stata", function() with_ggtheme(theme_stata(), p))
-  expect_doppelganger("hc", function() with_ggtheme(theme_hc(), p))
-
-  skip_if_not_installed("dplyr")
-  expect_doppelganger("economist_white", function() with_ggtheme(theme_economist_white(), p))
-})
 
 test_that("works as expected with global ggthemes", {
   ggtheme <- theme_get()
@@ -83,4 +36,54 @@ test_that("works as expected with plot-specific themes", {
   )
   expect_doppelganger("axis-interitance-distant", p)
   expect_doppelganger("axis-interitance-distant2", last_plot())
+})
+
+
+test_that("Global ggthemes are respected", {
+
+  p <- ggplot(iris, aes(x = Sepal.Length, y = Sepal.Width, color =  Species)) +
+    geom_point()
+
+  with_ggtheme <- function(theme, expr) {
+    old_theme <- theme_set(theme)
+    on.exit(theme_set(old_theme), add = TRUE)
+    thematic_with_theme(thematic_theme("black", "white", NA), expr)
+  }
+
+  # ggplot2 themes
+  expect_doppelganger("bw", function() with_ggtheme(theme_bw(), p))
+  expect_doppelganger("dark", function() with_ggtheme(theme_dark(), p))
+  expect_doppelganger("minimal", function() with_ggtheme(theme_minimal(), p))
+  expect_doppelganger("classic", function() with_ggtheme(theme_classic(), p))
+  expect_doppelganger("light", function() with_ggtheme(theme_light(), p))
+  expect_doppelganger("linedraw", function() with_ggtheme(theme_linedraw(), p))
+  expect_doppelganger("void", function() with_ggtheme(theme_void(), p))
+
+  # ggthemes
+  skip_if_not_installed("ggthemes")
+  ggthemes <- asNamespace("ggthemes")
+  expect_doppelganger("wsj", function() with_ggtheme(ggthemes$theme_wsj(), p))
+  expect_doppelganger("base", function() with_ggtheme(ggthemes$theme_base(), p))
+  expect_doppelganger("solid", function() with_ggtheme(ggthemes$theme_solid(), p))
+  expect_doppelganger("solarized", function() with_ggtheme(ggthemes$theme_solarized(), p))
+  expect_doppelganger("economist", function() with_ggtheme(ggthemes$theme_economist(), p))
+  expect_doppelganger("calc", function() with_ggtheme(ggthemes$theme_calc(), p))
+  expect_doppelganger("fivethirtyeight", function() with_ggtheme(ggthemes$theme_fivethirtyeight(), p))
+  expect_doppelganger("map", function() with_ggtheme(ggthemes$theme_map(), p))
+  expect_doppelganger("excel", function() with_ggtheme(ggthemes$theme_excel(), p))
+  expect_doppelganger("clean", function() with_ggtheme(ggthemes$theme_clean(), p))
+  expect_doppelganger("excel_new", function() with_ggtheme(ggthemes$theme_excel_new(), p))
+  expect_doppelganger("igray", function() with_ggtheme(ggthemes$theme_igray(), p))
+  expect_doppelganger("foundation", function() with_ggtheme(ggthemes$theme_foundation(), p))
+  expect_doppelganger("few", function() with_ggtheme(ggthemes$theme_few(), p))
+  expect_doppelganger("pander", function() with_ggtheme(ggthemes$theme_pander(), p))
+  expect_doppelganger("solarized_2", function() with_ggtheme(ggthemes$theme_solarized_2(), p))
+  expect_doppelganger("gdocs", function() with_ggtheme(ggthemes$theme_gdocs(), p))
+  expect_doppelganger("tufte", function() with_ggtheme(ggthemes$theme_tufte(), p))
+  expect_doppelganger("par", function() with_ggtheme(ggthemes$theme_par(), p))
+  expect_doppelganger("stata", function() with_ggtheme(ggthemes$theme_stata(), p))
+  expect_doppelganger("hc", function() with_ggtheme(ggthemes$theme_hc(), p))
+  skip_if_not_installed("dplyr")
+  expect_doppelganger("economist_white", function() with_ggtheme(ggthemes$theme_economist_white(), p))
+
 })
