@@ -41,7 +41,6 @@
 #' qualitative values (won't be used in ggplot2 when the number of data
 #' levels exceeds the max allowed colors). Defaults to [okabe_ito()].
 #' @param inherit should non-specified values inherit from the previous theme?
-#' @param ggtheme a complete **ggplot2** theme to inherit defaults from.
 #'
 #' @return [thematic_theme()] returns a theme object as a list (which can be
 #' activated with [thematic_with_theme()] or [thematic_set_theme()]).
@@ -77,14 +76,12 @@
 #'
 thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
                         font = NA, sequential = sequential_gradient(),
-                        qualitative = okabe_ito(), inherit = FALSE,
-                        ggtheme = NULL) {
+                        qualitative = okabe_ito(), inherit = FALSE) {
   old_theme <- thematic_get_theme()
   .globals$theme <- thematic_theme(
     bg = bg, fg = fg, accent = accent,
     font = font, sequential = sequential,
-    qualitative = qualitative, inherit = inherit,
-    ggtheme = ggtheme
+    qualitative = qualitative, inherit = inherit
   )
   # Set knitr dev.args = list(bg = bg) now (instead of later)
   # so at least the _next_ chunk has the right bg color.
@@ -116,7 +113,6 @@ thematic_off <- function() {
   base_params_restore()
   base_palette_restore()
   knitr_dev_args_restore()
-  ggplot_theme_restore()
   ggplot_build_restore()
   lattice_print_restore()
 
@@ -130,8 +126,7 @@ thematic_off <- function() {
 #' @export
 thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
                            font = NA, sequential = sequential_gradient(),
-                           qualitative = okabe_ito(), inherit = FALSE,
-                           ggtheme = NULL) {
+                           qualitative = okabe_ito(), inherit = FALSE) {
 
   # This function is called at plot time (with bg/fg/accent)
   if (is.function(sequential)) {
@@ -145,8 +140,7 @@ thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
       accent = tag_auto(accent),
       qualitative = qualitative,
       sequential = sequential,
-      font = as_font_spec(font),
-      ggtheme = ggtheme
+      font = as_font_spec(font)
     ),
     class = "thematic_theme"
   )
@@ -160,7 +154,6 @@ thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
     if (identical(accent, fmls$accent)) new$accent <- NULL
     if (identical(sequential, fmls$sequential)) new$sequential <- NULL
     if (identical(qualitative, fmls$qualitative)) new$qualitative <- NULL
-    if (identical(ggtheme, fmls$ggtheme)) new$ggtheme <- NULL
     new <- utils::modifyList(old, new)
     new <- structure(new, class = "thematic_theme")
   }
@@ -178,13 +171,12 @@ is_thematic_theme <- function(x) {
 #' @export
 thematic_shiny <- function(bg = "auto", fg = "auto", accent = "auto",
                            font = NA, sequential = sequential_gradient(),
-                           qualitative = okabe_ito(), inherit = FALSE, ggtheme = NULL,
+                           qualitative = okabe_ito(), inherit = FALSE,
                            session = shiny::getDefaultReactiveDomain()) {
   old_theme <- thematic_on(
     bg = bg, fg = fg, accent = accent,
     font = font, sequential = sequential,
-    qualitative = qualitative, inherit = inherit,
-    ggtheme = ggtheme
+    qualitative = qualitative, inherit = inherit
   )
   shiny::onStop(function() thematic_set_theme(old_theme), session = session)
   invisible(old_theme)
@@ -196,13 +188,11 @@ thematic_shiny <- function(bg = "auto", fg = "auto", accent = "auto",
 #' @export
 thematic_rmd <- function(bg = "auto", fg = "auto", accent = "auto",
                          font = NA, sequential = sequential_gradient(),
-                         qualitative = okabe_ito(), inherit = FALSE,
-                         ggtheme = NULL) {
+                         qualitative = okabe_ito(), inherit = FALSE) {
   old_theme <- thematic_on(
     bg = bg, fg = fg, accent = accent,
     font = font, sequential = sequential,
-    qualitative = qualitative, inherit = inherit,
-    ggtheme = ggtheme
+    qualitative = qualitative, inherit = inherit
   )
   document_hook <- knitr::knit_hooks$get("document")
   knitr::knit_hooks$set(document = function(x) {
@@ -215,19 +205,14 @@ thematic_rmd <- function(bg = "auto", fg = "auto", accent = "auto",
 
 #' Tools for getting and restoring global state
 #'
-#' * [thematic_with_theme()]: similar to [thematic_on()], but for an single plot.
-#' * [thematic_local_theme()]: similar to [thematic_with_theme()], but de-couples
-#'   the theme from the plot expression.
-#' * [thematic_set_theme()]: set a given `theme` object as the current theme.
-#' * [thematic_get_theme()]: obtain the current `theme`.
-#' * [thematic_get_option()]: obtain a particular `theme` option (and provide a `default`
-#'   if if no `theme` is active).
-#' * [thematic_get_mixture()]: obtain a mixture of the current `theme`'s `bg` and `fg`.
+#' These functions are helpful for getting and/or temporarily activating a
+#' [thematic_theme()].
+#'
+#' @describeIn thematic_with_theme similar to [thematic_on()], but for an single plot.
 #'
 #' @param theme a [thematic_theme()] object.
 #' @param expr R code that produces a plot.
 #' @param default a default value to return in the event no thematic theme is active.
-#' @rdname theme-management
 #' @export
 #' @examples
 #'
@@ -271,7 +256,8 @@ thematic_with_theme <- function(theme, expr) {
   invisible(result$value)
 }
 
-#' @rdname theme-management
+#' @describeIn thematic_with_theme similar to [thematic_with_theme()], but de-couples
+#'   the theme from the plot expression.
 #' @param .local_envir The environment to use for scoping.
 #' @export
 thematic_local_theme <- function(theme, .local_envir = parent.frame()) {
@@ -280,7 +266,7 @@ thematic_local_theme <- function(theme, .local_envir = parent.frame()) {
   invisible(old_theme)
 }
 
-#' @rdname theme-management
+#' @describeIn thematic_with_theme set a given `theme` object as the current theme.
 #' @param theme a `thematic_theme()` object (or a return value of [thematic_on]/[thematic_get_theme()])
 #' or `NULL` (in which case `thematic_off()` is called).
 #' @export
@@ -294,7 +280,7 @@ thematic_set_theme <- function(theme) {
   do.call(thematic_on, theme)
 }
 
-#' @rdname theme-management
+#' @describeIn thematic_with_theme obtain the current `theme`.
 #' @param resolve whether or not `'auto'` values should be resolved before returning
 #' @export
 thematic_get_theme <- function(resolve = TRUE) {
@@ -315,7 +301,8 @@ thematic_get <- function() {
   thematic_get_theme()
 }
 
-#' @rdname theme-management
+#' @describeIn thematic_with_theme obtain a particular `theme` option (and provide a `default`
+#'   if no `theme` is active).
 #' @param name a theme element name (e.g., `fg`, `bg`, etc.)
 #' @export
 thematic_get_option <- function(name = "", default = NULL, resolve = TRUE) {
@@ -336,7 +323,7 @@ thematic_get_option <- function(name = "", default = NULL, resolve = TRUE) {
   theme[[name]] %||% default
 }
 
-#' @rdname theme-management
+#' @describeIn thematic_with_theme obtain a mixture of the current `theme`'s `bg` and `fg`.
 #' @param amounts value(s) between 0 and 1 specifying how much to mix `bg` (0) and `fg` (1).
 #' @export
 thematic_get_mixture <- function(amounts = 0.5, default = NULL) {
