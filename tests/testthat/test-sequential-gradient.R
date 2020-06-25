@@ -23,7 +23,7 @@ test_that("Sequential gradients works as expected", {
   expect_doppelganger("half-half", p)
 
   # Use fg (instead of bg) for high end of scale
-  mix_flip <- sequential_gradient(0.5, 0.5, fg_low = FALSE)
+  mix_flip <- sequential_gradient(0.5, 0.5, bg_high = FALSE)
   thematic_on("black", "white", "salmon", sequential = mix_flip)
   ggplot2::qplot(1:10, 1:10, color = 1:10)
   expect_doppelganger("half-half-reversed", p)

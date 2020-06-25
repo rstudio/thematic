@@ -55,7 +55,7 @@ ggsmooth
 
 ### Sequential colorscales
 
-The `sequential` argument is used to set a new default for sequential color scales (i.e., `scale_fill_continuous()` & `scale_color_continuous()`). Its default value, `sequential_gradient()`, defines a color gradient of `fg` -> `accent` -> `bg`:
+The `sequential` argument is used to set a new default for sequential color scales (i.e., `scale_fill_continuous()` & `scale_color_continuous()`). Its default value, `sequential_gradient()`, constructs a color gradient using a mixture of `bg`, `accent`, and `fg`.
 
 ```{r}
 thematic_on(bg = "#222222", fg = "white", accent = "purple")
@@ -65,22 +65,22 @@ ggcontour <- ggplot(faithfuld, aes(waiting, eruptions, z = density)) +
 ggcontour
 ```
 
-To flip the direction of the gradient to `bg` -> `accent` -> `fg`
+The weighting used to mix `accent` with `bg` (`fg`) can be controlled via the `bg_weight` (`fg_weight`). Here we make sure the gradient's starts at the `bg` color and ends at the `accent`. 
 
 ```{r}
 thematic_on(
   bg = "#222222", fg = "white", accent = "purple",
-  sequential = sequential_gradient(fg_low = FALSE)
+  sequential = sequential_gradient(fg_weight = 0, bg_weight = 1)
 )
 ggcontour
 ```
 
-If you look carefully, the endpoints of the gradient actually use a mixture of `bg`/`fg` and `accent`. The weighting of those mixtures can also be controlled via `fg_weight` and `bg_weight`. Here we make sure the gradient's starts at the `bg` color and ends at the `accent`. 
+You can also flip the direction of the gradient so it goes from `fg` -> `accent` -> `bg`. 
 
 ```{r}
 thematic_on(
   bg = "#222222", fg = "white", accent = "purple",
-  sequential = sequential_gradient(fg_low = FALSE, fg_weight = 0, bg_weight = 1)
+  sequential = sequential_gradient(bg_high = TRUE)
 )
 ggcontour
 ```
