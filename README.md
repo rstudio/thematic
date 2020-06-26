@@ -48,9 +48,9 @@ remotes::install_github("rstudio/rmarkdown#1706")
 
 ## Overview
 
-Call `thematic_on()` to enable [auto
-theming](https://rstudio.github.io/thematic/articles/auto.html), which
-allows R plots to style themselves in
+**thematic**’s [auto
+theming](https://rstudio.github.io/thematic/articles/auto.html) gives R
+plots the ability to style themselves inside
 [Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny)
 (via CSS), [R
 Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd)
@@ -63,11 +63,13 @@ styling, but default R styling:
 
 <img src="man/figures/auto-before.png" width="80%" style="display: block; margin: auto;" />
 
-By just calling `thematic_on(font = "auto")`, the R plots adopt new
-defaults based on the main colors and fonts in the CSS (that is, notice
-how the R plot now mimics the styling of the `shiny::tabsetPanel()`).
-Moreover, as long as the relevant font is a [Google
-Font](https://fonts.google.com) (in this case,
+To add automatic coloring and fonts (i.e., the full auto theming
+experience) to the R plots, simply call `thematic_on(font = "auto")` and
+re-run the application. Since the plots are generated via Shiny, they
+assume new defaults which are informed by the CSS styling on their HTML
+container (that is, notice how the R plots now reflect the styling of
+the `shiny::tabsetPanel()`). Moreover, as long as the relevant font is a
+[Google Font](https://fonts.google.com) (in this case,
 [Pacifico](https://fonts.google.com/specimen/Pacifico)), **thematic**
 automatically downloads, caches, and registers font(s) with R.
 
