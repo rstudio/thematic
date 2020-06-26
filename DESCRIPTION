@@ -23,30 +23,25 @@ Imports:
     scales,
     rstudioapi (>= 0.8)
 Suggests:
-    systemfonts,
-    ragg,
-    sysfonts,
-    showtext,
     ggplot2,
     lattice,
     stats,
+    withr,
+    sysfonts,
+    showtext,
+    Cairo,
+    systemfonts,
+    ragg,
     knitr,
     rmarkdown,
+    htmltools,
     shiny,
     bootstraplib,
-    shinytest,
-    htmltools,
-    withr,
     testthat,
     vdiffr,
     svglite,
     jsonlite,
-    curl,
-    Cairo,
-    GGally,
-    ggthemes,
-    RColorBrewer,
-    patchwork
+    curl
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
