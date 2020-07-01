@@ -203,31 +203,35 @@ theme_thematic <- function(theme = .globals$theme) {
   }
 
   update_element.element_text <- function(element, name) {
-    ggplot2::element_text(
+    new <- ggplot2::element_text(
       colour = update_color(element$colour),
       size = element$size * theme$font$scale,
       family = if (!identical(theme$font$family, "")) theme$font$family
     )
+    ggplot2::merge_element(new = new, old = element)
   }
 
   update_element.element_rect <- function(element, name) {
-    ggplot2::element_rect(
+    new <- ggplot2::element_rect(
       fill = update_color(element$fill),
       colour = update_color(element$colour)
     )
+    ggplot2::merge_element(new = new, old = element)
   }
 
   update_element.element_line <- function(element, name) {
-    ggplot2::element_line(
+    new <- ggplot2::element_line(
       colour = update_color(element$colour)
     )
+    ggplot2::merge_element(new = new, old = element)
   }
 
   update_element.element_blank <- function(element, name) {
     # Make sure plot.background is always defined; since otherwise,
     # we'd have to depend on par("bg") being set (and the device respecting it)
     if (name %in% c("plot.background", "panel.background")) {
-      element <- ggplot2::element_rect(fill = new_bg, colour = new_bg)
+      new <- ggplot2::element_rect(fill = new_bg, colour = new_bg)
+      element <- ggplot2::merge_element(new = new, old = element)
     }
     element
   }
