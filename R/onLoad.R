@@ -12,11 +12,13 @@
     }
   )
 
-  # TODO: bump these to CRAN versions when released
-  register_upgrade_message("shiny", "1.4.0.9003", "rstudio/shiny")
-  register_upgrade_message("ragg", "0.1.5.9000", "r-lib/ragg")
-  # This may take longer
-  register_upgrade_message("rmarkdown", "2.2.0", "rstudio/rmarkdown#1706")
+  # CRAN versions
+  register_upgrade_message("shiny", "1.5.0")   # shiny::getCurrentOutputInfo()
+  register_upgrade_message("ggplot2", "3.3.2") # proper scale defaults
+  register_upgrade_message("ragg", "0.2")      # important bug fixes
+
+  # Dev versions
+  register_upgrade_message("rmarkdown", "2.4.0", "rstudio/rmarkdown#1706")
 
   if (!is_installed("knitr")) return()
   if (is_installed("showtext")) {
