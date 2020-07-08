@@ -239,11 +239,7 @@ theme_thematic <- function(theme = .globals$theme) {
     # Make sure plot.background is always defined; since otherwise,
     # we'd have to depend on par("bg") being set (and the device respecting it)
     if (name %in% c("plot.background", "panel.background")) {
-      new <- ggplot2::element_rect(fill = new_bg, colour = new_bg)
-      if (merge) {
-        new <- ggplot2::merge_element(new = new, old = element)
-      }
-      new
+      ggplot2::element_rect(fill = new_bg, colour = new_bg)
     } else {
       element
     }
