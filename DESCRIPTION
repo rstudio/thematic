@@ -21,9 +21,9 @@ Imports:
     farver,
     rlang,
     scales,
-    rstudioapi (>= 0.8)
+    rstudioapi (>= 0.8),
+    ggplot2 (>= 3.3.0)
 Suggests:
-    ggplot2,
     lattice,
     stats,
     withr,

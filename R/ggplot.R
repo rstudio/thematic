@@ -198,44 +198,32 @@ theme_thematic <- function(theme = .globals$theme) {
     mix_colors(new_bg, new_fg, amt)
   }
 
-  update_element <- function(element, name, merge) {
+  update_element <- function(element, name) {
     UseMethod("update_element")
   }
 
-  update_element.element_text <- function(element, name, merge) {
-    new <- ggplot2::element_text(
+  update_element.element_text <- function(element, name) {
+    ggplot2::element_text(
       colour = update_color(element$colour),
       size = element$size * theme$font$scale,
       family = if (!identical(theme$font$family, "")) theme$font$family
     )
-    if (merge) {
-      new <- ggplot2::merge_element(new = new, old = element)
-    }
-    new
   }
 
-  update_element.element_rect <- function(element, name, merge) {
-    new <- ggplot2::element_rect(
+  update_element.element_rect <- function(element, name) {
+    ggplot2::element_rect(
       fill = update_color(element$fill),
       colour = update_color(element$colour)
     )
-    if (merge) {
-      new <- ggplot2::merge_element(new = new, old = element)
-    }
-    new
   }
 
-  update_element.element_line <- function(element, name, merge) {
-    new <- ggplot2::element_line(
+  update_element.element_line <- function(element, name) {
+    ggplot2::element_line(
       colour = update_color(element$colour)
     )
-    if (merge) {
-      new <- ggplot2::merge_element(new = new, old = element)
-    }
-    new
   }
 
-  update_element.element_blank <- function(element, name, merge) {
+  update_element.element_blank <- function(element, name) {
     # Make sure plot.background is always defined; since otherwise,
     # we'd have to depend on par("bg") being set (and the device respecting it)
     if (name %in% c("plot.background", "panel.background")) {
@@ -245,21 +233,16 @@ theme_thematic <- function(theme = .globals$theme) {
     }
   }
 
-  update_element.default <- function(element, name, merge) NULL
+  update_element.default <- function(element, name) NULL
 
-  doMerge <- !has_proper_theme_extensions()
-  ggtheme <- Map(function(x, y) update_element(x, y, doMerge), ggtheme, names(ggtheme))
+  ggtheme <- Map(function(x, y) update_element(x, y), ggtheme, names(ggtheme))
   do.call(ggplot2::theme, dropNulls(ggtheme))
 }
 
 # Get all the computed theme elements from a given theme definition
 computed_theme_elements <- function(ggtheme) {
   theme_default <- ggplot2::theme_grey()
-  elements <- if (has_proper_theme_extensions()) {
-    names(ggplot2::get_element_tree())
-  } else {
-    names(theme_default)
-  }
+  elements <- names(ggplot2::get_element_tree())
   # If this isn't a complete theme, make it one
   # (fixes cases like ggthemes::theme_pander() which isn't complete)
   if (identical(attr(ggtheme, "complete"), FALSE)) {
@@ -324,10 +307,6 @@ has_proper_ggplot_scale_defaults <- function() {
   packageVersion("ggplot2") >= "3.3.2"
 }
 
-# Introduced extensible theme elements
-has_proper_theme_extensions <- function() {
-  packageVersion("ggplot2") >= "3.3.0"
-}
 
 qualitative_pal <- function(codes) {
   function(n) {
