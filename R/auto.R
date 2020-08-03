@@ -210,7 +210,7 @@ shiny_output_info <- function() {
   missing <- setdiff(nms, names(info))
   if (length(missing)) {
     maybe_warn(
-      "Auto-theming with shiny requires v1.4.0.9900 or higher",
+      "Auto-theming with shiny requires v1.5.0 or higher",
       id = "upgrade-shiny"
     )
     return(NULL)
@@ -220,7 +220,7 @@ shiny_output_info <- function() {
     if (!shiny::is.reactive(x)) {
       stop(
         "Expected shiny::getCurrentOutputInfo() to return reactive expressions. ",
-        "Try upgrading shiny: remotes::install_github('rstudio/shiny#2740')"
+        "Try upgrading shiny: install.packages('shiny')"
       )
     }
     x()
@@ -384,6 +384,7 @@ size_to_scale <- function(size, pointsize = 12) {
 
 rs_font_spec <- function() {
   if (!is_rstudio()) return(NULL)
+  if (!"RStudioGD" %in% .Device) return(NULL)
 
   # readRStudioPreference was introduced in RStudio 1.3
   pts <- tryCatch(readRStudioPreference("font_size_points"), error = function(e) 12)

@@ -54,7 +54,7 @@ resolve_font_family <- function(type = c("base", "grid")) {
   # It appears ragg is the only option that is able to render
   # custom fonts at the moment (i.e., showtext with quartz/cairo
   # doesn't appear to work at the moment)
-  if ("RStudioGD" == dev_name) {
+  if ("RStudioGD" %in% dev_name) {
     backend <- tryNULL(readRStudioPreference("graphics_backend"))
     if (identical("ragg", backend)) {
       dev_name <- "agg_png"
