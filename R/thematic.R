@@ -252,7 +252,10 @@ thematic_with_theme <- function(theme, expr) {
   # on ggplot2/lattice objects (e.g., `renderPlot(thematic_with_theme(theme, qplot(1:10)))`)
   expr <- rlang::enquo(expr)
   result <- withVisible(rlang::eval_tidy(expr))
-  if (result$visible) print(result$value)
+  # Don't print htmlwidgets if this happens to be used with, for example, ggplotly()
+  if (result$visible && !inherits(result$value, "htmlwidget")) {
+    print(result$value)
+  }
   invisible(result$value)
 }
 
