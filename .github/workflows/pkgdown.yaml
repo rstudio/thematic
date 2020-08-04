@@ -21,6 +21,12 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@master
 
+      - name: git setup
+        shell: bash
+        run: |
+          git config --global user.email "carson@rstudio.com"
+          git config --global user.name "Carson Sievert"
+
       - name: Query dependencies
         run: |
           install.packages('remotes')
