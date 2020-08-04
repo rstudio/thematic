@@ -384,7 +384,7 @@ size_to_scale <- function(size, pointsize = 12) {
 
 rs_font_spec <- function() {
   if (!is_rstudio()) return(NULL)
-  if (!"RStudioGD" %in% .Device) return(NULL)
+  if (!in_rstudio_gd()) return(NULL)
 
   # readRStudioPreference was introduced in RStudio 1.3
   pts <- tryCatch(readRStudioPreference("font_size_points"), error = function(e) 12)

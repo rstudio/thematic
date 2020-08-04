@@ -83,6 +83,10 @@ is_rstudio <- function(version_needed = NULL) {
   rstudioapi::isAvailable(version_needed)
 }
 
+in_rstudio_gd <- function(dev_name = names(infer_device())) {
+  "RStudioGD" %in% dev_name
+}
+
 dropNulls <- function(x) {
   x[!vapply(x, is.null, FUN.VALUE=logical(1))]
 }
