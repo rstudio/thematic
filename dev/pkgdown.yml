@@ -1,0 +1,10 @@
+pandoc: 2.7.3
+pkgdown: 1.5.1
+pkgdown_sha: ~
+articles:
+  auto: auto.html
+  custom: custom.html
+  fonts: fonts.html
+  scope: scope.html
+last_built: 2020-08-04T17:52Z
+
