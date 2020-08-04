@@ -50,3 +50,11 @@ reference:
   contents:
     - font_cache_set
 
+template:
+  params:
+    docsearch:
+      api_key: ab54f4a00f5beb99b9bf488e3b58d1dd
+      index_name: rstudio_thematic
+
+development:
+  mode: auto
