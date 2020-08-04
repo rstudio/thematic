@@ -50,3 +50,11 @@ reference:
   contents:
     - font_cache_set
 
+#template:
+#  params:
+#    docsearch:
+#      api_key: API_KEY
+#      index_name: INDEX_NAME
+
+development:
+  mode: auto
