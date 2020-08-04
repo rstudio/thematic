@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# thematic
+# thematic <a href='https://rstudio.github.io/thematic'><img src='man/figures/logo.png' align="right" height="138.5" style="margin:10px;" /></a>
 
 <!-- badges: start -->
 [![R build status](https://github.com/rstudio/thematic/workflows/R-CMD-check/badge.svg)](https://github.com/rstudio/thematic)

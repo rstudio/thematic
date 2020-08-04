@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# thematic
+# thematic <a href='https://rstudio.github.io/thematic'><img src='man/figures/logo.png' align="right" height="138.5" style="margin:10px;" /></a>
 
 <!-- badges: start -->
 
