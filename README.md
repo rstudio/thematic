@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# thematic <a href='https://rstudio.github.io/thematic'><img src='man/figures/logo.png' align="right" height="138.5" style="margin:10px;" /></a>
+# thematic <a href='https://rstudio.github.io/thematic/'><img src='man/figures/logo.png' align="right" height="138.5" style="margin:10px;" /></a>
 
 <!-- badges: start -->
 
@@ -88,7 +88,7 @@ ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = factor(cyl))) +
   ggrepel::geom_text_repel()
 ```
 
-<img src="man/figures/README-unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" />
+<img src="man/figures/ggrepel.png" width="80%" style="display: block; margin: auto;" />
 
 In addition to `thematic_on()`, which applies the provided theme to all
 plots (up until `thematic_off()` is called), there are a few variation
@@ -137,5 +137,6 @@ Below is a link to an **RStudio Cloud** instance with some ready to run
 
 **thematic** is released with a [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
-By [contributing](CONTRIBUTING.md) to this project, you agree to abide
-by its terms.
+By
+[contributing](https://github.com/rstudio/thematic/blob/master/CONTRIBUTING.md)
+to this project, you agree to abide by its terms.

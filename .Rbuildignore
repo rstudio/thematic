@@ -8,6 +8,7 @@
 ^pkgdown$
 ^README\.Rmd$
 ^README\.html$
+^CONTRIBUTING\.md$
 ^data-raw$
 Untitled*
 ^\.travis\.yml$
