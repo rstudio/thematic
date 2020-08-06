@@ -34,7 +34,7 @@ Possible values include:
 \itemize{
 \item \code{"shiny"}: use \code{\link[shiny:getCurrentOutputInfo]{shiny::getCurrentOutputInfo()}} values (if any) to resolve auto values.
 \item \code{"config"}: use the values provided to this function (if any) to resolve auto values.
-\item \code{"bootstraplib"}: use \code{\link[bootstraplib:bs_theme_get_variables]{bootstraplib::bs_theme_get_variables()}} values (if any)
+\item \code{"bootstraplib"}: use \code{bootstraplib::bs_theme_get_variables()} values (if any)
 to resolve auto values (only relevant when knitr is in progress).
 \item \code{"rstudio"}: use \code{\link[rstudioapi:getThemeInfo]{rstudioapi::getThemeInfo()}} values (if any) to resolve auto values.
 }}

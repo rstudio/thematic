@@ -21,7 +21,7 @@
 #' Possible values include:
 #'   * `"shiny"`: use [shiny::getCurrentOutputInfo()] values (if any) to resolve auto values.
 #'   * `"config"`: use the values provided to this function (if any) to resolve auto values.
-#'   * `"bootstraplib"`: use [bootstraplib::bs_theme_get_variables()] values (if any)
+#'   * `"bootstraplib"`: use `bootstraplib::bs_theme_get_variables()` values (if any)
 #'     to resolve auto values (only relevant when knitr is in progress).
 #'   * `"rstudio"`: use [rstudioapi::getThemeInfo()] values (if any) to resolve auto values.
 #'
@@ -231,13 +231,21 @@ shiny_output_info <- function() {
 bs_theme_colors <- function() {
   if (!in_html_document()) return(NULL)
 
-  cols <- if ("3" %in% bootstraplib::theme_version()) {
-    bootstraplib::bs_theme_get_variables(c("body-bg", "text-color", "link-color"))
+  cols <- if ("3" %in% bs_theme_version()) {
+    bs_theme_vars(c("body-bg", "text-color", "link-color"))
   } else {
-    bootstraplib::bs_theme_get_variables(c("body-bg", "body-color", "link-color"))
+    bs_theme_vars(c("body-bg", "body-color", "link-color"))
   }
 
   rlang::set_names(cols, c("bg", "fg", "accent"))
+}
+
+bs_theme_vars <- function(...) {
+  utils::getFromNamespace("bs_theme_get_variables", "bootstraplib")
+}
+
+bs_theme_version <- function(...) {
+  utils::getFromNamespace("bs_theme_get_variables", "bootstraplib")
 }
 
 
@@ -307,16 +315,16 @@ shiny_font_spec <- function(font) {
 bs_font_spec <- function(){
   if (!in_html_document()) return(NULL)
 
-  family <- bootstraplib::bs_theme_get_variables("font-family-base")
+  family <- bs_theme_vars("font-family-base")
   families <- strsplit(gsub('"', '', family), ", ")[[1]]
-  size <- bootstraplib::bs_theme_get_variables("font-size-base")
+  size <- bs_theme_vars("font-size-base")
   font_spec(families, scale = size_to_scale(size))
 }
 
 in_html_document <- function() {
   if (!getOption("knitr.in.progress", FALSE)) return(FALSE)
   if (!is_installed("bootstraplib")) return(FALSE)
-  !is.null(bootstraplib::bs_theme_get())
+  !is.null(utils::getFromNamespace("bs_theme_get", "bootstraplib")())
 }
 
 # Translate CSS font-size to font_spec(scale = ...)

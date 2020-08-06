@@ -20,12 +20,12 @@ jobs:
         config:
           - {os: windows-latest, r: 'release', vdiffr: true}
           - {os: macOS-latest, r: 'release', vdiffr: true}
-          - {os: macOS-latest, r: 'devel', vdiffr: false}
-          - {os: ubuntu-16.04, r: 'release', vdiffr: true, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04, r: 'oldrel', vdiffr: false, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04, r: '3.5', vdiffr: false, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04, r: '3.4', vdiffr: false, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04, r: '3.3', vdiffr: false, rspm: "https://demo.rstudiopm.com/all/__linux__/xenial/latest"}
+          - {os: ubuntu-20.04, r: 'devel', vdiffr: true, rspm: "https://packagemanager.rstudio.com/cran/__linux__/focal/latest"}
+          - {os: ubuntu-18.04, r: 'release', vdiffr: true, rspm: "https://packagemanager.rstudio.com/all/__linux__/bionic/latest"}
+          - {os: ubuntu-16.04, r: 'oldrel', vdiffr: false, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04, r: '3.5', vdiffr: false, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04, r: '3.4', vdiffr: false, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04, r: '3.3', vdiffr: false, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
@@ -67,18 +67,20 @@ jobs:
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-2-${{ hashFiles('depends.Rds') }}
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-2-
 
-      - name: Install system dependencies
-        if: runner.os == 'Linux'
-        env:
-          RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
+      # https://github.com/r-hub/sysreqsdb/issues/77#issuecomment-620025428
+      - name: Use cran:libgit2 PPA to avoid conflicts of libcurl4-gnutls-dev
+        if: matrix.config.os == 'ubuntu-16.04'
         run: |
-          # Use cran:libgit2 PPA to avoid conflicts of libcurl4-gnutls-dev
-          # https://github.com/r-hub/sysreqsdb/issues/77#issuecomment-620025428
           sudo add-apt-repository ppa:cran/libgit2
           sudo apt-get update
-          Rscript -e "remotes::install_github('r-hub/sysreqs')"
-          sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
-          sudo -s eval "$sysreqs"
+
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
+        run: |
+          while read -r cmd
+          do
+            eval sudo $cmd
+          done < <(Rscript -e 'cat(do.call(remotes::system_requirements, strsplit(${{ matrix.config.os }}, "-")[[1]]), sep = "\n")')
 
       - name: Install any dev or missing sysdeps
         if: runner.os == 'Linux'
@@ -92,7 +94,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew cask install xquartz phantomjs
-          brew install pkg-config udunits gdal cairo
+          brew install pkg-config cairo
 
       # ------------------------------------------------------------
 

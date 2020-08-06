@@ -36,7 +36,6 @@ Suggests:
     rmarkdown,
     htmltools,
     shiny,
-    bootstraplib,
     testthat,
     vdiffr,
     svglite,
