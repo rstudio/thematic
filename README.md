@@ -88,7 +88,7 @@ ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = factor(cyl))) +
   ggrepel::geom_text_repel()
 ```
 
-<img src="man/figures/ggrepel.png" width="80%" style="display: block; margin: auto;" />
+<img src="man/figures/README-unnamed-chunk-4-1.png" width="80%" style="display: block; margin: auto;" />
 
 In addition to `thematic_on()`, which applies the provided theme to all
 plots (up until `thematic_off()` is called), there are a few variation

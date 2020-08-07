@@ -81,7 +81,6 @@ jobs:
           install.packages("curl")
         shell: Rscript {0}
 
-
       - name: Install system dependencies
         if: runner.os == 'Linux'
         run: |
@@ -118,7 +117,7 @@ jobs:
       - name: Install testing dependencies
         run: |
           # TODO: remove me after next release cycle
-          remotes::install_github(c('rstudio/rmarkdown#1706', 'rstudio/bootstraplib'))
+          remotes::install_github(c('rstudio/rmarkdown#1706', 'rstudio/bootstraplib', 'yixuan/showtext#42'))
           install.packages(c('shinytest', 'sf', 'ggthemes', 'patchwork', 'gridExtra', 'tinytex'))
           tinytex::install_tinytex()
         shell: Rscript {0}
