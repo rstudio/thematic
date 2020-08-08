@@ -170,6 +170,7 @@ test_that("Scale defaults can be overridden", {
 
 test_that("sf integration", {
   skip_if_not_installed("sf")
+  skip_if_not_installed("rgdal")
   skip_if_not(Sys.info()[["sysname"]] == "Darwin")
   st_read <- getFromNamespace("st_read", "sf")
   st_transform <- getFromNamespace("st_transform", "sf")
