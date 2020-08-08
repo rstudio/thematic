@@ -231,7 +231,7 @@ shiny_output_info <- function() {
 bs_theme_colors <- function() {
   if (!in_html_document()) return(NULL)
 
-  cols <- if ("3" %in% bs_theme_version()) {
+  cols <- if ("3" %in% theme_version()) {
     bs_theme_vars(c("body-bg", "text-color", "link-color"))
   } else {
     bs_theme_vars(c("body-bg", "body-color", "link-color"))
@@ -241,11 +241,11 @@ bs_theme_colors <- function() {
 }
 
 bs_theme_vars <- function(...) {
-  utils::getFromNamespace("bs_theme_get_variables", "bootstraplib")
+  utils::getFromNamespace("bs_theme_get_variables", "bootstraplib")(...)
 }
 
-bs_theme_version <- function(...) {
-  utils::getFromNamespace("bs_theme_get_variables", "bootstraplib")
+theme_version <- function(...) {
+  utils::getFromNamespace("theme_version", "bootstraplib")(...)
 }
 
 
