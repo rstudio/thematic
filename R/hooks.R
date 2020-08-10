@@ -1,11 +1,11 @@
 set_hooks <- function() {
-  setHook("before.plot.new", base_before_hook)
-  setHook("before.grid.newpage", grid_before_hook)
+  setHook("plot.new", base_plot_hook)
+  setHook("grid.newpage", grid_plot_hook)
 }
 
 remove_hooks <- function() {
-  remove_hook("before.plot.new", base_before_hook)
-  remove_hook("before.grid.newpage", grid_before_hook)
+  remove_hook("plot.new", base_plot_hook)
+  remove_hook("grid.newpage", grid_plot_hook)
 }
 
 remove_hook <- function(name, hook) {
@@ -15,7 +15,7 @@ remove_hook <- function(name, hook) {
 }
 
 
-base_before_hook <- function() {
+base_plot_hook <- function() {
   .globals$theme <- auto_resolve_theme(.globals$theme)
   # populates .globals$theme$font$family based on the first families we can support
   resolve_font_family(type = "base")
@@ -24,7 +24,7 @@ base_before_hook <- function() {
   base_palette_set()
 }
 
-grid_before_hook <- function() {
+grid_plot_hook <- function() {
   .globals$theme <- auto_resolve_theme(.globals$theme)
   # populates .globals$theme$font$family based on the first families we can support
   resolve_font_family(type = "grid")
@@ -45,26 +45,6 @@ resolve_font_family <- function(type = c("base", "grid")) {
   # Returns the name of the currently active device
   # (and, if none is active, the name of the one that *will be* used)
   dev_name <- infer_device()
-
-  # RStudio 1.4 introduced configurable graphics backends.
-  # It appears ragg is the only option that is able to render
-  # custom fonts at the moment (i.e., showtext with quartz/cairo
-  # doesn't appear to work at the moment)
-  if (in_rstudio_gd(dev_name)) {
-    backend <- tryNULL(readRStudioPreference("graphics_backend"))
-    if (identical("ragg", backend)) {
-      dev_name <- "agg_png"
-    } else {
-      maybe_warn(
-        "Rendering custom fonts in the RStudio graphics device requires ",
-        "RStudio 1.4 with an AGG graphics backend. ",
-        if (rstudioapi::isAvailable("1.4") && !is_installed("ragg")) "First, install the ragg package, then ",
-        if (rstudioapi::isAvailable("1.4")) "Go to Tools -> Global Options -> General -> Graphics -> Backend -> AGG.",
-        id = "rstudio-agg"
-      )
-      return(set_font_family(families[1]))
-    }
-  }
 
   # Make sure fig.showtext = TRUE in knitr (if this is a non-ragg device)
   # (We set this .onLoad, but it only applies for the _next_ chunk)
@@ -278,16 +258,16 @@ dev_new <- function(filename) {
 maybe_register_showtext <- function(dev_name) {
   if (!is_installed("showtext")) return()
   if (is_ragg_device(dev_name)) return()
-  if (in_rstudio_gd(dev_name)) return()
 
-  if (dev.cur() != 1) {
-    showtext::showtext_begin()
-  } else {
-    maybe_warn(
-      "showtext font rendering requires a device to be open before plotting.",
-      id = "showtext-open-device"
-    )
-  }
+  # Make sure to record this call showtext_begin() so that replayPlot() works which,
+  # as a consequence, makes showtext work better in RStudio & Shiny
+  # (https://github.com/yixuan/showtext/issues/41#issuecomment-670983568)
+  # It's important to that we can "safely" do this since we know this is
+  # going to be called immediately *after* plot.new()/grid.newpage() and also
+  # immediately *before* any text is drawn
+  grDevices::recordGraphics(
+    showtext::showtext_begin(), list(), getNamespace("showtext")
+  )
 }
 
 # https://drafts.csswg.org/css-fonts-4/#generic-font-families
