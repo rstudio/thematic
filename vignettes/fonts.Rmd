@@ -31,33 +31,11 @@ If a [Google Font](https://fonts.google.com) is requested as part of a **themati
 
 ### Shiny & R Markdown {#shiny-rmd}
 
-If you have **showtext** installed, Google Fonts should 'just work' by default inside Shiny and R Markdown. Before deployment, include `library(showtext)` in the app/document to make sure it's installed on the hosted instance. Also, if you encounter issues in R Markdown, make sure **thematic** is being loaded in an initial "setup" chunk prior to any plotting chunks (loading **thematic** ensures that the `fig.showtext` **knitr** option defaults to `TRUE` in future code chunks).
+If you have **showtext** installed, Google Fonts should 'just work' by default inside Shiny and R Markdown. However, before deployment, include `library(showtext)` in the app/document to make sure it's installed on the hosted instance. Also, if you encounter issues in R Markdown, make sure **thematic** is being loaded in an initial "setup" chunk prior to any plotting chunks (loading **thematic** ensures that the `fig.showtext` **knitr** option defaults to `TRUE` in future code chunks).
 
 Using **ragg** instead of **showtext** in these contexts requires some additional configuration:
   * Set `options(shiny.useragg = TRUE)` in Shiny (requires **shiny** v1.5.0 or higher).
   * Set `knitr::opts_chunk$set(dev = "ragg_png")` in R Markdown (requires **knitr** v1.29 or higher).
-
-### RStudio {#rstudio}
-
-The suggested way to render Google Fonts in RStudio is to leverage [RStudio 1.4](https://dailies.rstudio.com)'s configurable graphics device option with an AGG backend, which requires the **ragg** package. After **ragg** is installed, in RStudio, go to Tools -> Global Options -> Graphics -> Backend:
-
-```{r, echo = FALSE}
-knitr::include_graphics("backend.png")
-```
-
-If it's not possible for you to use the AGG backend, you _can_ get Google Fonts rendering in RStudio by running this code at the start of an R session:
-
-```r
-trace(grDevices::png, exit = quote({
-   showtext::showtext_begin()
-}), print = FALSE)
-```
-
-Note that this code will make sure _any_ call to `png()` uses **showtext**, so you may want to disable it if it happens to introduce unwanted side-effects.
-
-```r
-untrace(grDevices::png)
-```
 
 ### R graphics devices {#r-devices}
 
