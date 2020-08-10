@@ -1,27 +1,23 @@
-# Background color need to be set on the device level
-# This ensures that, regardless of the device that knitr wants to
-# use, the bg color will default to the theme's bg
-knitr_dev_args_set <- function() {
-  if (!isTRUE(getOption("knitr.in.progress"))) return()
-
-  dev <- knitr::opts_chunk$get("dev")
-  old_args <- knitr::opts_chunk$get("dev.args")
-  # Support ragg device if and when it's officially supported
-  # https://github.com/yihui/knitr/pull/1834
-  new_args <- rlang::set_names(
-    list(thematic_get_option("bg", "white")),
-    if (identical(dev, "ragg_png")) "background" else "bg"
-  )
-  if (isTRUE(dev %in% names(old_args))) {
-    new_args <- rlang::set_names(list(new_args), dev)
+install_knitr_hooks <- function() {
+  if (!is_installed("knitr")) {
+    return()
   }
 
-  .globals$knitr_dev_args <- old_args
-  knitr::opts_chunk$set(dev.args = new_args)
-}
-
-knitr_dev_args_restore <- function() {
-  if (is.null(.globals$knitr_dev_args)) return()
-  knitr::opts_chunk$set(dev.args = .globals$knitr_dev_args)
-  rm("knitr_dev_args", envir = .globals)
+  # Try our best to set better chunk defaults for the fig.showtext and dev.args options...
+  # Unfortunately, both of these options must be set prior to code evaluation to take effect,
+  # but we won't know the "true" value that these options should be until after evaluation
+  knitr::opts_chunk$set(thematic_hook = TRUE)
+  knitr::opts_hooks$set(thematic_hook = function(options) {
+    # Default to using showtext, but allow users to opt-out if they don't need it
+    options$fig.showtext <- getOption("thematic.fig.showtext", is_installed("showtext"))
+    bg <- thematic_get_option("bg", "white")
+    dev <- options[["dev"]]
+    # dev.args can also be a list of lists of args
+    if (is.character(dev) && isTRUE(dev %in% names(options$dev.args))) {
+      options$dev.args[[dev]]$bg <- bg
+    } else {
+      options$dev.args$bg <- bg
+    }
+    options
+  })
 }

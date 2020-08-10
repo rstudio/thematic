@@ -19,8 +19,6 @@ base_before_hook <- function() {
   .globals$theme <- auto_resolve_theme(.globals$theme)
   # populates .globals$theme$font$family based on the first families we can support
   resolve_font_family(type = "base")
-  # update the device's bg color
-  knitr_dev_args_set()
   # update graphical parameters
   base_params_set()
   base_palette_set()
@@ -30,8 +28,6 @@ grid_before_hook <- function() {
   .globals$theme <- auto_resolve_theme(.globals$theme)
   # populates .globals$theme$font$family based on the first families we can support
   resolve_font_family(type = "grid")
-  # update the device's bg color
-  knitr_dev_args_set()
   # update ggplot2/lattice defaults
   ggplot_build_set()
   lattice_print_set()

@@ -20,16 +20,7 @@
   # Dev versions
   register_upgrade_message("rmarkdown", "2.4.0", "rstudio/rmarkdown#1706")
 
-  if (!is_installed("knitr")) return()
-  if (is_installed("showtext")) {
-    knitr::opts_chunk$set("fig.showtext" = TRUE)
-  } else if (isTRUE(getOption("knitr.in.progress"))) {
-    warning(
-      "The showtext package is recommended for rendering non-standard ",
-      "fonts in knitr. Install it with `install.packages('showtext')`",
-      call. = FALSE
-    )
-  }
+  install_knitr_hooks()
 }
 
 

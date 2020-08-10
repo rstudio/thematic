@@ -83,9 +83,6 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
     font = font, sequential = sequential,
     qualitative = qualitative, inherit = inherit
   )
-  # Set knitr dev.args = list(bg = bg) now (instead of later)
-  # so at least the _next_ chunk has the right bg color.
-  knitr_dev_args_set()
   # Remember par("bg") now since bg can be modified by the opening of a
   # graphics device, and if that happens before plot time, it'd be too late
   # to base_restore_params()/base_set_params() at plot time
@@ -112,7 +109,6 @@ thematic_off <- function() {
   # Removing the plot.new hooks is not enough to restore global state
   base_params_restore()
   base_palette_restore()
-  knitr_dev_args_restore()
   ggplot_build_restore()
   lattice_print_restore()
 

@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 library(thematic)
-thematic_on()
+thematic_shiny()
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
