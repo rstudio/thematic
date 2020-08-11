@@ -91,7 +91,7 @@
       <h1 data-toc-skip>Scoping themes</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-08-05</h4>
+            <h4 class="date">2020-08-11</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/scope.Rmd"><code>vignettes/scope.Rmd</code></a></small>
       <div class="hidden name"><code>scope.Rmd</code></div>
@@ -118,20 +118,20 @@
 <span class="no">purple</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/thematic_on.html">thematic_theme</a></span>(<span class="kw">accent</span> <span class="kw">=</span> <span class="st">"purple"</span>)
 <span class="no">orange</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/thematic_on.html">thematic_theme</a></span>(<span class="kw">accent</span> <span class="kw">=</span> <span class="st">"orange"</span>)
 
-<span class="no">ui</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span>(
+<span class="no">ui</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span>(
   <span class="kw">theme</span> <span class="kw">=</span> <span class="kw pkg">shinythemes</span><span class="kw ns">::</span><span class="fu">shinytheme</span>(<span class="st">"darkly"</span>),
-  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span>(<span class="st">"purple"</span>),
-  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput</a></span>(<span class="st">"orange"</span>)
+  <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html">plotOutput</a></span>(<span class="st">"purple"</span>),
+  <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html">plotOutput</a></span>(<span class="st">"orange"</span>)
 )
 
 <span class="no">server</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>, <span class="no">session</span>) {
-  <span class="no">output</span>$<span class="no">purple</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span>({
+  <span class="no">output</span>$<span class="no">purple</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">renderPlot</a></span>({
     <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_with_theme</a></span>(<span class="no">purple</span>, {
       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">waiting</span>, <span class="no">eruptions</span>)) +
         <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="no">density</span>))
     })
   })
-  <span class="no">output</span>$<span class="no">orange</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span>({
+  <span class="no">output</span>$<span class="no">orange</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">renderPlot</a></span>({
     <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_with_theme</a></span>(<span class="no">orange</span>, {
       <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">waiting</span>, <span class="no">eruptions</span>)) +
         <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="no">density</span>))
@@ -139,26 +139,26 @@
   })
 }
 
-<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
 <p><img src="with-theme-shiny.png" width="70%" style="display: block; margin: auto;"></p>
 <p>If you find it annoying to supply both the <code><a href="../reference/thematic_on.html">thematic_theme()</a></code> and the plot <code>expr</code> to the same function call, you can also use <code><a href="../reference/thematic_with_theme.html">thematic_local_theme()</a></code>, which cleans up after itself when R exits the current execution environment. The one catch is that, in this case, you currently have to <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> <strong>ggplot2</strong> and <strong>lattice</strong> objects. By the way, if your interesting in learning more about how <code><a href="../reference/thematic_with_theme.html">thematic_local_theme()</a></code> actually works, and where else it might be useful (unit tests!), check out <a href="https://www.tidyverse.org/blog/2020/04/self-cleaning-test-fixtures/">this blog post by Jenny Bryan</a>.</p>
 <div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="no">p</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">waiting</span>, <span class="no">eruptions</span>)) +
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="no">density</span>))
 
 <span class="no">server</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>, <span class="no">session</span>) {
-  <span class="no">output</span>$<span class="no">purple</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span>({
+  <span class="no">output</span>$<span class="no">purple</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">renderPlot</a></span>({
     <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_local_theme</a></span>(<span class="no">purple</span>)
 
      <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">p</span>)
   })
-  <span class="no">output</span>$<span class="no">orange</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html">renderPlot</a></span>({
+  <span class="no">output</span>$<span class="no">orange</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">renderPlot</a></span>({
     <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_local_theme</a></span>(<span class="no">orange</span>)
 
      <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span>(<span class="no">p</span>)
   })
 }
 
-<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
 </div>
 <div id="several-time-use" class="section level3">
 <h3 class="hasAnchor">
