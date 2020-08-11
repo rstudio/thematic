@@ -35,7 +35,10 @@ test_that("Custom fonts with ragg", {
   expect_app_doppelganger("agg_png")
 })
 
-# TODO: test for auto theming in shiny with ragg?
+test_that("runtime: shiny auto-theming", {
+  skip_if_not(identical("win", shinytest_suffix()))
+  expect_app_doppelganger("shiny_runtime")
+})
 
 # The remaining tests rely on showtext to render custom fonts
 skip_if_not_installed("showtext")
@@ -49,7 +52,6 @@ test_that("Auto theming in shiny works", {
   expect_app_doppelganger("auto_theme_shiny/ggplot2")
   expect_app_doppelganger("auto_theme_shiny/local_theme")
   expect_app_doppelganger("auto_theme_shiny/with_theme")
-  expect_app_doppelganger("shiny_runtime")
 })
 
 test_that("Custom fonts with Cairo package", {
@@ -89,7 +91,7 @@ test_that("Can render non-custom fonts in rmarkdown with CairoPNG", {
 })
 
 test_that("pdf_document compiles without error", {
-  skip_if_not(.Platform$OS.type != "windows")
+  skip_if_not(!identical("win", shinytest_suffix()))
   outfile <- rmarkdown::render("pdf.Rmd", quiet = TRUE)
   expect_true(file.exists(outfile))
   unlink(outfile)

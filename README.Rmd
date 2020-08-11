@@ -12,7 +12,6 @@ knitr::opts_chunk$set(
   message = FALSE,
   collapse = TRUE,
   comment = "#>",
-  # for some reason this fig.path isn't working?
   fig.path = "man/figures/README-",
   out.width = "80%",
   fig.align = 'center',
@@ -70,17 +69,13 @@ knitr::include_graphics("man/figures/auto-after.png")
 
 Instead of relying on **thematic** to automatically detect colors and fonts in the plot's container, you can also specify them directly in `thematic_on()`.
 
-```r
+```{r ggrepel}
 thematic_on(bg = "#222222", fg = "white", accent = "#0CE3AC", font = "Oxanium")
 
 library(ggplot2)
 ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = factor(cyl))) +
   geom_point() +
   ggrepel::geom_text_repel()
-```
-
-```{r, echo = FALSE}
-knitr::include_graphics("man/figures/ggrepel.png")
 ```
 
 In addition to `thematic_on()`, which applies the provided theme to all plots (up until `thematic_off()` is called), there are a few variation of  `thematic_on()` which temporarily apply the given theme:

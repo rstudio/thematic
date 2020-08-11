@@ -36,7 +36,6 @@ Suggests:
     rmarkdown,
     htmltools,
     shiny,
-    bootstraplib,
     testthat,
     vdiffr,
     svglite,
@@ -47,3 +46,19 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Collate: 
+    'auto.R'
+    'base.R'
+    'cache.R'
+    'gfonts.R'
+    'ggplot.R'
+    'globals.R'
+    'hooks.R'
+    'imports.R'
+    'knitr.R'
+    'lattice.R'
+    'onLoad.R'
+    'thematic-save-plot.R'
+    'thematic.R'
+    'utils.R'
+    'view-shinytest.R'

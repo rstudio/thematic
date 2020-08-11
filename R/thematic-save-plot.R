@@ -51,25 +51,6 @@ thematic_save_plot <- function(expr, device = default_device(),
   args[[bg_arg]] <- args[[bg_arg]] %||%
     thematic_get_option("bg", "white")
 
-  # Resolve bg = "auto" in a similar manner to auto_resolve_theme()
-  # (i.e., allow auto values to be repeatedly resolved)
-  if (is_auto(args[[bg_arg]])) {
-    # Should this also consider shiny::getCurrentOutputInfo()?
-    args[[bg_arg]] <- auto_config_get()[["bg"]] %||%
-      bs_theme_colors()[["bg"]] %||%
-      args[[bg_arg]]
-    if (isTRUE("auto" == args[[bg_arg]])) {
-      maybe_warn(
-        "Couldn't detect an 'auto' bg color to use in the graphics device.",
-        id = "with-device-bg-auto"
-      )
-      args[[bg_arg]] <- "white"
-    } else {
-      args[[bg_arg]] <- parse_any_color(args[[bg_arg]])
-    }
-    args[[bg_arg]] <- as_auto(args[[bg_arg]])
-  }
-
   # Handle the case where device wants `file` instead of `filename`
   # (e.g., svglite::svglite)
   if (!"filename" %in% device_args && "file" %in% device_args) {

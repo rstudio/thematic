@@ -1,11 +1,15 @@
 set_hooks <- function() {
   setHook("before.plot.new", base_before_hook)
   setHook("before.grid.newpage", grid_before_hook)
+  setHook("plot.new", base_plot_hook)
+  setHook("grid.newpage", grid_plot_hook)
 }
 
 remove_hooks <- function() {
   remove_hook("before.plot.new", base_before_hook)
   remove_hook("before.grid.newpage", grid_before_hook)
+  remove_hook("plot.new", base_plot_hook)
+  remove_hook("grid.newpage", grid_plot_hook)
 }
 
 remove_hook <- function(name, hook) {
@@ -14,28 +18,37 @@ remove_hook <- function(name, hook) {
   setHook(name, hooks[!is_thematic], "replace")
 }
 
-
 base_before_hook <- function() {
   .globals$theme <- auto_resolve_theme(.globals$theme)
   # populates .globals$theme$font$family based on the first families we can support
   resolve_font_family(type = "base")
-  # update the device's bg color
-  knitr_dev_args_set()
   # update graphical parameters
   base_params_set()
   base_palette_set()
+}
+
+#' @include globals.R
+.globals$recordShowtext <- FALSE
+base_plot_hook <- function() {
+  # If showtext_begin() was called before.plot.new (this timing seems important for showtext to be effective)
+  # then we record that call in plot.new hook (this timing seems important for recordGraphics to be effective).
+  # Note that by recording this call, showtext works more generally in RStudio and Shiny
+  # https://github.com/yixuan/showtext/issues/41#issuecomment-670983568
+  if (isTRUE(.globals$recordShowtext)) {
+    grDevices::recordGraphics(showtext::showtext_begin(), list(), getNamespace("showtext"))
+  }
 }
 
 grid_before_hook <- function() {
   .globals$theme <- auto_resolve_theme(.globals$theme)
   # populates .globals$theme$font$family based on the first families we can support
   resolve_font_family(type = "grid")
-  # update the device's bg color
-  knitr_dev_args_set()
   # update ggplot2/lattice defaults
   ggplot_build_set()
   lattice_print_set()
 }
+
+grid_plot_hook <- base_plot_hook
 
 
 resolve_font_family <- function(type = c("base", "grid")) {
@@ -50,26 +63,6 @@ resolve_font_family <- function(type = c("base", "grid")) {
   # (and, if none is active, the name of the one that *will be* used)
   dev_name <- infer_device()
 
-  # RStudio 1.4 introduced configurable graphics backends.
-  # It appears ragg is the only option that is able to render
-  # custom fonts at the moment (i.e., showtext with quartz/cairo
-  # doesn't appear to work at the moment)
-  if (in_rstudio_gd(dev_name)) {
-    backend <- tryNULL(readRStudioPreference("graphics_backend"))
-    if (identical("ragg", backend)) {
-      dev_name <- "agg_png"
-    } else {
-      maybe_warn(
-        "Rendering custom fonts in the RStudio graphics device requires ",
-        "RStudio 1.4 with an AGG graphics backend. ",
-        if (rstudioapi::isAvailable("1.4") && !is_installed("ragg")) "First, install the ragg package, then ",
-        if (rstudioapi::isAvailable("1.4")) "Go to Tools -> Global Options -> General -> Graphics -> Backend -> AGG.",
-        id = "rstudio-agg"
-      )
-      return(set_font_family(families[1]))
-    }
-  }
-
   # Make sure fig.showtext = TRUE in knitr (if this is a non-ragg device)
   # (We set this .onLoad, but it only applies for the _next_ chunk)
   if (isTRUE(getOption("knitr.in.progress"))) {
@@ -80,7 +73,10 @@ resolve_font_family <- function(type = c("base", "grid")) {
     }
   }
 
-  maybe_register_showtext(dev_name)
+  if (is_installed("showtext") && !is_ragg_device(dev_name)) {
+    showtext::showtext_begin()
+    .globals$recordShowtext <- TRUE
+  }
 
   # Since can_render() needs to open the device to detect font support,
   # we need to be able to map a device name to a function
@@ -279,20 +275,7 @@ dev_new <- function(filename) {
   suppressMessages(dev.new(filename = filename, file = filename))
 }
 
-maybe_register_showtext <- function(dev_name) {
-  if (!is_installed("showtext")) return()
-  if (is_ragg_device(dev_name)) return()
-  if (in_rstudio_gd(dev_name)) return()
 
-  if (dev.cur() != 1) {
-    showtext::showtext_begin()
-  } else {
-    maybe_warn(
-      "showtext font rendering requires a device to be open before plotting.",
-      id = "showtext-open-device"
-    )
-  }
-}
 
 # https://drafts.csswg.org/css-fonts-4/#generic-font-families
 generic_css_families <- function() {

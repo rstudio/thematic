@@ -8,12 +8,12 @@
       "deps": [
         {
           "name": "jquery",
-          "version": "3.5.0",
+          "version": "3.5.1",
           "src": {
             "href": "https://code.jquery.com"
           },
           "meta": null,
-          "script": "jquery-3.5.0.min.js",
+          "script": "jquery-3.5.1.min.js",
           "stylesheet": null,
           "head": null,
           "attachment": null,
