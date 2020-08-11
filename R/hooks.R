@@ -1,9 +1,13 @@
 set_hooks <- function() {
+  setHook("before.plot.new", base_before_hook)
+  setHook("before.grid.newpage", grid_before_hook)
   setHook("plot.new", base_plot_hook)
   setHook("grid.newpage", grid_plot_hook)
 }
 
 remove_hooks <- function() {
+  remove_hook("before.plot.new", base_before_hook)
+  remove_hook("before.grid.newpage", grid_before_hook)
   remove_hook("plot.new", base_plot_hook)
   remove_hook("grid.newpage", grid_plot_hook)
 }
@@ -14,8 +18,7 @@ remove_hook <- function(name, hook) {
   setHook(name, hooks[!is_thematic], "replace")
 }
 
-
-base_plot_hook <- function() {
+base_before_hook <- function() {
   .globals$theme <- auto_resolve_theme(.globals$theme)
   # populates .globals$theme$font$family based on the first families we can support
   resolve_font_family(type = "base")
@@ -24,7 +27,19 @@ base_plot_hook <- function() {
   base_palette_set()
 }
 
-grid_plot_hook <- function() {
+#' @include globals.R
+.globals$recordShowtext <- FALSE
+base_plot_hook <- function() {
+  # If showtext_begin() was called before.plot.new (this timing seems important for showtext to be effective)
+  # then we record that call in plot.new hook (this timing seems important for recordGraphics to be effective).
+  # Note that by recording this call, showtext works more generally in RStudio and Shiny
+  # https://github.com/yixuan/showtext/issues/41#issuecomment-670983568
+  if (isTRUE(.globals$recordShowtext)) {
+    grDevices::recordGraphics(showtext::showtext_begin(), list(), getNamespace("showtext"))
+  }
+}
+
+grid_before_hook <- function() {
   .globals$theme <- auto_resolve_theme(.globals$theme)
   # populates .globals$theme$font$family based on the first families we can support
   resolve_font_family(type = "grid")
@@ -32,6 +47,8 @@ grid_plot_hook <- function() {
   ggplot_build_set()
   lattice_print_set()
 }
+
+grid_plot_hook <- base_plot_hook
 
 
 resolve_font_family <- function(type = c("base", "grid")) {
@@ -56,7 +73,10 @@ resolve_font_family <- function(type = c("base", "grid")) {
     }
   }
 
-  maybe_register_showtext(dev_name)
+  if (is_installed("showtext") && !is_ragg_device(dev_name)) {
+    showtext::showtext_begin()
+    .globals$recordShowtext <- TRUE
+  }
 
   # Since can_render() needs to open the device to detect font support,
   # we need to be able to map a device name to a function
@@ -255,20 +275,7 @@ dev_new <- function(filename) {
   suppressMessages(dev.new(filename = filename, file = filename))
 }
 
-maybe_register_showtext <- function(dev_name) {
-  if (!is_installed("showtext")) return()
-  if (is_ragg_device(dev_name)) return()
 
-  # Make sure to record this call showtext_begin() so that replayPlot() works which,
-  # as a consequence, makes showtext work better in RStudio & Shiny
-  # (https://github.com/yixuan/showtext/issues/41#issuecomment-670983568)
-  # It's important to that we can "safely" do this since we know this is
-  # going to be called immediately *after* plot.new()/grid.newpage() and also
-  # immediately *before* any text is drawn
-  grDevices::recordGraphics(
-    showtext::showtext_begin(), list(), getNamespace("showtext")
-  )
-}
 
 # https://drafts.csswg.org/css-fonts-4/#generic-font-families
 generic_css_families <- function() {
