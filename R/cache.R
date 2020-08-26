@@ -52,10 +52,5 @@ font_cache_housing <- function() {
 
 
 thematic_cache_dir <- function() {
-  user_dir <- if (getRversion() >= "4.0") {
-    tools::R_user_dir
-  } else {
-    utils::getFromNamespace("R_user_dir", "backports")
-  }
-  user_dir("thematic", "cache")
+  rappdirs::user_cache_dir("thematic")
 }

@@ -22,8 +22,8 @@ Imports:
     rlang,
     scales,
     rstudioapi (>= 0.8),
-    ggplot2 (>= 3.3.0),
-    backports (>= 1.1.6)
+    rappdirs,
+    ggplot2 (>= 3.3.0)
 Suggests:
     lattice,
     stats,
