@@ -27,7 +27,7 @@ knitr::opts_chunk$set(
 
 If a [Google Font](https://fonts.google.com) is requested as part of a **thematic** theme, **thematic** attempts to download, cache, and register that font for use with **showtext** and **ragg** before plotting (see `font_spec()` for more details). Therefore, to correctly render these fonts, you'll need at least **showtext** or **ragg** installed; and in some scenarios, some additional configuration may be required.
 
-**showtext** allows fonts to be used with essentially any R graphics device. Therefore, it's likely preferable when high-quality devices (e.g. `png(type='quartz')`, `svg()`, `cairo_pdf()`, etc). Unfortunately, in many cases, hosted environments (e.g., shinyapps.io and Connect) don't have `png(type='quartz')` support, and `shiny::renderPlot()` currently requires a png file, so **ragg** is likely preferable in that case. **ragg** is also faster and more consistent (across cross-platforms) than other bitmap devices such as `png(type='cairo')`, see [here](https://ragg.r-lib.org/) for more details.
+**showtext** allows custom fonts to be used with essentially any R graphics device, whereas **ragg** itself provides (high-quality and cross-platform) bitmap devices with 1st class support for custom fonts. Therefore, consider using **showtext** for vector-based images (i.e., `svg()`, `cairo_pdf()`, etc) and **ragg** for raster-based images (i.e., `ragg::agg_png()`, `ragg::agg_jpeg()`, etc). Note that `shiny::renderPlot()` currently requires a png image, so **ragg** is generally preferable to **showtext** in that case, especially on hosted environments (e.g., Connect, shinyapps.io, etc. -- because they don't have support for the high-quality `quartz()` device).
 
 ### Shiny & R Markdown {#shiny-rmd}
 
