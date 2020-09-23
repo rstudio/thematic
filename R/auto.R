@@ -208,11 +208,21 @@ shiny_output_info <- function() {
   # info isn't populated
   nms <- c("bg", "fg", "accent", "font")
   missing <- setdiff(nms, names(info))
+  # In this case, we're in an output context, but `.shiny-report-theme` info is missing
   if (length(missing)) {
-    maybe_warn(
-      "Auto-theming with shiny requires v1.5.0 or higher",
-      id = "upgrade-shiny"
-    )
+    if (is_available("shiny", "1.5.0")) {
+      maybe_warn(
+        "Auto-theming with shiny requires an output context that has reports it's CSS ",
+        "styles. Do you want to create this plot inside `renderPlot()` (or another output ",
+        "container with a .shiny-report-theme class)?",
+        id = "missing-css-info"
+      )
+    } else {
+      maybe_warn(
+        "Auto-theming with shiny requires v1.5.0 or higher",
+        id = "upgrade-shiny"
+      )
+    }
     return(NULL)
   }
   # This is what I get for announcing before shiny was ready
