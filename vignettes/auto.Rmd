@@ -139,18 +139,19 @@ Since **thematic** knows the CSS rules on the plot's HTML container, auto themin
 
 ```r
 library(bootstraplib)
-bs_theme_new()
-bs_theme_base_colors(bg = "#002B36", fg = "#EEE8D5")
-bs_theme_accent_colors(primary = "#2AA198")
-bs_theme_fonts("Pacifico")
+solar_theme <- bs_theme(
+  bg = "#002B36", fg = "#EEE8D5",
+  primary = "#2AA198", base_font = "Pacifico"
+)
 ```
 
 In this case, we've set the font family for this **bootstraplib** theme to be [Pacifico](https://fonts.google.com/specimen/Pacifico), which is a [Google Font](https://fonts.google.com). Therefore, in order for the browser to be able to render this font, we need to [import it](https://developers.google.com/fonts/docs/getting_started). For simplicity, this code imports the font via a remote URL, but it's recommended to use local font files (for hosting reasons). The [**gfonts** package](https://github.com/dreamRs/gfonts) makes it really easy to download and use Google Fonts locally in Shiny and R Markdown.
 
 ```r
 ui <- fluidPage(
-  tabs, bootstrap(),
-  tags$link(href="https://fonts.googleapis.com/css?family=Pacifico", rel="stylesheet")
+  theme = solar_theme,
+  tags$link(href="https://fonts.googleapis.com/css?family=Pacifico", rel="stylesheet"),
+  tabs
 )
 thematic_shiny()
 shinyApp(ui, server)
@@ -179,13 +180,11 @@ knitr::include_graphics("tabsets-custom-fonts-lattice.png")
 **thematic** also works great with **bootstraplib**'s realtime theming widget. This interactive widget influences the CSS on the page, so as long as thematic's auto theming enabled, those CSS changes automatically influence the R plot styling. Note how here we still have both auto fonts and colors, which means that as long as we choose Google Fonts (and/or fonts already known to R), the R plots can automatically render them.
 
 ```r
-# The theming widget could also be added to our mini example with bs_themer(),
-# but this demo app demonstrates a wider range of examples
-bs_theme_preview()
+bs_theme_preview(bs_theme(bg = "#444444", fg = "#E4E4E4", primary = "#E39777"))
 ```
 
 ```{r, echo = FALSE}
-include_vimeo("411238499")
+include_vimeo("465527125")
 ```
 
 ## R Markdown {#rmd}
@@ -245,7 +244,7 @@ The main use case for `auto_config()` is for developers of a custom rmarkdown ou
 
 1. `shiny::getCurrentOutputInfo()` (`"shiny"`)
 2. `auto_config_get()` (`"config"`)
-3. `bootstraplib::bs_theme_get_variables()` (`"bootstraplib"`)
+3. `bootstraplib::bs_get_variables()` (`"bootstraplib"`)
 4. `rstudioapi::getThemeInfo()` (`"rstudio"`)
 
 
