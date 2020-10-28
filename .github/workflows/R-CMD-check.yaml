@@ -116,9 +116,8 @@ jobs:
       # worth testing
       - name: Install testing dependencies
         run: |
-          remotes::install_version("showtext", "0.8-1")
           # TODO: remove me after next release cycle
-          remotes::install_github(c('rstudio/rmarkdown#1706', 'rstudio/bootstraplib'))
+          remotes::install_github(c('rstudio/rmarkdown#1706', 'rstudio/bootstraplib', 'yixuan/showtext'))
           install.packages(c('shinytest', 'sf', 'ggthemes', 'patchwork', 'gridExtra', 'tinytex'))
           tinytex::install_tinytex()
         shell: Rscript {0}
