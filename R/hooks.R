@@ -233,6 +233,21 @@ get_device_function <- function(name) {
     return(grDevices::png)
   }
 
+  if (identical("RStudioGD", name)) {
+    if (!rstudioapi::isAvailable("1.4")) {
+      return(grDevices::png)
+    }
+    # RStudio 1.4 introduced a configurable graphics backend https://github.com/rstudio/rstudio/pull/6520
+    backend <- tryNULL(readRStudioPreference("graphics_backend"))
+    if ("ragg" %in% backend && is_installed("ragg")) {
+      return(ragg::agg_png)
+    }
+    if ("windows" %in% backend && Sys.info()[["sysname"]] == "Windows") {
+      return(utils::getFromNamespace("win.metafile", "grDevices"))
+    }
+    return(grDevices::png)
+  }
+
   # Effectively what dev.new() does to find a device function from a string
   # https://github.com/wch/r-source/blob/d6c208e4/src/library/grDevices/R/device.R#L291-L293
   if (exists(name, .GlobalEnv)) {

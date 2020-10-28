@@ -5,12 +5,11 @@ library(thematic)
 library(dplyr)
 library(showtext)
 library(Cairo)
-
 library(bootstraplib)
-bs_theme_new(bootswatch = "darkly")
+
 
 ui <- fluidPage(
-  bootstrap(),
+  theme = bs_theme(bootswatch = "darkly"),
   selectInput(
     "theme", "Choose a theme",
     choices = grep("^theme_", getNamespaceExports("ggthemes"), value = TRUE)
