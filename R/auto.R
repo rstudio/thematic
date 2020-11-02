@@ -245,7 +245,8 @@ bs_theme_vars <- function(...) {
 }
 
 theme_version <- function(...) {
-  utils::getFromNamespace("theme_version", "bootstraplib")(...)
+  global_theme <- utils::getFromNamespace("bs_global_get", "bootstraplib")
+  utils::getFromNamespace("theme_version", "bootstraplib")(theme=global_theme,...)
 }
 
 
