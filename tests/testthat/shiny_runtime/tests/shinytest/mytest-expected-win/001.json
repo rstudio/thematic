@@ -1,0 +1,146 @@
+{
+  "input": {
+
+  },
+  "output": {
+    "__reactivedoc__": {
+      "html": "[html data sha1: d3669a1e1b7047ac68b76939cfc5d1e5180030b7]",
+      "deps": [
+        {
+          "name": "jquery",
+          "version": "1.11.3",
+          "src": {
+            "href": "jquery-1.11.3"
+          },
+          "meta": null,
+          "script": "jquery.min.js",
+          "stylesheet": null,
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "bootstrap",
+          "version": "3.3.5",
+          "src": {
+            "href": "bootstrap-3.3.5"
+          },
+          "meta": {
+            "viewport": "width=device-width, initial-scale=1"
+          },
+          "script": [
+            "js/bootstrap.min.js",
+            "shim/html5shiv.min.js",
+            "shim/respond.min.js"
+          ],
+          "stylesheet": "css/darkly.min.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "navigation",
+          "version": "1.1",
+          "src": {
+            "href": "navigation-1.1"
+          },
+          "meta": null,
+          "script": "tabsets.js",
+          "stylesheet": null,
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "highlightjs",
+          "version": "9.12.0",
+          "src": {
+            "href": "highlightjs-9.12.0"
+          },
+          "meta": null,
+          "script": "highlight.js",
+          "stylesheet": "default.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "anchor-sections",
+          "version": "1.0.1",
+          "src": {
+            "href": "anchor-sections-1.0.1"
+          },
+          "meta": null,
+          "script": "anchor-sections.js",
+          "stylesheet": "anchor-sections.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        },
+        {
+          "name": "rmarkdown-performance",
+          "version": "0.1",
+          "src": {
+            "href": "rmarkdown-performance-0.1"
+          },
+          "meta": null,
+          "script": "rmd_perf.js",
+          "stylesheet": "rmd_perf.css",
+          "head": null,
+          "attachment": null,
+          "package": null,
+          "all_files": true
+        }
+      ]
+    },
+    "outebe7b267c0420ad8": {
+      "src": "[image data sha1: 89827a2ad6d5cbd1dc0a7742bd06cd75ad50a91c]",
+      "width": 910,
+      "height": 400,
+      "coordmap": {
+        "panels": [
+          {
+            "panel": 1,
+            "row": 1,
+            "col": 1,
+            "panel_vars": {
+
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "domain": {
+              "left": 0.310344827586207,
+              "right": 10.551724137931,
+              "bottom": -0.05,
+              "top": 1.05
+            },
+            "mapping": {
+              "y": null,
+              "x": "1:10"
+            },
+            "range": {
+              "left": 42.1506849315069,
+              "right": 904.520547945205,
+              "bottom": 366.849315068493,
+              "top": 5.47945205479452
+            }
+          }
+        ],
+        "dims": {
+          "width": 910,
+          "height": 400
+        }
+      }
+    }
+  },
+  "export": {
+
+  }
+}
