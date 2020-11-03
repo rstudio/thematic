@@ -4,10 +4,9 @@
   },
   "output": {
     "base": {
-      "src": "[image data sha1: d0b33c98e8337c7825c718637b7cbee55d565264]",
+      "src": "[image data sha1: 1026f88d673aaff4c59eb9c4de8d56c03550ad20]",
       "width": 962,
       "height": 400,
-      "alt": "Plot object",
       "coordmap": {
         "panels": [
           {
@@ -39,10 +38,9 @@
       }
     },
     "ggplot": {
-      "src": "[image data sha1: c1e2127847da10d1b153ebb1d03623a4bde7a69f]",
+      "src": "[image data sha1: 2ca44e4a1f6cfe63be8c6f337131c54eff8814cc]",
       "width": 962,
       "height": 400,
-      "alt": "Plot object",
       "coordmap": {
         "panels": [
           {
@@ -74,10 +72,9 @@
       }
     },
     "lattice": {
-      "src": "[image data sha1: 1a0dde02c24130d96abf89f92f75d188a08732f2]",
+      "src": "[image data sha1: 61826ec957b246af522e875b0b499045077aadf0]",
       "width": 962,
       "height": 400,
-      "alt": "Plot object",
       "coordmap": {
         "panels": [
           {
