@@ -2,7 +2,8 @@
 title: "Untitled"
 output: 
   html_document_base:
-    theme: {{theme}}
+    theme: 
+      bootswatch: {{theme}}
     self_contained: false
 ---
 
