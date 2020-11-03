@@ -21,7 +21,7 @@
 #' Possible values include:
 #'   * `"shiny"`: use [shiny::getCurrentOutputInfo()] values (if any) to resolve auto values.
 #'   * `"config"`: use the values provided to this function (if any) to resolve auto values.
-#'   * `"bootstraplib"`: use `bootstraplib::bs_theme_get_variables()` values (if any)
+#'   * `"bootstraplib"`: use `bootstraplib::bs_get_variables()` values (if any)
 #'     to resolve auto values (only relevant when knitr is in progress).
 #'   * `"rstudio"`: use [rstudioapi::getThemeInfo()] values (if any) to resolve auto values.
 #'
@@ -208,11 +208,21 @@ shiny_output_info <- function() {
   # info isn't populated
   nms <- c("bg", "fg", "accent", "font")
   missing <- setdiff(nms, names(info))
+  # In this case, we're in an output context, but `.shiny-report-theme` info is missing
   if (length(missing)) {
-    maybe_warn(
-      "Auto-theming with shiny requires v1.5.0 or higher",
-      id = "upgrade-shiny"
-    )
+    if (is_available("shiny", "1.5.0")) {
+      maybe_warn(
+        "Auto-theming with shiny requires an output context that has reports it's CSS ",
+        "styles. Do you want to create this plot inside `renderPlot()` (or another output ",
+        "container with a .shiny-report-theme class)?",
+        id = "missing-css-info"
+      )
+    } else {
+      maybe_warn(
+        "Auto-theming with shiny requires v1.5.0 or higher",
+        id = "upgrade-shiny"
+      )
+    }
     return(NULL)
   }
   # This is what I get for announcing before shiny was ready
@@ -228,20 +238,20 @@ shiny_output_info <- function() {
   rlang::set_names(res, nms)
 }
 
-bs_theme_colors <- function() {
+bs_theme_colors <- function(theme = bootstraplib::bs_global_get()) {
   if (!in_html_document()) return(NULL)
 
-  cols <- if ("3" %in% theme_version()) {
-    bs_theme_vars(c("body-bg", "text-color", "link-color"))
+  cols <- if ("3" %in% theme_version(theme)) {
+    bs_theme_vars(theme, c("body-bg", "text-color", "link-color"))
   } else {
-    bs_theme_vars(c("body-bg", "body-color", "link-color"))
+    bs_theme_vars(theme, c("body-bg", "body-color", "link-color"))
   }
 
   rlang::set_names(cols, c("bg", "fg", "accent"))
 }
 
 bs_theme_vars <- function(...) {
-  utils::getFromNamespace("bs_theme_get_variables", "bootstraplib")(...)
+  utils::getFromNamespace("bs_get_variables", "bootstraplib")(...)
 }
 
 theme_version <- function(...) {
@@ -312,19 +322,19 @@ shiny_font_spec <- function(font) {
   )
 }
 
-bs_font_spec <- function(){
+bs_font_spec <- function(theme = bootstraplib::bs_global_get()) {
   if (!in_html_document()) return(NULL)
 
-  family <- bs_theme_vars("font-family-base")
+  family <- bs_theme_vars(theme, "font-family-base")
   families <- strsplit(gsub('"', '', family), ", ")[[1]]
-  size <- bs_theme_vars("font-size-base")
+  size <- bs_theme_vars(theme, "font-size-base")
   font_spec(families, scale = size_to_scale(size))
 }
 
 in_html_document <- function() {
   if (!getOption("knitr.in.progress", FALSE)) return(FALSE)
   if (!is_installed("bootstraplib")) return(FALSE)
-  !is.null(utils::getFromNamespace("bs_theme_get", "bootstraplib")())
+  !is.null(utils::getFromNamespace("bs_global_get", "bootstraplib")())
 }
 
 # Translate CSS font-size to font_spec(scale = ...)
