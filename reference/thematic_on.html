@@ -89,7 +89,7 @@ section below)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">thematic</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -149,48 +149,48 @@ these options can automatically resolve to relevant CSS styles (see the "Auto th
 section below).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>thematic_on</span>(
-  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
-  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>(),
-  <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+    <pre class="usage"><span class='fu'>thematic_on</span><span class='op'>(</span>
+  bg <span class='op'>=</span> <span class='st'>"auto"</span>,
+  fg <span class='op'>=</span> <span class='st'>"auto"</span>,
+  accent <span class='op'>=</span> <span class='st'>"auto"</span>,
+  font <span class='op'>=</span> <span class='cn'>NA</span>,
+  sequential <span class='op'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span><span class='op'>(</span><span class='op'>)</span>,
+  qualitative <span class='op'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span><span class='op'>(</span><span class='op'>)</span>,
+  inherit <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
-<span class='fu'>thematic_off</span>()
+<span class='fu'>thematic_off</span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'>thematic_theme</span>(
-  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
-  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>(),
-  <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
+<span class='fu'>thematic_theme</span><span class='op'>(</span>
+  bg <span class='op'>=</span> <span class='st'>"auto"</span>,
+  fg <span class='op'>=</span> <span class='st'>"auto"</span>,
+  accent <span class='op'>=</span> <span class='st'>"auto"</span>,
+  font <span class='op'>=</span> <span class='cn'>NA</span>,
+  sequential <span class='op'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span><span class='op'>(</span><span class='op'>)</span>,
+  qualitative <span class='op'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span><span class='op'>(</span><span class='op'>)</span>,
+  inherit <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
 
-<span class='fu'>thematic_shiny</span>(
-  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
-  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>(),
-  <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>session</span> <span class='kw'>=</span> <span class='kw pkg'>shiny</span><span class='kw ns'>::</span><span class='fu'><a href='https://shiny.rstudio.com/reference/shiny/latest/domains.html'>getDefaultReactiveDomain</a></span>()
-)
+<span class='fu'>thematic_shiny</span><span class='op'>(</span>
+  bg <span class='op'>=</span> <span class='st'>"auto"</span>,
+  fg <span class='op'>=</span> <span class='st'>"auto"</span>,
+  accent <span class='op'>=</span> <span class='st'>"auto"</span>,
+  font <span class='op'>=</span> <span class='cn'>NA</span>,
+  sequential <span class='op'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span><span class='op'>(</span><span class='op'>)</span>,
+  qualitative <span class='op'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span><span class='op'>(</span><span class='op'>)</span>,
+  inherit <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  session <span class='op'>=</span> <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://shiny.rstudio.com/reference/shiny/latest/domains.html'>getDefaultReactiveDomain</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>thematic_rmd</span>(
-  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='st'>"auto"</span>,
-  <span class='kw'>font</span> <span class='kw'>=</span> <span class='fl'>NA</span>,
-  <span class='kw'>sequential</span> <span class='kw'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span>(),
-  <span class='kw'>qualitative</span> <span class='kw'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span>(),
-  <span class='kw'>inherit</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+<span class='fu'>thematic_rmd</span><span class='op'>(</span>
+  bg <span class='op'>=</span> <span class='st'>"auto"</span>,
+  fg <span class='op'>=</span> <span class='st'>"auto"</span>,
+  accent <span class='op'>=</span> <span class='st'>"auto"</span>,
+  font <span class='op'>=</span> <span class='cn'>NA</span>,
+  sequential <span class='op'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span><span class='op'>(</span><span class='op'>)</span>,
+  qualitative <span class='op'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span><span class='op'>(</span><span class='op'>)</span>,
+  inherit <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -250,7 +250,7 @@ the previous global theme.</p>
 which are all resolved, at plot time, based on the execution environment. In a
 <strong>shiny</strong> runtime, resolution of auto values should always work as expect; but
 in other contexts, auto values may lead to wrong or surprising results. In that
-case, auto resolution logic can be customized (see <code><a href='auto-config.html'>auto_config_set()</a></code> for more details).</p>
+case, auto resolution logic can be customized (see <code><a href='auto_config.html'>auto_config_set()</a></code> for more details).</p>
     <h2 class="hasAnchor" id="global-vs-local-theming"><a class="anchor" href="#global-vs-local-theming"></a>Global vs. local theming</h2>
 
     
@@ -276,16 +276,29 @@ or <code><a href='https://rdrr.io/pkg/htmltools/man/parseCssColors.html'>htmltoo
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># simple dark mode</span>
-<span class='fu'>thematic_on</span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>thematic_on</span><span class='op'>(</span><span class='st'>"black"</span>, <span class='st'>"white"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, col <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-2.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>lattice</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># use any hex color string</span>
-<span class='fu'>thematic_on</span>(<span class='st'>"#444444"</span>, <span class='st'>"#e4e4e4"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>thematic_on</span><span class='op'>(</span><span class='st'>"#444444"</span>, <span class='st'>"#e4e4e4"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-4.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, col <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-5.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>lattice</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-6.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># disables thematic (also restores global state)</span>
-<span class='fu'>thematic_off</span>()
-<span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='img'><img src='thematic_on-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-8.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'>thematic_on</span>(<span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, <span class='st'>"orange"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span>(<span class='no'>volcano</span>)</div><div class='img'><img src='thematic_on-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span>(<span class='no'>volcano</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='fu'><a href='thematic_with_theme.html'>thematic_get_option</a></span>(<span class='st'>"sequential"</span>))</div><div class='img'><img src='thematic_on-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='kw pkg'>lattice</span><span class='kw ns'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span>()</div><div class='img'><img src='thematic_on-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>thematic_off</span>()</div></pre>
+<span class='fu'>thematic_off</span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-7.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>lattice</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-8.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'>thematic_on</span><span class='op'>(</span><span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, <span class='st'>"orange"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>volcano</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-9.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/image.html'>image</a></span><span class='op'>(</span><span class='va'>volcano</span>, col <span class='op'>=</span> <span class='fu'><a href='thematic_with_theme.html'>thematic_get_option</a></span><span class='op'>(</span><span class='st'>"sequential"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-10.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>lattice</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/lattice/man/trellis.par.get.html'>show.settings</a></span><span class='op'>(</span><span class='op'>)</span>
+</div><div class='img'><img src='thematic_on-11.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>thematic_off</span><span class='op'>(</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -301,7 +314,7 @@ or <code><a href='https://rdrr.io/pkg/htmltools/man/parseCssColors.html'>htmltoo
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

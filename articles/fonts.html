@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">thematic</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -85,13 +85,14 @@
 
       
 
-      </header><script src="fonts_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="fonts_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="fonts_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="fonts_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Font rendering</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-08-11</h4>
+            <h4 class="date">2020-11-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/fonts.Rmd"><code>vignettes/fonts.Rmd</code></a></small>
       <div class="hidden name"><code>fonts.Rmd</code></div>
@@ -104,24 +105,25 @@
 <h2 class="hasAnchor">
 <a href="#google-fonts" class="anchor"></a>Google Fonts</h2>
 <p>If a <a href="https://fonts.google.com">Google Font</a> is requested as part of a <strong>thematic</strong> theme, <strong>thematic</strong> attempts to download, cache, and register that font for use with <strong>showtext</strong> and <strong>ragg</strong> before plotting (see <code><a href="../reference/font_spec.html">font_spec()</a></code> for more details). Therefore, to correctly render these fonts, you’ll need at least <strong>showtext</strong> or <strong>ragg</strong> installed; and in some scenarios, some additional configuration may be required.</p>
-<p><strong>showtext</strong> allows fonts to be used with essentially any R graphics device. Therefore, it’s likely preferable when high-quality devices (e.g. <code><a href="https://rdrr.io/r/grDevices/png.html">png(type='quartz')</a></code>, <code><a href="https://rdrr.io/r/grDevices/cairo.html">svg()</a></code>, <code><a href="https://rdrr.io/r/grDevices/cairo.html">cairo_pdf()</a></code>, etc). Unfortunately, in many cases, hosted environments (e.g., shinyapps.io and Connect) don’t have <code><a href="https://rdrr.io/r/grDevices/png.html">png(type='quartz')</a></code> support, and <code><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">shiny::renderPlot()</a></code> currently requires a png file, so <strong>ragg</strong> is likely preferable in that case. <strong>ragg</strong> is also faster and more consistent (across cross-platforms) than other bitmap devices such as <code><a href="https://rdrr.io/r/grDevices/png.html">png(type='cairo')</a></code>, see <a href="https://ragg.r-lib.org/">here</a> for more details.</p>
+<p><strong>showtext</strong> allows custom fonts to be used with essentially any R graphics device, whereas <strong>ragg</strong> itself provides (high-quality and cross-platform) bitmap devices with 1st class support for custom fonts. Therefore, consider using <strong>showtext</strong> for vector-based images (i.e., <code><a href="https://rdrr.io/r/grDevices/cairo.html">svg()</a></code>, <code><a href="https://rdrr.io/r/grDevices/cairo.html">cairo_pdf()</a></code>, etc) and <strong>ragg</strong> for raster-based images (i.e., <code><a href="https://ragg.r-lib.org/reference/agg_png.html">ragg::agg_png()</a></code>, <code><a href="https://ragg.r-lib.org/reference/agg_jpeg.html">ragg::agg_jpeg()</a></code>, etc). Note that <code><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">shiny::renderPlot()</a></code> currently requires a png image, so <strong>ragg</strong> is generally preferable to <strong>showtext</strong> in that case, especially on hosted environments (e.g., Connect, shinyapps.io, etc. – because they don’t have support for the high-quality <code><a href="https://rdrr.io/r/grDevices/quartz.html">quartz()</a></code> device).</p>
 <div id="shiny-rmd" class="section level3">
 <h3 class="hasAnchor">
 <a href="#shiny-rmd" class="anchor"></a>Shiny &amp; R Markdown</h3>
-<p>If you have <strong>showtext</strong> installed, Google Fonts should ‘just work’ by default inside Shiny and R Markdown. However, before deployment, include <code><a href="https://rdrr.io/pkg/showtext/man">library(showtext)</a></code> in the app/document to make sure it’s installed on the hosted instance. Also, if you encounter issues in R Markdown, make sure <strong>thematic</strong> is being loaded in an initial “setup” chunk prior to any plotting chunks (loading <strong>thematic</strong> ensures that the <code>fig.showtext</code> <strong>knitr</strong> option defaults to <code>TRUE</code> in future code chunks).</p>
+<p>If you have <strong>showtext</strong> installed, Google Fonts should ‘just work’ by default inside Shiny and R Markdown. However, before deployment, include <code><a href="https://github.com/yixuan/showtext">library(showtext)</a></code> in the app/document to make sure it’s installed on the hosted instance. Also, if you encounter issues in R Markdown, make sure <strong>thematic</strong> is being loaded in an initial “setup” chunk prior to any plotting chunks (loading <strong>thematic</strong> ensures that the <code>fig.showtext</code> <strong>knitr</strong> option defaults to <code>TRUE</code> in future code chunks).</p>
 <p>Using <strong>ragg</strong> instead of <strong>showtext</strong> in these contexts requires some additional configuration: * Set <code><a href="https://rdrr.io/r/base/options.html">options(shiny.useragg = TRUE)</a></code> in Shiny (requires <strong>shiny</strong> v1.5.0 or higher). * Set <code>knitr::opts_chunk$set(dev = "ragg_png")</code> in R Markdown (requires <strong>knitr</strong> v1.29 or higher).</p>
 </div>
 <div id="r-devices" class="section level3">
 <h3 class="hasAnchor">
 <a href="#r-devices" class="anchor"></a>R graphics devices</h3>
 <p>In theory, as long as <strong>showtext</strong> is installed, Google Fonts should render on any R graphics device. Here’s a mini example with <code><a href="https://rdrr.io/pkg/svglite/man/svglite.html">svglite::svglite()</a></code>:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span>(<span class="st">"black"</span>, <span class="st">"white"</span>, <span class="kw">font</span> <span class="kw">=</span> <span class="st">"Pacifico"</span>)
-<span class="no">tmp</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span>(<span class="kw">fileext</span> <span class="kw">=</span> <span class="st">".svg"</span>)
-<span class="kw pkg">svglite</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/svglite/man/svglite.html">svglite</a></span>(<span class="no">tmp</span>, <span class="kw">width</span> <span class="kw">=</span> <span class="fl">7</span>, <span class="kw">height</span> <span class="kw">=</span> <span class="fl">3</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fl">1</span>, <span class="kw">type</span> <span class="kw">=</span> <span class="st">"n"</span>)
-<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span>(<span class="fl">1</span>, <span class="st">"Pacifico font"</span>)
-<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span>()
-<span class="kw">if</span> (<span class="kw pkg">rstudioapi</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/rstudioapi/man/isAvailable.html">isAvailable</a></span>()) <span class="fu"><a href="https://rdrr.io/r/base/file.show.html">file.show</a></span>(<span class="no">tmp</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, font <span class="op">=</span> <span class="st">"Pacifico"</span><span class="op">)</span>
+<span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".svg"</span><span class="op">)</span>
+<span class="fu">svglite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/svglite/man/svglite.html">svglite</a></span><span class="op">(</span><span class="va">tmp</span>, width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span>, type <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"Pacifico font"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="fu">rstudioapi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rstudioapi/man/isAvailable.html">isAvailable</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/file.show.html">file.show</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></pre></div>
 <p><img src="svglite.svg" width="70%" style="display: block; margin: auto;"></p>
 <p>Note that <strong>thematic</strong> also includes a <code><a href="../reference/thematic_save_plot.html">thematic_save_plot()</a></code> that is essentially a convenience function for saving a plot to a graphics device, but also does the following:</p>
 <ul>
@@ -129,9 +131,10 @@
 <li>Ensures that <strong>showtext</strong> is aware of the device’s resolution (<code>res</code>), which is important to get the font sizes right in bitmap images (e.g., png, jpeg, etc).</li>
 <li>Ensures that <strong>thematic</strong> is able to properly clone the device when determining if the device has support for the rendering a requested font.</li>
 </ul>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="co"># Makes a high-res png image</span>
-<span class="no">file</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/thematic_save_plot.html">thematic_save_plot</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/plot.html">plot</a></span>(<span class="fl">1</span>:<span class="fl">10</span>), <span class="kw">res</span> <span class="kw">=</span> <span class="fl">216</span>)
-<span class="kw">if</span> (<span class="kw pkg">rstudioapi</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/rstudioapi/man/isAvailable.html">isAvailable</a></span>()) <span class="fu"><a href="https://rdrr.io/r/base/file.show.html">file.show</a></span>(<span class="no">tmp</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="co"># Makes a high-res png image</span>
+<span class="va">file</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/thematic_save_plot.html">thematic_save_plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>, res <span class="op">=</span> <span class="fl">216</span><span class="op">)</span>
+<span class="kw">if</span> <span class="op">(</span><span class="fu">rstudioapi</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/rstudioapi/man/isAvailable.html">isAvailable</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/file.show.html">file.show</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></pre></div>
 </div>
 </div>
 <div id="other-fonts" class="section level2">
@@ -156,7 +159,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

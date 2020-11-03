@@ -87,7 +87,7 @@ and configuration (i.e., auto_config_get())." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">thematic</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -142,10 +142,10 @@ and configuration (i.e., auto_config_get())." />
 
     <div class="ref-description">
     <p>Resolves <code>'auto'</code> values based on the current execution environment
-and configuration (i.e., <code><a href='auto-config.html'>auto_config_get()</a></code>).</p>
+and configuration (i.e., <code><a href='auto_config.html'>auto_config_get()</a></code>).</p>
     </div>
 
-    <pre class="usage"><span class='fu'>auto_resolve_theme</span>(<span class='no'>theme</span>)</pre>
+    <pre class="usage"><span class='fu'>auto_resolve_theme</span><span class='op'>(</span><span class='va'>theme</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,15 +161,16 @@ and configuration (i.e., <code><a href='auto-config.html'>auto_config_get()</a><
     <p>The <code>theme</code> object with resolved <code>'auto'</code> values.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='auto-config.html'>auto_config_set()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='auto_config.html'>auto_config_set()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'>
-<span class='no'>old_config</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='auto-config.html'>auto_config_set</a></span>(<span class='fu'><a href='auto-config.html'>auto_config</a></span>(<span class='kw'>bg</span> <span class='kw'>=</span> <span class='st'>"black"</span>, <span class='kw'>fg</span> <span class='kw'>=</span> <span class='st'>"white"</span>))
+<span class='va'>old_config</span> <span class='op'>&lt;-</span> <span class='fu'><a href='auto_config.html'>auto_config_set</a></span><span class='op'>(</span><span class='fu'><a href='auto_config.html'>auto_config</a></span><span class='op'>(</span>bg <span class='op'>=</span> <span class='st'>"black"</span>, fg <span class='op'>=</span> <span class='st'>"white"</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># Resolving auto values in local theme objects</span>
-<span class='no'>theme</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='thematic_on.html'>thematic_theme</a></span>()
-<span class='no'>theme</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bg"</span>, <span class='st'>"fg"</span>)]</div><div class='output co'>#&gt; $bg
+<span class='va'>theme</span> <span class='op'>&lt;-</span> <span class='fu'><a href='thematic_on.html'>thematic_theme</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='va'>theme</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bg"</span>, <span class='st'>"fg"</span><span class='op'>)</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; $bg
 #&gt; [1] "auto"
 #&gt; attr(,"class")
 #&gt; [1] "thematic_auto"
@@ -178,8 +179,9 @@ and configuration (i.e., <code><a href='auto-config.html'>auto_config_get()</a><
 #&gt; [1] "auto"
 #&gt; attr(,"class")
 #&gt; [1] "thematic_auto"
-#&gt; </div><div class='input'><span class='no'>theme</span> <span class='kw'>&lt;-</span> <span class='fu'>auto_resolve_theme</span>(<span class='no'>theme</span>)
-<span class='no'>theme</span>[<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"bg"</span>, <span class='st'>"fg"</span>)]</div><div class='output co'>#&gt; $bg
+#&gt; </div><div class='input'><span class='va'>theme</span> <span class='op'>&lt;-</span> <span class='fu'>auto_resolve_theme</span><span class='op'>(</span><span class='va'>theme</span><span class='op'>)</span>
+<span class='va'>theme</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"bg"</span>, <span class='st'>"fg"</span><span class='op'>)</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; $bg
 #&gt; [1] "black"
 #&gt; attr(,"class")
 #&gt; [1] "thematic_auto"
@@ -191,14 +193,18 @@ and configuration (i.e., <code><a href='auto-config.html'>auto_config_get()</a><
 #&gt; </div><div class='input'>
 <span class='co'># By default, auto values are resolved when accessing</span>
 <span class='co'># global theme options</span>
-<span class='fu'><a href='thematic_on.html'>thematic_on</a></span>()
-<span class='fu'><a href='thematic_with_theme.html'>thematic_get_option</a></span>(<span class='st'>"bg"</span>, <span class='kw'>resolve</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] "auto"
+<span class='fu'><a href='thematic_on.html'>thematic_on</a></span><span class='op'>(</span><span class='op'>)</span>
+<span class='fu'><a href='thematic_with_theme.html'>thematic_get_option</a></span><span class='op'>(</span><span class='st'>"bg"</span>, resolve <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "auto"
 #&gt; attr(,"class")
-#&gt; [1] "thematic_auto"</div><div class='input'><span class='fu'><a href='thematic_with_theme.html'>thematic_get_option</a></span>(<span class='st'>"bg"</span>)</div><div class='output co'>#&gt; [1] "black"
+#&gt; [1] "thematic_auto"</div><div class='input'><span class='fu'><a href='thematic_with_theme.html'>thematic_get_option</a></span><span class='op'>(</span><span class='st'>"bg"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "black"
 #&gt; attr(,"class")
-#&gt; [1] "thematic_auto"</div><div class='input'><span class='fu'><a href='thematic_on.html'>thematic_off</a></span>()
+#&gt; [1] "thematic_auto"</div><div class='input'><span class='fu'><a href='thematic_on.html'>thematic_off</a></span><span class='op'>(</span><span class='op'>)</span>
 
-<span class='fu'><a href='auto-config.html'>auto_config_set</a></span>(<span class='no'>old_config</span>)</div></pre>
+<span class='fu'><a href='auto_config.html'>auto_config_set</a></span><span class='op'>(</span><span class='va'>old_config</span><span class='op'>)</span>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -214,7 +220,7 @@ and configuration (i.e., <code><a href='auto-config.html'>auto_config_get()</a><
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

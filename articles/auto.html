@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">thematic</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -85,13 +85,14 @@
 
       
 
-      </header><script src="auto_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="auto_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="auto_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
+<script src="auto_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Auto theming</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-08-11</h4>
+            <h4 class="date">2020-11-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/auto.Rmd"><code>vignettes/auto.Rmd</code></a></small>
       <div class="hidden name"><code>auto.Rmd</code></div>
@@ -105,42 +106,45 @@
 <h2 class="hasAnchor">
 <a href="#shiny" class="anchor"></a>Shiny</h2>
 <p>One frustrating thing about styling Shiny apps is that R plots know nothing about CSS. That means, if you write <a href="https://shiny.rstudio.com/articles/css.html">custom CSS to style the app</a>, you’ll likely also want to translate those same styles to the R graphics. You may have never noticed this problem before if you just use the default styles in both systems because they’re quite similar. Here’s the default styles in a Shiny app with a few R plots inside a <code><a href="https://shiny.rstudio.com/reference/shiny/latest/tabsetPanel.html">tabsetPanel()</a></code>:</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">shiny</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">ggplot2</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://shiny.rstudio.com">shiny</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 
-<span class="no">tabs</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabsetPanel.html">tabsetPanel</a></span>(<span class="kw">type</span> <span class="kw">=</span> <span class="st">"pills"</span>,
-  <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html">tabPanel</a></span>(<span class="st">"ggplot"</span>, <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html">plotOutput</a></span>(<span class="st">"ggplot"</span>)),
-  <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html">tabPanel</a></span>(<span class="st">"lattice"</span>, <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html">plotOutput</a></span>(<span class="st">"lattice"</span>)),
-  <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html">tabPanel</a></span>(<span class="st">"base"</span>, <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html">plotOutput</a></span>(<span class="st">"base"</span>))
-)
+<span class="va">tabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabsetPanel.html">tabsetPanel</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"pills"</span>,
+  <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html">tabPanel</a></span><span class="op">(</span><span class="st">"ggplot"</span>, <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html">plotOutput</a></span><span class="op">(</span><span class="st">"ggplot"</span><span class="op">)</span><span class="op">)</span>,
+  <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html">tabPanel</a></span><span class="op">(</span><span class="st">"lattice"</span>, <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html">plotOutput</a></span><span class="op">(</span><span class="st">"lattice"</span><span class="op">)</span><span class="op">)</span>,
+  <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html">tabPanel</a></span><span class="op">(</span><span class="st">"base"</span>, <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html">plotOutput</a></span><span class="op">(</span><span class="st">"base"</span><span class="op">)</span><span class="op">)</span>
+<span class="op">)</span>
 
-<span class="no">ui</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span>(<span class="no">tabs</span>)
+<span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span><span class="op">(</span><span class="va">tabs</span><span class="op">)</span>
 
-<span class="no">server</span> <span class="kw">&lt;-</span> <span class="kw">function</span>(<span class="no">input</span>, <span class="no">output</span>) {
-  <span class="no">output</span>$<span class="no">ggplot</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">renderPlot</a></span>({
-    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">wt</span>, <span class="no">mpg</span>, <span class="kw">label</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span>(<span class="no">mtcars</span>), <span class="kw">color</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span>(<span class="no">cyl</span>))) +
-      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span>() +
-      <span class="kw pkg">ggrepel</span><span class="kw ns">::</span><span class="fu">geom_text_repel</span>()
-  })
-  <span class="no">output</span>$<span class="no">lattice</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">renderPlot</a></span>({
-    <span class="kw pkg">lattice</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html">show.settings</a></span>()
-  })
-  <span class="no">output</span>$<span class="no">base</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">renderPlot</a></span>({
-    <span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span>(<span class="no">volcano</span>, <span class="kw">col</span> <span class="kw">=</span> <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_option</a></span>(<span class="st">"sequential"</span>))
-  })
-}
+<span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span>
+  <span class="va">output</span><span class="op">$</span><span class="va">ggplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span>
+    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
+      <span class="fu">ggrepel</span><span class="fu">::</span><span class="fu">geom_text_repel</span><span class="op">(</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+  <span class="va">output</span><span class="op">$</span><span class="va">lattice</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span>
+    <span class="fu">lattice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html">show.settings</a></span><span class="op">(</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+  <span class="va">output</span><span class="op">$</span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html">renderPlot</a></span><span class="op">(</span><span class="op">{</span>
+    <span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">volcano</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_option</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span><span class="op">)</span>
+  <span class="op">}</span><span class="op">)</span>
+<span class="op">}</span>
 
-<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></pre></div>
 <p><img src="tabsets.svg" width="82%" style="display: block; margin: auto auto auto 0;"></p>
 <p>By bringing in a new set of CSS rules, say the <a href="https://bootswatch.com/darkly/">darkly</a> <a href="http://rstudio.github.io/shinythemes/"><strong>shinytheme</strong></a>, the difference in CSS vs R styles becomes much more apparent:</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r"><span class="no">ui</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span>(
-  <span class="no">tabs</span>, <span class="kw">theme</span> <span class="kw">=</span> <span class="kw pkg">shinythemes</span><span class="kw ns">::</span><span class="fu">shinytheme</span>(<span class="st">"darkly"</span>)
-)
-<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="downlit">
+<span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span><span class="op">(</span>
+  <span class="va">tabs</span>, theme <span class="op">=</span> <span class="fu">shinythemes</span><span class="fu">::</span><span class="fu">shinytheme</span><span class="op">(</span><span class="st">"darkly"</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></pre></div>
 <p><img src="tabsets-darkly.png" width="70%" style="display: block; margin: auto;"></p>
 <p>By activating <strong>thematic</strong> auto coloring (as shown below), R plot(s) generated by the Shiny app gain new color defaults based on the surrounding CSS styles. This works because, at plot time, <strong>thematic</strong> grabs CSS styles from the plot(s) HTML container (via <code><a href="https://shiny.rstudio.com/reference/shiny/latest/getCurrentOutputInfo.html">shiny::getCurrentOutputInfo()</a></code>)<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and uses that info to set new R styling defaults.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r"><span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span>()
-<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="downlit">
+<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></pre></div>
 <p><img src="tabsets-darkly-thematic.png" width="70%" style="display: block; margin: auto;"></p>
 <p>From the <strong>ggplot2</strong> example above, we can see <code><a href="../reference/thematic_on.html">thematic_shiny()</a></code> has done the following for us:</p>
 <ul>
@@ -162,42 +166,46 @@
 </ul>
 <p><img src="tabsets-geom-raster.png" width="70%" style="display: block; margin: auto;"></p>
 <p>As you’ll learn in the <a href="custom.html">custom themes article</a>, you can always override the defaults set by <strong>thematic</strong> by using plot-specific code (i.e., by adding <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> elements to the plot). However, if you want to use a different <em>complete</em> <strong>ggplot2</strong> theme (e.g., <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal()</a></code> instead of the default <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray()</a></code>), you should set the theme globally with <code><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">ggplot2::theme_set()</a></code>.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r"><span class="kw pkg">ggplot2</span><span class="kw ns">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span>(<span class="kw pkg">ggplot2</span><span class="kw ns">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span>())
-<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span>()
-<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="downlit">
+<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></pre></div>
 <p><img src="tabsets-darkly-thematic-minimal.png" width="70%" style="display: block; margin: auto;"></p>
 <p>Since <strong>thematic</strong> knows the CSS rules on the plot’s HTML container, auto theming works regardless of how the HTML is actually styled. That said, consider using the new <a href="https://rstudio.github.io/bootstraplib/"><strong>bootstraplib</strong> package</a> to theme your Shiny apps (and R Markdown docs). It provides a rich set of tools for influencing Bootstrap CSS from R, including convenience functions for <a href="https://rstudio.github.io/bootstraplib/articles/recipes.html">setting the main colors (and fonts)</a>:</p>
-<div class="sourceCode" id="cb5"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">bootstraplib</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/bootstraplib/man/theming.html">bs_theme_new</a></span>()
-<span class="fu"><a href="https://rdrr.io/pkg/bootstraplib/man/bs_theme_base_colors.html">bs_theme_base_colors</a></span>(<span class="kw">bg</span> <span class="kw">=</span> <span class="st">"#002B36"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"#EEE8D5"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/bootstraplib/man/bs_theme_accent_colors.html">bs_theme_accent_colors</a></span>(<span class="kw">primary</span> <span class="kw">=</span> <span class="st">"#2AA198"</span>)
-<span class="fu"><a href="https://rdrr.io/pkg/bootstraplib/man/bs_theme_fonts.html">bs_theme_fonts</a></span>(<span class="st">"Pacifico"</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb5"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/bootstraplib/">bootstraplib</a></span><span class="op">)</span>
+<span class="va">solar_theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rstudio.github.io/bootstraplib//reference/bs_theme.html">bs_theme</a></span><span class="op">(</span>
+  bg <span class="op">=</span> <span class="st">"#002B36"</span>, fg <span class="op">=</span> <span class="st">"#EEE8D5"</span>,
+  primary <span class="op">=</span> <span class="st">"#2AA198"</span>, base_font <span class="op">=</span> <span class="st">"Pacifico"</span>
+<span class="op">)</span></pre></div>
 <p>In this case, we’ve set the font family for this <strong>bootstraplib</strong> theme to be <a href="https://fonts.google.com/specimen/Pacifico">Pacifico</a>, which is a <a href="https://fonts.google.com">Google Font</a>. Therefore, in order for the browser to be able to render this font, we need to <a href="https://developers.google.com/fonts/docs/getting_started">import it</a>. For simplicity, this code imports the font via a remote URL, but it’s recommended to use local font files (for hosting reasons). The <a href="https://github.com/dreamRs/gfonts"><strong>gfonts</strong> package</a> makes it really easy to download and use Google Fonts locally in Shiny and R Markdown.</p>
-<div class="sourceCode" id="cb6"><html><body><pre class="r"><span class="no">ui</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span>(
-  <span class="no">tabs</span>, <span class="fu"><a href="https://rdrr.io/pkg/bootstraplib/man/bootstrap.html">bootstrap</a></span>(),
-  <span class="no">tags</span>$<span class="fu">link</span>(<span class="kw">href</span><span class="kw">=</span><span class="st">"https://fonts.googleapis.com/css?family=Pacifico"</span>, <span class="kw">rel</span><span class="kw">=</span><span class="st">"stylesheet"</span>)
-)
-<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span>()
-<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb6"><pre class="downlit">
+<span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span><span class="op">(</span>
+  theme <span class="op">=</span> <span class="va">solar_theme</span>,
+  <span class="va">tags</span><span class="op">$</span><span class="fu">link</span><span class="op">(</span>href<span class="op">=</span><span class="st">"https://fonts.googleapis.com/css?family=Pacifico"</span>, rel<span class="op">=</span><span class="st">"stylesheet"</span><span class="op">)</span>,
+  <span class="va">tabs</span>
+<span class="op">)</span>
+<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></pre></div>
 <p><img src="tabsets-custom.png" width="70%" style="display: block; margin: auto;"></p>
 <p>As shown in the image above, text rendered by the browser (i.e., <code><a href="https://shiny.rstudio.com/reference/shiny/latest/tabsetPanel.html">tabsetPanel()</a></code>’s titles) now uses the Pacifico font, but the R plots are still using the default font because, by default, <code><a href="../reference/thematic_on.html">thematic_shiny()</a></code> only enables automatic colors. To enable auto fonts, set <code>font = "auto"</code>; and when doing so, make sure the font to be rendered is either a font already supported by R, or is Google Font and the <strong>showtext</strong> package is installed (learn more in the <a href="fonts.html">fonts article</a>).</p>
-<div class="sourceCode" id="cb7"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">showtext</span>)
-<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span>(<span class="kw">font</span> <span class="kw">=</span> <span class="st">"auto"</span>)
-<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span>(<span class="no">ui</span>, <span class="no">server</span>)</pre></body></html></div>
+<div class="sourceCode" id="cb7"><pre class="downlit">
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yixuan/showtext">showtext</a></span><span class="op">)</span>
+<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span>font <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>
+<span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></pre></div>
 <p><img src="tabsets-custom-fonts.png" width="70%" style="display: block; margin: auto;"></p>
 <p><img src="tabsets-custom-fonts-lattice.png" width="70%" style="display: block; margin: auto;"></p>
 <p><strong>thematic</strong> also works great with <strong>bootstraplib</strong>’s realtime theming widget. This interactive widget influences the CSS on the page, so as long as thematic’s auto theming enabled, those CSS changes automatically influence the R plot styling. Note how here we still have both auto fonts and colors, which means that as long as we choose Google Fonts (and/or fonts already known to R), the R plots can automatically render them.</p>
-<div class="sourceCode" id="cb8"><html><body><pre class="r"><span class="co"># The theming widget could also be added to our mini example with bs_themer(),</span>
-<span class="co"># but this demo app demonstrates a wider range of examples</span>
-<span class="fu"><a href="https://rdrr.io/pkg/bootstraplib/man/bs_theme_preview.html">bs_theme_preview</a></span>()</pre></body></html></div>
-<iframe src="https://player.vimeo.com/video/411238499?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<div class="sourceCode" id="cb8"><pre class="downlit">
+<span class="fu"><a href="https://rstudio.github.io/bootstraplib//reference/bs_theme_preview.html">bs_theme_preview</a></span><span class="op">(</span><span class="fu"><a href="https://rstudio.github.io/bootstraplib//reference/bs_theme.html">bs_theme</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#444444"</span>, fg <span class="op">=</span> <span class="st">"#E4E4E4"</span>, primary <span class="op">=</span> <span class="st">"#E39777"</span><span class="op">)</span><span class="op">)</span></pre></div>
+<iframe src="https://player.vimeo.com/video/465527125?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
 <div id="rmd" class="section level2">
 <h2 class="hasAnchor">
 <a href="#rmd" class="anchor"></a>R Markdown</h2>
 <p>Auto theming can also work with <code><a href="https://rdrr.io/pkg/rmarkdown/man/html_document.html">rmarkdown::html_document()</a></code>. The main catch is that, if R plots are not generated <a href="https://bookdown.org/yihui/rmarkdown/shiny-documents.html">via Shiny</a>, then any custom styling must be done via the <strong>bootstraplib</strong> package in order for <strong>thematic</strong> to know about it. In the example below, we set a custom background, foreground, and accent color via <strong>bootstraplib</strong>; then use <code><a href="../reference/thematic_on.html">thematic_rmd()</a></code> to apply automatic coloring to every R plot generated in the R Markdown document.</p>
 <p><img src="html-document.svg" width="95%" style="display: block; margin: auto;"></p>
-<p>Auto theming doesn’t necessarily work for non-HTML output formats. In that case, provide the document’s colors and fonts either directly to <code><a href="../reference/thematic_on.html">thematic_rmd()</a></code> or to <code><a href="../reference/auto-config.html">auto_config()</a></code>. To learn more about various options for</p>
+<p>Auto theming doesn’t necessarily work for non-HTML output formats. In that case, provide the document’s colors and fonts either directly to <code><a href="../reference/thematic_on.html">thematic_rmd()</a></code> or to <code><a href="../reference/auto_config.html">auto_config()</a></code>. To learn more about various options for</p>
 <p><img src="tufte.svg" width="95%" style="display: block; margin: auto;"></p>
 </div>
 <div id="rstudio" class="section level2">
@@ -216,22 +224,23 @@
 <ul>
 <li>Avoid <code>'auto'</code> values entirely by providing the desired colors and fonts directly to <code><a href="../reference/thematic_on.html">thematic_on()</a></code>. The next article, <a href="custom.html">Custom Themes</a>, discusses this option in depth.</li>
 <li>Allow auto theming to “fail”, meaning that <strong>thematic</strong> effectively has no effect on the visual output.</li>
-<li>Use <code><a href="../reference/auto-config.html">auto_config()</a></code> and <code><a href="../reference/auto-config.html">auto_config_set()</a></code> to set “fallbacks” for <code>'auto'</code> values. For example:</li>
+<li>Use <code><a href="../reference/auto_config.html">auto_config()</a></code> and <code><a href="../reference/auto_config.html">auto_config_set()</a></code> to set “fallbacks” for <code>'auto'</code> values. For example:</li>
 </ul>
-<div class="sourceCode" id="cb9"><html><body><pre class="r"><span class="no">config</span> <span class="kw">&lt;-</span> <span class="fu"><a href="../reference/auto-config.html">auto_config</a></span>(<span class="kw">bg</span> <span class="kw">=</span> <span class="st">"black"</span>, <span class="kw">fg</span> <span class="kw">=</span> <span class="st">"white"</span>, <span class="kw">accent</span> <span class="kw">=</span> <span class="st">"purple"</span>)
-<span class="fu"><a href="../reference/auto-config.html">auto_config_set</a></span>(<span class="no">config</span>)
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span>()
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span>(<span class="no">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="no">waiting</span>, <span class="no">eruptions</span>)) +
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span>(<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span>(<span class="kw">fill</span> <span class="kw">=</span> <span class="no">density</span>))</pre></body></html></div>
+<div class="sourceCode" id="cb9"><pre class="downlit">
+<span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auto_config.html">auto_config</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"black"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span>
+<span class="fu"><a href="../reference/auto_config.html">auto_config_set</a></span><span class="op">(</span><span class="va">config</span><span class="op">)</span>
+<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="op">)</span>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">waiting</span>, <span class="va">eruptions</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">density</span><span class="op">)</span><span class="op">)</span></pre></div>
 <p><img src="auto_files/figure-html/unnamed-chunk-17-1.png" width="70%" style="display: block; margin: auto;"></p>
-<p>The main use case for <code><a href="../reference/auto-config.html">auto_config()</a></code> is for developers of a custom rmarkdown output document that wish to provide an auto theming experience for users of the document (see <code><a href="../reference/auto-config.html">auto_config()</a></code> for more details). However, there may also be scenarios where more control over the set and priority of information that <code><a href="../reference/auto_resolve_theme.html">auto_resolve_theme()</a></code> uses to resolve <code>'auto'</code> values. This can be done via the <code>priority</code> argument of <code><a href="../reference/auto-config.html">auto_config()</a></code>. The default <code>priority</code> is:</p>
+<p>The main use case for <code><a href="../reference/auto_config.html">auto_config()</a></code> is for developers of a custom rmarkdown output document that wish to provide an auto theming experience for users of the document (see <code><a href="../reference/auto_config.html">auto_config()</a></code> for more details). However, there may also be scenarios where more control over the set and priority of information that <code><a href="../reference/auto_resolve_theme.html">auto_resolve_theme()</a></code> uses to resolve <code>'auto'</code> values. This can be done via the <code>priority</code> argument of <code><a href="../reference/auto_config.html">auto_config()</a></code>. The default <code>priority</code> is:</p>
 <ol style="list-style-type: decimal">
 <li>
 <code><a href="https://shiny.rstudio.com/reference/shiny/latest/getCurrentOutputInfo.html">shiny::getCurrentOutputInfo()</a></code> (<code>"shiny"</code>)</li>
 <li>
-<code><a href="../reference/auto-config.html">auto_config_get()</a></code> (<code>"config"</code>)</li>
+<code><a href="../reference/auto_config.html">auto_config_get()</a></code> (<code>"config"</code>)</li>
 <li>
-<code><a href="https://rdrr.io/pkg/bootstraplib/man/bs_theme_get_variables.html">bootstraplib::bs_theme_get_variables()</a></code> (<code>"bootstraplib"</code>)</li>
+<code><a href="https://rstudio.github.io/bootstraplib//reference/bs_get_variables.html">bootstraplib::bs_get_variables()</a></code> (<code>"bootstraplib"</code>)</li>
 <li>
 <code><a href="https://rdrr.io/pkg/rstudioapi/man/getThemeInfo.html">rstudioapi::getThemeInfo()</a></code> (<code>"rstudio"</code>)</li>
 </ol>
@@ -260,7 +269,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
