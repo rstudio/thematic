@@ -8,7 +8,7 @@ test_that("works as expected with global ggthemes", {
   ggtheme <- theme_get()
   on.exit(theme_set(ggtheme), add = TRUE)
   theme_set(theme_void())
-  thematic_on("black", "white", font = font_spec(scale = 1.5))
+  thematic_on("black", "white", accent = NA, font = font_spec(scale = 1.5))
   expect_doppelganger("ggtheme-void", qplot(1:10))
   theme_set(theme_minimal())
   expect_doppelganger("ggtheme-minimal", qplot(1:10))
