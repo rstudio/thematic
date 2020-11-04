@@ -21,7 +21,7 @@
 #' Possible values include:
 #'   * `"shiny"`: use [shiny::getCurrentOutputInfo()] values (if any) to resolve auto values.
 #'   * `"config"`: use the values provided to this function (if any) to resolve auto values.
-#'   * `"bootstraplib"`: use `bootstraplib::bs_get_variables()` values (if any)
+#'   * `"bslib"`: use `bslib::bs_get_variables()` values (if any)
 #'     to resolve auto values (only relevant when knitr is in progress).
 #'   * `"rstudio"`: use [rstudioapi::getThemeInfo()] values (if any) to resolve auto values.
 #'
@@ -35,7 +35,7 @@
 #'  })
 #' auto_config_set(old_config)
 auto_config <- function(bg = NULL, fg = NULL, accent = NULL, font = NULL,
-                        priority = c("shiny", "config", "bootstraplib", "rstudio")) {
+                        priority = c("shiny", "config", "bslib", "rstudio")) {
   cols <- dropNulls(list(bg = bg, fg = fg, accent = accent))
   config <- lapply(cols, function(x) {
     if (isTRUE(is.na(x))) x else parse_any_color(x)
@@ -69,7 +69,7 @@ auto_config_get <- function() {
 }
 
 priorities <- function() {
-  c("shiny", "config", "bootstraplib", "rstudio")
+  c("shiny", "config", "bslib", "rstudio")
 }
 
 #' Resolve auto values
@@ -114,7 +114,7 @@ auto_resolve_theme <- function(theme) {
       x,
       shiny = shiny_output_info(),
       config = auto_config_get(),
-      bootstraplib = bs_theme_colors(),
+      bslib = bs_theme_colors(),
       rstudio = rs_theme_colors(),
       stop("`priority` of '", x, "' is not implemented", call. = FALSE)
     )
@@ -173,7 +173,7 @@ auto_resolve_theme <- function(theme) {
         x,
         shiny = shiny_font_spec(shiny_output_info()$font),
         config = auto_config_get()$font,
-        bootstraplib = bs_font_spec(),
+        bslib = bs_font_spec(),
         rstudio = rs_font_spec(),
         stop("`priority` of '", x, "' is not implemented", call. = FALSE)
       )
@@ -238,7 +238,7 @@ shiny_output_info <- function() {
   rlang::set_names(res, nms)
 }
 
-bs_theme_colors <- function(theme = bootstraplib::bs_global_get()) {
+bs_theme_colors <- function(theme = bslib::bs_global_get()) {
   if (!in_html_document()) return(NULL)
 
   cols <- if ("3" %in% theme_version(theme)) {
@@ -251,11 +251,11 @@ bs_theme_colors <- function(theme = bootstraplib::bs_global_get()) {
 }
 
 bs_theme_vars <- function(...) {
-  utils::getFromNamespace("bs_get_variables", "bootstraplib")(...)
+  utils::getFromNamespace("bs_get_variables", "bslib")(...)
 }
 
 theme_version <- function(...) {
-  utils::getFromNamespace("theme_version", "bootstraplib")(...)
+  utils::getFromNamespace("theme_version", "bslib")(...)
 }
 
 
@@ -322,7 +322,7 @@ shiny_font_spec <- function(font) {
   )
 }
 
-bs_font_spec <- function(theme = bootstraplib::bs_global_get()) {
+bs_font_spec <- function(theme = bslib::bs_global_get()) {
   if (!in_html_document()) return(NULL)
 
   family <- bs_theme_vars(theme, "font-family-base")
@@ -333,8 +333,8 @@ bs_font_spec <- function(theme = bootstraplib::bs_global_get()) {
 
 in_html_document <- function() {
   if (!getOption("knitr.in.progress", FALSE)) return(FALSE)
-  if (!is_installed("bootstraplib")) return(FALSE)
-  !is.null(utils::getFromNamespace("bs_global_get", "bootstraplib")())
+  if (!is_installed("bslib")) return(FALSE)
+  !is.null(utils::getFromNamespace("bs_global_get", "bslib")())
 }
 
 # Translate CSS font-size to font_spec(scale = ...)
