@@ -11,7 +11,7 @@ auto_config(
   fg = NULL,
   accent = NULL,
   font = NULL,
-  priority = c("shiny", "config", "bootstraplib", "rstudio")
+  priority = c("shiny", "config", "bslib", "rstudio")
 )
 
 auto_config_set(config)
@@ -34,7 +34,7 @@ Possible values include:
 \itemize{
 \item \code{"shiny"}: use \code{\link[shiny:getCurrentOutputInfo]{shiny::getCurrentOutputInfo()}} values (if any) to resolve auto values.
 \item \code{"config"}: use the values provided to this function (if any) to resolve auto values.
-\item \code{"bootstraplib"}: use \code{bootstraplib::bs_get_variables()} values (if any)
+\item \code{"bslib"}: use \code{bslib::bs_get_variables()} values (if any)
 to resolve auto values (only relevant when knitr is in progress).
 \item \code{"rstudio"}: use \code{\link[rstudioapi:getThemeInfo]{rstudioapi::getThemeInfo()}} values (if any) to resolve auto values.
 }}

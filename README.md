@@ -51,7 +51,7 @@ plots the ability to style themselves inside
 [Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny)
 (via CSS), [R
 Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd)
-(via **bootstraplib**), and
+(via **bslib**), and
 [RStudio](https://rstudio.github.io/thematic/articles/auto.html#rstudio)
 (via [RStudio
 themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes)).

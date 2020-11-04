@@ -5,7 +5,7 @@ library(thematic)
 library(dplyr)
 library(showtext)
 library(Cairo)
-library(bootstraplib)
+library(bslib)
 
 
 ui <- fluidPage(
