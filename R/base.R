@@ -65,7 +65,7 @@ with_no_new_device <- function(..., fun) {
   dev_after <- dev.cur()
   if (dev_before != dev_after) {
     dev.off(dev_after)
-    dev.set(dev_before)
+    if (dev_before > 1) dev.set(dev_before)
   }
   res
 }

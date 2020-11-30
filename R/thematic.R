@@ -86,7 +86,7 @@ thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
   # Remember par("bg") now since bg can be modified by the opening of a
   # graphics device, and if that happens before plot time, it'd be too late
   # to base_restore_params()/base_set_params() at plot time
-  .globals$base_params$bg <- par("bg")
+  .globals$base_params$bg <- par_no_new_device("bg")
 
   # Remove any existing hooks before registering them
   # (otherwise, repeated calls to set_hooks will keep adding them)
