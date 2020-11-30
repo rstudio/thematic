@@ -61,7 +61,9 @@ palette_no_new_device <- function(..., fun) {
 
 with_no_new_device <- function(..., fun) {
   dev_before <- dev.cur()
-  res <- fun(...)
+  res <- tryCatch(
+    fun(...), error = warning
+  )
   dev_after <- dev.cur()
   if (dev_before != dev_after) {
     dev.off(dev_after)
