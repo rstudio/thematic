@@ -1,8 +1,10 @@
 library(shiny)
 library(thematic)
 
-thematic_on(font = "auto")
-onStop(thematic_off)
+thematic_shiny(font = "auto")
+# https://github.com/rstudio/thematic/pull/68
+opts <- options(device = function() stop("boom"))
+onStop(function() options(opts))
 
 ui <- fluidPage(
   titlePanel("Hello"),

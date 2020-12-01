@@ -52,17 +52,17 @@ base_params_restore <- function() {
 }
 
 attempt_par <- function(...) {
-  if (is_null_device()) {
-    attempt_with_new_device(par(...))
-  } else {
-    par(...)
-  }
+  attempt_(par(...))
 }
 
 attempt_palette <- function(...) {
+  attempt_(palette(...))
+}
+
+attempt_ <- function(expr) {
   if (is_null_device()) {
-    attempt_with_new_device(palette(...))
+    attempt_with_new_device(expr)
   } else {
-    palette(...)
+    force(expr)
   }
 }
