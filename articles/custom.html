@@ -92,7 +92,7 @@
       <h1 data-toc-skip>Custom themes</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-11-03</h4>
+            <h4 class="date">2020-12-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/custom.Rmd"><code>vignettes/custom.Rmd</code></a></small>
       <div class="hidden name"><code>custom.Rmd</code></div>
@@ -110,68 +110,68 @@
 <h3 class="hasAnchor">
 <a href="#main-colors" class="anchor"></a>Main colors</h3>
 <p>From the function signature of <code><a href="../reference/thematic_on.html">thematic_on()</a></code>, we can see the three main colors of a <strong>thematic</strong> theme, which all default to a special value of <code>"auto"</code>.</p>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
   bg <span class="op">=</span> <span class="st">"auto"</span>, fg <span class="op">=</span> <span class="st">"auto"</span>, accent <span class="op">=</span> <span class="st">"auto"</span>, font <span class="op">=</span> <span class="cn">NA</span>,
   sequential <span class="op">=</span> <span class="fu"><a href="../reference/sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span><span class="op">)</span>, qualitative <span class="op">=</span> <span class="fu"><a href="../reference/okabe_ito.html">okabe_ito</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span></pre></div>
+<span class="op">)</span></code></pre></div>
 <p>However, these arguments also accept any valid R (or CSS) color string. So, to “opt-out” of auto coloring, just specify the colors:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span>
 <span class="va">ggsmooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">ggsmooth</span></pre></div>
+<span class="va">ggsmooth</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-2-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>Similar to how <code>font = NA</code> prevents <strong>thematic</strong> from changing any font defaults, <code>accent = NA</code> prevents accent color defaults (e.g., <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth()</a></code>’s <code>color</code>) from changing.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-<span class="va">ggsmooth</span></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
+<span class="va">ggsmooth</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-3-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 <div id="sequential-colorscales" class="section level3">
 <h3 class="hasAnchor">
 <a href="#sequential-colorscales" class="anchor"></a>Sequential colorscales</h3>
 <p>The <code>sequential</code> argument is used to set a new default for sequential color scales (i.e., <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html">scale_fill_continuous()</a></code> &amp; <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html">scale_color_continuous()</a></code>). Its default value, <code><a href="../reference/sequential_gradient.html">sequential_gradient()</a></code>, defines a color gradient of <code>fg</code> -&gt; <code>accent</code> -&gt; <code>bg</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span>
 <span class="va">ggcontour</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">waiting</span>, <span class="va">eruptions</span>, z <span class="op">=</span> <span class="va">density</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">density</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_contour.html">geom_contour</a></span><span class="op">(</span><span class="op">)</span>
-<span class="va">ggcontour</span></pre></div>
+<span class="va">ggcontour</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-4-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>To flip the direction of the gradient to <code>bg</code> -&gt; <code>accent</code> -&gt; <code>fg</code></p>
-<div class="sourceCode" id="cb5"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
   bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"purple"</span>,
   sequential <span class="op">=</span> <span class="fu"><a href="../reference/sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span>fg_low <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="va">ggcontour</span></pre></div>
+<span class="va">ggcontour</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-5-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>If you look carefully, the endpoints of the gradient actually use a mixture of <code>bg</code>/<code>fg</code> and <code>accent</code>. The weighting of those mixtures can also be controlled via <code>fg_weight</code> and <code>bg_weight</code>. Here we make sure the gradient’s starts at the <code>bg</code> color and ends at the <code>accent</code>.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
   bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"purple"</span>,
   sequential <span class="op">=</span> <span class="fu"><a href="../reference/sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span>fg_low <span class="op">=</span> <span class="cn">FALSE</span>, fg_weight <span class="op">=</span> <span class="fl">0</span>, bg_weight <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>
 <span class="op">)</span>
-<span class="va">ggcontour</span></pre></div>
+<span class="va">ggcontour</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-6-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>If you don’t want <code>sequential</code> to be based on <code>accent</code>/<code>bg</code>/<code>fg</code>, you can also provide a vector of color codes defining the gradient.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"white"</span>, sequential <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">hcl.colors</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-<span class="va">ggcontour</span></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"white"</span>, sequential <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/palettes.html">hcl.colors</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ggcontour</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-7-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>Similar to how we opted out of new <code>accent</code> defaults, we can also opt-out of new <code>sequential</code> defaults</p>
-<div class="sourceCode" id="cb8"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"white"</span>, sequential <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
-<span class="va">ggcontour</span></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"white"</span>, sequential <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span>
+<span class="va">ggcontour</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 <div id="qualitative-colorscales" class="section level3">
 <h3 class="hasAnchor">
 <a href="#qualitative-colorscales" class="anchor"></a>Qualitative colorscales</h3>
 <p>In addition to sequential colorscales, <strong>thematic</strong> also sets new defaults for qualitative (i.e., discrete) color scales based on the <code>qualitative</code> argument. The default, <code><a href="../reference/okabe_ito.html">okabe_ito()</a></code>, is a great color-blind safe option, but <code>qualitative</code> can be set to any vector of color codes. Here’s another good color-blind safe palette from <a href="https://colorbrewer2.org/#type=qualitative&amp;scheme=Dark2" class="uri">https://colorbrewer2.org/#type=qualitative&amp;scheme=Dark2</a></p>
-<div class="sourceCode" id="cb9"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
   bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, qualitative <span class="op">=</span> <span class="fu">RColorBrewer</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/RColorBrewer/man/ColorBrewer.html">brewer.pal</a></span><span class="op">(</span><span class="fl">8</span>, <span class="st">"Dark2"</span><span class="op">)</span>
 <span class="op">)</span>
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span>
@@ -179,36 +179,36 @@
 <span class="co">#&gt; actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way,</span>
 <span class="co">#&gt; 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown</span>
 <span class="co">#&gt; scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or</span>
-<span class="co">#&gt; if `auto_config_set()` is used.</span></pre></div>
+<span class="co">#&gt; if `auto_config_set()` is used.</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-9-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>In the event that a <strong>ggplot2</strong> plot requires more colors than provided, it will fallback to the usual <code>scale_[color/fill]_hue()</code> behavior:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/row.names.html">row.names</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-10-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>However, for <strong>base</strong> and <strong>lattice</strong> graphics, the qualitative colorscale (i.e., <code><a href="https://rdrr.io/r/grDevices/palette.html">palette()</a></code>) is recycled:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/base/with.html">with</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq_len</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-11-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>Again, to prevent <strong>thematic</strong> from setting any new defaults for qualitative colorscales, provide an <code>NA</code> value</p>
-<div class="sourceCode" id="cb12"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
   bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, qualitative <span class="op">=</span> <span class="cn">NA</span>
 <span class="op">)</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-12-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 <div id="fonts" class="section level3">
 <h3 class="hasAnchor">
 <a href="#fonts" class="anchor"></a>Fonts</h3>
 <p>The <code>font</code> argument accepts a character string specifying either a font already know to R or a <a href="https://fonts.google.com">Google Font</a>. When a (new) Google Font is requested, <strong>thematic</strong> can automatically download, register, and cache (prior to plotting) so that Google Fonts “just work” if the <strong>showtext</strong> package is installed. In some cases, some additional setup may be required to get Google Fonts rendering properly — see the <a href="fonts.html">fonts article</a> for more info.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, font <span class="op">=</span> <span class="st">"Oxanium"</span><span class="op">)</span>
-<span class="va">ggsmooth</span></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, font <span class="op">=</span> <span class="st">"Oxanium"</span><span class="op">)</span>
+<span class="va">ggsmooth</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-13-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p><code>font</code> also accepts a <code><a href="../reference/font_spec.html">font_spec()</a></code> object which, among other things, makes it easy to multiply all the font sizes by a scalar multiple:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, font <span class="op">=</span> <span class="fu"><a href="../reference/font_spec.html">font_spec</a></span><span class="op">(</span><span class="st">"Oxanium"</span>, scale <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
-<span class="va">ggsmooth</span></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, font <span class="op">=</span> <span class="fu"><a href="../reference/font_spec.html">font_spec</a></span><span class="op">(</span><span class="st">"Oxanium"</span>, scale <span class="op">=</span> <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ggsmooth</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-14-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -220,12 +220,12 @@
 <h3 class="hasAnchor">
 <a href="#complete-themes" class="anchor"></a>Complete themes</h3>
 <p>Complete <strong>ggplot2</strong> themes are <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> objects that fully specify every possible <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> element. The default <strong>ggplot2</strong> theme, <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray()</a></code>, is a complete theme, and <strong>ggplot2</strong> provides some other useful complete themes such as <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw()</a></code>, <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_minimal()</a></code>, and <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic()</a></code>. As we saw in the auto theming article, <strong>thematic</strong> can play nicely with complete themes so long as they’re set globally. This is because plot-specific code overrides the defaults that <strong>thematic</strong> sets, and so by adding a complete theme to a plot (i.e., <code>ggsmooth + theme_classic()</code>) it would override all the <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code>-specific defaults set by <strong>thematic</strong>, which likely isn’t what you want.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit">
-<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_classic</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>
 <span class="va">ggsmooth</span>
 <span class="co"># Now go back to the default</span>
-<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></pre></div>
+<span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-15-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>Other <strong>ggplot2</strong> extension packages such as <strong>ggthemes</strong> also provide useful complete themes. The image below links to a Shiny app that allows you to preview how various <strong>ggthemes</strong> themes look both before and after <strong>thematic</strong> in a Shiny app with some custom CSS.</p>
 <p><a href="https://testing-apps.shinyapps.io/ggthemes" target="_blank"><img src="ggthemes.png" width="100%" style="display: block; margin: auto;"></a></p>
@@ -234,56 +234,56 @@
 <h3 class="hasAnchor">
 <a href="#partial-themes" class="anchor"></a>Partial themes</h3>
 <p><code><a href="../reference/thematic_on.html">thematic_on()</a></code> sets a new “complete” <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code> default based on <code>bg</code>, <code>fg</code>, and <code>font</code> (based on a modified version of <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray()</a></code>). Since this theme is “complete”, you probably don’t want to mix it with other complete themes (e.g., <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw()</a></code>), but you can definitely override particular aspects with <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code>.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit">
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span>
 <span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">cyl</span><span class="op">)</span>
-<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>strip.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span><span class="op">)</span></pre></div>
+<span class="va">p</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>strip.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-17-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>By the way, it’s worth noting that thematic uses a fairly arbitrary amount of mixture between the <code>fg</code> and <code>bg</code> to set the theme. If you wanted different mixture(s) of <code>fg</code> and <code>bg</code>, then <code><a href="../reference/thematic_with_theme.html">thematic_get_mixture()</a></code> is useful:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit">
-<span class="va">my_theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">my_theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>
   panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_mixture</a></span><span class="op">(</span><span class="fl">0.6</span><span class="op">)</span><span class="op">)</span>,
   strip.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_rect</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_mixture</a></span><span class="op">(</span><span class="fl">0.3</span><span class="op">)</span><span class="op">)</span>,
   strip.text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>color <span class="op">=</span> <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_mixture</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span><span class="op">)</span>
  <span class="op">)</span>
-<span class="va">p</span> <span class="op">+</span> <span class="va">my_theme</span></pre></div>
+<span class="va">p</span> <span class="op">+</span> <span class="va">my_theme</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-18-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 <div id="geom-defaults" class="section level3">
 <h3 class="hasAnchor">
 <a href="#geom-defaults" class="anchor"></a>Geom defaults</h3>
 <p>For each relevant <code>Geom</code> (e.g., <code>GeomPoint</code>), new <code>Geom$default_aes</code> defaults are set (based on <code>bg</code>, <code>fg</code>, <code>accent</code>, and <code>font</code>). Grayscale colors (e.g., <code>GeomPoint$default_aes$color</code>) are assigned a mixture of <code>bg</code> and <code>fg</code> whereas non-grayscale colors (e.g., <code>GeomSmooth$default_aes$color</code>) are assigned the <code>accent</code> color. It’s important to note these are just global defaults that only take effect if the aesthetic hasn’t been specified:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> 
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">cyl</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/facet_wrap.html">facet_wrap</a></span><span class="op">(</span><span class="op">~</span><span class="va">cyl</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-19-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 <div id="scale-defaults" class="section level3">
 <h3 class="hasAnchor">
 <a href="#scale-defaults" class="anchor"></a>Scale defaults</h3>
 <p><code><a href="../reference/thematic_on.html">thematic_on()</a></code> sets a new <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html">scale_fill_continuous()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_continuous.html">scale_color_continuous()</a></code> defaults (based on <code>sequential</code>). See the previous section for an extensive discussion on how <code>sequential</code> works and note that adding a relevant (continuous) scale renders <code>sequential</code> irrelevant:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">waiting</span>, <span class="va">eruptions</span>, z <span class="op">=</span> <span class="va">density</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">faithfuld</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">waiting</span>, <span class="va">eruptions</span>, z <span class="op">=</span> <span class="va">density</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_tile.html">geom_raster</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>fill <span class="op">=</span> <span class="va">density</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient2</a></span><span class="op">(</span>midpoint <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_gradient.html">scale_fill_gradient2</a></span><span class="op">(</span>midpoint <span class="op">=</span> <span class="fl">0.02</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-20-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>It also defines new <code><a href="https://ggplot2.tidyverse.org/reference/scale_colour_discrete.html">scale_fill_discrete()</a></code> and <code><a href="https://ggplot2.tidyverse.org/reference/scale_hue.html">scale_color_discrete()</a></code> defaults (based on <code>qualitative</code>). As with <code>sequential</code> colorscales, adding a relevant (discrete) scale renders <code>qualitative</code> irrelevant:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit">
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">economics_long</span><span class="op">)</span> <span class="op">+</span>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">economics_long</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">date</span>, <span class="va">value01</span>, color <span class="op">=</span> <span class="va">variable</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"qual"</span><span class="op">)</span></pre></div>
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_brewer.html">scale_color_brewer</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"qual"</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-21-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 <div id="third-party-extensions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#third-party-extensions" class="anchor"></a>Third party extensions</h3>
 <p>As a side note, when it comes to third party <strong>ggplot2</strong> extension packages, <strong>thematic</strong> should work as expected (<a href="https://github.com/rstudio/thematic">let us know if it doesn’t</a>) as long as those extension packages aren’t hard coding defaults in un-expected ways.</p>
-<div class="sourceCode" id="cb21"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally">GGally</a></span><span class="op">)</span>
-<span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span></pre></div>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally">GGally</a></span><span class="op">)</span>
+<span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-22-1.png" width="85%" style="display: block; margin: auto;"></p>
 </div>
 </div>
@@ -292,15 +292,15 @@
 <a href="#theming-with-lattice" class="anchor"></a>Theming with lattice</h2>
 <p><strong>thematic</strong> also works with <strong>lattice</strong>; however, beware that theming decisions are made so that <strong>lattice</strong> plots look somewhat similar to <strong>ggplot2</strong> (i.e. panel background is a mixture of <code>bg</code> and <code>fg</code> instead of just <code>bg</code>). Also, similar to <strong>base</strong> graphics, <strong>lattice</strong> doesn’t have a global distinction between a <code>qualitative</code> and <code>sequential</code> colorscales, so <code>sequential</code> isn’t used in <strong>lattice</strong>. Instead, for consistency with <strong>lattice</strong>’s default, the “regions” colorscale interpolates between <code>qualitative[1]</code>, <code>bg</code>, and <code>qualitative[2]</code>.</p>
 <p>(Btw, for <strong>lattice</strong>, <code>accent</code> may be of length 2. The first is used for ‘stroke’ and the second for ‘fill’).</p>
-<div class="sourceCode" id="cb22"><pre class="downlit">
-<span class="co"># accent may be of length 2 (stroke and fill)</span>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># accent may be of length 2 (stroke and fill)</span>
 <span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"purple"</span>, <span class="st">"red"</span><span class="op">)</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://lattice.r-forge.r-project.org/">lattice</a></span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html">show.settings</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html">show.settings</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-23-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>It might seem strange to have <code>bg</code> define the middle of the color gradient, but it’s intentional so that it works well with <code>lattic::contourplot()</code> (or other cases where text wants to be placed on top of the gradient):</p>
-<div class="sourceCode" id="cb23"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">stats</span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/attach.html">attach</a></span><span class="op">(</span><span class="va">environmental</span><span class="op">)</span>
 <span class="va">ozo.m</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/loess.html">loess</a></span><span class="op">(</span><span class="op">(</span><span class="va">ozone</span><span class="op">^</span><span class="op">(</span><span class="fl">1</span><span class="op">/</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span> <span class="op">~</span> <span class="va">wind</span> <span class="op">*</span> <span class="va">temperature</span> <span class="op">*</span> <span class="va">radiation</span>,
        parametric <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"radiation"</span>, <span class="st">"wind"</span><span class="op">)</span>, span <span class="op">=</span> <span class="fl">1</span>, degree <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
@@ -316,23 +316,23 @@
             xlab <span class="op">=</span> <span class="st">"Wind Speed (mph)"</span>,
             ylab <span class="op">=</span> <span class="st">"Temperature (F)"</span>,
             main <span class="op">=</span> <span class="st">"Cube Root Ozone (cube root ppb)"</span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/detach.html">detach</a></span><span class="op">(</span><span class="op">)</span></pre></div>
+<span class="kw"><a href="https://rdrr.io/r/base/detach.html">detach</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-24-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
 <div id="theming-with-base" class="section level2">
 <h2 class="hasAnchor">
 <a href="#theming-with-base" class="anchor"></a>Theming with base</h2>
 <p>Similar to <strong>lattice</strong>, <strong>base</strong> R graphics doesn’t have a global distinction between a <code>qualitative</code> and <code>sequential</code> colorscales, it just has <code><a href="https://rdrr.io/r/grDevices/palette.html">palette()</a></code> (which is closest, semantically, to <code>qualitative</code>):</p>
-<div class="sourceCode" id="cb24"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, each <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, pch <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, cex <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, each <span class="op">=</span> <span class="fl">5</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, pch <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">25</span>, cex <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-25-1.png" width="70%" style="display: block; margin: auto;"></p>
 <p>However, do know that you can supply the current sequential colorscale to individual plotting functions by doing something like <code>col = thematic_get_option("sequential")</code>:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">volcano</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_option</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span><span class="op">)</span></pre></div>
+<span class="fu"><a href="https://rdrr.io/r/graphics/image.html">image</a></span><span class="op">(</span><span class="va">volcano</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_option</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-26-1.png" width="70%" style="display: block; margin: auto;"></p>
 </div>
   </div>
