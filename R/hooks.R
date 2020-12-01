@@ -148,8 +148,6 @@ can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
     return(is_available)
   }
 
-  if (is_installed("showtext")) showtext::showtext_begin()
-
   # temporarily disable thematics plot hooks
   # (otherwise, we'd get caught in an infinite loop)
   remove_hooks()
@@ -162,6 +160,7 @@ can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
     dev_fun = dev_fun,
     tryCatch(
       {
+        if (is_installed("showtext")) showtext::showtext_begin()
         if (type == "grid") {
           grid.newpage()
           grid.text("testing", x = 0.5, y = 0.5, gp = gpar(fontfamily = family))

@@ -123,6 +123,9 @@ attempt_with_device <- function(dev_fun, expr, fail_value = NULL) {
   tmp <- tempfile()
   on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
   dev_before <- dev.cur()
+  if (!is.function(dev_fun)) {
+    stop("Internal error: dev_fun should be a function.")
+  }
   res <- try(dev_fun(filename = tmp))
   if (inherits(res, "try-error")) {
     maybe_warn(
