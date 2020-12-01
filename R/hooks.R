@@ -148,92 +148,57 @@ can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
     return(is_available)
   }
 
-  # To see if we have font support on the given device without
-  # generating multiple pages, (temporarily) open the device
-  # to render some text
-  opts <- options(device = dev_fun)
-  on.exit(options(opts), add = TRUE)
-  tmp <- tempfile()
-
-  # dev.off() closes the current device, then sets the current
-  # device to the _next_ device, which isn't necessarily the
-  # previously opened device. So, remember the current device now,
-  # then open a new one, then explicitly set the device to the
-  # previous device (so as to not cause side-effects).
-  dev_cur <- dev.cur()
-  dev_new(filename = tmp)
-  on.exit({
-    dev.off()
-    if (dev_cur > 1) dev.set(dev_cur)
-    unlink(tmp, recursive = TRUE)
-  }, add = TRUE)
-
-  if (is_installed("showtext")) showtext::showtext_begin()
-
   # temporarily disable thematics plot hooks
   # (otherwise, we'd get caught in an infinite loop)
   remove_hooks()
   on.exit(set_hooks(), add = TRUE)
 
-  # Returns TRUE if relevant plotting code runs without
-  # error or warning about the font family
-  tryCatch(
-    {
-      if (type == "grid") {
-        grid.newpage()
-        grid.text("testing", x = 0.5, y = 0.5, gp = gpar(fontfamily = family))
-      } else {
-        plot(1, family = family)
-      }
-      TRUE
-    },
-    warning = function(w) {
-      !grepl(
-        family,
-        paste(w$message, collapse = "\n"),
-        fixed = TRUE
-      )
-    },
-    error = function(e) { FALSE }
+  # To see if we have font support on the given device without
+  # generating multiple pages, (temporarily) open the device
+  # to render some text
+  attempt_with_device(
+    dev_fun = dev_fun,
+    tryCatch(
+      {
+        if (is_installed("showtext")) showtext::showtext_begin()
+        if (type == "grid") {
+          grid.newpage()
+          grid.text("testing", x = 0.5, y = 0.5, gp = gpar(fontfamily = family))
+        } else {
+          plot(1, family = family)
+        }
+        TRUE
+      },
+      warning = function(w) {
+        !grepl(
+          family,
+          paste(w$message, collapse = "\n"),
+          fixed = TRUE
+        )
+      },
+      error = function(e) { FALSE }
+    )
   )
 }
 
 
-infer_device <- function() {
-  dev_name <- names(dev.cur())
-  if (!"null device" %in% dev_name) {
-    return(dev_name)
-  }
-  # Temporarily open to a new device to infer what the device *will be*
-  tmp <- tempfile()
-  dev_before <- dev.cur()
-  dev_new(filename = tmp)
-  dev_after <- dev.cur()
-  on.exit({
-    dev.off(dev_after)
-    unlink(tmp, recursive = TRUE)
-    dev.set(dev_before)
-  }, add = TRUE)
-  names(dev_after)
-}
-
 # Do our best to map the name of the current device to an
 # actual device function
-get_device_function <- function(name) {
+get_device_function <- function(name = infer_device()) {
 
   # first, resolve known cases where the .Device name
   # doesn't quite map to the relevant function name
-  if (identical("win.metafile:", name)) {
+  if ("win.metafile:" == name) {
     return(getFromNamespace("win.metafile", "grDevices"))
   }
 
   # Note that quartz defaults to an on-screen device,
   # so this needs to set to an off-screen type
-  if (identical("quartz_off_screen", name)) {
+  if ("quartz_off_screen" == name) {
     return(grDevices::png)
   }
 
-  if (identical("RStudioGD", name)) {
+  if ("RStudioGD" == name) {
     if (!rstudioapi::isAvailable("1.4")) {
       return(grDevices::png)
     }
@@ -267,7 +232,7 @@ get_device_function <- function(name) {
     devSVG = svglite::svglite,
     # TODO: support cairoDevices? tikz?
     stop(
-      "thematic doesn't (yet) support the '", name, "' graphics device",
+      "thematic doesn't (yet) support the '", name, "' graphics device. ",
       "Please report this error to https://github.com/rstudio/thematic/issues/new",
       call. = FALSE
     )
@@ -276,18 +241,6 @@ get_device_function <- function(name) {
 
 is_ragg_device <- function(dev_name) {
   dev_name %in% paste0("agg_", c("png", "tiff", "ppm", "jpeg"))
-}
-
-dev_new <- function(filename) {
-  # If this is called via thematic_save_plot(), then we know
-  # exactly what function and args to use to clone the device
-  if (length(.globals$device)) {
-    do.call(.globals$device$fun, .globals$device$args)
-    return()
-  }
-  # Most devices use `filename` instead of `file`,
-  # but there are a few exceptions (e.g., pdf(), svglite::svglite())
-  suppressMessages(dev.new(filename = filename, file = filename))
 }
 
 
@@ -302,4 +255,3 @@ generic_css_families <- function() {
     "-apple-system" , "BlinkMacSystemFont"
   )
 }
-

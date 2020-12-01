@@ -83,9 +83,97 @@ is_rstudio <- function(version_needed = NULL) {
   rstudioapi::isAvailable(version_needed)
 }
 
-in_rstudio_gd <- function(dev_name = names(infer_device())) {
+in_rstudio_gd <- function(dev_name = infer_device()) {
   "RStudioGD" %in% dev_name
 }
+
+# If the current device is null, try to open the default device
+# infer what it'll be
+infer_device <- function() {
+  if (!is_null_device()) {
+    return(.Device)
+  }
+  dev <- attempt_with_new_device(.Device)
+  if (!is.null(dev) && !is_null_device(dev)) {
+    return(dev)
+  }
+  # In this case, the system's default device isn't supported,
+  # but it could be that a device might be available
+  dev <- attempt_with_device(.Device, default_device())
+  if (!is.null(dev) && !is_null_device(dev)) {
+    return(dev)
+  }
+  stop(
+    "It seems your system doesn't support an R graphics device. ",
+    "Try installing the ragg and/or Cairo packages.",
+    call. = FALSE
+  )
+}
+
+# .Device is equivalent to names(dev.cur())
+is_null_device <- function(x = .Device) {
+  identical(x, "null device")
+}
+
+attempt_with_new_device <- function(expr) {
+  attempt_with_device(dev_new, expr)
+}
+
+attempt_with_device <- function(dev_fun, expr, fail_value = NULL) {
+  tmp <- tempfile()
+  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
+  dev_before <- dev.cur()
+  if (!is.function(dev_fun)) {
+    stop("Internal error: dev_fun should be a function.")
+  }
+  file_arg <- grep("^file", names(formals(dev_fun)), value = TRUE)
+  if (length(file_arg) != 1) {
+    stop("Internal error: expect graphics device function to have a file/filename argument.")
+  }
+  res <- try(do.call(dev_fun, setNames(list(tmp), file_arg)))
+  if (inherits(res, "try-error")) {
+    maybe_warn(
+      "thematic tried but failed to open a graphics device. If plots don't render ",
+      "how you'd expect them to, try setting `options(device = ...)` to a device ",
+      "that is supported on your system (e.g., `png`, `jpeg`, `Cairo::Cairo`, etc).",
+      id = "no-graphics-device"
+    )
+    return(fail_value)
+  }
+
+  # dev.off() closes the current device, then sets the current
+  # device to the _next_ device, which isn't necessarily the
+  # previously open device.
+  dev_after <- dev.cur()
+  on.exit({
+    dev.off(dev_after)
+    # This next line is here to avoid this situation
+    # > png(); png(); png(); dev.list()
+    # quartz_off_screen quartz_off_screen quartz_off_screen
+    # 2                 3                 4
+    # > dev.off(); dev.cur()
+    # quartz_off_screen
+    # 2
+    if (dev_before > 1) dev.set(dev_before)
+  }, add = TRUE)
+
+  force(expr)
+}
+
+dev_new <- function(filename) {
+  # If this is called via thematic_save_plot(), then we know
+  # exactly what function and args to use to clone the device
+  if (length(.globals$device)) {
+    do.call(.globals$device$fun, .globals$device$args)
+    return()
+  }
+  # Most devices use `filename` instead of `file`,
+  # but there are a few exceptions (e.g., pdf(), svglite::svglite())
+  dev.new(filename = filename, file = filename)
+}
+
+
+
 
 dropNulls <- function(x) {
   x[!vapply(x, is.null, FUN.VALUE=logical(1))]
