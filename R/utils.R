@@ -94,13 +94,13 @@ infer_device <- function() {
     return(.Device)
   }
   dev <- attempt_with_new_device(.Device)
-  if (!is_null_device(dev)) {
+  if (!is.null(dev) && !is_null_device(dev)) {
     return(dev)
   }
   # In this case, the system's default device isn't supported,
   # but it could be that a device might be available
   dev <- attempt_with_device(.Device, default_device())
-  if (!is_null_device(dev)) {
+  if (!is.null(dev) && !is_null_device(dev)) {
     return(dev)
   }
   stop(
@@ -110,6 +110,7 @@ infer_device <- function() {
   )
 }
 
+# .Device is equivalent to names(dev.cur())
 is_null_device <- function(x = .Device) {
   identical(x, "null device")
 }
@@ -118,8 +119,9 @@ attempt_with_new_device <- function(expr) {
   attempt_with_device(dev_new, expr)
 }
 
-attempt_with_device <- function(dev_fun, expr) {
+attempt_with_device <- function(dev_fun, expr, fail_value = NULL) {
   tmp <- tempfile()
+  on.exit(unlink(tmp, recursive = TRUE), add = TRUE)
   dev_before <- dev.cur()
   res <- try(dev_fun(filename = tmp))
   if (inherits(res, "try-error")) {
@@ -129,7 +131,7 @@ attempt_with_device <- function(dev_fun, expr) {
       "that is supported on your system (e.g., `png`, `jpeg`, `Cairo::Cairo`, etc).",
       id = "no-graphics-device"
     )
-    return(dev_before)
+    return(fail_value)
   }
 
   # dev.off() closes the current device, then sets the current
@@ -138,9 +140,14 @@ attempt_with_device <- function(dev_fun, expr) {
   dev_after <- dev.cur()
   on.exit({
     dev.off(dev_after)
-    # dev.set(1) actually opens a new device, which isn't what we want
+    # This next line is here to avoid this situation
+    # > png(); png(); png(); dev.list()
+    # quartz_off_screen quartz_off_screen quartz_off_screen
+    # 2                 3                 4
+    # > dev.off(); dev.cur()
+    # quartz_off_screen
+    # 2
     if (dev_before > 1) dev.set(dev_before)
-    unlink(tmp, recursive = TRUE)
   }, add = TRUE)
 
   force(expr)
