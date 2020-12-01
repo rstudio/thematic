@@ -2,15 +2,15 @@ base_palette_set <- function(theme = .globals$theme) {
   base_palette_restore()
   codes <- theme$qualitative
   .globals$base_palette <- if (isTRUE(is.na(codes))) {
-    palette_no_new_device()
+    attempt_palette()
   } else {
-    palette_no_new_device(codes)
+    attempt_palette(codes)
   }
 }
 
 base_palette_restore <- function() {
   if (is.null(.globals$base_palette)) return()
-  palette_no_new_device(.globals$base_palette)
+  attempt_palette(.globals$base_palette)
   rm("base_palette", envir = .globals)
 }
 
@@ -19,11 +19,11 @@ base_params_set <- function(theme = .globals$theme) {
   params <- list()
   bg <- theme$bg
   if (length(bg)) {
-    params <- c(params, par_no_new_device(bg = bg))
+    params <- c(params, attempt_par(bg = bg))
   }
   fg <- theme$fg
   if (length(fg)) {
-    params <- c(params, par_no_new_device(
+    params <- c(params, attempt_par(
       fg = fg,
       col.axis = fg,
       col.lab = fg,
@@ -33,7 +33,7 @@ base_params_set <- function(theme = .globals$theme) {
   }
   font <- theme$font
   if (length(font$family)) {
-    params <- c(params, par_no_new_device(
+    params <- c(params, attempt_par(
       family = font$family,
       cex.axis = font$scale,
       cex.lab = font$scale,
@@ -47,27 +47,22 @@ base_params_set <- function(theme = .globals$theme) {
 
 base_params_restore <- function() {
   if (is.null(.globals$base_params)) return()
-  do.call(par_no_new_device, .globals$base_params)
+  do.call(attempt_par, .globals$base_params)
   rm("base_params", envir = .globals)
 }
 
-par_no_new_device <- function(..., fun) {
-  with_no_new_device(..., fun = par)
-}
-
-palette_no_new_device <- function(..., fun) {
-  with_no_new_device(..., fun = palette)
-}
-
-with_no_new_device <- function(..., fun) {
-  dev_before <- dev.cur()
-  res <- tryCatch(
-    fun(...), error = warning
-  )
-  dev_after <- dev.cur()
-  if (dev_before != dev_after) {
-    dev.off(dev_after)
-    if (dev_before > 1) dev.set(dev_before)
+attempt_par <- function(...) {
+  if (is_null_device()) {
+    attempt_with_new_device(par(...))
+  } else {
+    par(...)
   }
-  res
+}
+
+attempt_palette <- function(...) {
+  if (is_null_device()) {
+    attempt_with_new_device(palette(...))
+  } else {
+    palette(...)
+  }
 }
