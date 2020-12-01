@@ -184,7 +184,7 @@ can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
 
 # Do our best to map the name of the current device to an
 # actual device function
-get_device_function <- function(name) {
+get_device_function <- function(name = infer_device()) {
 
   # first, resolve known cases where the .Device name
   # doesn't quite map to the relevant function name
@@ -255,4 +255,3 @@ generic_css_families <- function() {
     "-apple-system" , "BlinkMacSystemFont"
   )
 }
-
