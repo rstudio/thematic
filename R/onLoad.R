@@ -16,9 +16,7 @@
   register_upgrade_message("shiny", "1.5.0")   # shiny::getCurrentOutputInfo()
   register_upgrade_message("ggplot2", "3.3.2") # proper scale defaults
   register_upgrade_message("ragg", "0.2")      # important bug fixes
-
-  # Dev versions
-  register_upgrade_message("rmarkdown", "2.6.6", "rstudio/rmarkdown")
+  register_upgrade_message("rmarkdown", "2.6.6") # bslib integration
 
   install_knitr_hooks()
 }
