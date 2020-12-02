@@ -18,7 +18,7 @@
   register_upgrade_message("ragg", "0.2")      # important bug fixes
 
   # Dev versions
-  register_upgrade_message("rmarkdown", "2.4.0", "rstudio/rmarkdown#1706")
+  register_upgrade_message("rmarkdown", "2.6.0", "rstudio/rmarkdown#1706")
 
   install_knitr_hooks()
 }
