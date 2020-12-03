@@ -33,7 +33,7 @@ ggplot_build_restore <- function() {
 # N.B. If you make changes here, plotly might have to as well!
 # https://github.com/ropensci/plotly/pull/1801/files#diff-3afd3a8e6a2cbc84a7afc6d2d06ec5e3R429
 ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
-  theme <- theme %||% thematic_get_theme()
+  theme <- theme %||% thematic_get_theme(resolve = TRUE)
   ggplot_build <- ggplot_build %||% .globals$ggplot_build
   if (!is.function(ggplot_build)) {
     stop("`ggplot_build` must be a function", call. = FALSE)

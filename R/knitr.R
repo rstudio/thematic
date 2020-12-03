@@ -10,7 +10,7 @@ install_knitr_hooks <- function() {
   knitr::opts_hooks$set(thematic_hook = function(options) {
     # Default to using showtext, but allow users to opt-out if they don't need it
     options$fig.showtext <- getOption("thematic.fig.showtext", is_installed("showtext"))
-    bg <- thematic_get_option("bg", "white")
+    bg <- thematic_get_option("bg", "white", resolve = TRUE)
     dev <- options[["dev"]]
     # dev.args can also be a list of lists of args
     if (is.character(dev) && isTRUE(dev %in% names(options$dev.args))) {
