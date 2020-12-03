@@ -290,16 +290,6 @@ thematic_get_theme <- function(resolve = TRUE) {
   }
 }
 
-#' Get a thematic theme
-#'
-#' This function is deprecated. Use [thematic_get_theme()].
-#'
-#' @export
-thematic_get <- function() {
-  .Deprecated("thematic_get_theme")
-  thematic_get_theme()
-}
-
 #' @describeIn thematic_with_theme obtain a particular `theme` option (and provide a `default`
 #'   if no `theme` is active).
 #' @param name a theme element name (e.g., `fg`, `bg`, etc.)
