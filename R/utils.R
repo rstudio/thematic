@@ -99,7 +99,7 @@ infer_device <- function() {
   }
   # In this case, the system's default device isn't supported,
   # but it could be that a device might be available
-  dev <- attempt_with_device(.Device, default_device())
+  dev <- attempt_with_device(default_device(), .Device)
   if (!is.null(dev) && !is_null_device(dev)) {
     return(dev)
   }
