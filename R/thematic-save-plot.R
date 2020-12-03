@@ -49,7 +49,7 @@ thematic_save_plot <- function(expr, device = default_device(),
   }
 
   args[[bg_arg]] <- args[[bg_arg]] %||%
-    thematic_get_option("bg", "white")
+    thematic_get_option("bg", "white", resolve = TRUE)
 
   # Handle the case where device wants `file` instead of `filename`
   # (e.g., svglite::svglite)

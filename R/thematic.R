@@ -77,7 +77,7 @@
 thematic_on <- function(bg = "auto", fg = "auto", accent = "auto",
                         font = NA, sequential = sequential_gradient(),
                         qualitative = okabe_ito(), inherit = FALSE) {
-  old_theme <- thematic_get_theme()
+  old_theme <- thematic_get_theme(resolve = FALSE)
   .globals$theme <- thematic_theme(
     bg = bg, fg = fg, accent = accent,
     font = font, sequential = sequential,
@@ -142,7 +142,7 @@ thematic_theme <- function(bg = "auto", fg = "auto", accent = "auto",
   )
 
   # Newly _specified_ theme elements override old elements
-  old <- thematic_get_theme()
+  old <- thematic_get_theme(resolve = FALSE)
   if (isTRUE(inherit) && length(old)) {
     fmls <- formals(thematic_theme)
     if (identical(bg, fmls$bg)) new$bg <- NULL
@@ -326,7 +326,7 @@ thematic_get_option <- function(name = "", default = NULL, resolve = TRUE) {
 #' @param amounts value(s) between 0 and 1 specifying how much to mix `bg` (0) and `fg` (1).
 #' @export
 thematic_get_mixture <- function(amounts = 0.5, default = NULL) {
-  if (!length(thematic_get_theme())) {
+  if (!length(thematic_get_theme(resolve = FALSE))) {
     if (length(default)) {
       default <- rep_len(default, length(amounts))
     }
@@ -335,8 +335,8 @@ thematic_get_mixture <- function(amounts = 0.5, default = NULL) {
   if (any(amounts < 0 | amounts > 1)) {
     stop("`amounts` must be between 0 and 1", call. = FALSE)
   }
-  fg <- thematic_get_option("fg")
-  bg <- thematic_get_option("bg")
+  fg <- thematic_get_option("fg", resolve = TRUE)
+  bg <- thematic_get_option("bg", resolve = TRUE)
   scales::colour_ramp(c(bg, fg))(amounts)
 }
 
