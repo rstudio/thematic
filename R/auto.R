@@ -226,15 +226,7 @@ shiny_output_info <- function() {
     return(NULL)
   }
   # This is what I get for announcing before shiny was ready
-  res <- lapply(info[nms], function(x) {
-    if (!shiny::is.reactive(x)) {
-      stop(
-        "Expected shiny::getCurrentOutputInfo() to return reactive expressions. ",
-        "Try upgrading shiny: install.packages('shiny')"
-      )
-    }
-    x()
-  })
+  res <- lapply(info[nms], function(x) { x() })
   rlang::set_names(res, nms)
 }
 
