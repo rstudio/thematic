@@ -225,7 +225,6 @@ shiny_output_info <- function() {
     }
     return(NULL)
   }
-  # This is what I get for announcing before shiny was ready
   res <- lapply(info[nms], function(x) { x() })
   rlang::set_names(res, nms)
 }
