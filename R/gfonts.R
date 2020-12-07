@@ -58,21 +58,31 @@ try_register_gfont_cache <- function(family, upgrade) {
   bolditalic <- font_file("bolditalic")
 
   if (is_installed("systemfonts")) {
-    try(systemfonts::register_font(
-      family, regular,
-      bold = bold,
-      italic = italic,
-      bolditalic = bolditalic
-    ))
+    tryCatch(
+      systemfonts::register_font(
+        family, regular,
+        bold = bold,
+        italic = italic,
+        bolditalic = bolditalic
+      ),
+      error = function(e) {
+        warning(conditionMessage(e))
+      }
+    )
   }
 
   if (is_installed("sysfonts")) {
-    try(sysfonts::font_add(
-      family, regular,
-      bold = bold,
-      italic = italic,
-      bolditalic = bolditalic
-    ))
+    tryCatch(
+      sysfonts::font_add(
+        family, regular,
+        bold = bold,
+        italic = italic,
+        bolditalic = bolditalic
+      ),
+      error = function(e) {
+        warning(conditionMessage(e))
+      }
+    )
   }
 }
 
