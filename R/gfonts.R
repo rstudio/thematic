@@ -66,7 +66,15 @@ try_register_gfont_cache <- function(family, upgrade) {
         bolditalic = bolditalic
       ),
       error = function(e) {
-        warning(conditionMessage(e))
+        msg <- conditionMessage(e)
+        # It's intentional that we don't check `family %in% system_font()` before
+        # registering since that's a non-trivial cost that must also be paid in
+        # `register_font()`. So, if the failure is due to a system font already
+        # being available, then don't throw since that's irrelevant to the end user
+        # https://github.com/r-lib/systemfonts/blob/e4a98b/R/register_font.R#L60
+        if (!grepl("system font with that family name", msg)) {
+          warning(msg)
+        }
       }
     )
   }
