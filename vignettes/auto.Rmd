@@ -135,24 +135,15 @@ shinyApp(ui, server)
 knitr::include_graphics("tabsets-darkly-thematic-minimal.png")
 ```
 
-Since **thematic** knows the CSS rules on the plot's HTML container, auto theming works regardless of how the HTML is actually styled. That said, consider using the new [**bslib** package](https://rstudio.github.io/bslib/) to theme your Shiny apps (and R Markdown docs). It provides a rich set of tools for influencing Bootstrap CSS from R, including convenience functions for [setting the main colors (and fonts)](https://rstudio.github.io/bslib/articles/recipes.html):
+Since **thematic** knows the CSS rules on the plot's HTML container, auto theming works regardless of how the HTML is actually styled. That said, consider using the new [**bslib** package](https://rstudio.github.io/bslib/) to theme your Shiny apps (and R Markdown docs). It provides a rich set of tools for influencing Bootstrap CSS from R, including convenience functions for [setting the main colors and fonts](https://rstudio.github.io/bslib/articles/recipes.html):
 
 ```r
 library(bslib)
 solar_theme <- bs_theme(
-  bg = "#002B36", fg = "#EEE8D5",
-  primary = "#2AA198", base_font = "Pacifico"
+  bg = "#002B36", fg = "#EEE8D5", primary = "#2AA198", 
+  base_font = font_google("Pacifico")
 )
-```
-
-In this case, we've set the font family for this **bslib** theme to be [Pacifico](https://fonts.google.com/specimen/Pacifico), which is a [Google Font](https://fonts.google.com). Therefore, in order for the browser to be able to render this font, we need to [import it](https://developers.google.com/fonts/docs/getting_started). For simplicity, this code imports the font via a remote URL, but it's recommended to use local font files (for hosting reasons). The [**gfonts** package](https://github.com/dreamRs/gfonts) makes it really easy to download and use Google Fonts locally in Shiny and R Markdown.
-
-```r
-ui <- fluidPage(
-  theme = solar_theme,
-  tags$link(href="https://fonts.googleapis.com/css?family=Pacifico", rel="stylesheet"),
-  tabs
-)
+ui <- fluidPage(theme = solar_theme, tabs)
 thematic_shiny()
 shinyApp(ui, server)
 ```
