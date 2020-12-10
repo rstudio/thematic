@@ -171,32 +171,26 @@
 <span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <p><img src="tabsets-darkly-thematic-minimal.png" width="70%" style="display: block; margin: auto;"></p>
-<p>Since <strong>thematic</strong> knows the CSS rules on the plot’s HTML container, auto theming works regardless of how the HTML is actually styled. That said, consider using the new <a href="https://rstudio.github.io/bslib/"><strong>bslib</strong> package</a> to theme your Shiny apps (and R Markdown docs). It provides a rich set of tools for influencing Bootstrap CSS from R, including convenience functions for <a href="https://rstudio.github.io/bslib/articles/recipes.html">setting the main colors (and fonts)</a>:</p>
+<p>Since <strong>thematic</strong> knows the CSS rules on the plot’s HTML container, auto theming works regardless of how the HTML is actually styled. That said, consider using the new <a href="https://rstudio.github.io/bslib/"><strong>bslib</strong> package</a> to theme your Shiny apps (and R Markdown docs). It provides a rich set of tools for influencing Bootstrap CSS from R, including convenience functions for <a href="https://rstudio.github.io/bslib/articles/recipes.html">setting the main colors and fonts</a>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/bslib/">bslib</a></span><span class="op">)</span>
 <span class="va">solar_theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rstudio.github.io/bslib//reference/bs_theme.html">bs_theme</a></span><span class="op">(</span>
-  bg <span class="op">=</span> <span class="st">"#002B36"</span>, fg <span class="op">=</span> <span class="st">"#EEE8D5"</span>,
-  primary <span class="op">=</span> <span class="st">"#2AA198"</span>, base_font <span class="op">=</span> <span class="st">"Pacifico"</span>
-<span class="op">)</span></code></pre></div>
-<p>In this case, we’ve set the font family for this <strong>bslib</strong> theme to be <a href="https://fonts.google.com/specimen/Pacifico">Pacifico</a>, which is a <a href="https://fonts.google.com">Google Font</a>. Therefore, in order for the browser to be able to render this font, we need to <a href="https://developers.google.com/fonts/docs/getting_started">import it</a>. For simplicity, this code imports the font via a remote URL, but it’s recommended to use local font files (for hosting reasons). The <a href="https://github.com/dreamRs/gfonts"><strong>gfonts</strong> package</a> makes it really easy to download and use Google Fonts locally in Shiny and R Markdown.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span><span class="op">(</span>
-  theme <span class="op">=</span> <span class="va">solar_theme</span>,
-  <span class="va">tags</span><span class="op">$</span><span class="fu">link</span><span class="op">(</span>href<span class="op">=</span><span class="st">"https://fonts.googleapis.com/css?family=Pacifico"</span>, rel<span class="op">=</span><span class="st">"stylesheet"</span><span class="op">)</span>,
-  <span class="va">tabs</span>
+  bg <span class="op">=</span> <span class="st">"#002B36"</span>, fg <span class="op">=</span> <span class="st">"#EEE8D5"</span>, primary <span class="op">=</span> <span class="st">"#2AA198"</span>, 
+  base_font <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/bslib//reference/font_face.html">font_google</a></span><span class="op">(</span><span class="st">"Pacifico"</span><span class="op">)</span>
 <span class="op">)</span>
+<span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html">fluidPage</a></span><span class="op">(</span>theme <span class="op">=</span> <span class="va">solar_theme</span>, <span class="va">tabs</span><span class="op">)</span>
 <span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span><span class="op">)</span>
 <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <p><img src="tabsets-custom.png" width="70%" style="display: block; margin: auto;"></p>
 <p>As shown in the image above, text rendered by the browser (i.e., <code><a href="https://shiny.rstudio.com/reference/shiny/latest/tabsetPanel.html">tabsetPanel()</a></code>’s titles) now uses the Pacifico font, but the R plots are still using the default font because, by default, <code><a href="../reference/thematic_on.html">thematic_shiny()</a></code> only enables automatic colors. To enable auto fonts, set <code>font = "auto"</code>; and when doing so, make sure the font to be rendered is either a font already supported by R, or is Google Font and the <strong>showtext</strong> package is installed (learn more in the <a href="fonts.html">fonts article</a>).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/yixuan/showtext">showtext</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span>font <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>
 <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <p><img src="tabsets-custom-fonts.png" width="70%" style="display: block; margin: auto;"></p>
 <p><img src="tabsets-custom-fonts-lattice.png" width="70%" style="display: block; margin: auto;"></p>
 <p><strong>thematic</strong> also works great with <strong>bslib</strong>’s realtime theming widget. This interactive widget influences the CSS on the page, so as long as thematic’s auto theming enabled, those CSS changes automatically influence the R plot styling. Note how here we still have both auto fonts and colors, which means that as long as we choose Google Fonts (and/or fonts already known to R), the R plots can automatically render them.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rstudio.github.io/bslib//reference/bs_theme_preview.html">bs_theme_preview</a></span><span class="op">(</span><span class="fu"><a href="https://rstudio.github.io/bslib//reference/bs_theme.html">bs_theme</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#444444"</span>, fg <span class="op">=</span> <span class="st">"#E4E4E4"</span>, primary <span class="op">=</span> <span class="st">"#E39777"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <iframe src="https://player.vimeo.com/video/465527125?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
@@ -226,7 +220,7 @@
 <li>Allow auto theming to “fail”, meaning that <strong>thematic</strong> effectively has no effect on the visual output.</li>
 <li>Use <code><a href="../reference/auto_config.html">auto_config()</a></code> and <code><a href="../reference/auto_config.html">auto_config_set()</a></code> to set “fallbacks” for <code>'auto'</code> values. For example:</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/auto_config.html">auto_config</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"black"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span>
 <span class="fu"><a href="../reference/auto_config.html">auto_config_set</a></span><span class="op">(</span><span class="va">config</span><span class="op">)</span>
 <span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="op">)</span>
