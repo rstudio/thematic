@@ -4,7 +4,7 @@
   },
   "output": {
     "__reactivedoc__": {
-      "html": "[html data sha1: d3669a1e1b7047ac68b76939cfc5d1e5180030b7]",
+      "html": "[html data sha1: 66111e7469c463643509cdc78d840b5dbde83aeb]",
       "deps": [
         {
           "name": "jquery",
@@ -35,7 +35,7 @@
             "shim/respond.min.js"
           ],
           "stylesheet": "css/darkly.min.css",
-          "head": null,
+          "head": "<style>h1 {font-size: 34px;}\n       h1.title {font-size: 38px;}\n       h2 {font-size: 30px;}\n       h3 {font-size: 24px;}\n       h4 {font-size: 18px;}\n       h5 {font-size: 16px;}\n       h6 {font-size: 12px;}<\/style>",
           "attachment": null,
           "package": null,
           "all_files": true
