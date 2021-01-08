@@ -65,7 +65,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/rstudio/thematic/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -85,14 +85,13 @@
 
       
 
-      </header><script src="auto_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="auto_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="auto_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="auto_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Auto theming</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-12-10</h4>
+            <h4 class="date">2021-01-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/auto.Rmd"><code>vignettes/auto.Rmd</code></a></small>
       <div class="hidden name"><code>auto.Rmd</code></div>
@@ -108,7 +107,7 @@
 <p>One frustrating thing about styling Shiny apps is that R plots know nothing about CSS. That means, if you write <a href="https://shiny.rstudio.com/articles/css.html">custom CSS to style the app</a>, you’ll likely also want to translate those same styles to the R graphics. You may have never noticed this problem before if you just use the default styles in both systems because they’re quite similar. Here’s the default styles in a Shiny app with a few R plots inside a <code><a href="https://shiny.rstudio.com/reference/shiny/latest/tabsetPanel.html">tabsetPanel()</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://shiny.rstudio.com">shiny</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 
 <span class="va">tabs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabsetPanel.html">tabsetPanel</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"pills"</span>,
   <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html">tabPanel</a></span><span class="op">(</span><span class="st">"ggplot"</span>, <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html">plotOutput</a></span><span class="op">(</span><span class="st">"ggplot"</span><span class="op">)</span><span class="op">)</span>,
@@ -192,7 +191,7 @@
 <p><strong>thematic</strong> also works great with <strong>bslib</strong>’s realtime theming widget. This interactive widget influences the CSS on the page, so as long as thematic’s auto theming enabled, those CSS changes automatically influence the R plot styling. Note how here we still have both auto fonts and colors, which means that as long as we choose Google Fonts (and/or fonts already known to R), the R plots can automatically render them.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rstudio.github.io/bslib//reference/bs_theme_preview.html">bs_theme_preview</a></span><span class="op">(</span><span class="fu"><a href="https://rstudio.github.io/bslib//reference/bs_theme.html">bs_theme</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#444444"</span>, fg <span class="op">=</span> <span class="st">"#E4E4E4"</span>, primary <span class="op">=</span> <span class="st">"#E39777"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<iframe src="https://player.vimeo.com/video/465527125?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+<p><iframe src="https://player.vimeo.com/video/465527125?title=0&amp;byline=0&amp;portrait=0" width="100%" height="400" frameborder="0" seamless="seamless" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></p>
 </div>
 <div id="rmd" class="section level2">
 <h2 class="hasAnchor">

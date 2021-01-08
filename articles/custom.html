@@ -65,7 +65,7 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/rstudio/thematic/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -85,14 +85,13 @@
 
       
 
-      </header><script src="custom_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="custom_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="custom_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="custom_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Custom themes</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2020-12-10</h4>
+            <h4 class="date">2021-01-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/custom.Rmd"><code>vignettes/custom.Rmd</code></a></small>
       <div class="hidden name"><code>custom.Rmd</code></div>
@@ -117,7 +116,7 @@
 <span class="op">)</span></code></pre></div>
 <p>However, these arguments also accept any valid R (or CSS) color string. So, to “opt-out” of auto coloring, just specify the colors:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="http://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span>
 <span class="va">ggsmooth</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html">geom_smooth</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">ggsmooth</span></code></pre></div>
@@ -282,7 +281,7 @@
 <a href="#third-party-extensions" class="anchor"></a>Third party extensions</h3>
 <p>As a side note, when it comes to third party <strong>ggplot2</strong> extension packages, <strong>thematic</strong> should work as expected (<a href="https://github.com/rstudio/thematic">let us know if it doesn’t</a>) as long as those extension packages aren’t hard coding defaults in un-expected ways.</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally">GGally</a></span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggobi.github.io/ggally/">GGally</a></span><span class="op">)</span>
 <span class="fu"><a href="https://ggobi.github.io/ggally/reference/ggpairs.html">ggpairs</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="custom_files/figure-html/unnamed-chunk-22-1.png" width="85%" style="display: block; margin: auto;"></p>
 </div>
