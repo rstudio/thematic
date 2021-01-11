@@ -38,6 +38,7 @@ server <- function(input, output, session) {
   onFlush(function() {
     unlink(dir(pattern = paste0("\\.", ext)))
     unlink(c(infile, outfile, paste0(tools::file_path_sans_ext(infile), "_files")), recursive = TRUE)
+    unlink(infile)
   })
 }
 
