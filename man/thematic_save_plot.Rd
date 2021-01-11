@@ -27,7 +27,8 @@ match the relevant \code{device}.}
 \item{type}{the type of output format}
 }
 \value{
-the \code{filename} of the produced plot.
+\code{thematic_save_plot()} returns the \code{filename} of the produced plot
+and \code{default_device()} returns a graphics device function.
 }
 \description{
 Uses a \code{device} to capture the result of an expression (\code{expr})

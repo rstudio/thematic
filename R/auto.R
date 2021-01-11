@@ -25,6 +25,8 @@
 #'     to resolve auto values (only relevant when knitr is in progress).
 #'   * `"rstudio"`: use [rstudioapi::getThemeInfo()] values (if any) to resolve auto values.
 #'
+#' @return a config (list-like) object.
+#'
 #' @rdname auto-config
 #' @export
 #' @examples
