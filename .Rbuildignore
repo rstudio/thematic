@@ -17,4 +17,5 @@ Untitled*
 ^\.github/workflows/pr-commands\.yaml$
 ^CODE_OF_CONDUCT\.md$
 ^vignettes$
+^tests/figs$
 ^tests/testthat/testthat-problems.rds$
