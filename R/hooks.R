@@ -132,6 +132,14 @@ resolve_font_family <- function(type = c("base", "grid")) {
       package_warning_msg,
       id = "cant-render-font"
     )
+
+    if(!package_warning_msg == ""){
+      # If we have a problem related to loaded packages rendering the font then
+      # we want to just use the default font. Otherwise the plot when attempting
+      # to use a non-existent font and will crash with a bunch of error messages
+      # that bury our useful one above.
+      family <- NULL
+    }
   }
 
   set_font_family(family)
