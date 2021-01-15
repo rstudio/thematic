@@ -114,12 +114,22 @@ resolve_font_family <- function(type = c("base", "grid")) {
       break
     }
 
+    # There's two scenarios that could cause a font to fail related to availability of a rendering device.
+    ragg_installed_but_not_used <- is_installed("ragg") & !is_ragg_device(dev_name)
+    neigher_ragg_or_showtext_installed <- !is_installed("ragg") && !is_installed("showtext")
+    package_warning_msg <- if(ragg_installed_but_not_used) {
+      "To render custom fonts, either use a ragg device or install the showtext package"
+    } else if(neigher_ragg_or_showtext_installed) {
+      "Install ragg and/or showtext to render custom fonts. "
+    } else {
+      ""
+    }
+
     # Try our best to give informative warning
     maybe_warn(
       "It seems the current graphics device '", dev_name, "' ",
       "is unable to render the requested font family '", family, "'. ",
-      if (!is_installed("ragg") && !is_installed("showtext"))
-        "Install ragg and/or showtext to render custom fonts. ",
+      package_warning_msg,
       id = "cant-render-font"
     )
   }
