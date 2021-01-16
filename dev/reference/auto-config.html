@@ -90,7 +90,7 @@ as well as the priority that certain information should receive." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">thematic</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.0.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9000</span>
       </span>
     </div>
 
@@ -115,7 +115,7 @@ as well as the priority that certain information should receive." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rstudio/thematic/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -151,17 +151,17 @@ to configure both a preference for specific auto values (e.g., <code>bg</code>, 
 as well as the <code>priority</code> that certain information should receive.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>auto_config</span>(
-  <span class='kw'>bg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>fg</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>accent</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>font</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>priority</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"shiny"</span>, <span class='st'>"config"</span>, <span class='st'>"bootstraplib"</span>, <span class='st'>"rstudio"</span>)
-)
+    <pre class="usage"><span class='fu'>auto_config</span><span class='op'>(</span>
+  bg <span class='op'>=</span> <span class='cn'>NULL</span>,
+  fg <span class='op'>=</span> <span class='cn'>NULL</span>,
+  accent <span class='op'>=</span> <span class='cn'>NULL</span>,
+  font <span class='op'>=</span> <span class='cn'>NULL</span>,
+  priority <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"shiny"</span>, <span class='st'>"config"</span>, <span class='st'>"bslib"</span>, <span class='st'>"rstudio"</span><span class='op'>)</span>
+<span class='op'>)</span>
 
-<span class='fu'>auto_config_set</span>(<span class='no'>config</span>)
+<span class='fu'>auto_config_set</span><span class='op'>(</span><span class='va'>config</span><span class='op'>)</span>
 
-<span class='fu'>auto_config_get</span>()</pre>
+<span class='fu'>auto_config_get</span><span class='op'>(</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -190,7 +190,7 @@ Can be 2 colors for lattice (stroke vs fill accent).</p></td>
 Possible values include:</p><ul>
 <li><p><code>"shiny"</code>: use <code><a href='https://shiny.rstudio.com/reference/shiny/latest/getCurrentOutputInfo.html'>shiny::getCurrentOutputInfo()</a></code> values (if any) to resolve auto values.</p></li>
 <li><p><code>"config"</code>: use the values provided to this function (if any) to resolve auto values.</p></li>
-<li><p><code>"bootstraplib"</code>: use <code><a href='https://rdrr.io/pkg/bootstraplib/man/bs_theme_get_variables.html'>bootstraplib::bs_theme_get_variables()</a></code> values (if any)
+<li><p><code>"bslib"</code>: use <code><a href='https://rstudio.github.io/bslib//reference/bs_get_variables.html'>bslib::bs_get_variables()</a></code> values (if any)
 to resolve auto values (only relevant when knitr is in progress).</p></li>
 <li><p><code>"rstudio"</code>: use <code><a href='https://rdrr.io/pkg/rstudioapi/man/getThemeInfo.html'>rstudioapi::getThemeInfo()</a></code> values (if any) to resolve auto values.</p></li>
 </ul></td>
@@ -201,6 +201,9 @@ to resolve auto values (only relevant when knitr is in progress).</p></li>
     </tr>
     </table>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a config (list-like) object.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Configuring auto theming behavior is especially useful
@@ -213,11 +216,13 @@ call <code><a href='thematic_on.html'>thematic_on()</a></code> within their docu
 <p>Call this function with no arguments to get the current auto defaults.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>old_config</span> <span class='kw'>&lt;-</span> <span class='fu'>auto_config_set</span>(<span class='fu'>auto_config</span>(<span class='st'>"black"</span>, <span class='st'>"white"</span>))
-<span class='fu'><a href='thematic_with_theme.html'>thematic_with_theme</a></span>(
-  <span class='fu'><a href='thematic_on.html'>thematic_theme</a></span>(), {
-    <span class='fu'><a href='https://rdrr.io/r/base/plot.html'>plot</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='fl'>1</span>:<span class='fl'>10</span>)
- })</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span></div><div class='img'><img src='auto-config-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; NULL</div><div class='input'><span class='fu'>auto_config_set</span>(<span class='no'>old_config</span>)</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>old_config</span> <span class='op'>&lt;-</span> <span class='fu'>auto_config_set</span><span class='op'>(</span><span class='fu'>auto_config</span><span class='op'>(</span><span class='st'>"black"</span>, <span class='st'>"white"</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='thematic_with_theme.html'>thematic_with_theme</a></span><span class='op'>(</span>
+  <span class='fu'><a href='thematic_on.html'>thematic_theme</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='op'>{</span>
+    <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
+ <span class='op'>}</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span></div><div class='img'><img src='auto-config-1.png' alt='' width='700' height='433' /></div><div class='input'><span class='fu'>auto_config_set</span><span class='op'>(</span><span class='va'>old_config</span><span class='op'>)</span>
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -233,7 +238,7 @@ call <code><a href='thematic_on.html'>thematic_on()</a></code> within their docu
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
