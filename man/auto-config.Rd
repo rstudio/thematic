@@ -41,6 +41,9 @@ to resolve auto values (only relevant when knitr is in progress).
 
 \item{config}{a \code{auto_config()} object.}
 }
+\value{
+a config (list-like) object.
+}
 \description{
 Auto theming is really only "guaranteed" to work inside of a \strong{shiny}
 runtime. In any other context, auto theming is based on a set of heuristics,

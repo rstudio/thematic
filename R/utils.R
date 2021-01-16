@@ -131,7 +131,7 @@ attempt_with_device <- function(dev_fun, expr, fail_value = NULL) {
   if (length(file_arg) != 1) {
     stop("Internal error: expect graphics device function to have a file/filename argument.")
   }
-  res <- try(do.call(dev_fun, setNames(list(tmp), file_arg)))
+  res <- try(do.call(dev_fun, rlang::set_names(list(tmp), file_arg)))
   if (inherits(res, "try-error")) {
     maybe_warn(
       "thematic tried but failed to open a graphics device. If plots don't render ",
