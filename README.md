@@ -93,7 +93,6 @@ server <- function(input, output) {
   })
 }
 
-thematic_shiny()
 shinyApp(ui, server)
 ```
 
@@ -127,6 +126,8 @@ library(ggplot2)
 ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = factor(cyl))) +
   geom_point() +
   ggrepel::geom_text_repel()
+#> Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider
+#> increasing max.overlaps
 ```
 
 <img src="man/figures/README-ggrepel-1.png" width="80%" style="display: block; margin: auto;" />
@@ -135,29 +136,29 @@ In addition to `thematic_on()`, which applies the provided theme to all
 plots (up until `thematic_off()` is called), there are a few variation
 of `thematic_on()` which temporarily apply the given theme:
 
-  - `thematic_shiny()`: apply theme up until the next [Shiny](#shiny)
+-   `thematic_shiny()`: apply theme up until the next [Shiny](#shiny)
     app exits. Use this over `thematic_on()` in Shiny apps.
-  - `thematic_rmd()`: apply theme up until the next [R Markdown](#rmd)
+-   `thematic_rmd()`: apply theme up until the next [R Markdown](#rmd)
     document exits. Use this over `thematic_on()` in R Markdown
     documents.
-  - `thematic_with_theme()`: apply theme up until the provided plot
+-   `thematic_with_theme()`: apply theme up until the provided plot
     `expr` is evaluated. Use this to apply different themes to different
     plots within a Shiny app.
 
 ## Learn more
 
-  - See the [auto theming
+-   See the [auto theming
     article](https://rstudio.github.io/thematic/articles/auto.html) to
     gain an understanding of how auto theming make styling R plots
     easier in Shiny, R Markdown, and RStudio.
-  - See the [custom themes
+-   See the [custom themes
     article](https://rstudio.github.io/thematic/articles/custom.html)
     for more on **thematic**’s theming options as well as how they
     interact with **ggplot2**, **lattice**, and **base**.
-  - See the [fonts
+-   See the [fonts
     article](https://rstudio.github.io/thematic/articles/fonts.html) for
     more on using Google Fonts with **thematic**.
-  - See the [scoping
+-   See the [scoping
     article](https://rstudio.github.io/thematic/articles/scope.html) for
     more about restoring state after using **thematic**.
 
