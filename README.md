@@ -22,25 +22,25 @@ plots in Shiny, R Markdown, and RStudio.
 
 ## Installation
 
-**thematic** is not yet available on [CRAN](https://CRAN.R-project.org),
-but you can install it now with:
+Install the stable release of **thematic** on
+[CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-remotes::install_github("rstudio/thematic")
-library(thematic)
+install.packages("thematic")
 ```
 
-For [auto theming in
-Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny),
-you’ll need **shiny** v.1.5.0 or higher.
+[Auto theming in
+Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny)
+requires **shiny** 1.5.0 or higher, which is also available on CRAN:
 
 ``` r
 install.packages("shiny")
 ```
 
-For [auto theming in R
-Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd),
-you’ll currently need the development version of **rmarkdown**:
+[Auto theming in R
+Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd)
+requires **rmarkdown** 2.6.6 or higher, which currently isn’t on CRAN
+(but is available on GitHub):
 
 ``` r
 remotes::install_github("rstudio/rmarkdown")
@@ -109,7 +109,7 @@ the `shiny::tabsetPanel()`). Moreover, as long as the relevant font is a
 automatically downloads, caches, and registers font(s) with R.
 
 ``` r
-thematic_shiny(font = "auto")
+thematic::thematic_shiny(font = "auto")
 shinyApp(ui, server)
 ```
 
