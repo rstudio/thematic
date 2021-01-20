@@ -40,10 +40,10 @@ install.packages("shiny")
 
 For [auto theming in R
 Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd),
-you’ll currently need an experimental version of **rmarkdown**:
+you’ll currently need the development version of **rmarkdown**:
 
 ``` r
-remotes::install_github("rstudio/rmarkdown#1706")
+remotes::install_github("rstudio/rmarkdown")
 ```
 
 ## Overview
@@ -98,7 +98,7 @@ shinyApp(ui, server)
 
 <img src="man/figures/auto-before.png" width="80%" style="display: block; margin: auto;" />
 
-To add automatic coloring and fonts (i.e., the full auto theming
+To add automatic coloring *and fonts* (i.e., the full auto theming
 experience) to the R plots, simply call `thematic_on(font = "auto")` and
 re-run the application. Since the plots are generated via Shiny, they
 assume new defaults which are informed by the CSS styling on their HTML
