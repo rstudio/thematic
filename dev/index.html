@@ -108,9 +108,9 @@
 <p>For <a href="https://rstudio.github.io/thematic/articles/auto.html#shiny">auto theming in Shiny</a>, you’ll need <strong>shiny</strong> v.1.5.0 or higher.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span></code></pre></div>
-<p>For <a href="https://rstudio.github.io/thematic/articles/auto.html#rmd">auto theming in R Markdown</a>, you’ll currently need an experimental version of <strong>rmarkdown</strong>:</p>
+<p>For <a href="https://rstudio.github.io/thematic/articles/auto.html#rmd">auto theming in R Markdown</a>, you’ll currently need the development version of <strong>rmarkdown</strong>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"rstudio/rmarkdown#1706"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"rstudio/rmarkdown"</span><span class="op">)</span></code></pre></div>
 </div>
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
@@ -150,7 +150,7 @@
 
 <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/auto-before.png" width="80%" style="display: block; margin: auto;"></p>
-<p>To add automatic coloring and fonts (i.e., the full auto theming experience) to the R plots, simply call <code><a href="reference/thematic_on.html">thematic_on(font = "auto")</a></code> and re-run the application. Since the plots are generated via Shiny, they assume new defaults which are informed by the CSS styling on their HTML container (that is, notice how the R plots now reflect the styling of the <code><a href="https://shiny.rstudio.com/reference/shiny/latest/tabsetPanel.html">shiny::tabsetPanel()</a></code>). Moreover, as long as the relevant font is a <a href="https://fonts.google.com">Google Font</a> (in this case, <a href="https://fonts.google.com/specimen/Pacifico">Pacifico</a>), <strong>thematic</strong> automatically downloads, caches, and registers font(s) with R.</p>
+<p>To add automatic coloring <em>and fonts</em> (i.e., the full auto theming experience) to the R plots, simply call <code><a href="reference/thematic_on.html">thematic_on(font = "auto")</a></code> and re-run the application. Since the plots are generated via Shiny, they assume new defaults which are informed by the CSS styling on their HTML container (that is, notice how the R plots now reflect the styling of the <code><a href="https://shiny.rstudio.com/reference/shiny/latest/tabsetPanel.html">shiny::tabsetPanel()</a></code>). Moreover, as long as the relevant font is a <a href="https://fonts.google.com">Google Font</a> (in this case, <a href="https://fonts.google.com/specimen/Pacifico">Pacifico</a>), <strong>thematic</strong> automatically downloads, caches, and registers font(s) with R.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span>font <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>
 <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
