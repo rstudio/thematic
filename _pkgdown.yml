@@ -57,4 +57,4 @@ template:
       index_name: rstudio_thematic
 
 development:
-  mode: auto
+  mode: release
