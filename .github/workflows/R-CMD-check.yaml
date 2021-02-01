@@ -157,6 +157,9 @@ jobs:
         run: install.packages("devtools")
         shell: Rscript {0}
 
+      - name: Instal pkg
+        run: devtools::install()
+        shell: Rscript {0}
       - name: Run Tests
         run: devtools::test()
         shell: Rscript {0}
