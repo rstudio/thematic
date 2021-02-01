@@ -47,7 +47,7 @@ jobs:
         with:
           lfs: true
       - name: Checkout LFS objects
-        run: git lfs checkout
+        run: git lfs pull
 
       - uses: r-lib/actions/setup-r@master
         with:
