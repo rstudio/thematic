@@ -100,7 +100,7 @@ jobs:
       - name: Mac systemdeps
         if: runner.os == 'macOS'
         run: |
-          brew cask install xquartz phantomjs
+          brew install --cask xquartz phantomjs
           brew install pkg-config cairo
 
       # ------------------------------------------------------------
