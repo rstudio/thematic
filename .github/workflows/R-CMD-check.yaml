@@ -49,7 +49,7 @@ jobs:
       - name: Pull LFS objects
         run: git lfs pull
       - name: Echo test/figs dir
-        run: ls tests/figs | xargs echo
+        run: ls tests/figs/base | xargs echo
 
       - uses: r-lib/actions/setup-r@master
         with:
