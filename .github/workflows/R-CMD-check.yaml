@@ -150,8 +150,15 @@ jobs:
           Rscript
           -e "cat('::set-output name=name::gha-', '${{ steps.failed_branch.outputs.name }}', '-', '${{ matrix.config.r }}', '-', '${{ runner.os }}', sep = '')"
 
-      - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+      #- name: Check
+      #  run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+      #  shell: Rscript {0}
+      - name: Install devtools
+        run: install.packages("devtools")
+        shell: Rscript {0}
+
+      - name: Run Tests
+        run: devtools::test()
         shell: Rscript {0}
 
       - name: Upload check results
