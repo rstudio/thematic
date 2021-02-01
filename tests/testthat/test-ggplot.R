@@ -208,7 +208,7 @@ test_that("patchwork integration", {
   expect_doppelganger("patchwork", p1 + p2)
 })
 
-#
+# https://github.com/rstudio/thematic/pull/83
 test_that("element_blank() inherits properly", {
   p <- qplot(x = 1:10, y = 1:10) + theme(axis.text.y = element_blank())
   thematic_on(bg = "black", fg = "white", accent = "salmon")
