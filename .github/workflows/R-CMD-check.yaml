@@ -172,7 +172,7 @@ jobs:
         uses: actions/upload-artifact@master
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
+          path: ./
 
       - name: Push test files to a GH branch
         if: failure()
