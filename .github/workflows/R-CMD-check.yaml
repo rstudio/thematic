@@ -155,7 +155,7 @@ jobs:
         run: install.packages("devtools")
         shell: Rscript {0}
       - name: Run Tests
-        run: >
+        run: |
           devtools::install()
           res <- devtools::test()
           df <- as.data.frame(res)
