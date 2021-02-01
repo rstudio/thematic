@@ -150,19 +150,22 @@ jobs:
           Rscript
           -e "cat('::set-output name=name::gha-', '${{ steps.failed_branch.outputs.name }}', '-', '${{ matrix.config.r }}', '-', '${{ runner.os }}', sep = '')"
 
-      #- name: Check
-      #  run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
-      #  shell: Rscript {0}
+
       - name: Install devtools
         run: install.packages("devtools")
         shell: Rscript {0}
-
-      - name: Instal pkg
-        run: devtools::install()
-        shell: Rscript {0}
       - name: Run Tests
-        run: devtools::test()
+        run: >
+          devtools::install()
+          res <- devtools::test()
+          df <- as.data.frame(res)
+          if (sum(df$failed) > 0 || any(df$error)) stop("GHA CI tests failed")
         shell: Rscript {0}
+
+      # For some odd reason it seems the vdiffr tests were being skipped
+      #- name: Check
+      #  run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+      #  shell: Rscript {0}
 
       - name: Upload check results
         if: failure()
