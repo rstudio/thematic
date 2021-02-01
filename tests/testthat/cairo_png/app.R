@@ -2,10 +2,7 @@ library(shiny)
 library(ggplot2)
 library(thematic)
 
-thematic_on("black", "white", font = font_spec("Pacifico", 1.25, update = TRUE))
-onStop(function() {
-  thematic_off()
-})
+thematic_shiny("black", "white", font = font_spec("Pacifico", 1.25, update = TRUE))
 
 ui <- fluidPage(
   imageOutput("png")

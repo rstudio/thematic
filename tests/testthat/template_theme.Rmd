@@ -12,11 +12,7 @@ knitr::opts_chunk$set(
   echo = FALSE,
   fig.path = "./"
 )
-```
-
-```{r}
-library(thematic)
-thematic_on()
+thematic::thematic_rmd()
 ```
 
 ```{r ggplot}

@@ -16,8 +16,7 @@ knitr::opts_chunk$set(
 
 
 ```{r}
-library(thematic)
-thematic_on(
+thematic::thematic_rmd(
   "#444444", "#e4e4e4", "#749886", 
   font = font_spec("Liu Jian Mao Cao", scale = 1.25, update = TRUE)
 )
