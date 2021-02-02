@@ -179,7 +179,7 @@ section below).</p>
   sequential <span class='op'>=</span> <span class='fu'><a href='sequential_gradient.html'>sequential_gradient</a></span><span class='op'>(</span><span class='op'>)</span>,
   qualitative <span class='op'>=</span> <span class='fu'><a href='okabe_ito.html'>okabe_ito</a></span><span class='op'>(</span><span class='op'>)</span>,
   inherit <span class='op'>=</span> <span class='cn'>FALSE</span>,
-  session <span class='op'>=</span> <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://shiny.rstudio.com/reference/shiny/latest/domains.html'>getDefaultReactiveDomain</a></span><span class='op'>(</span><span class='op'>)</span>
+  session <span class='op'>=</span> <span class='fu'>shiny</span><span class='fu'>::</span><span class='fu'><a href='https://rdrr.io/pkg/shiny/man/domains.html'>getDefaultReactiveDomain</a></span><span class='op'>(</span><span class='op'>)</span>
 <span class='op'>)</span>
 
 <span class='fu'>thematic_rmd</span><span class='op'>(</span>
@@ -231,7 +231,7 @@ levels exceeds the max allowed colors). Defaults to <code><a href='okabe_ito.htm
     </tr>
     <tr>
       <th>session</th>
-      <td><p>see <code><a href='https://shiny.rstudio.com/reference/shiny/latest/onStop.html'>shiny::onStop()</a></code>.</p></td>
+      <td><p>see <code><a href='https://rdrr.io/pkg/shiny/man/onStop.html'>shiny::onStop()</a></code>.</p></td>
     </tr>
     </table>
 
@@ -261,7 +261,7 @@ future plots, up until <code>thematic_off()</code> is called). To use thematic i
 first create a theme with <code>thematic_theme()</code>, then provide it to <code><a href='thematic_with_theme.html'>thematic_with_theme()</a></code>
 (or similar). To use thematic in a global fashion up until a <strong>shiny</strong>
 app exits, use <code>thematic_shiny()</code> (which cleans up after itself once the next shiny
-app that exits using <code><a href='https://shiny.rstudio.com/reference/shiny/latest/onStop.html'>shiny::onStop()</a></code>). To use thematic in a global fashion up until
+app that exits using <code><a href='https://rdrr.io/pkg/shiny/man/onStop.html'>shiny::onStop()</a></code>). To use thematic in a global fashion up until
 a <strong>rmarkdown</strong> document finishes rendering, use <code>thematic_rmd()</code>.</p>
     <h2 class="hasAnchor" id="color-values"><a class="anchor" href="#color-values"></a>Color values</h2>
 
