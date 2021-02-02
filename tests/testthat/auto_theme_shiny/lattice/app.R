@@ -1,8 +1,7 @@
 library(shiny)
 library(thematic)
 
-thematic_on(font = "auto")
-onStop(thematic_off)
+thematic_shiny(font = "auto")
 
 ui <- fluidPage(
   titlePanel("Hello"),

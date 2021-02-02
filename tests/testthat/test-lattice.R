@@ -1,12 +1,16 @@
 context("lattice")
 
+skip_if_not_installed("lattice")
+library(lattice)
+library(stats)
+
+theme <-  thematic_theme(
+  "black", "white", "pink",
+  font = font_spec("Rock Salt", update = TRUE)
+)
+
 test_that("lattice baselines", {
-  skip_if_not_installed("lattice")
-
-  library(lattice)
-  library(stats)
-
-  thematic_on("black", "white", "pink", font = font_spec("Rock Salt", update = TRUE))
+  thematic_local_theme(theme)
 
   expect_doppelganger("dot_plot", dotplot(variety ~ yield | year * site, data=barley))
 

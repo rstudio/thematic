@@ -202,7 +202,7 @@ auto_resolve_theme <- function(theme) {
 # ------------------------------------------------------------
 
 shiny_output_info <- function() {
-  if (!is_installed("shiny")) return(NULL)
+  if (!"shiny" %in% loadedNamespaces()) return(NULL)
   info <- tryNULL(shiny::getCurrentOutputInfo())
   # Return early if we're not in any output context
   if (is.null(info)) return(NULL)

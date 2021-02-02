@@ -100,14 +100,13 @@ jobs:
       - name: Mac systemdeps
         if: runner.os == 'macOS'
         run: |
-          brew cask install xquartz phantomjs
+          brew install --cask xquartz phantomjs
           brew install pkg-config cairo
 
       # ------------------------------------------------------------
 
       - name: Install dependencies
         run: |
-          install.packages("vctrs")
           remotes::install_deps(dependencies = TRUE)
           remotes::install_cran("rcmdcheck")
         shell: Rscript {0}
@@ -117,8 +116,8 @@ jobs:
       - name: Install testing dependencies
         run: |
           # TODO: remove me after next release cycle
-          remotes::install_github(c('rstudio/rmarkdown#1706', 'rstudio/bslib', 'yixuan/showtext'))
-          install.packages(c('shinytest', 'sf', 'ggthemes', 'patchwork', 'gridExtra', 'tinytex'))
+          remotes::install_github('rstudio/rmarkdown')
+          install.packages(c('shinytest', 'callr', 'sf', 'ggthemes', 'patchwork', 'gridExtra', 'tinytex'))
           tinytex::install_tinytex()
         shell: Rscript {0}
 
@@ -146,16 +145,31 @@ jobs:
           Rscript
           -e "cat('::set-output name=name::gha-', '${{ steps.failed_branch.outputs.name }}', '-', '${{ matrix.config.r }}', '-', '${{ runner.os }}', sep = '')"
 
-      - name: Check
-        run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
+
+      # Run test() before R CMD check since, for some reason, rcmdcheck::rcmdcheck() skips vdiffr tests
+      - name: Install devtools
+        run: if (!require(devtools)) install.packages("devtools")
+        shell: Rscript {0}
+      - name: Run Tests
+        run: |
+          devtools::install()
+          res <- devtools::test()
+          df <- as.data.frame(res)
+          if (sum(df$failed) > 0 || any(df$error)) stop("GHA CI tests failed")
         shell: Rscript {0}
 
+      # Run check with --no-tests since we ran them abve
+      - name: Check
+        run: rcmdcheck::rcmdcheck(args = c("--no-tests", "--no-manual"), error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
+
+      # Upload the whole pkg since tests where run with devtools::test()
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
-          path: check
+          path: ./
 
       - name: Push test files to a GH branch
         if: failure()
@@ -171,9 +185,6 @@ jobs:
             git fetch --unshallow
 
           git checkout -B ${{ steps.gha_branch.outputs.name }}
-
-          cp -r check/thematic.Rcheck/tests/figs/* tests/figs/
-          cp -r check/thematic.Rcheck/tests/testthat/* tests/testthat/
 
           git add tests/ && \
             git commit -m 'Add test files - rstudio/thematic@${{ steps.short_sha.outputs.sha }}'

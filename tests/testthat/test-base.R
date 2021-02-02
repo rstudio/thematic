@@ -1,8 +1,10 @@
 context("base")
 
-test_that("base baselines", {
 
-  thematic_on("black", "white", "violet", font_spec("Amatic SC", 1.5, update = TRUE))
+test_that("base baselines", {
+  thematic_local_theme(
+    thematic_theme("black", "white", "violet", font_spec("Amatic SC", 1.5, update = TRUE))
+  )
 
   expect_doppelganger("scatter", function() { plot(1:10) })
   expect_doppelganger("scatter-cols", function() { plot(1:10, col = 1:10) })

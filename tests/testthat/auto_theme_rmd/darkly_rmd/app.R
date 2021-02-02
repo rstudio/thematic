@@ -22,14 +22,17 @@ image_info <- function(type, ext) {
   )
 }
 
+# Knit all the Rmds
+# Note that this is done inside the server function
+# to avoid a timeout issue with shinytest::testApp()
+infile <- "darkly.Rmd"
+rmd_txt <- knitr::knit_expand("../../template_theme.Rmd", theme = "darkly")
+writeLines(rmd_txt, infile)
+outfile <- rmarkdown::render(infile)
+
+onStop(function() {unlink(infile)})
+
 server <- function(input, output, session) {
-  # Knit all the Rmds
-  # Note that this is done inside the server function
-  # to avoid a timeout issue with shinytest::testApp()
-  infile <- "darkly.Rmd"
-  rmd_txt <- knitr::knit_expand("../../template_theme.Rmd", theme = "darkly")
-  writeLines(rmd_txt, infile)
-  outfile <- rmarkdown::render(infile)
 
   output$ggplot <- render_image(image_info("ggplot", ext))
   output$lattice <- render_image(image_info("lattice", ext))
@@ -38,7 +41,6 @@ server <- function(input, output, session) {
   onFlush(function() {
     unlink(dir(pattern = paste0("\\.", ext)))
     unlink(c(infile, outfile, paste0(tools::file_path_sans_ext(infile), "_files")), recursive = TRUE)
-    unlink(infile)
   })
 }
 

@@ -4,7 +4,7 @@ output: pdf_document
 
 ```{r}
 library(thematic)
-thematic_on(
+thematic_rmd(
   "#444444", "#e4e4e4", "#749886", 
   font = font_spec("Liu Jian Mao Cao", scale = 1.25, update = TRUE)
 )
@@ -20,9 +20,5 @@ lattice::show.settings()
 ```
 
 ```{r base}
-image(volcano, col = thematic_get_option("sequential"))
-```
-
-```{r}
-thematic_off()
+image(volcano, col = thematic_get_option("sequential", resolve = FALSE))
 ```
