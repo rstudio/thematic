@@ -269,10 +269,10 @@ resolve_theme_inheritance <- function(p_theme) {
       parent_el <- p_theme[[this_parent]]
       kid_el <- p_theme[[this_kid]]
       # parent doesn't exist so do nothing
-      if (!length(parent_el)) {
+      if (is.null(parent_el)) {
         next
       }
-      p_theme[[this_kid]] <- if (length(kid_el)) {
+      p_theme[[this_kid]] <- if (!is.null(kid_el)) {
         # both parent & child exist
         ggplot2::merge_element(new = kid_el, old = parent_el)
       } else {

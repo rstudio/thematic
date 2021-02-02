@@ -206,6 +206,8 @@ thematic_rmd <- function(bg = "auto", fg = "auto", accent = "auto",
 #'
 #' @describeIn thematic_with_theme similar to [thematic_on()], but for an single plot.
 #'
+#' @return the result of `expr`.
+#'
 #' @param theme a [thematic_theme()] object.
 #' @param expr R code that produces a plot.
 #' @param default a default value to return in the event no thematic theme is active.

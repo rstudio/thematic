@@ -1,12 +1,15 @@
 context("ggplot")
 
 skip_if_not_installed("ggplot2")
+library(ggplot2)
+
+theme <- thematic_theme(
+  "#444444", "#e4e4e4", "#749886",
+  font = font_spec("Oxanium", scale = 1.25, update = TRUE)
+)
 
 test_that("ggplot baselines", {
-  library(ggplot2)
-
-  font <- font_spec("Oxanium", scale = 1.25, update = TRUE)
-  thematic_on("#444444", "#e4e4e4", "#749886", font = font)
+  thematic_local_theme(theme)
 
   ids <- factor(c("1.1", "2.1", "1.2", "2.2", "1.3", "2.3"))
   values <- data.frame(
@@ -141,6 +144,7 @@ test_that("ggplot baselines", {
 })
 
 test_that("Scale defaults can be overridden", {
+  thematic_local_theme(theme)
 
   expect_doppelganger("sequential-color", {
     ggplot(mtcars, aes(wt, mpg, color = cyl)) +
@@ -176,9 +180,12 @@ test_that("sf integration", {
   st_transform <- getFromNamespace("st_transform", "sf")
   st_centroid <- getFromNamespace("st_centroid", "sf")
 
+  thematic_local_theme(theme)
+
   nc <- st_read(system.file("shape/nc.shp", package = "sf"), quiet = TRUE)
-  nc_3857 <- st_transform(nc, "+init=epsg:3857")
+  nc_3857 <- st_transform(nc, 3857)
   nc_3857$mid <- st_centroid(nc_3857$geometry)
+
   p <- ggplot(nc_3857) +
     geom_sf(color = "white") +
     geom_sf(aes(geometry = mid, size = AREA), show.legend = "point")
@@ -186,11 +193,15 @@ test_that("sf integration", {
   expect_doppelganger("GeomSf", p)
 })
 
+theme2 <- thematic_theme(
+  bg = "black", fg = "white", accent = "salmon",
+  font_spec("Oxanium", scale = 1.25)
+)
 
 test_that("gridExtra integration", {
   skip_if_not_installed("gridExtra")
 
-  thematic_on(bg = "black", fg = "white", accent = "salmon", font_spec("Oxanium", scale = 1.25))
+  thematic_local_theme(theme2)
   p1 <- qplot(x = 1:10, y = 1:10, color = 1:10)
   p2 <- qplot(x = 1:10, y = 1:10, color = 1:10)
   expect_doppelganger(
@@ -204,9 +215,15 @@ test_that("patchwork integration", {
   library(ggplot2)
   p1 <- qplot(x = 1:10, y = 1:10, color = 1:10)
   p2 <- qplot(x = 1:10, y = 1:10, color = 1:10)
-  thematic_on(bg = "black", fg = "white", accent = "salmon", font = font_spec("Oxanium", scale = 1.25))
+  thematic_local_theme(theme2)
   expect_doppelganger("patchwork", p1 + p2)
 })
 
-thematic_off()
-
+# https://github.com/rstudio/thematic/pull/83
+test_that("element_blank() inherits properly", {
+  thematic_local_theme(theme2)
+  expect_doppelganger(
+    "no-y-text",
+    qplot(x = 1:10, y = 1:10) + theme(axis.text.y = element_blank())
+  )
+})

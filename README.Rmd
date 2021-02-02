@@ -34,23 +34,22 @@ Simplified theming of **ggplot2**, **lattice**, and **base** R graphics. In addi
 
 ## Installation
 
-**thematic** is not yet available on [CRAN](https://CRAN.R-project.org), but you can install it now with:
+Install the stable release of **thematic** on [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
-remotes::install_github("rstudio/thematic")
-library(thematic)
+install.packages("thematic")
 ```
 
-For [auto theming in Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny), you'll need **shiny** v.1.5.0 or higher.
+[Auto theming in Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny) requires **shiny** 1.5.0 or higher, which is also available on CRAN:
 
 ```r
 install.packages("shiny")
 ```
 
-For [auto theming in R Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd), you'll currently need an experimental version of **rmarkdown**:
+[Auto theming in R Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd) requires **rmarkdown** 2.6.6 or higher, which currently isn't on CRAN (but is available on GitHub):
 
 ```r
-remotes::install_github("rstudio/rmarkdown#1706")
+remotes::install_github("rstudio/rmarkdown")
 ```
 
 ## Overview
@@ -90,7 +89,6 @@ server <- function(input, output) {
   })
 }
 
-thematic_shiny()
 shinyApp(ui, server)
 ```
 
@@ -99,10 +97,10 @@ shinyApp(ui, server)
 knitr::include_graphics("man/figures/auto-before.png")
 ```
 
-To add automatic coloring and fonts (i.e., the full auto theming experience) to the R plots, simply call `thematic_on(font = "auto")` and re-run the application. Since the plots are generated via Shiny, they assume new defaults which are informed by the CSS styling on their HTML container (that is, notice how the R plots now reflect the styling of the `shiny::tabsetPanel()`). Moreover, as long as the relevant font is a [Google Font](https://fonts.google.com) (in this case, [Pacifico](https://fonts.google.com/specimen/Pacifico)), **thematic** automatically downloads, caches, and registers font(s) with R.
+To add automatic coloring _and fonts_ (i.e., the full auto theming experience) to the R plots, simply call `thematic_on(font = "auto")` and re-run the application. Since the plots are generated via Shiny, they assume new defaults which are informed by the CSS styling on their HTML container (that is, notice how the R plots now reflect the styling of the `shiny::tabsetPanel()`). Moreover, as long as the relevant font is a [Google Font](https://fonts.google.com) (in this case, [Pacifico](https://fonts.google.com/specimen/Pacifico)), **thematic** automatically downloads, caches, and registers font(s) with R.
 
 ```r
-thematic_shiny(font = "auto")
+thematic::thematic_shiny(font = "auto")
 shinyApp(ui, server)
 ```
 

@@ -25,6 +25,8 @@
 #'     to resolve auto values (only relevant when knitr is in progress).
 #'   * `"rstudio"`: use [rstudioapi::getThemeInfo()] values (if any) to resolve auto values.
 #'
+#' @return a config (list-like) object.
+#'
 #' @rdname auto-config
 #' @export
 #' @examples
@@ -200,7 +202,7 @@ auto_resolve_theme <- function(theme) {
 # ------------------------------------------------------------
 
 shiny_output_info <- function() {
-  if (!is_installed("shiny")) return(NULL)
+  if (!"shiny" %in% loadedNamespaces()) return(NULL)
   info <- tryNULL(shiny::getCurrentOutputInfo())
   # Return early if we're not in any output context
   if (is.null(info)) return(NULL)

@@ -2,11 +2,11 @@ context("shinytest")
 
 skip_on_cran()
 skip_if_not_installed("shinytest")
+skip_if_not_installed("callr")
 skip_if_not_installed("ggplot2")
 skip_if_not_installed("lattice")
 # Run tests on release version of R
 skip_if_not(as.logical(Sys.getenv("SHINYTEST_RUN_TESTS", "true")))
-
 
 # a la shinycoreci:::platform()
 shinytest_suffix <- function() {
@@ -23,10 +23,19 @@ shinytest_suffix <- function() {
   stop("unknown platform")
 }
 
+test_app <- function(appDir) {
+  getFromNamespace("r", "callr")(
+    function(appDir, suffix) {
+      getFromNamespace("testApp", "shinytest")(appDir, suffix = suffix)
+    },
+    list(appDir = appDir, suffix = shinytest_suffix())
+  )
+}
+
 expect_app_doppelganger <- function(appDir) {
-  expect_pass <- getFromNamespace("expect_pass", "shinytest")
-  testApp <- getFromNamespace("testApp", "shinytest")
-  expect_pass(testApp(appDir, suffix = shinytest_suffix()))
+  getFromNamespace("expect_pass", "shinytest")(
+    test_app(appDir)
+  )
 }
 
 
@@ -92,9 +101,9 @@ test_that("Can render non-custom fonts in rmarkdown with CairoPNG", {
 
 test_that("pdf_document compiles without error", {
   skip_if_not(!identical("win", shinytest_suffix()))
+
+
   outfile <- rmarkdown::render("pdf.Rmd", quiet = TRUE)
   expect_true(file.exists(outfile))
   unlink(outfile)
 })
-
-

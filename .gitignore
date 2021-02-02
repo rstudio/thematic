@@ -5,9 +5,6 @@ Untitled*
 README.html
 tmp/
 tests/testthat/**/Rplots.pdf
-tests/testthat/*/*/*-current
-tests/testthat/*/*/*/*-current
-tests/testthat/*/*/*/*/*-current
 tests/testthat/testthat-problems.rds
 docs/
 cranwhales/

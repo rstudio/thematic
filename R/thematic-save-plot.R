@@ -5,7 +5,8 @@
 #' (specified through [font_spec()]) are guaranteed to work, as long as
 #' one of either the showtext or ragg package(s) are installed.
 #'
-#' @return the `filename` of the produced plot.
+#' @return `thematic_save_plot()` returns the `filename` of the produced plot
+#'   and `default_device()` returns a graphics device function.
 #'
 #' @param expr an expression that produces a plot.
 #' @param device a graphics device to use for capturing the plot.

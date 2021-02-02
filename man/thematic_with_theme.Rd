@@ -37,6 +37,9 @@ or \code{NULL} (in which case \code{thematic_off()} is called).}
 
 \item{amounts}{value(s) between 0 and 1 specifying how much to mix \code{bg} (0) and \code{fg} (1).}
 }
+\value{
+the result of \code{expr}.
+}
 \description{
 These functions are helpful for getting and/or temporarily activating a
 \code{\link[=thematic_theme]{thematic_theme()}}.
