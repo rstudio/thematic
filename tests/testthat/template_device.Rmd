@@ -12,11 +12,8 @@ knitr::opts_chunk$set(
   fig.path = "./",
   dev = {{device}}
 )
-```
-
-
-```{r}
-thematic::thematic_rmd(
+library(thematic)
+thematic_rmd(
   "#444444", "#e4e4e4", "#749886", 
   font = font_spec("Liu Jian Mao Cao", scale = 1.25, update = TRUE)
 )
