@@ -101,14 +101,14 @@ resolve_font_family <- function(type = c("base", "grid")) {
     }
 
     # Register Google Fonts cache
-    try_register_gfont_cache(family)
+    try_register_gfont_cache(family, systemfonts = is_ragg_device(dev_name))
     # If we can already render the font family, do no more!
     if (can_render(family, type, dev_fun, dev_name)) {
       break
     }
     # Download/register and try again
     if (font$install) {
-      try_gfont_download_and_register(family, font$quiet)
+      try_gfont_download_and_register(family, font$quiet, systemfonts = is_ragg_device(dev_name))
     }
     if (can_render(family, type, dev_fun, dev_name)) {
       break

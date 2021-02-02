@@ -1,4 +1,4 @@
-try_gfont_download_and_register <- function(family, quiet = TRUE) {
+try_gfont_download_and_register <- function(family, quiet = TRUE, systemfonts = FALSE) {
   # If no match in Google Font cache, look for a match with an updated set
   google_fonts <- get_google_fonts()
   family_idx <- match(family, google_fonts$family)
@@ -33,11 +33,11 @@ try_gfont_download_and_register <- function(family, quiet = TRUE) {
   # Store the font info with the cache so we know if it needs
   # to be updated later on
   saveRDS(font_info, file = file.path(cache_dir, "cache.rds"))
-  try_register_gfont_cache(family)
+  try_register_gfont_cache(family, systemfonts)
 }
 
 
-try_register_gfont_cache <- function(family, upgrade) {
+try_register_gfont_cache <- function(family, systemfonts = FALSE) {
   google_fonts <- get_google_fonts()
   family_idx <- match(family, google_fonts$family)
   if (is.na(family_idx)) return()
@@ -57,7 +57,7 @@ try_register_gfont_cache <- function(family, upgrade) {
   italic <- font_file("italic")
   bolditalic <- font_file("bolditalic")
 
-  if (is_installed("systemfonts")) {
+  if (systemfonts) {
     tryCatch(
       systemfonts::register_font(
         family, regular,
@@ -77,9 +77,7 @@ try_register_gfont_cache <- function(family, upgrade) {
         }
       }
     )
-  }
-
-  if (is_installed("sysfonts")) {
+  } else if (is_installed("sysfonts")) {
     tryCatch(
       sysfonts::font_add(
         family, regular,
@@ -92,6 +90,7 @@ try_register_gfont_cache <- function(family, upgrade) {
       }
     )
   }
+
 }
 
 get_google_fonts <- function() {
