@@ -146,6 +146,7 @@ jobs:
           -e "cat('::set-output name=name::gha-', '${{ steps.failed_branch.outputs.name }}', '-', '${{ matrix.config.r }}', '-', '${{ runner.os }}', sep = '')"
 
 
+      # Run test() before R CMD check since, for some reason, rcmdcheck::rcmdcheck() skips vdiffr tests
       - name: Install devtools
         run: if (!require(devtools)) install.packages("devtools")
         shell: Rscript {0}
@@ -157,11 +158,12 @@ jobs:
           if (sum(df$failed) > 0 || any(df$error)) stop("GHA CI tests failed")
         shell: Rscript {0}
 
-      # For some odd reason it seems the vdiffr tests were being skipped
-      #- name: Check
-      #  run: rcmdcheck::rcmdcheck(args = "--no-manual", error_on = "warning", check_dir = "check")
-      #  shell: Rscript {0}
+      # Run check with --no-tests since we ran them abve
+      - name: Check
+        run: rcmdcheck::rcmdcheck(args = c("--no-tests", "--no-manual"), error_on = "warning", check_dir = "check")
+        shell: Rscript {0}
 
+      # Upload the whole pkg since tests where run with devtools::test()
       - name: Upload check results
         if: failure()
         uses: actions/upload-artifact@master
