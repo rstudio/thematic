@@ -37,6 +37,7 @@ Suggests:
     rmarkdown,
     htmltools,
     shiny (>= 1.5.0),
+    bslib,
     testthat,
     vdiffr,
     svglite,
