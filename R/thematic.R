@@ -192,12 +192,19 @@ thematic_rmd <- function(bg = "auto", fg = "auto", accent = "auto",
   )
   document_hook <- knitr::knit_hooks$get("document")
   knitr::knit_hooks$set(document = function(x) {
-    thematic_set_theme(old_theme)
+    if (is_shiny_runtime()) {
+      shiny::onStop(function() thematic_set_theme(old_theme))
+    } else {
+      thematic_set_theme(old_theme)
+    }
     document_hook(x)
   })
   invisible(old_theme)
 }
 
+is_shiny_runtime <- function() {
+  isTRUE(grepl("^shiny", knitr::opts_knit$get("rmarkdown.runtime")))
+}
 
 #' Tools for getting and restoring global state
 #'
