@@ -26,13 +26,17 @@ ggplot_build_restore <- function() {
   if (is.function(.globals$ggplot_build)) {
     ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
     assign_in_namespace <- assignInNamespace
+    ensure_s3_methods_matrix()
     assign_in_namespace("ggplot_build.ggplot", .globals$ggplot_build, "ggplot2")
     rm("ggplot_build", envir = .globals)
   }
 }
 
-# Turns out that calling registerS3method() in an onLoad() hook causes
-# assignInNamespace() to no longer work, but here's a workaround for the issue
+# When registerS3method() is called in an onLoad() hook, it causes
+# assignInNamespace() to no longer work for S3 methods because this
+# S3methods namespace info gets coerced into a list
+# (which assignInNamespace() isn't expecting). Thus, here, we make
+# sure that the info is a matrix before calling assignInNamespace()
 # https://github.com/rstudio/thematic/issues/90#issuecomment-780224962
 ensure_s3_methods_matrix <- function(pkg = "ggplot2") {
   S3 <- .getNamespaceInfo(asNamespace(pkg), "S3methods")
