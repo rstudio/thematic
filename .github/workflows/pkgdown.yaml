@@ -41,6 +41,12 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-2-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-2-
 
+      - name: Mac systemdeps
+        if: runner.os == 'macOS'
+        run: |
+          brew install --cask xquartz
+          brew install pkg-config cairo
+
       - name: Install dependencies
         run: |
           install.packages(c("remotes", "vctrs", "pkgdown"))

@@ -134,8 +134,6 @@ library(ggplot2)
 ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = factor(cyl))) +
   geom_point() +
   ggrepel::geom_text_repel()
-#> Warning: ggrepel: 7 unlabeled data points (too many overlaps). Consider
-#> increasing max.overlaps
 ```
 
 <img src="man/figures/README-ggrepel-1.png" width="80%" style="display: block; margin: auto;" />
