@@ -31,7 +31,7 @@ install.packages("thematic")
 
 [Auto theming in
 Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny)
-requires **shiny** 1.5.0 or higher, which is also available on CRAN:
+requires **shiny** 1.5.0 or higher:
 
 ``` r
 install.packages("shiny")
@@ -39,8 +39,7 @@ install.packages("shiny")
 
 [Auto theming in R
 Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd)
-requires **rmarkdown** 2.7 or higher, which currently isn’t on CRAN (but
-is available on GitHub):
+requires **rmarkdown** 2.7 or higher:
 
 ``` r
 install.packages("rmarkdown")
