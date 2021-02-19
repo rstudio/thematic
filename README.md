@@ -13,16 +13,16 @@ status](https://www.r-pkg.org/badges/version/thematic)](https://CRAN.R-project.o
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 <!-- badges: end -->
 
-Simplified theming of **ggplot2**, **lattice**, and **base** R graphics.
+Simplified theming of `{ggplot2}`, `{lattice}`, and `{base}` R graphics.
 In addition to providing a [centralized
 approach](https://rstudio.github.io/thematic/articles/custom.html) to
-styling R graphics, **thematic** also enables [automatic
+styling R graphics, `{thematic}` also enables [automatic
 styling](https://rstudio.github.io/thematic/articles/auto.html) of R
 plots in Shiny, R Markdown, and RStudio.
 
 ## Installation
 
-Install the stable release of **thematic** on
+Install the stable release of `{thematic}` on
 [CRAN](https://CRAN.R-project.org) with:
 
 ``` r
@@ -31,7 +31,7 @@ install.packages("thematic")
 
 [Auto theming in
 Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny)
-requires **shiny** 1.5.0 or higher:
+requires `{shiny}` 1.5.0 or higher:
 
 ``` r
 install.packages("shiny")
@@ -39,7 +39,7 @@ install.packages("shiny")
 
 [Auto theming in R
 Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd)
-requires **rmarkdown** 2.7 or higher:
+requires `{rmarkdown}` 2.7 or higher:
 
 ``` r
 install.packages("rmarkdown")
@@ -56,13 +56,13 @@ install.packages("ragg")
 
 ## Overview
 
-**thematic**’s [auto
+`{thematic}`’s [auto
 theming](https://rstudio.github.io/thematic/articles/auto.html) gives R
 plots the ability to style themselves inside
 [Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny)
 (via CSS), [R
 Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd)
-(via **bslib**), and
+(via `{bslib}`), and
 [RStudio](https://rstudio.github.io/thematic/articles/auto.html#rstudio)
 (via [RStudio
 themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes)).
@@ -113,7 +113,7 @@ assume new defaults which are informed by the CSS styling on their HTML
 container (that is, notice how the R plots now reflect the styling of
 the `shiny::tabsetPanel()`). Moreover, as long as the relevant font is a
 [Google Font](https://fonts.google.com) (in this case,
-[Pacifico](https://fonts.google.com/specimen/Pacifico)), **thematic**
+[Pacifico](https://fonts.google.com/specimen/Pacifico)), `{thematic}`
 automatically downloads, caches, and registers font(s) with R.
 
 ``` r
@@ -123,7 +123,7 @@ shinyApp(ui, server)
 
 <img src="man/figures/auto-after.png" width="80%" style="display: block; margin: auto;" />
 
-Instead of relying on **thematic** to automatically detect colors and
+Instead of relying on `{thematic}` to automatically detect colors and
 fonts in the plot’s container, you can also specify them directly in
 `thematic_on()`.
 
@@ -161,19 +161,19 @@ of `thematic_on()` which temporarily apply the given theme:
     easier in Shiny, R Markdown, and RStudio.
 -   See the [custom themes
     article](https://rstudio.github.io/thematic/articles/custom.html)
-    for more on **thematic**’s theming options as well as how they
-    interact with **ggplot2**, **lattice**, and **base**.
+    for more on `{thematic}`’s theming options as well as how they
+    interact with `{ggplot2}`, `{lattice}`, and `{base}`.
 -   See the [fonts
     article](https://rstudio.github.io/thematic/articles/fonts.html) for
-    more on using Google Fonts with **thematic**.
+    more on using Google Fonts with `{thematic}`.
 -   See the [scoping
     article](https://rstudio.github.io/thematic/articles/scope.html) for
-    more about restoring state after using **thematic**.
+    more about restoring state after using `{thematic}`.
 
 ## Run some examples
 
 Below is a link to an **RStudio Cloud** instance with some ready to run
-**thematic** examples:
+`{thematic}` examples:
 
 <div>
 
@@ -185,7 +185,7 @@ Below is a link to an **RStudio Cloud** instance with some ready to run
 
 ## Code of Conduct
 
-**thematic** is released with a [Contributor Code of
+`{thematic}` is released with a [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By
 [contributing](https://github.com/rstudio/thematic/blob/master/CONTRIBUTING.md)
