@@ -115,8 +115,6 @@ jobs:
       # worth testing
       - name: Install testing dependencies
         run: |
-          # TODO: remove me after next release cycle
-          remotes::install_github('rstudio/rmarkdown')
           install.packages(c('shinytest', 'callr', 'sf', 'ggthemes', 'patchwork', 'gridExtra', 'tinytex'))
           tinytex::install_tinytex()
         shell: Rscript {0}
