@@ -39,11 +39,11 @@ install.packages("shiny")
 
 [Auto theming in R
 Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd)
-requires **rmarkdown** 2.6.6 or higher, which currently isn’t on CRAN
-(but is available on GitHub):
+requires **rmarkdown** 2.7 or higher, which currently isn’t on CRAN (but
+is available on GitHub):
 
 ``` r
-remotes::install_github("rstudio/rmarkdown")
+install.packages("rmarkdown")
 ```
 
 ## Overview
