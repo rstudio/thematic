@@ -51,10 +51,15 @@ reference:
     - font_cache_set
 
 template:
+  package: quillt
   params:
+    footer: <b>thematic</b> is an R package developed by <a href='https://rstudio.com'>RStudio</a>
     docsearch:
       api_key: ab54f4a00f5beb99b9bf488e3b58d1dd
       index_name: rstudio_thematic
+
+home:
+  strip_header: false
 
 development:
   mode: release

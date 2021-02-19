@@ -51,6 +51,7 @@ jobs:
         run: |
           install.packages(c("remotes", "vctrs", "pkgdown", "Cairo"))
           install.packages(c("GGally", "RColorBrewer", "patchwork"))
+          remotes::install_github("apreshill/quillt")
           remotes::install_deps(dependencies = TRUE)
         shell: Rscript {0}
 
