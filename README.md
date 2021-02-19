@@ -45,6 +45,15 @@ requires **rmarkdown** 2.7 or higher:
 install.packages("rmarkdown")
 ```
 
+Using themes with [custom
+fonts](https://rstudio.github.io/thematic/articles/fonts.html) works
+best if you have `{showtext}` and/or `{ragg}` installed.
+
+``` r
+install.packages("showtext")
+install.packages("ragg")
+```
+
 ## Overview
 
 **thematic**’s [auto

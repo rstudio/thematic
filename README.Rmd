@@ -52,6 +52,13 @@ install.packages("shiny")
 install.packages("rmarkdown")
 ```
 
+Using themes with [custom fonts](https://rstudio.github.io/thematic/articles/fonts.html) works best if you have `{showtext}` and/or `{ragg}` installed.
+
+```r
+install.packages("showtext")
+install.packages("ragg")
+```
+
 ## Overview
 
 **thematic**'s [auto theming](https://rstudio.github.io/thematic/articles/auto.html) gives R plots the ability to style themselves inside [Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny) (via CSS), [R Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd) (via **bslib**), and [RStudio](https://rstudio.github.io/thematic/articles/auto.html#rstudio) (via [RStudio themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes)). For a quick example, here's a `shiny::tabsetPanel()` with custom CSS styling, but default R styling: 
