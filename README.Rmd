@@ -121,6 +121,10 @@ knitr::include_graphics("man/figures/auto-after.png")
 
 Instead of relying on `{thematic}` to automatically detect colors and fonts in the plot's container, you can also specify them directly in `thematic_on()`.
 
+```{r include = FALSE}
+set.seed(1234)
+```
+
 ```{r ggrepel, warning = FALSE}
 thematic_on(bg = "#222222", fg = "white", accent = "#0CE3AC", font = "Oxanium")
 
