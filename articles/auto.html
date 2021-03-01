@@ -107,7 +107,7 @@
       <h1 data-toc-skip>Auto theming</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2021-02-19</h4>
+            <h4 class="date">2021-03-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/auto.Rmd"><code>vignettes/auto.Rmd</code></a></small>
       <div class="hidden name"><code>auto.Rmd</code></div>
@@ -212,7 +212,7 @@
 <div id="rmd" class="section level2">
 <h2 class="hasAnchor">
 <a href="#rmd" class="anchor"></a>R Markdown</h2>
-<p>Auto theming can also work with <code><a href="https://rmarkdown.rstudio.com/docs//reference/html_document.html">rmarkdown::html_document()</a></code>. The main catch is that, if R plots are not generated <a href="https://bookdown.org/yihui/rmarkdown/shiny-documents.html">via Shiny</a>, then any custom styling must be done via the <strong>bslib</strong> package in order for <strong>thematic</strong> to know about it. In the example below, we set a custom background, foreground, and accent color via <strong>bslib</strong>; then use <code><a href="../reference/thematic_on.html">thematic_rmd()</a></code> to apply automatic coloring to every R plot generated in the R Markdown document.</p>
+<p>Auto theming can also work with <code><a href="https://pkgs.rstudio.com/rmarkdown/reference/html_document.html">rmarkdown::html_document()</a></code>. The main catch is that, if R plots are not generated <a href="https://bookdown.org/yihui/rmarkdown/shiny-documents.html">via Shiny</a>, then any custom styling must be done via the <strong>bslib</strong> package in order for <strong>thematic</strong> to know about it. In the example below, we set a custom background, foreground, and accent color via <strong>bslib</strong>; then use <code><a href="../reference/thematic_on.html">thematic_rmd()</a></code> to apply automatic coloring to every R plot generated in the R Markdown document.</p>
 <p><img src="html-document.svg" width="95%" style="display: block; margin: auto;"></p>
 <p>Auto theming doesn’t necessarily work for non-HTML output formats. In that case, provide the document’s colors and fonts either directly to <code><a href="../reference/thematic_on.html">thematic_rmd()</a></code> or to <code><a href="../reference/auto_config.html">auto_config()</a></code>. To learn more about various options for</p>
 <p><img src="tufte.svg" width="95%" style="display: block; margin: auto;"></p>

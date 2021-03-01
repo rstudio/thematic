@@ -145,9 +145,12 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/bslib/">bslib</a></span><span class="op">)</span>
 
+<span class="co"># Uncomment the next line to use thematic with this app:</span>
+<span class="co"># thematic::thematic_shiny(font = "auto")</span>
+
 <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span>
   theme <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/bslib//reference/bs_theme.html">bs_theme</a></span><span class="op">(</span>
-    bg <span class="op">=</span> <span class="st">"#002B36"</span>, fg <span class="op">=</span> <span class="st">"#EEE8D5"</span>, primary <span class="op">=</span> <span class="st">"#2AA198"</span>, 
+    bg <span class="op">=</span> <span class="st">"#002B36"</span>, fg <span class="op">=</span> <span class="st">"#EEE8D5"</span>, primary <span class="op">=</span> <span class="st">"#2AA198"</span>,
     base_font <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/bslib//reference/font_face.html">font_google</a></span><span class="op">(</span><span class="st">"Pacifico"</span><span class="op">)</span>
   <span class="op">)</span>,
   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">tabsetPanel</a></span><span class="op">(</span>
@@ -174,9 +177,10 @@
 
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/auto-before.png" width="80%" style="display: block; margin: auto;"></p>
-<p>To add automatic coloring <em>and fonts</em> (i.e., the full auto theming experience) to the R plots, simply call <code><a href="reference/thematic_on.html">thematic_on(font = "auto")</a></code> and re-run the application. Since the plots are generated via Shiny, they assume new defaults which are informed by the CSS styling on their HTML container (that is, notice how the R plots now reflect the styling of the <code><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">shiny::tabsetPanel()</a></code>). Moreover, as long as the relevant font is a <a href="https://fonts.google.com">Google Font</a> (in this case, <a href="https://fonts.google.com/specimen/Pacifico">Pacifico</a>), <a href="https://rstudio.github.io/thematic/">thematic</a> automatically downloads, caches, and registers font(s) with R.</p>
+<p>To add automatic coloring <em>and fonts</em> (i.e., the full auto theming experience) to the R plots, simply call <code><a href="reference/thematic_on.html">thematic_shiny(font = "auto")</a></code> and re-run the application. Since the plots are generated via Shiny, they assume new defaults which are informed by the CSS styling on their HTML container (that is, notice how the R plots now reflect the styling of the <code><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">shiny::tabsetPanel()</a></code>). Moreover, as long as the relevant font is a <a href="https://fonts.google.com">Google Font</a> (in this case, <a href="https://fonts.google.com/specimen/Pacifico">Pacifico</a>), <a href="https://rstudio.github.io/thematic/">thematic</a> automatically downloads, caches, and registers font(s) with R.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">thematic</span><span class="fu">::</span><span class="fu"><a href="reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span>font <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="co"># Turn on thematic and re-run the app</span>
+<span class="fu">thematic</span><span class="fu">::</span><span class="fu"><a href="reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span>font <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
 <p><img src="reference/figures/auto-after.png" width="80%" style="display: block; margin: auto;"></p>
 <p>Instead of relying on <a href="https://rstudio.github.io/thematic/">thematic</a> to automatically detect colors and fonts in the plot’s container, you can also specify them directly in <code><a href="reference/thematic_on.html">thematic_on()</a></code>.</p>

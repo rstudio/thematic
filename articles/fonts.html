@@ -107,7 +107,7 @@
       <h1 data-toc-skip>Font rendering</h1>
                         <h4 class="author">Carson Sievert</h4>
             
-            <h4 class="date">2021-02-19</h4>
+            <h4 class="date">2021-03-01</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/master/vignettes/fonts.Rmd"><code>vignettes/fonts.Rmd</code></a></small>
       <div class="hidden name"><code>fonts.Rmd</code></div>
@@ -130,11 +130,11 @@
 <div id="r-devices" class="section level3">
 <h3 class="hasAnchor">
 <a href="#r-devices" class="anchor"></a>R graphics devices</h3>
-<p>In theory, as long as <strong>showtext</strong> is installed, Google Fonts should render on any R graphics device. Here’s a mini example with <code><a href="https://rdrr.io/pkg/svglite/man/svglite.html">svglite::svglite()</a></code>:</p>
+<p>In theory, as long as <strong>showtext</strong> is installed, Google Fonts should render on any R graphics device. Here’s a mini example with <code><a href="https://svglite.r-lib.org/reference/svglite.html">svglite::svglite()</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, font <span class="op">=</span> <span class="st">"Pacifico"</span><span class="op">)</span>
 <span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".svg"</span><span class="op">)</span>
-<span class="fu">svglite</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/svglite/man/svglite.html">svglite</a></span><span class="op">(</span><span class="va">tmp</span>, width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+<span class="fu">svglite</span><span class="fu">::</span><span class="fu"><a href="https://svglite.r-lib.org/reference/svglite.html">svglite</a></span><span class="op">(</span><span class="va">tmp</span>, width <span class="op">=</span> <span class="fl">7</span>, height <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="fl">1</span>, type <span class="op">=</span> <span class="st">"n"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/graphics/text.html">text</a></span><span class="op">(</span><span class="fl">1</span>, <span class="st">"Pacifico font"</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html">dev.off</a></span><span class="op">(</span><span class="op">)</span>
