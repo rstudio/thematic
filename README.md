@@ -58,29 +58,41 @@ install.packages("ragg")
 
 `{thematic}`’s [auto
 theming](https://rstudio.github.io/thematic/articles/auto.html) gives R
-plots the ability to style themselves inside
-[Shiny](https://rstudio.github.io/thematic/articles/auto.html#shiny)
-(via CSS), [R
-Markdown](https://rstudio.github.io/thematic/articles/auto.html#rmd)
-(via `{bslib}`), and
-[RStudio](https://rstudio.github.io/thematic/articles/auto.html#rstudio)
-(via [RStudio
-themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes)).
-For a quick example, here’s a `shiny::tabsetPanel()` with custom CSS
-styling, but default R styling:
+plots the ability to style themselves inside [Shiny](#shiny) (via CSS),
+[RStudio](#rstudio) (via [RStudio
+themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes)),
+and [R Markdown](#rmarkdown) (via
+[`{bslib}`](https://rstudio.github.io/bslib/)).
+
+### Shiny
+
+Call `thematic_shiny()` before launching a Shiny app to enable
+`{thematic}` for every `plotOutput()` inside the app. If no values are
+provided to `thematic_shiny()`, each `plotOutput()` uses the app’s CSS
+colors to inform new R plotting defaults. If the app uses [Google
+Fonts](https://fonts.google.com/) (and you have `{showtext}` and/or
+`{ragg}` installed), you may safely provide `font = "auto"` to
+`thematic_shiny()`, which also translates CSS fonts to R. Here’s an
+example with the [Pacifico](https://fonts.google.com/specimen/Pacifico)
+font:
 
 ``` r
 library(shiny)
 library(ggplot2)
-library(bslib)
+library(thematic)
 
-# Uncomment the next line to use thematic with this app:
-# thematic::thematic_shiny(font = "auto")
+# Call thematic_shiny() prior to launching the app, to change 
+# R plot theming defaults for all the plots generated in the app
+thematic_shiny(font = "auto")
 
 ui <- fluidPage(
-  theme = bs_theme(
+  # bslib makes it easy to customize CSS styles for things 
+  # rendered by the browser, like tabsetPanel()
+  # https://rstudio.github.io/bslib
+  theme = bslib::bs_theme(
     bg = "#002B36", fg = "#EEE8D5", primary = "#2AA198",
-    base_font = font_google("Pacifico")
+    # bslib also makes it easy to import CSS fonts
+    base_font = bslib::font_google("Pacifico")
   ),
   tabsetPanel(
     type = "pills",
@@ -107,60 +119,89 @@ server <- function(input, output) {
 shinyApp(ui, server)
 ```
 
-<img src="man/figures/auto-before.png" width="80%" style="display: block; margin: auto;" />
+<img src="man/figures/auto-before.png" width="90%" style="display: block; margin: auto;" />
 
-To add automatic coloring *and fonts* (i.e., the full auto theming
-experience) to the R plots, simply call `thematic_shiny(font = "auto")`
-and re-run the application. Since the plots are generated via Shiny,
-they assume new defaults which are informed by the CSS styling on their
-HTML container (that is, notice how the R plots now reflect the styling
-of the `shiny::tabsetPanel()`). Moreover, as long as the relevant font
-is a [Google Font](https://fonts.google.com) (in this case,
-[Pacifico](https://fonts.google.com/specimen/Pacifico)), `{thematic}`
-automatically downloads, caches, and registers font(s) with R.
+<img src="man/figures/auto-after.png" width="90%" style="display: block; margin: auto;" />
+
+### RStudio
+
+Call `thematic_on()` before generating plots inside RStudio to have all
+subsequent plots shown in the “Plots” viewing pane to reflect your
+RStudio theme. Note that `thematic_on()` enables `{thematic}` for the
+remainder of the R session, but you can use `thematic_off()` to disable
+([or `thematic_theme()` for one-off use of
+`{thematic}`](https://rstudio.github.io/thematic/articles/scope.html#one-time-use)).
+Here’s an example of how `{thematic}` can intelligently adapt each plot
+to the current RStudio theme:
+
+<img src="https://i.imgur.com/Bvbdn2B.gif" width="100%" style="display: block; margin: auto;" />
+
+### R Markdown
+
+Call `thematic_rmd()` before generating plots inside R Markdown to have
+all subsequent plots within the document reflect the relevant theme. In
+a static (i.e., non-`runtime: shiny`) R Markdown context, auto-theming
+only works with [`{bslib}`-powered
+`rmarkdown::html_document()`](https://rstudio.github.io/bslib/#r-markdown-usage)
+(as in the example below), but in other situations you may also [provide
+colors and fonts](#custom) explicitly to `thematic_rmd()`.
+
+<img src="vignettes/html-document.svg" width="100%" style="display: block; margin: auto;" />
+
+### Custom theming
+
+By default, `{thematic}` attempts to detect the relevant background,
+foreground, and accent colors. However, you may also specify these
+settings more directly by providing relevant color and fonts directly to
+`thematic_on()` (or `thematic_shiny()`/`thematic_rmd()`).
 
 ``` r
-# Turn on thematic and re-run the app
-thematic::thematic_shiny(font = "auto")
-shinyApp(ui, server)
-```
-
-<img src="man/figures/auto-after.png" width="80%" style="display: block; margin: auto;" />
-
-Instead of relying on `{thematic}` to automatically detect colors and
-fonts in the plot’s container, you can also specify them directly in
-`thematic_on()`.
-
-``` r
-thematic_on(bg = "#222222", fg = "white", accent = "#0CE3AC", font = "Oxanium")
-
 library(ggplot2)
-ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = factor(cyl))) +
+thematic::thematic_on(bg = "#222222", fg = "white", accent = "#0CE3AC", font = "Oxanium")
+
+ggp <- ggplot(mtcars, aes(wt, mpg, label = rownames(mtcars), color = factor(cyl))) +
   geom_point() +
   ggrepel::geom_text_repel()
+ggp
 ```
 
 <img src="man/figures/README-ggrepel-1.png" width="80%" style="display: block; margin: auto;" />
 
-In addition to `thematic_on()`, which applies the provided theme to all
-plots (up until `thematic_off()` is called), there are a few variation
-of `thematic_on()` which temporarily apply the given theme:
+`{thematic}` works by setting new global defaults that can always be
+overridden with plot-specific `theme()`-ing code:
 
--   `thematic_shiny()`: apply theme up until the next [Shiny](#shiny)
-    app exits. Use this over `thematic_on()` in Shiny apps.
--   `thematic_rmd()`: apply theme up until the next [R Markdown](#rmd)
-    document exits. Use this over `thematic_on()` in R Markdown
-    documents.
--   `thematic_with_theme()`: apply theme up until the provided plot
-    `expr` is evaluated. Use this to apply different themes to different
-    plots within a Shiny app.
+``` r
+ggp + theme(text = element_text(colour = "purple"))
+```
+
+<img src="man/figures/README-ggrepel2-1.png" width="80%" style="display: block; margin: auto;" />
+
+`{thematic}` also respects design decisions made “complete” **ggplot2**
+themes (e.g. `theme_bw()`) so long as they are set as a global theming
+default. For example, notice how changing from `theme_gray()` (the
+default `{ggplot2}` theme) to `theme_bw()` yields semantically
+consistent difference in `panel.grid`, `panel.background`, etc. styling
+(i.e., the panel background fill now matches the plot background).
+
+``` r
+theme_set(theme_bw())
+ggp
+```
+
+<img src="man/figures/README-ggrepel3-1.png" width="80%" style="display: block; margin: auto;" />
+
+In addition to setting new defaults for main colors and fonts,
+`{thematic}` also sets defaults for `qualitative` (and `sequential`)
+colorscales. See the [custom themes
+article](https://rstudio.github.io/thematic/articles/custom.html) to
+learn more about how to customize those defaults.
 
 ## Learn more
 
 -   See the [auto theming
     article](https://rstudio.github.io/thematic/articles/auto.html) to
-    gain an understanding of how auto theming make styling R plots
-    easier in Shiny, R Markdown, and RStudio.
+    gain a more detailed understanding of how auto theming make styling
+    R plots easier in Shiny, R Markdown, and RStudio.
 -   See the [custom themes
     article](https://rstudio.github.io/thematic/articles/custom.html)
     for more on `{thematic}`’s theming options as well as how they
@@ -170,7 +211,7 @@ of `thematic_on()` which temporarily apply the given theme:
     more on using Google Fonts with `{thematic}`.
 -   See the [scoping
     article](https://rstudio.github.io/thematic/articles/scope.html) for
-    more about restoring state after using `{thematic}`.
+    more about scoping `{thematic}` to individual plots.
 
 ## Run some examples
 
