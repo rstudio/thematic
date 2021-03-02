@@ -176,12 +176,13 @@ ggp + theme(text = element_text(colour = "purple"))
 
 <img src="man/figures/README-ggrepel2-1.png" width="80%" style="display: block; margin: auto;" />
 
-`{thematic}` also respects design decisions made “complete” **ggplot2**
-themes (e.g. `theme_bw()`) so long as they are set as a global theming
-default. For example, notice how changing from `theme_gray()` (the
-default `{ggplot2}` theme) to `theme_bw()` yields semantically
-consistent difference in `panel.grid`, `panel.background`, etc. styling
-(i.e., the panel background fill now matches the plot background).
+To use a “complete” `{ggplot2}` theme with `{thematic}` (e.g.,
+`theme_bw()`, `theme_minimal()`, etc), use `theme_set()` to set the
+theme globally. This way `{thematic}` has the opportunity to preserve
+the complete theme’s styling semantics when changing global defaults
+(e.g., `theme_bw()` uses the same fill color for the panel and plot
+background, which is semantically different from the `theme_gray()`
+default):
 
 ``` r
 theme_set(theme_bw())
