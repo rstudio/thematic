@@ -139,19 +139,28 @@
 <div id="overview" class="section level2">
 <h2 class="hasAnchor">
 <a href="#overview" class="anchor"></a>Overview</h2>
-<p><a href="https://rstudio.github.io/thematic/">thematic</a>’s <a href="https://rstudio.github.io/thematic/articles/auto.html">auto theming</a> gives R plots the ability to style themselves inside <a href="https://rstudio.github.io/thematic/articles/auto.html#shiny">Shiny</a> (via CSS), <a href="https://rstudio.github.io/thematic/articles/auto.html#rmd">R Markdown</a> (via <a href="https://rstudio.github.io/bslib/">bslib</a>), and <a href="https://rstudio.github.io/thematic/articles/auto.html#rstudio">RStudio</a> (via <a href="https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes">RStudio themes</a>). For a quick example, here’s a <code><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">shiny::tabsetPanel()</a></code> with custom CSS styling, but default R styling:</p>
+<p><a href="https://rstudio.github.io/thematic/">thematic</a>’s <a href="https://rstudio.github.io/thematic/articles/auto.html">auto theming</a> gives R plots the ability to style themselves inside <a href="#shiny">Shiny</a> (via CSS), <a href="#rstudio">RStudio</a> (via <a href="https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes">RStudio themes</a>), and <a href="#rmarkdown">R Markdown</a> (via <a href="https://rstudio.github.io/bslib/"><code>{bslib}</code></a>).</p>
+<div id="shiny" class="section level3">
+<h3 class="hasAnchor">
+<a href="#shiny" class="anchor"></a>Shiny</h3>
+<p>Call <code><a href="reference/thematic_on.html">thematic_shiny()</a></code> before launching a Shiny app to enable <a href="https://rstudio.github.io/thematic/">thematic</a> for every <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput()</a></code> inside the app. If no values are provided to <code><a href="reference/thematic_on.html">thematic_shiny()</a></code>, each <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html">plotOutput()</a></code> uses the app’s CSS colors to inform new R plotting defaults. If the app uses <a href="https://fonts.google.com/">Google Fonts</a> (and you have <a href="https://github.com/yixuan/showtext">showtext</a> and/or <a href="https://ragg.r-lib.org">ragg</a> installed), you may safely provide <code>font = "auto"</code> to <code><a href="reference/thematic_on.html">thematic_shiny()</a></code>, which also translates CSS fonts to R. Here’s an example with the <a href="https://fonts.google.com/specimen/Pacifico">Pacifico</a> font:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/">shiny</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/bslib/">bslib</a></span><span class="op">)</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/thematic/">thematic</a></span><span class="op">)</span>
 
-<span class="co"># Uncomment the next line to use thematic with this app:</span>
-<span class="co"># thematic::thematic_shiny(font = "auto")</span>
+<span class="co"># Call thematic_shiny() prior to launching the app, to change </span>
+<span class="co"># R plot theming defaults for all the plots generated in the app</span>
+<span class="fu"><a href="reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span>font <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>
 
 <span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html">fluidPage</a></span><span class="op">(</span>
-  theme <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/bslib//reference/bs_theme.html">bs_theme</a></span><span class="op">(</span>
+  <span class="co"># bslib makes it easy to customize CSS styles for things </span>
+  <span class="co"># rendered by the browser, like tabsetPanel()</span>
+  <span class="co"># https://rstudio.github.io/bslib</span>
+  theme <span class="op">=</span> <span class="fu">bslib</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/bslib//reference/bs_theme.html">bs_theme</a></span><span class="op">(</span>
     bg <span class="op">=</span> <span class="st">"#002B36"</span>, fg <span class="op">=</span> <span class="st">"#EEE8D5"</span>, primary <span class="op">=</span> <span class="st">"#2AA198"</span>,
-    base_font <span class="op">=</span> <span class="fu"><a href="https://rstudio.github.io/bslib//reference/font_face.html">font_google</a></span><span class="op">(</span><span class="st">"Pacifico"</span><span class="op">)</span>
+    <span class="co"># bslib also makes it easy to import CSS fonts</span>
+    base_font <span class="op">=</span> <span class="fu">bslib</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/bslib//reference/font_face.html">font_google</a></span><span class="op">(</span><span class="st">"Pacifico"</span><span class="op">)</span>
   <span class="op">)</span>,
   <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">tabsetPanel</a></span><span class="op">(</span>
     type <span class="op">=</span> <span class="st">"pills"</span>,
@@ -176,40 +185,54 @@
 <span class="op">}</span>
 
 <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/auto-before.png" width="80%" style="display: block; margin: auto;"></p>
-<p>To add automatic coloring <em>and fonts</em> (i.e., the full auto theming experience) to the R plots, simply call <code><a href="reference/thematic_on.html">thematic_shiny(font = "auto")</a></code> and re-run the application. Since the plots are generated via Shiny, they assume new defaults which are informed by the CSS styling on their HTML container (that is, notice how the R plots now reflect the styling of the <code><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html">shiny::tabsetPanel()</a></code>). Moreover, as long as the relevant font is a <a href="https://fonts.google.com">Google Font</a> (in this case, <a href="https://fonts.google.com/specimen/Pacifico">Pacifico</a>), <a href="https://rstudio.github.io/thematic/">thematic</a> automatically downloads, caches, and registers font(s) with R.</p>
+<p><img src="reference/figures/auto-before.png" width="90%" style="display: block; margin: auto;"></p>
+<p><img src="reference/figures/auto-after.png" width="90%" style="display: block; margin: auto;"></p>
+</div>
+<div id="rstudio" class="section level3">
+<h3 class="hasAnchor">
+<a href="#rstudio" class="anchor"></a>RStudio</h3>
+<p>Call <code><a href="reference/thematic_on.html">thematic_on()</a></code> before generating plots inside RStudio to have all subsequent plots shown in the “Plots” viewing pane to reflect your RStudio theme. Note that <code><a href="reference/thematic_on.html">thematic_on()</a></code> enables <a href="https://rstudio.github.io/thematic/">thematic</a> for the remainder of the R session, but you can use <code><a href="reference/thematic_on.html">thematic_off()</a></code> to disable (<a href="https://rstudio.github.io/thematic/articles/scope.html#one-time-use">or <code>thematic_theme()</code> for one-off use of <code>{thematic}</code></a>). Here’s an example of how <a href="https://rstudio.github.io/thematic/">thematic</a> can intelligently adapt each plot to the current RStudio theme:</p>
+<p><img src="https://i.imgur.com/Bvbdn2B.gif" width="100%" style="display: block; margin: auto;"></p>
+</div>
+<div id="r-markdown" class="section level3">
+<h3 class="hasAnchor">
+<a href="#r-markdown" class="anchor"></a>R Markdown</h3>
+<p>Call <code><a href="reference/thematic_on.html">thematic_rmd()</a></code> before generating plots inside R Markdown to have all subsequent plots within the document reflect the relevant theme. In a static (i.e., non-<code>runtime: shiny</code>) R Markdown context, auto-theming only works with <a href="https://rstudio.github.io/bslib/#r-markdown-usage"><code>{bslib}</code>-powered <code>rmarkdown::html_document()</code></a> (as in the example below), but in other situations you may also <a href="#custom">provide colors and fonts</a> explicitly to <code><a href="reference/thematic_on.html">thematic_rmd()</a></code>.</p>
+<p><img src="articles/html-document.svg" width="100%" style="display: block; margin: auto;"></p>
+</div>
+<div id="custom-theming" class="section level3">
+<h3 class="hasAnchor">
+<a href="#custom-theming" class="anchor"></a>Custom theming</h3>
+<p>By default, <a href="https://rstudio.github.io/thematic/">thematic</a> attempts to detect the relevant background, foreground, and accent colors. However, you may also specify these settings more directly by providing relevant color and fonts directly to <code><a href="reference/thematic_on.html">thematic_on()</a></code> (or <code><a href="reference/thematic_on.html">thematic_shiny()</a></code>/<code><a href="reference/thematic_on.html">thematic_rmd()</a></code>).</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># Turn on thematic and re-run the app</span>
-<span class="fu">thematic</span><span class="fu">::</span><span class="fu"><a href="reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span>font <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></code></pre></div>
-<p><img src="reference/figures/auto-after.png" width="80%" style="display: block; margin: auto;"></p>
-<p>Instead of relying on <a href="https://rstudio.github.io/thematic/">thematic</a> to automatically detect colors and fonts in the plot’s container, you can also specify them directly in <code><a href="reference/thematic_on.html">thematic_on()</a></code>.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"#0CE3AC"</span>, font <span class="op">=</span> <span class="st">"Oxanium"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
+<span class="fu">thematic</span><span class="fu">::</span><span class="fu"><a href="reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"#222222"</span>, fg <span class="op">=</span> <span class="st">"white"</span>, accent <span class="op">=</span> <span class="st">"#0CE3AC"</span>, font <span class="op">=</span> <span class="st">"Oxanium"</span><span class="op">)</span>
 
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span>
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
+<span class="va">ggp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html">rownames</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span>
   <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span>
-  <span class="fu">ggrepel</span><span class="fu">::</span><span class="fu">geom_text_repel</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+  <span class="fu">ggrepel</span><span class="fu">::</span><span class="fu">geom_text_repel</span><span class="op">(</span><span class="op">)</span>
+<span class="va">ggp</span></code></pre></div>
 <p><img src="reference/figures/README-ggrepel-1.png" width="80%" style="display: block; margin: auto;"></p>
-<p>In addition to <code><a href="reference/thematic_on.html">thematic_on()</a></code>, which applies the provided theme to all plots (up until <code><a href="reference/thematic_on.html">thematic_off()</a></code> is called), there are a few variation of <code><a href="reference/thematic_on.html">thematic_on()</a></code> which temporarily apply the given theme:</p>
-<ul>
-<li>
-<code><a href="reference/thematic_on.html">thematic_shiny()</a></code>: apply theme up until the next <a href="#shiny">Shiny</a> app exits. Use this over <code><a href="reference/thematic_on.html">thematic_on()</a></code> in Shiny apps.</li>
-<li>
-<code><a href="reference/thematic_on.html">thematic_rmd()</a></code>: apply theme up until the next <a href="#rmd">R Markdown</a> document exits. Use this over <code><a href="reference/thematic_on.html">thematic_on()</a></code> in R Markdown documents.</li>
-<li>
-<code><a href="reference/thematic_with_theme.html">thematic_with_theme()</a></code>: apply theme up until the provided plot <code>expr</code> is evaluated. Use this to apply different themes to different plots within a Shiny app.</li>
-</ul>
+<p><a href="https://rstudio.github.io/thematic/">thematic</a> works by setting new global defaults that can always be overridden with plot-specific <code><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme()</a></code>-ing code:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">ggp</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>text <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>colour <span class="op">=</span> <span class="st">"purple"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="reference/figures/README-ggrepel2-1.png" width="80%" style="display: block; margin: auto;"></p>
+<p><a href="https://rstudio.github.io/thematic/">thematic</a> also respects design decisions made “complete” <strong>ggplot2</strong> themes (e.g. <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw()</a></code>) so long as they are set as a global theming default. For example, notice how changing from <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_gray()</a></code> (the default <a href="https://ggplot2.tidyverse.org">ggplot2</a> theme) to <code><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw()</a></code> yields semantically consistent difference in <code>panel.grid</code>, <code>panel.background</code>, etc. styling (i.e., the panel background fill now matches the plot background).</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme_get.html">theme_set</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="va">ggp</span></code></pre></div>
+<p><img src="reference/figures/README-ggrepel3-1.png" width="80%" style="display: block; margin: auto;"></p>
+<p>In addition to setting new defaults for main colors and fonts, <a href="https://rstudio.github.io/thematic/">thematic</a> also sets defaults for <code>qualitative</code> (and <code>sequential</code>) colorscales. See the <a href="https://rstudio.github.io/thematic/articles/custom.html">custom themes article</a> to learn more about how to customize those defaults.</p>
+</div>
 </div>
 <div id="learn-more" class="section level2">
 <h2 class="hasAnchor">
 <a href="#learn-more" class="anchor"></a>Learn more</h2>
 <ul>
-<li>See the <a href="https://rstudio.github.io/thematic/articles/auto.html">auto theming article</a> to gain an understanding of how auto theming make styling R plots easier in Shiny, R Markdown, and RStudio.</li>
+<li>See the <a href="https://rstudio.github.io/thematic/articles/auto.html">auto theming article</a> to gain a more detailed understanding of how auto theming make styling R plots easier in Shiny, R Markdown, and RStudio.</li>
 <li>See the <a href="https://rstudio.github.io/thematic/articles/custom.html">custom themes article</a> for more on <a href="https://rstudio.github.io/thematic/">thematic</a>’s theming options as well as how they interact with <a href="https://ggplot2.tidyverse.org">ggplot2</a>, <a href="http://lattice.r-forge.r-project.org/">lattice</a>, and <code>{base}</code>.</li>
 <li>See the <a href="https://rstudio.github.io/thematic/articles/fonts.html">fonts article</a> for more on using Google Fonts with <a href="https://rstudio.github.io/thematic/">thematic</a>.</li>
-<li>See the <a href="https://rstudio.github.io/thematic/articles/scope.html">scoping article</a> for more about restoring state after using <a href="https://rstudio.github.io/thematic/">thematic</a>.</li>
+<li>See the <a href="https://rstudio.github.io/thematic/articles/scope.html">scoping article</a> for more about scoping <a href="https://rstudio.github.io/thematic/">thematic</a> to individual plots.</li>
 </ul>
 </div>
 <div id="run-some-examples" class="section level2">
