@@ -4,7 +4,7 @@ adjust_color <- function(color, bg, fg, accent = NA) {
   if (length(color) > 1) {
     stop("Internal error: adjust_color() expects an input of length 1")
   }
-  if (is.na(color) || identical(color, "NA")) return(color)
+  if (is.na(color) || identical(color, "NA") || color == "0") return(color)
 
   # If a gray scale color, then the degree of gray determines
   # the mixing between fg (aka black) and bg (aka white)
