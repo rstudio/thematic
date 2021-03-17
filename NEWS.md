@@ -1,4 +1,4 @@
-# thematic 0.1.1.9000
+# thematic 0.1.2
 
 * Closed #89: thematic now works as expected with the {gganimate} package. (#96)
 * Closed #93: Fixed a bug with ggplot2 extensions where geom/scale colour default_aes are set to 0.
