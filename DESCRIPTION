@@ -39,6 +39,7 @@ Suggests:
     shiny (>= 1.5.0),
     bslib,
     testthat,
+    gganimate,
     vdiffr,
     svglite,
     jsonlite,
