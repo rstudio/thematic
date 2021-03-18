@@ -227,3 +227,17 @@ test_that("element_blank() inherits properly", {
     qplot(x = 1:10, y = 1:10) + theme(axis.text.y = element_blank())
   )
 })
+
+
+test_that("Relevant ggplot_build() method(s) are owned by thematic", {
+  thematic_local_theme(theme2)
+  expect_equal(
+    body(getFromNamespace("ggplot_build.ggplot", "ggplot2")),
+    body(ggthematic_build)
+  )
+  skip_if_not_installed("gganimate")
+  expect_equal(
+    body(getFromNamespace("ggplot_build.gganim", "gganimate")),
+    body(ggthematic_build)
+  )
+})

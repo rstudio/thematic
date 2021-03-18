@@ -20,6 +20,11 @@ ggplot_build_set <- function() {
   assign_in_namespace <- assignInNamespace
   ensure_s3_methods_matrix()
   assign_in_namespace("ggplot_build.ggplot", ggthematic_build, "ggplot2")
+  if (is_installed("gganimate")) {
+    .globals$gganim_build <- getFromNamespace("ggplot_build.gganim", "gganimate")
+    formals(ggthematic_build)$ggplot_build <- .globals$gganim_build
+    assign_in_namespace("ggplot_build.gganim", ggthematic_build, "gganimate")
+  }
 }
 
 ggplot_build_restore <- function() {
@@ -29,6 +34,10 @@ ggplot_build_restore <- function() {
     ensure_s3_methods_matrix()
     assign_in_namespace("ggplot_build.ggplot", .globals$ggplot_build, "ggplot2")
     rm("ggplot_build", envir = .globals)
+    if (is.function(.globals$gganim_build)) {
+      assign_in_namespace("ggplot_build.gganim", .globals$gganim_build, "gganimate")
+      rm("gganim_build", envir = .globals)
+    }
   }
 }
 
