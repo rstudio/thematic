@@ -9,6 +9,7 @@
 ^README\.Rmd$
 ^README\.html$
 ^CONTRIBUTING\.md$
+^Makefile$
 ^data-raw$
 Untitled*
 ^\.travis\.yml$
