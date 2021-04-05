@@ -1,3 +1,6 @@
+# thematic 0.1.2.9000
+
+
 # thematic 0.1.2
 
 * Closed #89: `{thematic}` now works as expected with the `{gganimate}` package. (#96)
