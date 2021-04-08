@@ -135,7 +135,7 @@ shinyApp(ui, server)
 knitr::include_graphics("tabsets-darkly-thematic-minimal.png")
 ```
 
-Since **thematic** knows the CSS rules on the plot's HTML container, auto theming works regardless of how the HTML is actually styled. That said, consider using the new [**bslib** package](https://rstudio.github.io/bslib/) to theme your Shiny apps (and R Markdown docs). It provides a rich set of tools for influencing Bootstrap CSS from R, including convenience functions for [setting the main colors and fonts](https://rstudio.github.io/bslib/bslib.html#main-colors):
+Since **thematic** knows the CSS rules on the plot's HTML container, auto theming works regardless of how the HTML is actually styled. That said, consider using the new [**bslib** package](https://rstudio.github.io/bslib/) to theme your Shiny apps (and R Markdown docs). It provides a rich set of tools for influencing Bootstrap CSS from R, including convenience functions for [setting the main colors and fonts](https://rstudio.github.io/bslib/articles/bslib.html#main-colors):
 
 ```r
 library(bslib)
