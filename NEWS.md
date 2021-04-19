@@ -1,5 +1,6 @@
 # thematic 0.1.2.9000
 
+* Closed #100: `{lattice}`'s plot-specific `par.settings` argument now works as expected with `{thematic}` (it can be used to override any settings that `{thematic}` sets). (#101)
 
 # thematic 0.1.2
 
