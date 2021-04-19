@@ -239,7 +239,7 @@ ggpairs(iris, aes(color = Species))
 # accent may be of length 2 (stroke and fill)
 thematic_on(bg = "#222222", fg = "white", accent = c("purple", "red"))
 library(lattice)
-show.settings()
+show.settings(lattice::trellis.par.get())
 ```
 
 It might seem strange to have `bg` define the middle of the color gradient, but it's intentional so that it works well with `lattic::contourplot()` (or other cases where text wants to be placed on top of the gradient):

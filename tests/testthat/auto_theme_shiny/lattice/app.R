@@ -19,7 +19,7 @@ render_plot <- function(expr) {
 
 server <- function(input, output, session) {
   output$p <- render_plot({
-    lattice::show.settings()
+    lattice::show.settings(lattice::trellis.par.get())
   })
 }
 

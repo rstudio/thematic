@@ -21,17 +21,11 @@ lattice_print_set <- function(theme) {
       .globals$lattice_print(x, ..., newpage = FALSE)
     }
   )
-  # Hack show.settings() to show the global theme by default
-  show_settings <- getFromNamespace("show.settings", "lattice")
-  .globals$lattice_settings <- show_settings
-  formals(show_settings)$x <- quote(force(lattice::trellis.par.get()))
-  assignInNamespace("show.settings", show_settings, "lattice")
 }
 
 lattice_print_restore <- function() {
   if (!exists("lattice_print", envir = .globals)) return()
   lattice::lattice.options(print.function = .globals$lattice_print)
-  assignInNamespace("show.settings", .globals$lattice_settings, "lattice")
   rm("lattice_print", envir = .globals)
 }
 
@@ -46,7 +40,6 @@ lattice_params_restore <- function() {
   if (!exists("lattice_params", envir = .globals)) return()
   lattice::trellis.par.set(.globals$lattice_params)
 }
-
 
 lattice_par <- function() {
   theme <- .globals$theme
