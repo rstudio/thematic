@@ -10,25 +10,43 @@
 lattice_print_set <- function(theme) {
   if (!is_installed("lattice")) return(NULL)
   lattice_print_restore()
+  # Force our before.grid.newpage hook to happen *before*
+  # lattice's print function is called, which needs to happen
+  # in order for us to resolve the font *before* drawing
   .globals$lattice_print <- lattice::lattice.getOption("print.function") %||%
     getFromNamespace("plot.trellis", "lattice")
   lattice::lattice.options(
     print.function = function(x, ...) {
-      # Force our before.grid.newpage hook to happen *before*
-      # lattice's print function is called, which needs to happen
-      # in order for us to resolve the font *before* drawing
       grid::grid.newpage()
-      x$par.settings <- modifyList(lattice_par(), x$par.settings %||% list())
       .globals$lattice_print(x, ..., newpage = FALSE)
     }
   )
+  # Hack show.settings() to show the global theme by default
+  show_settings <- getFromNamespace("show.settings", "lattice")
+  .globals$lattice_settings <- show_settings
+  formals(show_settings)$x <- quote(force(lattice::trellis.par.get()))
+  assignInNamespace("show.settings", .globals$lattice_settings, "lattice")
 }
 
 lattice_print_restore <- function() {
   if (!exists("lattice_print", envir = .globals)) return()
   lattice::lattice.options(print.function = .globals$lattice_print)
+  assignInNamespace("show.settings", .globals$lattice_settings, "lattice")
   rm("lattice_print", envir = .globals)
 }
+
+lattice_params_set <- function() {
+  if (!is_installed("lattice")) return(NULL)
+  lattice_params_restore()
+  .globals$lattice_params <- lattice::trellis.par.get()
+  lattice::trellis.par.set(lattice_par())
+}
+
+lattice_params_restore <- function() {
+  if (!exists("lattice_params", envir = .globals)) return()
+  lattice::trellis.par.set(.globals$lattice_params)
+}
+
 
 lattice_par <- function() {
   theme <- .globals$theme

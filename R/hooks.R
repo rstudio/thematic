@@ -46,6 +46,7 @@ grid_before_hook <- function() {
   # update ggplot2/lattice defaults
   ggplot_build_set()
   lattice_print_set()
+  lattice_params_set()
 }
 
 grid_plot_hook <- base_plot_hook
