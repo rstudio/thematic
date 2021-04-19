@@ -18,7 +18,7 @@ lattice_print_set <- function(theme) {
       # lattice's print function is called, which needs to happen
       # in order for us to resolve the font *before* drawing
       grid::grid.newpage()
-      x$par.settings <- lattice_par()
+      x$par.settings <- modifyList(lattice_par(), x$par.settings %||% list())
       .globals$lattice_print(x, ..., newpage = FALSE)
     }
   )
