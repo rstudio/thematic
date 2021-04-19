@@ -1,5 +1,12 @@
 # thematic 0.1.2.9000
 
+## Potential breaking changes
+
+`{thematic}`'s `{lattice}` support now works by modifying _global_ graphical parameters (via `trellis.par.set()`) instead of always supplying them locally to the plot's `par.settings` (and, as a result, `par.settings` can now be used to override `{thematic}`'s settings, thus closing #100). This approach is a more desirable since it allows for customization of `{thematic}`'s defaults, but beware it may 'break' some existing `{lattice}`+`{thematic}` code that unnecessarily specifies `par.settings` instead of allowing those settings to derive from `trellis.par.get()` (for examples, `show.settings()` should now be `show.settings(trellis.par.get())` in order to work sensible with `{thematic}`).
+
+## Bug fixes
+
+* Closed #100: `{lattice}`'s plot-specific `par.settings` argument now works as expected with `{thematic}` (it can be used to override any settings that `{thematic}` sets). (#101)
 
 # thematic 0.1.2
 

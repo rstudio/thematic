@@ -21,7 +21,7 @@ qplot(x = 1:10, y = 1:10, color = 1:10)
 ```
 
 ```{r lattice}
-lattice::show.settings()
+lattice::show.settings(lattice::trellis.par.get())
 ```
 
 ```{r base}

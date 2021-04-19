@@ -27,7 +27,7 @@ server <- function(input, output, session) {
 
   output$lattice <- renderPlot({
     thematic_with_theme(theme_lattice, {
-      lattice::show.settings()
+      lattice::show.settings(lattice::trellis.par.get())
     })
   })
 

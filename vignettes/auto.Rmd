@@ -61,7 +61,7 @@ server <- function(input, output) {
       ggrepel::geom_text_repel()
   })
   output$lattice <- renderPlot({
-    lattice::show.settings()
+    lattice::show.settings(lattice::trellis.par.get())
   })
   output$base <- renderPlot({
     image(volcano, col = thematic_get_option("sequential"))

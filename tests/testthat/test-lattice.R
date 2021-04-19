@@ -75,10 +75,24 @@ test_that("lattice baselines", {
                         columns = 4, title = "Row position"))
     })
 
-  expect_doppelganger("settings", show.settings())
+  expect_doppelganger("settings", show.settings(lattice::trellis.par.get()))
 
 
   thematic_on("black", "white", c("orange", "blue"))
-  expect_doppelganger("settings2", show.settings())
+  expect_doppelganger("settings2", show.settings(lattice::trellis.par.get()))
+
+  # https://github.com/rstudio/thematic/issues/100
+  expect_doppelganger(
+    "par.settings", {
+      xyplot(
+        Sepal.Length + Sepal.Width ~ Petal.Length + Petal.Width | Species,
+        data = iris,
+        par.settings = list(
+          axis.line = list(col = "transparent"),
+          strip.border = list(col = "white", lwd = 4)
+        )
+      )
+    }
+  )
 })
 

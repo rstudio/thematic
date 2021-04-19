@@ -121,23 +121,23 @@ or \code{htmltools::parseCssColors()} (i.e., may be any valid R or CSS color str
 thematic_on("black", "white")
 plot(1:10)
 plot(1:10, col = 1:10)
-lattice::show.settings()
+lattice::show.settings(lattice::trellis.par.get())
 
 # use any hex color string
 thematic_on("#444444", "#e4e4e4")
 plot(1:10)
 plot(1:10, col = 1:10)
-lattice::show.settings()
+lattice::show.settings(lattice::trellis.par.get())
 
 # disables thematic (also restores global state)
 thematic_off()
 plot(1:10)
-lattice::show.settings()
+lattice::show.settings(lattice::trellis.par.get())
 
 thematic_on("darkblue", "skyblue", "orange")
 image(volcano)
 image(volcano, col = thematic_get_option("sequential"))
-lattice::show.settings()
+lattice::show.settings(lattice::trellis.par.get())
 thematic_off()
 
 }
