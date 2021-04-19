@@ -25,7 +25,7 @@ lattice_print_set <- function(theme) {
   show_settings <- getFromNamespace("show.settings", "lattice")
   .globals$lattice_settings <- show_settings
   formals(show_settings)$x <- quote(force(lattice::trellis.par.get()))
-  assignInNamespace("show.settings", .globals$lattice_settings, "lattice")
+  assignInNamespace("show.settings", show_settings, "lattice")
 }
 
 lattice_print_restore <- function() {
