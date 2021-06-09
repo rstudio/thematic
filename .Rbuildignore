@@ -19,4 +19,5 @@ Untitled*
 ^CODE_OF_CONDUCT\.md$
 ^vignettes$
 ^tests/figs$
+^tests/testthat/_snaps$
 ^tests/testthat/testthat-problems.rds$

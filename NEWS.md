@@ -1,5 +1,6 @@
-# thematic 0.1.2.9000
+# thematic 0.1.2.1
 
+Patch release for vdiffr 1.0
 
 # thematic 0.1.2
 
