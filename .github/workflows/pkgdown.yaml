@@ -29,8 +29,8 @@ jobs:
 
       - name: Query dependencies
         run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          install.packages("pak", repos = "https://r-lib.github.io/p/pak/dev/")
+          saveRDS(pak::pkg_deps_tree("local::.", dependencies = TRUE), ".github/r-depends.rds")
           writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
         shell: Rscript {0}
 
@@ -38,7 +38,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-2-${{ hashFiles('.github/depends.Rds') }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-2-${{ hashFiles('.github/r-depends.rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-2-
 
       - name: Mac systemdeps
@@ -49,10 +49,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          install.packages(c("remotes", "vctrs", "pkgdown", "Cairo"))
+          install.packages(c("pkgdown", "Cairo"))
           install.packages(c("GGally", "RColorBrewer", "patchwork"))
-          remotes::install_github("apreshill/quillt")
-          remotes::install_deps(dependencies = TRUE)
+          pak::pak("apreshill/quillt")
+          pak::local_install_dev_deps(upgrade = TRUE)
         shell: Rscript {0}
 
       - name: Install package
