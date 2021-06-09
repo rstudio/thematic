@@ -19,6 +19,7 @@ library(ggplot2)
 test_that("Setting and getting the theme", {
   expect_null(thematic_get_theme())
   thematic_on("black", "white", "green")
+  on.exit(thematic_off(), add = TRUE)
   x <- thematic_get_theme(resolve = FALSE)
   expect_true(is_thematic_theme(x))
   y <- thematic_on("darkblue", "skyblue", "purple")
@@ -30,11 +31,11 @@ test_that("Setting and getting the theme", {
   thematic_set_theme(NULL)
   expect_null(thematic_get_theme())
   expect_doppelganger("none", qplot(1:10, 1:10, color = 1:10))
-  thematic_off()
 })
 
 test_that("Theme inheritance works", {
   thematic_on("black", "red", "green")
+  on.exit(thematic_off(), add = TRUE)
   white <- thematic_theme(fg = "white", inherit = TRUE)
   thematic_on(fg = "white", inherit = TRUE)
   expect_equal(thematic_get_theme(resolve = FALSE), white)
@@ -42,7 +43,6 @@ test_that("Theme inheritance works", {
   expect_doppelganger("white-green", qplot(1:10, 1:10, color = 1:10))
   thematic_on(accent = "red", inherit = TRUE)
   expect_doppelganger("white-red", qplot(1:10, 1:10, color = 1:10))
-  thematic_off()
 })
 
 test_that("Getting options", {
