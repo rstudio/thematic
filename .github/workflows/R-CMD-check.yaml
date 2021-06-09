@@ -81,7 +81,7 @@ jobs:
           install.packages("curl")
         shell: Rscript {0}
 
-     - name: Install system dependencies
+      - name: Install system dependencies
         if: runner.os == 'Linux'
         shell: Rscript {0}
         run: |
