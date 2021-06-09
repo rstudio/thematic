@@ -19,6 +19,7 @@ test_that("works as expected with global ggthemes", {
 
 test_that("works as expected with plot-specific themes", {
   thematic_on(bg = "#222222", fg = "white", accent = NA)
+  on.exit(thematic_off(), add = TRUE)
   p <- ggplot(mtcars, aes(wt, mpg)) +
     geom_point() +
     facet_wrap(~cyl)

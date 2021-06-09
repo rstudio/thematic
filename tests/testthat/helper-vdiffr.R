@@ -3,7 +3,10 @@
 #   - CI is not set (on CRAN)
 
 # vdiffr:::print_plot.ggplot adds ggplot2::theme_test(), which destroys our theming defaults
-assignInNamespace("print_plot.ggplot", function(p, title = "") { print(p) }, "vdiffr")
+registerS3method(
+  "print_plot", "ggplot", function(p, title = "") { print(p) },
+  envir = asNamespace("vdiffr")
+)
 
 expect_doppelganger <- function(name, p, ...) {
   vdiffr::expect_doppelganger(name, p, ...)
