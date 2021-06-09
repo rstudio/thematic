@@ -87,6 +87,11 @@ jobs:
         run: |
           pak::local_system_requirements(execute = TRUE)
 
+      - name: Install any missing sysdeps
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y libcairo2-dev
+
       # xquartz and cairo are needed for Cairo package.
       # harfbuzz and fribidi are needed for textshaping package.
       - name: Mac systemdeps
