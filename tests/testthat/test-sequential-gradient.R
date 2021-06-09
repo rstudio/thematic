@@ -5,6 +5,8 @@ skip_if_not_installed("ggplot2")
 test_that("Sequential gradients works as expected", {
   library(ggplot2)
 
+  on.exit(thematic_off(), add = TRUE)
+
   # Gradient from fg to accent
   fg <- sequential_gradient(1, 0)
   thematic_on("black", "white", "salmon", sequential = fg)
@@ -28,6 +30,4 @@ test_that("Sequential gradients works as expected", {
   thematic_on("black", "white", "salmon", sequential = mix_flip)
   ggplot2::qplot(1:10, 1:10, color = 1:10)
   expect_doppelganger("half-half-reversed", p)
-
-  thematic_off()
 })
