@@ -40,7 +40,7 @@ Suggests:
     bslib,
     testthat,
     gganimate,
-    vdiffr,
+    vdiffr (>= 1.0.0),
     svglite,
     jsonlite,
     curl
