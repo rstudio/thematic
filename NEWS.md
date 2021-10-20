@@ -1,3 +1,7 @@
+# thematic 0.1.2.9000
+
+* Closed #111: `{thematic}` no longer throws an error when used with `ggiraph::dsvg()`. (#112)
+
 # thematic 0.1.2.1
 
 Patch release for vdiffr 1.0
