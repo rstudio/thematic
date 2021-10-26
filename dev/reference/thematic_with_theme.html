@@ -18,10 +18,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+
 <!-- Bootstrap -->
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous" />
-
+<link href="../tidyverse.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
 
 <!-- bootstrap-toc -->
@@ -33,7 +32,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
@@ -42,11 +41,14 @@
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script>
+<link href="../tidyverse-2.css" rel="stylesheet">
+<link href="../rmd.css" rel="stylesheet">
+
 
 
 <!-- docsearch -->
 <script src="../docsearch.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.3/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous" />
 <link href="../docsearch.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script>
 
@@ -56,6 +58,7 @@
 <meta property="og:description" content="These functions are helpful for getting and/or temporarily activating a
 thematic_theme()." />
 <meta property="og:image" content="/logo.png" />
+<meta name="twitter:card" content="summary" />
 
 
 <meta name="robots" content="noindex">
@@ -69,7 +72,20 @@ thematic_theme()." />
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-115082821-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
+  gtag('config', 'UA-115082821-1');
+</script>
+
+<!-- javascript assets for rmarkdown -->
+<script src="../ace-1.2.3/ace.js" type="text/javascript" charset="utf-8"></script>
+<script src="../holder-2.9.0/holder.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="../snippets/snippets.js" type="text/javascript" charset="utf-8"></script>
 
   </head>
 
@@ -85,14 +101,23 @@ thematic_theme()." />
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
+
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">thematic</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.1.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
       </span>
+
+      <!--<div class="navbar-brand-container">
+        <a class="navbar-brand" href="../index.html">thematic</a>
+        <div class="info hidden-xs hidden-sm">
+          <span class="partof">part of  <a href=""></a></span>
+          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        </div>
+      </div>-->
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
-      <ul class="nav navbar-nav">
+      <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="../articles/auto.html">Auto theming</a>
 </li>
@@ -108,8 +133,6 @@ thematic_theme()." />
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/rstudio/thematic/">
     <span class="fab fa-github fa-lg"></span>
@@ -118,7 +141,7 @@ thematic_theme()." />
 </li>
       </ul>
       
-      <form class="navbar-form navbar-right hidden-xs hidden-sm" role="search">
+      <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
         </div>
@@ -209,37 +232,43 @@ if no <code>theme</code> is active).</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'>
-<span class='co'># Use thematic_with_theme() for a one-time use of thematic</span>
-<span class='fu'>thematic_with_theme</span><span class='op'>(</span>
-  <span class='fu'><a href='thematic_on.html'>thematic_theme</a></span><span class='op'>(</span><span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, accent <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>,
-  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, col <span class='op'>=</span> <span class='fu'>thematic_get_option</span><span class='op'>(</span><span class='st'>"accent"</span><span class='op'>)</span>, pch <span class='op'>=</span> <span class='fl'>19</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='thematic_with_theme-1.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='co'># Use thematic_set_theme() if doing something more complicated</span>
-<span class='co'># like programming on top thematic (without causing side effects)</span>
-<span class='va'>my_plot</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>expr</span>, <span class='va'>las</span> <span class='op'>=</span> <span class='fl'>3</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span>
-  <span class='va'>old_theme</span> <span class='op'>&lt;-</span> <span class='fu'><a href='thematic_on.html'>thematic_on</a></span><span class='op'>(</span><span class='st'>"black"</span>, <span class='st'>"white"</span><span class='op'>)</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/on.exit.html'>on.exit</a></span><span class='op'>(</span><span class='fu'>thematic_set_theme</span><span class='op'>(</span><span class='va'>old_theme</span><span class='op'>)</span>, add <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='va'>opts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>las <span class='op'>=</span> <span class='va'>las</span><span class='op'>)</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/on.exit.html'>on.exit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opts</span><span class='op'>)</span>, add <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-  <span class='co'># Imagine some more customization with ...</span>
-  <span class='fu'><a href='https://rdrr.io/r/base/force.html'>force</a></span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span>
-<span class='op'>}</span>
-<span class='fu'>my_plot</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
-</div><div class='img'><img src='thematic_with_theme-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='thematic_on.html'>thematic_off</a></span><span class='op'>(</span><span class='op'>)</span>
-<span class='fu'>thematic_get_option</span><span class='op'>(</span><span class='st'>"bg"</span>, <span class='st'>"white"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "white"</div><div class='input'><span class='fu'><a href='thematic_on.html'>thematic_on</a></span><span class='op'>(</span>bg <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
-<span class='fu'>thematic_get_option</span><span class='op'>(</span><span class='st'>"bg"</span>, <span class='st'>"white"</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: thematic was unable to resolve `fg='auto'`. Try providing an actual color (or `NA`) to the `fg` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span></div><div class='output co'>#&gt; [1] "red"</div><div class='input'><span class='fu'><a href='thematic_on.html'>thematic_off</a></span><span class='op'>(</span><span class='op'>)</span>
-
-<span class='fu'>thematic_with_theme</span><span class='op'>(</span>
-  <span class='fu'><a href='thematic_on.html'>thematic_theme</a></span><span class='op'>(</span><span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span><span class='op'>)</span>,
-  <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org//reference/show_col.html'>show_col</a></span><span class='op'>(</span><span class='fu'>thematic_get_mixture</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
-<span class='op'>)</span>
-</div><div class='img'><img src='thematic_with_theme-3.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></pre>
+    <pre class="examples"><span class='r-in'></span>
+<span class='r-in'><span class='co'># Use thematic_with_theme() for a one-time use of thematic</span></span>
+<span class='r-in'><span class='fu'>thematic_with_theme</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='thematic_on.html'>thematic_theme</a></span><span class='op'>(</span><span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span>, accent <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, col <span class='op'>=</span> <span class='fu'>thematic_get_option</span><span class='op'>(</span><span class='st'>"accent"</span><span class='op'>)</span>, pch <span class='op'>=</span> <span class='fl'>19</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt'><img src='thematic_with_theme-1.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='co'># Use thematic_set_theme() if doing something more complicated</span></span>
+<span class='r-in'><span class='co'># like programming on top thematic (without causing side effects)</span></span>
+<span class='r-in'><span class='va'>my_plot</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>expr</span>, <span class='va'>las</span> <span class='op'>=</span> <span class='fl'>3</span>, <span class='va'>...</span><span class='op'>)</span> <span class='op'>{</span></span>
+<span class='r-in'>  <span class='va'>old_theme</span> <span class='op'>&lt;-</span> <span class='fu'><a href='thematic_on.html'>thematic_on</a></span><span class='op'>(</span><span class='st'>"black"</span>, <span class='st'>"white"</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/on.exit.html'>on.exit</a></span><span class='op'>(</span><span class='fu'>thematic_set_theme</span><span class='op'>(</span><span class='va'>old_theme</span><span class='op'>)</span>, add <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='va'>opts</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span>las <span class='op'>=</span> <span class='va'>las</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/on.exit.html'>on.exit</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/graphics/par.html'>par</a></span><span class='op'>(</span><span class='va'>opts</span><span class='op'>)</span>, add <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></span>
+<span class='r-in'>  <span class='co'># Imagine some more customization with ...</span></span>
+<span class='r-in'>  <span class='fu'><a href='https://rdrr.io/r/base/force.html'>force</a></span><span class='op'>(</span><span class='va'>expr</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>}</span></span>
+<span class='r-in'><span class='fu'>my_plot</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-plt'><img src='thematic_with_theme-2.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'><a href='thematic_on.html'>thematic_off</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>thematic_get_option</span><span class='op'>(</span><span class='st'>"bg"</span>, <span class='st'>"white"</span><span class='op'>)</span></span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "white"</span>
+<span class='r-in'><span class='fu'><a href='thematic_on.html'>thematic_on</a></span><span class='op'>(</span>bg <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span></span>
+<span class='r-in'><span class='fu'>thematic_get_option</span><span class='op'>(</span><span class='st'>"bg"</span>, <span class='st'>"white"</span><span class='op'>)</span></span>
+<span class='r-wrn co'><span class='r-pr'>#&gt;</span> <span class='warning'>Warning: </span>thematic was unable to resolve `fg='auto'`. Try providing an actual color (or `NA`) to the `fg` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span>
+<span class='r-out co'><span class='r-pr'>#&gt;</span> [1] "red"</span>
+<span class='r-in'><span class='fu'><a href='thematic_on.html'>thematic_off</a></span><span class='op'>(</span><span class='op'>)</span></span>
+<span class='r-in'></span>
+<span class='r-in'><span class='fu'>thematic_with_theme</span><span class='op'>(</span></span>
+<span class='r-in'>  <span class='fu'><a href='thematic_on.html'>thematic_theme</a></span><span class='op'>(</span><span class='st'>"darkblue"</span>, <span class='st'>"skyblue"</span><span class='op'>)</span>,</span>
+<span class='r-in'>  <span class='fu'>scales</span><span class='fu'>::</span><span class='fu'><a href='https://scales.r-lib.org/reference/show_col.html'>show_col</a></span><span class='op'>(</span><span class='fu'>thematic_get_mixture</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span></span>
+<span class='r-in'><span class='op'>)</span></span>
+<span class='r-plt'><img src='thematic_with_theme-3.png' alt='' width='700' height='433' /></span>
+<span class='r-in'></span>
+</pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -250,14 +279,7 @@ if no <code>theme</code> is active).</p></li>
 
 
       <footer>
-      <div class="copyright">
-  <p>Developed by Carson Sievert, Barret Schloerke, Joe Cheng.</p>
-</div>
-
-<div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
-</div>
-
+      
       </footer>
    </div>
 
