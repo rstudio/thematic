@@ -62,4 +62,4 @@ home:
   strip_header: false
 
 development:
-  mode: release
+  mode: auto
