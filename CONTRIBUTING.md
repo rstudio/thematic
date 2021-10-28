@@ -1,6 +1,6 @@
 # Contributing
 
-When contributing to this repository, please first discuss the change you wish to make via a [new issue](https://github.com/rstudio/thematic/issues/new), email, or any other method with the owners of this repository before [making a change](https://github.com/rstudio/thematic/blob/master/.github/PULL_REQUEST_TEMPLATE.md).
+When contributing to this repository, please first discuss the change you wish to make via a [new issue](https://github.com/rstudio/thematic/issues/new), email, or any other method with the owners of this repository before [making a change](https://github.com/rstudio/thematic/blob/main/.github/PULL_REQUEST_TEMPLATE.md).
 
 Please note we have a [code of conduct](CODE_OF_CONDUCT.md), please follow it in all your interactions with the project.
 

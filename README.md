@@ -232,5 +232,5 @@ Below is a link to an **RStudio Cloud** instance with some ready to run
 `{thematic}` is released with a [Contributor Code of
 Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html).
 By
-[contributing](https://github.com/rstudio/thematic/blob/master/CONTRIBUTING.md)
+[contributing](https://github.com/rstudio/thematic/blob/main/CONTRIBUTING.md)
 to this project, you agree to abide by its terms.
