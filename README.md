@@ -81,12 +81,12 @@ library(shiny)
 library(ggplot2)
 library(thematic)
 
-# Call thematic_shiny() prior to launching the app, to change 
+# Call thematic_shiny() prior to launching the app, to change
 # R plot theming defaults for all the plots generated in the app
 thematic_shiny(font = "auto")
 
 ui <- fluidPage(
-  # bslib makes it easy to customize CSS styles for things 
+  # bslib makes it easy to customize CSS styles for things
   # rendered by the browser, like tabsetPanel()
   # https://rstudio.github.io/bslib
   theme = bslib::bs_theme(
