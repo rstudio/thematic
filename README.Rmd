@@ -62,7 +62,7 @@ install.packages("ragg")
 
 ## Overview
 
-`{thematic}`'s [auto theming](https://rstudio.github.io/thematic/articles/auto.html) gives R plots the ability to style themselves inside [Shiny](#shiny) (via CSS), [RStudio](#rstudio) (via [RStudio themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes)), and [R Markdown](#rmarkdown) (via [`{bslib}`](https://rstudio.github.io/bslib/)). 
+`{thematic}`'s [auto theming](https://rstudio.github.io/thematic/articles/auto.html) gives R plots the ability to style themselves inside [Shiny](#shiny) (via CSS), [RStudio](#rstudio) (via [RStudio themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes)), and [R Markdown](#rmarkdown) (via [`{bslib}`](https://rstudio.github.io/bslib/)).
 
 ### Shiny {#shiny}
 
@@ -73,12 +73,12 @@ library(shiny)
 library(ggplot2)
 library(thematic)
 
-# Call thematic_shiny() prior to launching the app, to change 
+# Call thematic_shiny() prior to launching the app, to change
 # R plot theming defaults for all the plots generated in the app
 thematic_shiny(font = "auto")
 
 ui <- fluidPage(
-  # bslib makes it easy to customize CSS styles for things 
+  # bslib makes it easy to customize CSS styles for things
   # rendered by the browser, like tabsetPanel()
   # https://rstudio.github.io/bslib
   theme = bslib::bs_theme(
@@ -171,7 +171,7 @@ In addition to setting new defaults for main colors and fonts, `{thematic}` also
 * See the [auto theming article](https://rstudio.github.io/thematic/articles/auto.html) to gain a more detailed understanding of how auto theming make styling R plots easier in Shiny, R Markdown, and RStudio.
 * See the [custom themes article](https://rstudio.github.io/thematic/articles/custom.html) for more on `{thematic}`'s theming options as well as how they interact with `{ggplot2}`, `{lattice}`, and `{base}`.
 * See the [fonts article](https://rstudio.github.io/thematic/articles/fonts.html) for more on using Google Fonts with `{thematic}`.
-* See the [scoping article](https://rstudio.github.io/thematic/articles/scope.html) for more about scoping `{thematic}` to individual plots. 
+* See the [scoping article](https://rstudio.github.io/thematic/articles/scope.html) for more about scoping `{thematic}` to individual plots.
 
 ## Run some examples
 
@@ -186,4 +186,4 @@ Below is a link to an **RStudio Cloud** instance with some ready to run `{themat
 
 ## Code of Conduct
 
-`{thematic}` is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By [contributing](https://github.com/rstudio/thematic/blob/master/CONTRIBUTING.md) to this project, you agree to abide by its terms.
+`{thematic}` is released with a [Contributor Code of Conduct](https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html). By [contributing](https://github.com/rstudio/thematic/blob/main/CONTRIBUTING.md) to this project, you agree to abide by its terms.

@@ -1,6 +1,6 @@
 # view all shinytest differences inside package tests
 # (only for internal use)
-# https://github.com/rstudio/thematic/blob/master/CONTRIBUTING.md
+# https://github.com/rstudio/thematic/blob/main/CONTRIBUTING.md
 view_shinytest_diffs <- function(path = ".", suffix = "auto", ...) {
   if (identical(suffix, "auto")) {
     branch <- system("git rev-parse --abbrev-ref HEAD", intern = TRUE)
