@@ -8,7 +8,7 @@ SHORT_SHA=${SHORT_SHA_:0:7}
 R_VERSION=$(Rscript -e "cat(paste0(R.version[['major']], '.', R.version[['minor']]))")
 
 FAIL_TIME=$(date +%Y_%m_%d_%H_%M)
-FAILED_BRANCH="$FAIL_TIME-$R_VERSION-$RUNNER_OS"
+FAILED_BRANCH="gha-$FAIL_TIME-$R_VERSION-$RUNNER_OS"
 
 # need to unset the extra header to allow for regular https push
 # git checkout -B -- Creates the branch <new_branch> and start it at <start_point>; if it already exists, then reset it to <start_point>.
