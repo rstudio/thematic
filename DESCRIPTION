@@ -65,6 +65,8 @@ Collate:
     'thematic.R'
     'utils.R'
     'view-shinytest.R'
+Config/Needs/routine:
+    ggrepel
 Config/Needs/website:
     GGally,
     RColorBrewer,
