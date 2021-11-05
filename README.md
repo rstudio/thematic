@@ -199,18 +199,18 @@ learn more about how to customize those defaults.
 
 ## Learn more
 
--   See the [auto theming
+  - See the [auto theming
     article](https://rstudio.github.io/thematic/articles/auto.html) to
     gain a more detailed understanding of how auto theming make styling
     R plots easier in Shiny, R Markdown, and RStudio.
--   See the [custom themes
+  - See the [custom themes
     article](https://rstudio.github.io/thematic/articles/custom.html)
     for more on `{thematic}`’s theming options as well as how they
     interact with `{ggplot2}`, `{lattice}`, and `{base}`.
--   See the [fonts
+  - See the [fonts
     article](https://rstudio.github.io/thematic/articles/fonts.html) for
     more on using Google Fonts with `{thematic}`.
--   See the [scoping
+  - See the [scoping
     article](https://rstudio.github.io/thematic/articles/scope.html) for
     more about scoping `{thematic}` to individual plots.
 
