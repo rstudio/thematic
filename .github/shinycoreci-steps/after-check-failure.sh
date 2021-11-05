@@ -18,9 +18,9 @@ git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com" && \
   git config --local --list
   git fetch --unshallow
 
-git checkout -B ${{ steps.gha_branch.outputs.name }}
+git checkout -B "$FAILED_BRANCH"
 
-git commit tests/ -m 'Add test files - rstudio/thematic@${{ steps.short_sha.outputs.sha }}'
+git commit tests/ -m "Add test files - rstudio/thematic@$SHORT_SHA"
 
 git log -n 4 --pretty=oneline --simplify-by-decoration
 
