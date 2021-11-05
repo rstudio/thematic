@@ -4,7 +4,8 @@
 # for easy checkout and shinytest::view_test_diff()
 SHORT_SHA_="$GITHUB_HEAD_REF$GITHUB_SHA"
 SHORT_SHA=${SHORT_SHA_:0:7}
-R_VERSION=`Rscript -e 'cat(paste0(R.version$major, ".", R.version$minor))'`
+# Using `[[` to work well with windows as it doesn't like `""` in the middle of the expression
+R_VERSION=$(Rscript -e "cat(paste0(R.version[['major']], '.', R.version[['minor']]))")
 
 FAIL_TIME=$(date +%Y_%m_%d_%H_%M)
 FAILED_BRANCH="$FAIL_TIME-$R_VERSION-$RUNNER_OS"
