@@ -65,6 +65,11 @@ Collate:
     'thematic.R'
     'utils.R'
     'view-shinytest.R'
+Config/Needs/website:
+    GGally,
+    RColorBrewer,
+    patchwork,
+    apreshill/quillt
 Config/Needs/check:
     shinytest,
     callr,
