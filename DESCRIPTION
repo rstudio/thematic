@@ -7,7 +7,7 @@ Authors@R: c(
   person("Joe", "Cheng", role = "aut", email = "joe@rstudio.com"),
   person(family = "RStudio", role = "cph")
   )
-Description: 
+Description:
   Theme 'ggplot2', 'lattice', and 'base' graphics based on a few choices, including foreground color, background color, accent color,
   and font family. Fonts that aren't available on the system, but are available via download on 'Google Fonts',
   can be automatically downloaded, cached, and registered for use with the 'showtext' and 'ragg' packages.
@@ -48,8 +48,8 @@ Suggests:
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
-Collate: 
+RoxygenNote: 7.1.2
+Collate:
     'auto.R'
     'base.R'
     'cache.R'
@@ -65,3 +65,20 @@ Collate:
     'thematic.R'
     'utils.R'
     'view-shinytest.R'
+Config/Needs/routine:
+    ggrepel
+Config/Needs/website:
+    GGally,
+    RColorBrewer,
+    patchwork,
+    apreshill/quillt
+Config/Needs/check:
+    shinytest,
+    callr,
+    sf,
+    ggthemes,
+    patchwork,
+    gridExtra,
+    tinytex,
+    devtools,
+    rversions
