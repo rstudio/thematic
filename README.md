@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![R build
-status](https://github.com/rstudio/thematic/workflows/R-CMD-check/badge.svg)](https://github.com/rstudio/thematic)
+status](https://github.com/rstudio/thematic/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/thematic)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/thematic)](https://CRAN.R-project.org/package=thematic)
 [![Lifecycle:
