@@ -1,5 +1,6 @@
 # thematic 0.1.2.9000
 
+* Closed #120: A warning about a `length-one vector` is no longer thrown on R 4.2. (#121)
 * Closed #111: `{thematic}` no longer throws an error when used with `ggiraph::dsvg()`. (#112)
 
 # thematic 0.1.2.1

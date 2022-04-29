@@ -48,7 +48,7 @@ try_register_gfont_cache <- function(family, systemfonts = FALSE) {
   font_file <- function(variant) {
     dir(
       cache_dir, full.names = TRUE,
-      pattern = paste0(variant, "\\.ttf$")
+      pattern = paste0("^", variant, "\\.ttf$")
     )
   }
 
