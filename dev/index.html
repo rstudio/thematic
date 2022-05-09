@@ -113,7 +113,6 @@
 <a class="anchor" aria-label="anchor" href="#thematic-"></a>
 </h1></div>
 <!-- badges: start -->
-
 <p>Simplified theming of <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a>, <a href="http://lattice.r-forge.r-project.org/" class="external-link">lattice</a>, and <code>{base}</code> R graphics. In addition to providing a <a href="https://rstudio.github.io/thematic/articles/custom.html" class="external-link">centralized approach</a> to styling R graphics, <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a> also enables <a href="https://rstudio.github.io/thematic/articles/auto.html" class="external-link">automatic styling</a> of R plots in Shiny, R Markdown, and RStudio.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
@@ -144,6 +143,12 @@
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a></span><span class="op">)</span>
+<span class="co"># In order for auto/custom fonts to work properly, you'll want</span>
+<span class="co"># either the ragg (or showtext) package installed</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ragg.r-lib.org" class="external-link">ragg</a></span><span class="op">)</span>
+
+<span class="co"># If you want `{ragg}` to handle the font rendering in a Shiny app</span>
+<span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>shiny.useragg <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
 
 <span class="co"># Call thematic_shiny() prior to launching the app, to change</span>
 <span class="co"># R plot theming defaults for all the plots generated in the app</span>
@@ -235,9 +240,7 @@
 <h2 id="run-some-examples">Run some examples<a class="anchor" aria-label="anchor" href="#run-some-examples"></a>
 </h2>
 <p>Below is a link to an <strong>RStudio Cloud</strong> instance with some ready to run <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a> examples:</p>
-<div>
-<p><a href="https://rstudio.cloud/project/1208127" target="_blank" class="external-link"> <img src="reference/figures/thematic-test-drive.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;"></a></p>
-</div>
+<div><p><a href="https://rstudio.cloud/project/1208127" target="_blank" class="external-link"> <img src="reference/figures/thematic-test-drive.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;"></a></p></div>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
@@ -272,6 +275,13 @@
 </ul>
 </div>
 
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing thematic</a></li>
+</ul>
+</div>
+
 <div class="developers">
 <h2 data-toc-skip>Developers</h2>
 <ul class="list-unstyled">
@@ -301,7 +311,7 @@
 
 <div class="author">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer>

@@ -78,9 +78,10 @@ derived from the fg, bg, and accent color (defined in thematic_on())."><meta pro
 derived from the <code>fg</code>, <code>bg</code>, and <code>accent</code> color (defined in <code><a href="thematic_on.html">thematic_on()</a></code>).</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">sequential_gradient</span><span class="op">(</span>fg_weight <span class="op">=</span> <span class="fl">0.9</span>, bg_weight <span class="op">=</span> <span class="fl">0</span>, fg_low <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sequential_gradient</span><span class="op">(</span>fg_weight <span class="op">=</span> <span class="fl">0.9</span>, bg_weight <span class="op">=</span> <span class="fl">0</span>, fg_low <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>fg_weight</dt>
@@ -99,11 +100,10 @@ low end of the colorscale (rather than the high end).</p></dd>
     <h2>Value</h2>
     <p>a list of options for passing to the <code>sequential</code> argument of <code><a href="thematic_on.html">thematic_on()</a></code>.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
 <span class="r-in"><span class="co"># Gradient from fg to accent</span></span>
 <span class="r-in"><span class="va">fg</span> <span class="op">&lt;-</span> <span class="fu">sequential_gradient</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, <span class="st">"salmon"</span>, sequential <span class="op">=</span> <span class="va">fg</span><span class="op">)</span></span>
@@ -142,7 +142,7 @@ low end of the colorscale (rather than the high end).</p></dd>
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
       </footer></div>
