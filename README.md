@@ -80,6 +80,12 @@ font:
 library(shiny)
 library(ggplot2)
 library(thematic)
+# In order for auto/custom fonts to work properly, you'll want
+# either the ragg (or showtext) package installed
+library(ragg)
+
+# If you want `{ragg}` to handle the font rendering in a Shiny app
+options(shiny.useragg = TRUE)
 
 # Call thematic_shiny() prior to launching the app, to change
 # R plot theming defaults for all the plots generated in the app
