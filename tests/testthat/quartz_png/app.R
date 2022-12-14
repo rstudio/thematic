@@ -9,7 +9,7 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  output$quartz <- snapshotPreprocessOutput(renderImage({
+  output$quartz <- snapshotPreprocessOutput(renderImage(deleteFile = FALSE, {
     file <- thematic_save_plot(
       qplot(1:10) + ggtitle("quartz png"),
       device = grDevices::png

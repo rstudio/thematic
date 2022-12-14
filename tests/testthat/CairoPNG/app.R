@@ -9,7 +9,7 @@ ui <- fluidPage(
 )
 
 render_image <- function(expr) {
-  snapshotPreprocessOutput(renderImage(expr), function(value) {})
+  snapshotPreprocessOutput(renderImage(expr, deleteFile = FALSE), function(value) {})
 }
 
 server <- function(input, output, session) {
