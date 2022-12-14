@@ -79,7 +79,7 @@ derived from the <code>fg</code>, <code>bg</code>, and <code>accent</code> color
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">sequential_gradient</span><span class="op">(</span>fg_weight <span class="op">=</span> <span class="fl">0.9</span>, bg_weight <span class="op">=</span> <span class="fl">0</span>, fg_low <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sequential_gradient</span><span class="op">(</span>fg_weight <span class="op">=</span> <span class="fl">0.9</span>, bg_weight <span class="op">=</span> <span class="fl">0</span>, fg_low <span class="op">=</span> <span class="cn">TRUE</span>, n <span class="op">=</span> <span class="fl">30</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -87,47 +87,57 @@ derived from the <code>fg</code>, <code>bg</code>, and <code>accent</code> color
     <dl><dt>fg_weight</dt>
 <dd><p>a number (between 0 and 1) defining much of the <code>fg</code>
 color should be mixed into the colorscale.</p></dd>
+
+
 <dt>bg_weight</dt>
 <dd><p>a number (between 0 and 1) defining much of the <code>bg</code>
 color should be mixed into the colorscale.</p></dd>
+
+
 <dt>fg_low</dt>
 <dd><p>if <code>TRUE</code> (the default), the <code>fg</code> color is used for the
 low end of the colorscale (rather than the high end).</p></dd>
+
+
 <dt>n</dt>
 <dd><p>number of color codes.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a list of options for passing to the <code>sequential</code> argument of <code><a href="thematic_on.html">thematic_on()</a></code>.</p>
+    
+
+<p>a list of options for passing to the <code>sequential</code> argument of <code><a href="thematic_on.html">thematic_on()</a></code>.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="co"># Gradient from fg to accent</span></span>
-<span class="r-in"><span class="va">fg</span> <span class="op">&lt;-</span> <span class="fu">sequential_gradient</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, <span class="st">"salmon"</span>, sequential <span class="op">=</span> <span class="va">fg</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html" class="external-link">qplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, color <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Gradient from fg to accent</span></span></span>
+<span class="r-in"><span><span class="va">fg</span> <span class="op">&lt;-</span> <span class="fu">sequential_gradient</span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, <span class="st">"salmon"</span>, sequential <span class="op">=</span> <span class="va">fg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html" class="external-link">qplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, color <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>`qplot()` was deprecated in ggplot2 3.4.0.</span>
 <span class="r-plt img"><img src="sequential_gradient-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Gradient from accent -&gt; bg</span></span>
-<span class="r-in"><span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu">sequential_gradient</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, <span class="st">"salmon"</span>, sequential <span class="op">=</span> <span class="va">bg</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html" class="external-link">qplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, color <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Gradient from accent -&gt; bg</span></span></span>
+<span class="r-in"><span><span class="va">bg</span> <span class="op">&lt;-</span> <span class="fu">sequential_gradient</span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, <span class="st">"salmon"</span>, sequential <span class="op">=</span> <span class="va">bg</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html" class="external-link">qplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, color <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="sequential_gradient-2.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Gradient from mix(accent, fg, 0.5) -&gt; mix(accent, bg, 0.5)</span></span>
-<span class="r-in"><span class="va">mix</span> <span class="op">&lt;-</span> <span class="fu">sequential_gradient</span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, <span class="st">"salmon"</span>, sequential <span class="op">=</span> <span class="va">mix</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html" class="external-link">qplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, color <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Gradient from mix(accent, fg, 0.5) -&gt; mix(accent, bg, 0.5)</span></span></span>
+<span class="r-in"><span><span class="va">mix</span> <span class="op">&lt;-</span> <span class="fu">sequential_gradient</span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, <span class="st">"salmon"</span>, sequential <span class="op">=</span> <span class="va">mix</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html" class="external-link">qplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, color <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="sequential_gradient-3.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
-<span class="r-in"><span class="co"># Use fg (instead of bg) for high end of scale</span></span>
-<span class="r-in"><span class="va">mix_flip</span> <span class="op">&lt;-</span> <span class="fu">sequential_gradient</span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, fg_low <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, <span class="st">"salmon"</span>, sequential <span class="op">=</span> <span class="va">mix_flip</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html" class="external-link">qplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, color <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use fg (instead of bg) for high end of scale</span></span></span>
+<span class="r-in"><span><span class="va">mix_flip</span> <span class="op">&lt;-</span> <span class="fu">sequential_gradient</span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.5</span>, fg_low <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, <span class="st">"salmon"</span>, sequential <span class="op">=</span> <span class="va">mix_flip</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">ggplot2</span><span class="fu">::</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/qplot.html" class="external-link">qplot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, color <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="sequential_gradient-4.png" alt="" width="700" height="433"></span>
-<span class="r-in"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -142,7 +152,7 @@ low end of the colorscale (rather than the high end).</p></dd>
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

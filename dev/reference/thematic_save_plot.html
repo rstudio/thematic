@@ -83,44 +83,55 @@ one of either the showtext or ragg package(s) are installed.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">thematic_save_plot</span><span class="op">(</span>
-  <span class="va">expr</span>,
-  device <span class="op">=</span> <span class="fu">default_device</span><span class="op">(</span><span class="op">)</span>,
-  filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".png"</span><span class="op">)</span>,
-  <span class="va">...</span>
-<span class="op">)</span>
-
-<span class="fu">default_device</span><span class="op">(</span>type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"png"</span>, <span class="st">"svg"</span>, <span class="st">"pdf"</span>, <span class="st">"tiff"</span>, <span class="st">"jpeg"</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">thematic_save_plot</span><span class="op">(</span></span>
+<span>  <span class="va">expr</span>,</span>
+<span>  device <span class="op">=</span> <span class="fu">default_device</span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".png"</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">default_device</span><span class="op">(</span>type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"png"</span>, <span class="st">"svg"</span>, <span class="st">"pdf"</span>, <span class="st">"tiff"</span>, <span class="st">"jpeg"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>expr</dt>
 <dd><p>an expression that produces a plot.</p></dd>
+
+
 <dt>device</dt>
 <dd><p>a graphics device to use for capturing the plot.</p></dd>
+
+
 <dt>filename</dt>
 <dd><p>a filename for the produced plot. The file extension should
 match the relevant <code>device</code>.</p></dd>
+
+
 <dt>...</dt>
 <dd><p>arguments passed along to the graphics <code>device</code>.</p></dd>
+
+
 <dt>type</dt>
 <dd><p>the type of output format</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code>thematic_save_plot()</code> returns the <code>filename</code> of the produced plot
+    
+
+<p><code>thematic_save_plot()</code> returns the <code>filename</code> of the produced plot
 and <code>default_device()</code> returns a graphics device function.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"></span>
-<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a></span><span class="op">)</span></span>
-<span class="r-in"><span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="font_spec.html">font_spec</a></span><span class="op">(</span><span class="st">"Rock Salt"</span>, scale <span class="op">=</span> <span class="fl">1.25</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, font <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu">thematic_save_plot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>, res <span class="op">=</span> <span class="fl">144</span><span class="op">)</span></span>
-<span class="r-in"><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">font</span> <span class="op">&lt;-</span> <span class="fu"><a href="font_spec.html">font_spec</a></span><span class="op">(</span><span class="st">"Rock Salt"</span>, scale <span class="op">=</span> <span class="fl">1.25</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, font <span class="op">=</span> <span class="va">font</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">file</span> <span class="op">&lt;-</span> <span class="fu">thematic_save_plot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>, res <span class="op">=</span> <span class="fl">144</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/interactive.html" class="external-link">interactive</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/browseURL.html" class="external-link">browseURL</a></span><span class="op">(</span><span class="va">file</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -135,7 +146,7 @@ and <code>default_device()</code> returns a graphics device function.</p>
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

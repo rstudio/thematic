@@ -87,21 +87,25 @@ for use the <strong>showtext</strong> and <strong>ragg</strong> packages.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">font_spec</span><span class="op">(</span>
-  families <span class="op">=</span> <span class="st">""</span>,
-  scale <span class="op">=</span> <span class="fl">1</span>,
-  install <span class="op">=</span> <span class="fu">is_installed</span><span class="op">(</span><span class="st">"ragg"</span><span class="op">)</span> <span class="op">||</span> <span class="fu">is_installed</span><span class="op">(</span><span class="st">"showtext"</span><span class="op">)</span>,
-  update <span class="op">=</span> <span class="cn">FALSE</span>,
-  quiet <span class="op">=</span> <span class="cn">TRUE</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">font_spec</span><span class="op">(</span></span>
+<span>  families <span class="op">=</span> <span class="st">""</span>,</span>
+<span>  scale <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  install <span class="op">=</span> <span class="fu">is_installed</span><span class="op">(</span><span class="st">"ragg"</span><span class="op">)</span> <span class="op">||</span> <span class="fu">is_installed</span><span class="op">(</span><span class="st">"showtext"</span><span class="op">)</span>,</span>
+<span>  update <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  quiet <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>families</dt>
 <dd><p>a character vector of font families.</p></dd>
+
+
 <dt>scale</dt>
 <dd><p>numerical constant applied to font sizes.</p></dd>
+
+
 <dt>install</dt>
 <dd><p>whether to download and register font <code>families</code>
 available via <a href="https://fonts.google.com/" class="external-link">Google Fonts</a> (but unavailable to R).
@@ -110,17 +114,24 @@ can be managed via <code><a href="font_cache_set.html">font_cache_set()</a></cod
 the <strong>showtext</strong> and <strong>ragg</strong> packages. If installation fails with
 a valid internet connection, you may need to fetch the latest Google
 Font information prior to installation (i.e., set <code>update = TRUE</code>).</p></dd>
+
+
 <dt>update</dt>
 <dd><p>if <code>TRUE</code>, the latest Google Fonts are fetched and
 any out-dated font cache is updated. Fetching the latest fonts requires
 a Google Font API key (one is bundled with the package, but you can
 set your own via an environment variable, <code>GFONT_KEY</code>).</p></dd>
+
+
 <dt>quiet</dt>
 <dd><p>whether to suppress download messages.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>the input arguments as a list.</p>
+    
+
+<p>the input arguments as a list.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -139,7 +150,7 @@ set your own via an environment variable, <code>GFONT_KEY</code>).</p></dd>
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

@@ -85,45 +85,58 @@ as well as the <code>priority</code> that certain information should receive.</p
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">auto_config</span><span class="op">(</span>
-  bg <span class="op">=</span> <span class="cn">NULL</span>,
-  fg <span class="op">=</span> <span class="cn">NULL</span>,
-  accent <span class="op">=</span> <span class="cn">NULL</span>,
-  font <span class="op">=</span> <span class="cn">NULL</span>,
-  priority <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"shiny"</span>, <span class="st">"config"</span>, <span class="st">"bslib"</span>, <span class="st">"rstudio"</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu">auto_config_set</span><span class="op">(</span><span class="va">config</span><span class="op">)</span>
-
-<span class="fu">auto_config_get</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">auto_config</span><span class="op">(</span></span>
+<span>  bg <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  fg <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  accent <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  font <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  priority <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"shiny"</span>, <span class="st">"config"</span>, <span class="st">"bslib"</span>, <span class="st">"rstudio"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">auto_config_set</span><span class="op">(</span><span class="va">config</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">auto_config_get</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>bg</dt>
 <dd><p>a background color.</p></dd>
+
+
 <dt>fg</dt>
 <dd><p>a foreground color.</p></dd>
+
+
 <dt>accent</dt>
 <dd><p>a color for making certain graphical markers 'stand out'
 (e.g., the fitted line color for <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">ggplot2::geom_smooth()</a></code>).
 Can be 2 colors for lattice (stroke vs fill accent).</p></dd>
+
+
 <dt>font</dt>
 <dd><p>a <code><a href="font_spec.html">font_spec()</a></code> object. If missing, font defaults are not altered.</p></dd>
+
+
 <dt>priority</dt>
 <dd><p>the order of priority to use when resolving auto values.
-Possible values include:</p><ul><li><p><code>"shiny"</code>: use <code><a href="https://rdrr.io/pkg/shiny/man/getCurrentOutputInfo.html" class="external-link">shiny::getCurrentOutputInfo()</a></code> values (if any) to resolve auto values.</p></li>
+Possible values include:</p><ul><li><p><code>"shiny"</code>: use <code><a href="https://shiny.rstudio.com/reference/shiny/latest/getCurrentOutputInfo.html" class="external-link">shiny::getCurrentOutputInfo()</a></code> values (if any) to resolve auto values.</p></li>
 <li><p><code>"config"</code>: use the values provided to this function (if any) to resolve auto values.</p></li>
 <li><p><code>"bslib"</code>: use <code><a href="https://rstudio.github.io/bslib/reference/bs_get_variables.html" class="external-link">bslib::bs_get_variables()</a></code> values (if any)
 to resolve auto values (only relevant when knitr is in progress).</p></li>
-<li><p><code>"rstudio"</code>: use <code><a href="https://rdrr.io/pkg/rstudioapi/man/getThemeInfo.html" class="external-link">rstudioapi::getThemeInfo()</a></code> values (if any) to resolve auto values.</p></li>
+<li><p><code>"rstudio"</code>: use <code><a href="https://rstudio.github.io/rstudioapi/reference/getThemeInfo.html" class="external-link">rstudioapi::getThemeInfo()</a></code> values (if any) to resolve auto values.</p></li>
 </ul></dd>
+
+
 <dt>config</dt>
 <dd><p>a <code>auto_config()</code> object.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>a config (list-like) object.</p>
+    
+
+<p>a config (list-like) object.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -139,14 +152,14 @@ call <code><a href="thematic_on.html">thematic_on()</a></code> within their docu
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="va">old_config</span> <span class="op">&lt;-</span> <span class="fu">auto_config_set</span><span class="op">(</span><span class="fu">auto_config</span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="thematic_with_theme.html">thematic_with_theme</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="fu"><a href="thematic_on.html">thematic_theme</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">{</span></span>
-<span class="r-in">    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
-<span class="r-in"> <span class="op">}</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">old_config</span> <span class="op">&lt;-</span> <span class="fu">auto_config_set</span><span class="op">(</span><span class="fu">auto_config</span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="thematic_with_theme.html">thematic_with_theme</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="thematic_on.html">thematic_theme</a></span><span class="op">(</span><span class="op">)</span>, <span class="op">{</span></span></span>
+<span class="r-in"><span>    <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span> <span class="op">}</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>thematic was unable to resolve `accent='auto'`. Try providing an actual color (or `NA`) to the `accent` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span>
 <span class="r-plt img"><img src="auto-config-1.png" alt="" width="700" height="433"></span>
-<span class="r-in"><span class="fu">auto_config_set</span><span class="op">(</span><span class="va">old_config</span><span class="op">)</span></span>
+<span class="r-in"><span><span class="fu">auto_config_set</span><span class="op">(</span><span class="va">old_config</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -161,7 +174,7 @@ call <code><a href="thematic_on.html">thematic_on()</a></code> within their docu
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
