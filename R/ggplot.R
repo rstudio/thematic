@@ -88,12 +88,21 @@ ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
 
   # Modify defaults
   Map(function(geom, user_default) {
-    geom$default_aes$colour <- adjust_color(user_default$colour, bg, fg, accent)
-    geom$default_aes$fill <- adjust_color(user_default$fill, bg, fg, accent)
+    ggplot2::update_geom_defaults(
+      geom, list(
+        colour = adjust_color(user_default$colour, bg, fg, accent),
+        fill = adjust_color(user_default$fill, bg, fg, accent)
+      )
+    )
+
     # i.e., GeomText/GeomLabel
     if ("family" %in% names(geom$default_aes)) {
-      geom$default_aes$family <- theme$font$family
-      geom$default_aes$size <- user_default$size * theme$font$scale
+      ggplot2::update_geom_defaults(
+        geom, list(
+          family = theme$font$family,
+          size = user_default$size * theme$font$scale
+        )
+      )
     }
   }, geoms, user_defaults)
 
