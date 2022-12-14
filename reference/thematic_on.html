@@ -27,14 +27,14 @@ section below).'><meta property="og:image" content="/logo.png"><meta name="twitt
 
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">thematic</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
 
       <!--<div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">thematic</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of  <a href=""></a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
         </div>
       </div>-->
     </div>
@@ -71,7 +71,7 @@ section below).'><meta property="og:image" content="/logo.png"><meta name="twitt
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Enable (or disable) simplified theming of R graphics.</h1>
-    <small class="dont-index">Source: <a href="NA/NA/NA/blob/master/R/thematic.R"><code>R/thematic.R</code></a></small>
+    <small class="dont-index">Source: <a href="NA/NA/NA/blob/HEAD/R/thematic.R"><code>R/thematic.R</code></a></small>
     <div class="hidden name"><code>thematic_on.Rd</code></div>
     </div>
 
@@ -82,82 +82,100 @@ these options can automatically resolve to relevant CSS styles (see the "Auto th
 section below).</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>
-  bg <span class="op">=</span> <span class="st">"auto"</span>,
-  fg <span class="op">=</span> <span class="st">"auto"</span>,
-  accent <span class="op">=</span> <span class="st">"auto"</span>,
-  font <span class="op">=</span> <span class="cn">NA</span>,
-  sequential <span class="op">=</span> <span class="fu"><a href="../reference/sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span><span class="op">)</span>,
-  qualitative <span class="op">=</span> <span class="fu"><a href="../reference/okabe_ito.html">okabe_ito</a></span><span class="op">(</span><span class="op">)</span>,
-  inherit <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_on.html">thematic_off</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_on.html">thematic_theme</a></span><span class="op">(</span>
-  bg <span class="op">=</span> <span class="st">"auto"</span>,
-  fg <span class="op">=</span> <span class="st">"auto"</span>,
-  accent <span class="op">=</span> <span class="st">"auto"</span>,
-  font <span class="op">=</span> <span class="cn">NA</span>,
-  sequential <span class="op">=</span> <span class="fu"><a href="../reference/sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span><span class="op">)</span>,
-  qualitative <span class="op">=</span> <span class="fu"><a href="../reference/okabe_ito.html">okabe_ito</a></span><span class="op">(</span><span class="op">)</span>,
-  inherit <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span>
-  bg <span class="op">=</span> <span class="st">"auto"</span>,
-  fg <span class="op">=</span> <span class="st">"auto"</span>,
-  accent <span class="op">=</span> <span class="st">"auto"</span>,
-  font <span class="op">=</span> <span class="cn">NA</span>,
-  sequential <span class="op">=</span> <span class="fu"><a href="../reference/sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span><span class="op">)</span>,
-  qualitative <span class="op">=</span> <span class="fu"><a href="../reference/okabe_ito.html">okabe_ito</a></span><span class="op">(</span><span class="op">)</span>,
-  inherit <span class="op">=</span> <span class="cn">FALSE</span>,
-  session <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/domains.html" class="external-link">getDefaultReactiveDomain</a></span><span class="op">(</span><span class="op">)</span>
-<span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_on.html">thematic_rmd</a></span><span class="op">(</span>
-  bg <span class="op">=</span> <span class="st">"auto"</span>,
-  fg <span class="op">=</span> <span class="st">"auto"</span>,
-  accent <span class="op">=</span> <span class="st">"auto"</span>,
-  font <span class="op">=</span> <span class="cn">NA</span>,
-  sequential <span class="op">=</span> <span class="fu"><a href="../reference/sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span><span class="op">)</span>,
-  qualitative <span class="op">=</span> <span class="fu"><a href="../reference/okabe_ito.html">okabe_ito</a></span><span class="op">(</span><span class="op">)</span>,
-  inherit <span class="op">=</span> <span class="cn">FALSE</span>
-<span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">thematic_on</span><span class="op">(</span></span>
+<span>  bg <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  fg <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  accent <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  font <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  sequential <span class="op">=</span> <span class="fu"><a href="sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  qualitative <span class="op">=</span> <span class="fu"><a href="okabe_ito.html">okabe_ito</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  inherit <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">thematic_off</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">thematic_theme</span><span class="op">(</span></span>
+<span>  bg <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  fg <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  accent <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  font <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  sequential <span class="op">=</span> <span class="fu"><a href="sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  qualitative <span class="op">=</span> <span class="fu"><a href="okabe_ito.html">okabe_ito</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  inherit <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">thematic_shiny</span><span class="op">(</span></span>
+<span>  bg <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  fg <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  accent <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  font <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  sequential <span class="op">=</span> <span class="fu"><a href="sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  qualitative <span class="op">=</span> <span class="fu"><a href="okabe_ito.html">okabe_ito</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  inherit <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  session <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/domains.html" class="external-link">getDefaultReactiveDomain</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">thematic_rmd</span><span class="op">(</span></span>
+<span>  bg <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  fg <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  accent <span class="op">=</span> <span class="st">"auto"</span>,</span>
+<span>  font <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  sequential <span class="op">=</span> <span class="fu"><a href="sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  qualitative <span class="op">=</span> <span class="fu"><a href="okabe_ito.html">okabe_ito</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  inherit <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>bg</th>
-      <td><p>a background color.</p></td>
-    </tr><tr><th>fg</th>
-      <td><p>a foreground color.</p></td>
-    </tr><tr><th>accent</th>
-      <td><p>a color for making certain graphical markers 'stand out'
-(e.g., the fitted line color for <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">ggplot2::geom_smooth()</a></code>).
-Can be 2 colors for lattice (stroke vs fill accent).</p></td>
-    </tr><tr><th>font</th>
-      <td><p>a <code><a href="font_spec.html">font_spec()</a></code> object. If missing, font defaults are not altered.</p></td>
-    </tr><tr><th>sequential</th>
-      <td><p>a color palette for graphical markers that encode
-numeric values. Can be a vector of color codes or a
-<code><a href="sequential_gradient.html">sequential_gradient()</a></code> object.</p></td>
-    </tr><tr><th>qualitative</th>
-      <td><p>a color palette for graphical markers that encode
-qualitative values (won't be used in ggplot2 when the number of data
-levels exceeds the max allowed colors). Defaults to <code><a href="okabe_ito.html">okabe_ito()</a></code>.</p></td>
-    </tr><tr><th>inherit</th>
-      <td><p>should non-specified values inherit from the previous theme?</p></td>
-    </tr><tr><th>session</th>
-      <td><p>see <code><a href="https://rdrr.io/pkg/shiny/man/onStop.html" class="external-link">shiny::onStop()</a></code>.</p></td>
-    </tr></table></div>
+    <dl><dt>bg</dt>
+<dd><p>a background color.</p></dd>
 
-    <div id="ref-sections">
+
+<dt>fg</dt>
+<dd><p>a foreground color.</p></dd>
+
+
+<dt>accent</dt>
+<dd><p>a color for making certain graphical markers 'stand out'
+(e.g., the fitted line color for <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">ggplot2::geom_smooth()</a></code>).
+Can be 2 colors for lattice (stroke vs fill accent).</p></dd>
+
+
+<dt>font</dt>
+<dd><p>a <code><a href="font_spec.html">font_spec()</a></code> object. If missing, font defaults are not altered.</p></dd>
+
+
+<dt>sequential</dt>
+<dd><p>a color palette for graphical markers that encode
+numeric values. Can be a vector of color codes or a
+<code><a href="sequential_gradient.html">sequential_gradient()</a></code> object.</p></dd>
+
+
+<dt>qualitative</dt>
+<dd><p>a color palette for graphical markers that encode
+qualitative values (won't be used in ggplot2 when the number of data
+levels exceeds the max allowed colors). Defaults to <code><a href="okabe_ito.html">okabe_ito()</a></code>.</p></dd>
+
+
+<dt>inherit</dt>
+<dd><p>should non-specified values inherit from the previous theme?</p></dd>
+
+
+<dt>session</dt>
+<dd><p>see <code><a href="https://shiny.rstudio.com/reference/shiny/latest/onStop.html" class="external-link">shiny::onStop()</a></code>.</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p><code><a href="../reference/thematic_on.html">thematic_theme()</a></code> returns a theme object as a list (which can be
+    
+
+<p><code>thematic_theme()</code> returns a theme object as a list (which can be
 activated with <code><a href="thematic_with_theme.html">thematic_with_theme()</a></code> or <code><a href="thematic_with_theme.html">thematic_set_theme()</a></code>).</p>
-<p><code><a href="../reference/thematic_on.html">thematic_on()</a></code>, <code><a href="../reference/thematic_on.html">thematic_off()</a></code>, and <code><a href="../reference/thematic_on.html">thematic_shiny()</a></code> all return
+
+
+<p><code>thematic_on()</code>, <code>thematic_off()</code>, and <code>thematic_shiny()</code> all return
 the previous global theme.</p>
     </div>
     <div id="auto-theming">
@@ -176,13 +194,13 @@ case, auto resolution logic can be customized (see <code><a href="auto-config.ht
     
 
 
-<p><code><a href="../reference/thematic_on.html">thematic_on()</a></code> enables thematic in a global fashion (that is, it impacts all
-future plots, up until <code><a href="../reference/thematic_on.html">thematic_off()</a></code> is called). To use thematic in local fashion,
-first create a theme with <code><a href="../reference/thematic_on.html">thematic_theme()</a></code>, then provide it to <code><a href="thematic_with_theme.html">thematic_with_theme()</a></code>
+<p><code>thematic_on()</code> enables thematic in a global fashion (that is, it impacts all
+future plots, up until <code>thematic_off()</code> is called). To use thematic in local fashion,
+first create a theme with <code>thematic_theme()</code>, then provide it to <code><a href="thematic_with_theme.html">thematic_with_theme()</a></code>
 (or similar). To use thematic in a global fashion up until a <strong>shiny</strong>
-app exits, use <code><a href="../reference/thematic_on.html">thematic_shiny()</a></code> (which cleans up after itself once the next shiny
-app that exits using <code><a href="https://rdrr.io/pkg/shiny/man/onStop.html" class="external-link">shiny::onStop()</a></code>). To use thematic in a global fashion up until
-a <strong>rmarkdown</strong> document finishes rendering, use <code><a href="../reference/thematic_on.html">thematic_rmd()</a></code>.</p>
+app exits, use <code>thematic_shiny()</code> (which cleans up after itself once the next shiny
+app that exits using <code><a href="https://shiny.rstudio.com/reference/shiny/latest/onStop.html" class="external-link">shiny::onStop()</a></code>). To use thematic in a global fashion up until
+a <strong>rmarkdown</strong> document finishes rendering, use <code>thematic_rmd()</code>.</p>
     </div>
     <div id="color-values">
     <h2>Color values</h2>
@@ -190,51 +208,49 @@ a <strong>rmarkdown</strong> document finishes rendering, use <code><a href="../
 
 
 <p>Colors (e.g., <code>bg</code>, <code>fg</code>, <code>accent</code>) may be any value understood by <code><a href="https://rdrr.io/r/grDevices/col2rgb.html" class="external-link">col2rgb()</a></code>
-or <code><a href="https://rdrr.io/pkg/htmltools/man/parseCssColors.html" class="external-link">htmltools::parseCssColors()</a></code> (i.e., may be any valid R or CSS color string).</p>
+or <code><a href="https://rstudio.github.io/htmltools/reference/parseCssColors.html" class="external-link">htmltools::parseCssColors()</a></code> (i.e., may be any valid R or CSS color string).</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
     <div class="dont-index"><p><code><a href="sequential_gradient.html">sequential_gradient()</a></code>, <code><a href="thematic_with_theme.html">thematic_with_theme()</a></code>, <code><a href="thematic_save_plot.html">thematic_save_plot()</a></code></p></div>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># simple dark mode</span>
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
-
-<span class="fu">lattice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html" class="external-link">show.settings</a></span><span class="op">(</span><span class="op">)</span>
-
-
-<span class="co"># use any hex color string</span>
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"#444444"</span>, <span class="st">"#e4e4e4"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
-
-<span class="fu">lattice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html" class="external-link">show.settings</a></span><span class="op">(</span><span class="op">)</span>
-
-
-<span class="co"># disables thematic (also restores global state)</span>
-<span class="fu"><a href="../reference/thematic_on.html">thematic_off</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span>
-
-<span class="fu">lattice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html" class="external-link">show.settings</a></span><span class="op">(</span><span class="op">)</span>
-
-
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"darkblue"</span>, <span class="st">"skyblue"</span>, <span class="st">"orange"</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">volcano</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_option</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">lattice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html" class="external-link">show.settings</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_on.html">thematic_off</a></span><span class="op">(</span><span class="op">)</span>
-
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># simple dark mode</span></span></span>
+<span class="r-in"><span><span class="fu">thematic_on</span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">lattice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html" class="external-link">show.settings</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># use any hex color string</span></span></span>
+<span class="r-in"><span><span class="fu">thematic_on</span><span class="op">(</span><span class="st">"#444444"</span>, <span class="st">"#e4e4e4"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-4.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-5.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">lattice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html" class="external-link">show.settings</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-6.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># disables thematic (also restores global state)</span></span></span>
+<span class="r-in"><span><span class="fu">thematic_off</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-7.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">lattice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html" class="external-link">show.settings</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-8.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">thematic_on</span><span class="op">(</span><span class="st">"darkblue"</span>, <span class="st">"skyblue"</span>, <span class="st">"orange"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">volcano</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-9.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">volcano</span>, col <span class="op">=</span> <span class="fu"><a href="thematic_with_theme.html">thematic_get_option</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-10.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">lattice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html" class="external-link">show.settings</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_on-11.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span><span class="fu">thematic_off</span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -249,7 +265,7 @@ or <code><a href="https://rdrr.io/pkg/htmltools/man/parseCssColors.html" class="
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>

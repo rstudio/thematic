@@ -25,14 +25,14 @@ thematic_theme()."><meta property="og:image" content="/logo.png"><meta name="twi
 
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">thematic</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
       </span>
 
       <!--<div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">thematic</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of  <a href=""></a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.2.9000</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.3</span>
         </div>
       </div>-->
     </div>
@@ -69,7 +69,7 @@ thematic_theme()."><meta property="og:image" content="/logo.png"><meta name="twi
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Tools for getting and restoring global state</h1>
-    <small class="dont-index">Source: <a href="NA/NA/NA/blob/master/R/thematic.R"><code>R/thematic.R</code></a></small>
+    <small class="dont-index">Source: <a href="NA/NA/NA/blob/HEAD/R/thematic.R"><code>R/thematic.R</code></a></small>
     <div class="hidden name"><code>thematic_with_theme.Rd</code></div>
     </div>
 
@@ -78,96 +78,108 @@ thematic_theme()."><meta property="og:image" content="/logo.png"><meta name="twi
 <code><a href="thematic_on.html">thematic_theme()</a></code>.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/thematic_with_theme.html">thematic_with_theme</a></span><span class="op">(</span><span class="va">theme</span>, <span class="va">expr</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_with_theme.html">thematic_local_theme</a></span><span class="op">(</span><span class="va">theme</span>, .local_envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_with_theme.html">thematic_set_theme</a></span><span class="op">(</span><span class="va">theme</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_theme</a></span><span class="op">(</span>resolve <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_option</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">""</span>, default <span class="op">=</span> <span class="cn">NULL</span>, resolve <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_mixture</a></span><span class="op">(</span>amounts <span class="op">=</span> <span class="fl">0.5</span>, default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></code></pre></div>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">thematic_with_theme</span><span class="op">(</span><span class="va">theme</span>, <span class="va">expr</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">thematic_local_theme</span><span class="op">(</span><span class="va">theme</span>, .local_envir <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sys.parent.html" class="external-link">parent.frame</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">thematic_set_theme</span><span class="op">(</span><span class="va">theme</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">thematic_get_theme</span><span class="op">(</span>resolve <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">thematic_get_option</span><span class="op">(</span>name <span class="op">=</span> <span class="st">""</span>, default <span class="op">=</span> <span class="cn">NULL</span>, resolve <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">thematic_get_mixture</span><span class="op">(</span>amounts <span class="op">=</span> <span class="fl">0.5</span>, default <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <table class="ref-arguments"><colgroup><col class="name"><col class="desc"></colgroup><tr><th>theme</th>
-      <td><p>a <code><a href="thematic_on.html">thematic_theme()</a></code> object (or a return value of <a href="thematic_on.html">thematic_on</a>/<code><a href="../reference/thematic_with_theme.html">thematic_get_theme()</a></code>)
-or <code>NULL</code> (in which case <code><a href="thematic_on.html">thematic_off()</a></code> is called).</p></td>
-    </tr><tr><th>expr</th>
-      <td><p>R code that produces a plot.</p></td>
-    </tr><tr><th>.local_envir</th>
-      <td><p>The environment to use for scoping.</p></td>
-    </tr><tr><th>resolve</th>
-      <td><p>whether or not <code>'auto'</code> values should be resolved before returning</p></td>
-    </tr><tr><th>name</th>
-      <td><p>a theme element name (e.g., <code>fg</code>, <code>bg</code>, etc.)</p></td>
-    </tr><tr><th>default</th>
-      <td><p>a default value to return in the event no thematic theme is active.</p></td>
-    </tr><tr><th>amounts</th>
-      <td><p>value(s) between 0 and 1 specifying how much to mix <code>bg</code> (0) and <code>fg</code> (1).</p></td>
-    </tr></table></div>
+    <dl><dt>theme</dt>
+<dd><p>a <code><a href="thematic_on.html">thematic_theme()</a></code> object (or a return value of <a href="thematic_on.html">thematic_on</a>/<code>thematic_get_theme()</code>)
+or <code>NULL</code> (in which case <code><a href="thematic_on.html">thematic_off()</a></code> is called).</p></dd>
 
-    <div id="ref-sections">
+
+<dt>expr</dt>
+<dd><p>R code that produces a plot.</p></dd>
+
+
+<dt>.local_envir</dt>
+<dd><p>The environment to use for scoping.</p></dd>
+
+
+<dt>resolve</dt>
+<dd><p>whether or not <code>'auto'</code> values should be resolved before returning</p></dd>
+
+
+<dt>name</dt>
+<dd><p>a theme element name (e.g., <code>fg</code>, <code>bg</code>, etc.)</p></dd>
+
+
+<dt>default</dt>
+<dd><p>a default value to return in the event no thematic theme is active.</p></dd>
+
+
+<dt>amounts</dt>
+<dd><p>value(s) between 0 and 1 specifying how much to mix <code>bg</code> (0) and <code>fg</code> (1).</p></dd>
+
+</dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>the result of <code>expr</code>.</p>
+    
+
+<p>the result of <code>expr</code>.</p>
     </div>
     <div id="functions">
     <h2>Functions</h2>
     
-<ul><li><p><code>thematic_with_theme</code>: similar to <code><a href="thematic_on.html">thematic_on()</a></code>, but for an single plot.</p></li>
-<li><p><code>thematic_local_theme</code>: similar to <code><a href="../reference/thematic_with_theme.html">thematic_with_theme()</a></code>, but de-couples
+<ul><li><p><code>thematic_with_theme()</code>: similar to <code><a href="thematic_on.html">thematic_on()</a></code>, but for an single plot.</p></li>
+<li><p><code>thematic_local_theme()</code>: similar to <code>thematic_with_theme()</code>, but de-couples
 the theme from the plot expression.</p></li>
-<li><p><code>thematic_set_theme</code>: set a given <code>theme</code> object as the current theme.</p></li>
-<li><p><code>thematic_get_theme</code>: obtain the current <code>theme</code>.</p></li>
-<li><p><code>thematic_get_option</code>: obtain a particular <code>theme</code> option (and provide a <code>default</code>
+<li><p><code>thematic_set_theme()</code>: set a given <code>theme</code> object as the current theme.</p></li>
+<li><p><code>thematic_get_theme()</code>: obtain the current <code>theme</code>.</p></li>
+<li><p><code>thematic_get_option()</code>: obtain a particular <code>theme</code> option (and provide a <code>default</code>
 if no <code>theme</code> is active).</p></li>
-<li><p><code>thematic_get_mixture</code>: obtain a mixture of the current <code>theme</code>'s <code>bg</code> and <code>fg</code>.</p></li>
+<li><p><code>thematic_get_mixture()</code>: obtain a mixture of the current <code>theme</code>'s <code>bg</code> and <code>fg</code>.</p></li>
 </ul></div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="downlit sourceCode r">
-<code class="sourceCode R">
-<span class="co"># Use thematic_with_theme() for a one-time use of thematic</span>
-<span class="fu"><a href="../reference/thematic_with_theme.html">thematic_with_theme</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/thematic_on.html">thematic_theme</a></span><span class="op">(</span><span class="st">"darkblue"</span>, <span class="st">"skyblue"</span>, accent <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>,
-  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_option</a></span><span class="op">(</span><span class="st">"accent"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span>
-<span class="op">)</span>
-
-
-<span class="co"># Use thematic_set_theme() if doing something more complicated</span>
-<span class="co"># like programming on top thematic (without causing side effects)</span>
-<span class="va">my_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span>, <span class="va">las</span> <span class="op">=</span> <span class="fl">3</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
-  <span class="va">old_theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="../reference/thematic_with_theme.html">thematic_set_theme</a></span><span class="op">(</span><span class="va">old_theme</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  <span class="va">opts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>las <span class="op">=</span> <span class="va">las</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">opts</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
-  <span class="co"># Imagine some more customization with ...</span>
-  <span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span>
-<span class="op">}</span>
-<span class="fu">my_plot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-
-
-<span class="fu"><a href="../reference/thematic_on.html">thematic_off</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_option</a></span><span class="op">(</span><span class="st">"bg"</span>, <span class="st">"white"</span><span class="op">)</span>
-<span class="co">#&gt; [1] "white"</span>
-<span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>
-<span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_option</a></span><span class="op">(</span><span class="st">"bg"</span>, <span class="st">"white"</span><span class="op">)</span>
-<span class="co">#&gt; Warning: thematic was unable to resolve `fg='auto'`. Try providing an actual color (or `NA`) to the `fg` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span>
-<span class="co">#&gt; [1] "red"</span>
-<span class="fu"><a href="../reference/thematic_on.html">thematic_off</a></span><span class="op">(</span><span class="op">)</span>
-
-<span class="fu"><a href="../reference/thematic_with_theme.html">thematic_with_theme</a></span><span class="op">(</span>
-  <span class="fu"><a href="../reference/thematic_on.html">thematic_theme</a></span><span class="op">(</span><span class="st">"darkblue"</span>, <span class="st">"skyblue"</span><span class="op">)</span>,
-  <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/show_col.html" class="external-link">show_col</a></span><span class="op">(</span><span class="fu"><a href="../reference/thematic_with_theme.html">thematic_get_mixture</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="op">)</span>
-
-
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use thematic_with_theme() for a one-time use of thematic</span></span></span>
+<span class="r-in"><span><span class="fu">thematic_with_theme</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="thematic_on.html">thematic_theme</a></span><span class="op">(</span><span class="st">"darkblue"</span>, <span class="st">"skyblue"</span>, accent <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, col <span class="op">=</span> <span class="fu">thematic_get_option</span><span class="op">(</span><span class="st">"accent"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_with_theme-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Use thematic_set_theme() if doing something more complicated</span></span></span>
+<span class="r-in"><span><span class="co"># like programming on top thematic (without causing side effects)</span></span></span>
+<span class="r-in"><span><span class="va">my_plot</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">expr</span>, <span class="va">las</span> <span class="op">=</span> <span class="fl">3</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="va">old_theme</span> <span class="op">&lt;-</span> <span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu">thematic_set_theme</span><span class="op">(</span><span class="va">old_theme</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="va">opts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>las <span class="op">=</span> <span class="va">las</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html" class="external-link">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="va">opts</span><span class="op">)</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># Imagine some more customization with ...</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/force.html" class="external-link">force</a></span><span class="op">(</span><span class="va">expr</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="fu">my_plot</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_with_theme-2.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="thematic_on.html">thematic_off</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">thematic_get_option</span><span class="op">(</span><span class="st">"bg"</span>, <span class="st">"white"</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "white"</span>
+<span class="r-in"><span><span class="fu"><a href="thematic_on.html">thematic_on</a></span><span class="op">(</span>bg <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">thematic_get_option</span><span class="op">(</span><span class="st">"bg"</span>, <span class="st">"white"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>thematic was unable to resolve `fg='auto'`. Try providing an actual color (or `NA`) to the `fg` argument of `thematic_on()`. By the way, 'auto' is only officially supported in `shiny::renderPlot()`, some rmarkdown scenarios (specifically, `html_document()` with `theme!=NULL`), in RStudio, or if `auto_config_set()` is used.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "red"</span>
+<span class="r-in"><span><span class="fu"><a href="thematic_on.html">thematic_off</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">thematic_with_theme</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="thematic_on.html">thematic_theme</a></span><span class="op">(</span><span class="st">"darkblue"</span>, <span class="st">"skyblue"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/show_col.html" class="external-link">show_col</a></span><span class="op">(</span><span class="fu">thematic_get_mixture</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="thematic_with_theme-3.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -182,7 +194,7 @@ if no <code>theme</code> is active).</p></li>
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer></div>
