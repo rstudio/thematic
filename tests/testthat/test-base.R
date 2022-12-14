@@ -1,5 +1,3 @@
-context("base")
-
 
 test_that("base baselines", {
   thematic_local_theme(
