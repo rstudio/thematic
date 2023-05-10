@@ -258,7 +258,8 @@ rs_theme_colors <- function() {
 
   # Hopefully someday this'll return font/accent info
   # https://github.com/rstudio/rstudioapi/issues/174
-  info <- getThemeInfo()
+  info <- tryCatch(getThemeInfo(), error = function(e) NULL)
+  if (is.null(info)) return(NULL)
 
   # These colors were taken manually from the theme preview
   # (they are the token color)
