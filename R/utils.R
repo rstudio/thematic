@@ -87,6 +87,23 @@ in_rstudio_gd <- function(dev_name = infer_device()) {
   "RStudioGD" %in% dev_name
 }
 
+try_get_theme_info <- function() {
+  if (!is_rstudio()) return(NULL)
+  if (!rstudioapi::hasFun("getThemeInfo")) return(NULL)
+
+  tryCatch(
+    getThemeInfo(),
+    error = function(err) {
+      warning(
+        "Could not get current IDE theme info: ",
+        conditionMessage(err),
+        call. = FALSE
+      )
+      NULL
+    }
+  )
+}
+
 # If the current device is null, try to open the default device
 # infer what it'll be
 infer_device <- function() {
