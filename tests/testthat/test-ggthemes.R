@@ -1,4 +1,3 @@
-context("ggthemes")
 
 skip_if_not_installed("ggplot2")
 
@@ -14,6 +13,8 @@ test_that("works as expected with global ggthemes", {
   expect_doppelganger("ggtheme-minimal", qplot(1:10))
   thematic_off()
   expect_doppelganger("ggtheme-minimal-off", qplot(1:10))
+
+  expect_true(FALSE)
 })
 
 

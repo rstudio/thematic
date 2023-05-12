@@ -1,4 +1,3 @@
-context("lattice")
 
 skip_if_not_installed("lattice")
 library(lattice)

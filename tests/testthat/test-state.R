@@ -1,4 +1,3 @@
-context("state management")
 
 test_that("thematic_with_theme()", {
   expect_null(thematic_get_theme())

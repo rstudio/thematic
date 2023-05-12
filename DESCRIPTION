@@ -65,6 +65,7 @@ Collate:
     'thematic.R'
     'utils.R'
     'view-shinytest.R'
+Config/testthat/edition: 3
 Config/Needs/routine:
     ggrepel
 Config/Needs/website:
