@@ -1,4 +1,4 @@
-# thematic 0.1.2.9000
+# thematic 0.1.3
 
 * Closed #129: Fixed a bug with not being able override thematic inside geom_sf(). (#129)
 * Closed #120: A warning about a `length-one vector` is no longer thrown on R 4.2. (#121)
