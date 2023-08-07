@@ -81,7 +81,12 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-        
+        <li>
+  <a href="https://github.com/rstudio/thematic/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
 <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
@@ -98,15 +103,16 @@
 
       
 
-      </header><script src="fonts_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Font rendering</h1>
-                        <h4 data-toc-skip class="author">Carson Sievert</h4>
+                        <h4 data-toc-skip class="author">Carson
+Sievert</h4>
             
-            <h4 data-toc-skip class="date">2022-12-14</h4>
+            <h4 data-toc-skip class="date">2023-08-07</h4>
       
-      <small class="dont-index">Source: <a href="NA/NA/NA/blob/HEAD/vignettes/fonts.Rmd"><code>vignettes/fonts.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/HEAD/vignettes/fonts.Rmd" class="external-link"><code>vignettes/fonts.Rmd</code></a></small>
       <div class="hidden name"><code>fonts.Rmd</code></div>
 
     </div>
@@ -116,18 +122,52 @@
 <div class="section level2">
 <h2 id="google-fonts">Google Fonts<a class="anchor" aria-label="anchor" href="#google-fonts"></a>
 </h2>
-<p>If a <a href="https://fonts.google.com" class="external-link">Google Font</a> is requested as part of a <strong>thematic</strong> theme, <strong>thematic</strong> attempts to download, cache, and register that font for use with <strong>showtext</strong> and <strong>ragg</strong> before plotting (see <code><a href="../reference/font_spec.html">font_spec()</a></code> for more details). Therefore, to correctly render these fonts, you’ll need at least <strong>showtext</strong> or <strong>ragg</strong> installed; and in some scenarios, some additional configuration may be required.</p>
-<p><strong>showtext</strong> allows custom fonts to be used with essentially any R graphics device, whereas <strong>ragg</strong> itself provides (high-quality and cross-platform) bitmap devices with 1st class support for custom fonts. Therefore, consider using <strong>showtext</strong> for vector-based images (i.e., <code><a href="https://rdrr.io/r/grDevices/cairo.html" class="external-link">svg()</a></code>, <code><a href="https://rdrr.io/r/grDevices/cairo.html" class="external-link">cairo_pdf()</a></code>, etc) and <strong>ragg</strong> for raster-based images (i.e., <code><a href="https://ragg.r-lib.org/reference/agg_png.html" class="external-link">ragg::agg_png()</a></code>, <code><a href="https://ragg.r-lib.org/reference/agg_jpeg.html" class="external-link">ragg::agg_jpeg()</a></code>, etc). Note that <code><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html" class="external-link">shiny::renderPlot()</a></code> currently requires a png image, so <strong>ragg</strong> is generally preferable to <strong>showtext</strong> in that case, especially on hosted environments (e.g., Connect, shinyapps.io, etc. – because they don’t have support for the high-quality <code><a href="https://rdrr.io/r/grDevices/quartz.html" class="external-link">quartz()</a></code> device).</p>
+<p>If a <a href="https://fonts.google.com" class="external-link">Google Font</a> is requested
+as part of a <strong>thematic</strong> theme, <strong>thematic</strong>
+attempts to download, cache, and register that font for use with
+<strong>showtext</strong> and <strong>ragg</strong> before plotting (see
+<code><a href="../reference/font_spec.html">font_spec()</a></code> for more details). Therefore, to correctly
+render these fonts, you’ll need at least <strong>showtext</strong> or
+<strong>ragg</strong> installed; and in some scenarios, some additional
+configuration may be required.</p>
+<p><strong>showtext</strong> allows custom fonts to be used with
+essentially any R graphics device, whereas <strong>ragg</strong> itself
+provides (high-quality and cross-platform) bitmap devices with 1st class
+support for custom fonts. Therefore, consider using
+<strong>showtext</strong> for vector-based images (i.e.,
+<code><a href="https://rdrr.io/r/grDevices/cairo.html" class="external-link">svg()</a></code>, <code><a href="https://rdrr.io/r/grDevices/cairo.html" class="external-link">cairo_pdf()</a></code>, etc) and
+<strong>ragg</strong> for raster-based images (i.e.,
+<code><a href="https://ragg.r-lib.org/reference/agg_png.html" class="external-link">ragg::agg_png()</a></code>, <code><a href="https://ragg.r-lib.org/reference/agg_jpeg.html" class="external-link">ragg::agg_jpeg()</a></code>, etc). Note
+that <code><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html" class="external-link">shiny::renderPlot()</a></code> currently requires a png image, so
+<strong>ragg</strong> is generally preferable to
+<strong>showtext</strong> in that case, especially on hosted
+environments (e.g., Connect, shinyapps.io, etc. – because they don’t
+have support for the high-quality <code><a href="https://rdrr.io/r/grDevices/quartz.html" class="external-link">quartz()</a></code> device).</p>
 <div class="section level3">
 <h3 id="shiny-rmd">Shiny &amp; R Markdown<a class="anchor" aria-label="anchor" href="#shiny-rmd"></a>
 </h3>
-<p>If you have <strong>showtext</strong> installed, Google Fonts should ‘just work’ by default inside Shiny and R Markdown. However, before deployment, include <code><a href="https://github.com/yixuan/showtext" class="external-link">library(showtext)</a></code> in the app/document to make sure it’s installed on the hosted instance. Also, if you encounter issues in R Markdown, make sure <strong>thematic</strong> is being loaded in an initial “setup” chunk prior to any plotting chunks (loading <strong>thematic</strong> ensures that the <code>fig.showtext</code> <strong>knitr</strong> option defaults to <code>TRUE</code> in future code chunks).</p>
-<p>Using <strong>ragg</strong> instead of <strong>showtext</strong> in these contexts requires some additional configuration: * Set <code>options(shiny.useragg = TRUE)</code> in Shiny (requires <strong>shiny</strong> v1.5.0 or higher). * Set <code>knitr::opts_chunk$set(dev = "ragg_png")</code> in R Markdown (requires <strong>knitr</strong> v1.29 or higher).</p>
+<p>If you have <strong>showtext</strong> installed, Google Fonts should
+‘just work’ by default inside Shiny and R Markdown. However, before
+deployment, include <code><a href="https://github.com/yixuan/showtext" class="external-link">library(showtext)</a></code> in the app/document
+to make sure it’s installed on the hosted instance. Also, if you
+encounter issues in R Markdown, make sure <strong>thematic</strong> is
+being loaded in an initial “setup” chunk prior to any plotting chunks
+(loading <strong>thematic</strong> ensures that the
+<code>fig.showtext</code> <strong>knitr</strong> option defaults to
+<code>TRUE</code> in future code chunks).</p>
+<p>Using <strong>ragg</strong> instead of <strong>showtext</strong> in
+these contexts requires some additional configuration: * Set
+<code>options(shiny.useragg = TRUE)</code> in Shiny (requires
+<strong>shiny</strong> v1.5.0 or higher). * Set
+<code>knitr::opts_chunk$set(dev = "ragg_png")</code> in R Markdown
+(requires <strong>knitr</strong> v1.29 or higher).</p>
 </div>
 <div class="section level3">
 <h3 id="r-devices">R graphics devices<a class="anchor" aria-label="anchor" href="#r-devices"></a>
 </h3>
-<p>In theory, as long as <strong>showtext</strong> is installed, Google Fonts should render on any R graphics device. Here’s a mini example with <code><a href="https://svglite.r-lib.org/reference/svglite.html" class="external-link">svglite::svglite()</a></code>:</p>
+<p>In theory, as long as <strong>showtext</strong> is installed, Google
+Fonts should render on any R graphics device. Here’s a mini example with
+<code><a href="https://svglite.r-lib.org/reference/svglite.html" class="external-link">svglite::svglite()</a></code>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/thematic_on.html">thematic_on</a></span><span class="op">(</span><span class="st">"black"</span>, <span class="st">"white"</span>, font <span class="op">=</span> <span class="st">"Pacifico"</span><span class="op">)</span></span>
 <span><span class="va">tmp</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".svg"</span><span class="op">)</span></span>
@@ -137,11 +177,19 @@
 <span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="kw">if</span> <span class="op">(</span><span class="fu">rstudioapi</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/rstudioapi/reference/isAvailable.html" class="external-link">isAvailable</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/file.show.html" class="external-link">file.show</a></span><span class="op">(</span><span class="va">tmp</span><span class="op">)</span></span></code></pre></div>
 <p><img src="svglite.svg" width="70%" style="display: block; margin: auto;"></p>
-<p>Note that <strong>thematic</strong> also includes a <code><a href="../reference/thematic_save_plot.html">thematic_save_plot()</a></code> that is essentially a convenience function for saving a plot to a graphics device, but also does the following:</p>
+<p>Note that <strong>thematic</strong> also includes a
+<code><a href="../reference/thematic_save_plot.html">thematic_save_plot()</a></code> that is essentially a convenience
+function for saving a plot to a graphics device, but also does the
+following:</p>
 <ul>
-<li>Ensures the graphics device is informed by <code>thematic_get_option("bg")</code>.</li>
-<li>Ensures that <strong>showtext</strong> is aware of the device’s resolution (<code>res</code>), which is important to get the font sizes right in bitmap images (e.g., png, jpeg, etc).</li>
-<li>Ensures that <strong>thematic</strong> is able to properly clone the device when determining if the device has support for the rendering a requested font.</li>
+<li>Ensures the graphics device is informed by
+<code>thematic_get_option("bg")</code>.</li>
+<li>Ensures that <strong>showtext</strong> is aware of the device’s
+resolution (<code>res</code>), which is important to get the font sizes
+right in bitmap images (e.g., png, jpeg, etc).</li>
+<li>Ensures that <strong>thematic</strong> is able to properly clone the
+device when determining if the device has support for the rendering a
+requested font.</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Makes a high-res png image</span></span>
@@ -152,7 +200,16 @@
 <div class="section level2">
 <h2 id="other-fonts">Other Fonts<a class="anchor" aria-label="anchor" href="#other-fonts"></a>
 </h2>
-<p>Other fonts that already known to R require no additional setup for use with <strong>thematic</strong>. One way to make a font family generally available to R is to import them via the <a href="https://github.com/wch/extrafont" class="external-link"><strong>extrafont</strong> package</a>. You can also register a font for use with <strong>showtext</strong> via <code><a href="https://rdrr.io/pkg/sysfonts/man/font_add.html" class="external-link">sysfonts::font_add()</a></code> and with <strong>ragg</strong> via <code><a href="https://rdrr.io/pkg/systemfonts/man/register_font.html" class="external-link">systemfonts::register_font()</a></code>. The benefit of the <strong>sysfonts</strong>/<strong>systemfonts</strong> approach is that registration is much much faster, and generally works better, but registration must also be (re)-done in every new R session.</p>
+<p>Other fonts that already known to R require no additional setup for
+use with <strong>thematic</strong>. One way to make a font family
+generally available to R is to import them via the <a href="https://github.com/wch/extrafont" class="external-link"><strong>extrafont</strong>
+package</a>. You can also register a font for use with
+<strong>showtext</strong> via <code><a href="https://rdrr.io/pkg/sysfonts/man/font_add.html" class="external-link">sysfonts::font_add()</a></code> and with
+<strong>ragg</strong> via <code><a href="https://rdrr.io/pkg/systemfonts/man/register_font.html" class="external-link">systemfonts::register_font()</a></code>. The
+benefit of the <strong>sysfonts</strong>/<strong>systemfonts</strong>
+approach is that registration is much much faster, and generally works
+better, but registration must also be (re)-done in every new R
+session.</p>
 </div>
   </div>
 
@@ -172,7 +229,7 @@
 
 <div class="author">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>
