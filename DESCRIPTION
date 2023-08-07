@@ -11,7 +11,7 @@ Description:
   Theme 'ggplot2', 'lattice', and 'base' graphics based on a few choices, including foreground color, background color, accent color,
   and font family. Fonts that aren't available on the system, but are available via download on 'Google Fonts',
   can be automatically downloaded, cached, and registered for use with the 'showtext' and 'ragg' packages.
-URL: https://rstudio.github.io/thematic/, https://github.com/rstudio/thematic#readme
+URL: https://rstudio.github.io/thematic/, https://github.com/rstudio/thematic
 Depends: R (>= 3.0.0)
 Imports:
     utils,
@@ -82,3 +82,4 @@ Config/Needs/check:
     tinytex,
     devtools,
     rversions
+BugReports: https://github.com/rstudio/thematic/issues
