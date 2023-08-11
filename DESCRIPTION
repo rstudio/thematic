@@ -1,51 +1,63 @@
 Package: thematic
-Title: Unified and Automatic 'Theming' of 'ggplot2', 'lattice', and 'base' R Graphics
+Title: Unified and Automatic 'Theming' of 'ggplot2', 'lattice', and 'base'
+    R Graphics
 Version: 0.1.3.9000
 Authors@R: c(
-  person("Carson", "Sievert", role = c("aut", "cre"), email = "carson@posit.co", comment = c(ORCID = "0000-0002-4958-2844")),
-  person("Barret", "Schloerke", email = "barret@posit.co", role = "aut", comment = c(ORCID = "0000-0001-9986-114X")),
-  person("Joe", "Cheng", role = "aut", email = "joe@posit.co"),
-  person("Posit Software, PBC", role = c("cph", "fnd"))
+    person("Carson", "Sievert", , "carson@posit.co", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-4958-2844")),
+    person("Barret", "Schloerke", , "barret@posit.co", role = "aut",
+           comment = c(ORCID = "0000-0001-9986-114X")),
+    person("Joe", "Cheng", , "joe@posit.co", role = "aut"),
+    person("Posit Software, PBC", role = c("cph", "fnd"))
   )
-Description:
-  Theme 'ggplot2', 'lattice', and 'base' graphics based on a few choices, including foreground color, background color, accent color,
-  and font family. Fonts that aren't available on the system, but are available via download on 'Google Fonts',
-  can be automatically downloaded, cached, and registered for use with the 'showtext' and 'ragg' packages.
-URL: https://rstudio.github.io/thematic/, https://github.com/rstudio/thematic
-Depends: R (>= 3.0.0)
+Description:Theme 'ggplot2', 'lattice', and 'base' graphics based on a
+    few choices, including foreground color, background color, accent
+    color, and font family. Fonts that aren't available on the system, but
+    are available via download on 'Google Fonts', can be automatically
+    downloaded, cached, and registered for use with the 'showtext' and
+    'ragg' packages.
+License: MIT + file LICENSE
+URL: https://rstudio.github.io/thematic/,
+    https://github.com/rstudio/thematic
+BugReports: https://github.com/rstudio/thematic/issues
+Depends: 
+    R (>= 3.0.0)
 Imports:
-    utils,
+    farver,
+    ggplot2 (>= 3.3.0),
     graphics,
     grDevices,
     grid,
-    farver,
-    rlang,
-    scales,
-    rstudioapi (>= 0.8),
     rappdirs,
-    ggplot2 (>= 3.3.0)
+    rlang,
+    rstudioapi (>= 0.8),
+    scales,
+    utils
 Suggests:
-    lattice,
-    stats,
-    withr,
-    sysfonts,
-    showtext,
-    Cairo,
-    systemfonts,
-    ragg,
-    knitr,
-    rmarkdown,
-    htmltools,
-    shiny (>= 1.5.0),
     bslib,
-    testthat,
+    Cairo,
+    curl,
     gganimate,
     ggiraph,
-    vdiffr (>= 1.0.0),
-    svglite,
+    htmltools,
     jsonlite,
-    curl
-License: MIT + file LICENSE
+    knitr,
+    lattice,
+    ragg,
+    rmarkdown,
+    shiny (>= 1.5.0),
+    showtext,
+    stats,
+    svglite,
+    sysfonts,
+    systemfonts,
+    testthat,
+    vdiffr (>= 1.0.0),
+    withr
+Config/Needs/check:shinytest, callr, sf, ggthemes, patchwork, gridExtra,
+    tinytex, devtools, rversions
+Config/Needs/routine:ggrepel
+Config/Needs/website:GGally, RColorBrewer, patchwork, apreshill/quillt
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
@@ -65,21 +77,3 @@ Collate:
     'thematic.R'
     'utils.R'
     'view-shinytest.R'
-Config/Needs/routine:
-    ggrepel
-Config/Needs/website:
-    GGally,
-    RColorBrewer,
-    patchwork,
-    apreshill/quillt
-Config/Needs/check:
-    shinytest,
-    callr,
-    sf,
-    ggthemes,
-    patchwork,
-    gridExtra,
-    tinytex,
-    devtools,
-    rversions
-BugReports: https://github.com/rstudio/thematic/issues
