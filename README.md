@@ -60,7 +60,7 @@ install.packages("ragg")
 theming](https://rstudio.github.io/thematic/articles/auto.html) gives R
 plots the ability to style themselves inside [Shiny](#shiny) (via CSS),
 [RStudio](#rstudio) (via [RStudio
-themes](https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes)),
+themes](https://support.posit.co/hc/en-us/articles/115011846747-Using-RStudio-Themes)),
 and [R Markdown](#rmarkdown) (via
 [`{bslib}`](https://rstudio.github.io/bslib/)).
 
@@ -205,20 +205,20 @@ learn more about how to customize those defaults.
 
 ## Learn more
 
-  - See the [auto theming
-    article](https://rstudio.github.io/thematic/articles/auto.html) to
-    gain a more detailed understanding of how auto theming make styling
-    R plots easier in Shiny, R Markdown, and RStudio.
-  - See the [custom themes
-    article](https://rstudio.github.io/thematic/articles/custom.html)
-    for more on `{thematic}`’s theming options as well as how they
-    interact with `{ggplot2}`, `{lattice}`, and `{base}`.
-  - See the [fonts
-    article](https://rstudio.github.io/thematic/articles/fonts.html) for
-    more on using Google Fonts with `{thematic}`.
-  - See the [scoping
-    article](https://rstudio.github.io/thematic/articles/scope.html) for
-    more about scoping `{thematic}` to individual plots.
+- See the [auto theming
+  article](https://rstudio.github.io/thematic/articles/auto.html) to
+  gain a more detailed understanding of how auto theming make styling R
+  plots easier in Shiny, R Markdown, and RStudio.
+- See the [custom themes
+  article](https://rstudio.github.io/thematic/articles/custom.html) for
+  more on `{thematic}`’s theming options as well as how they interact
+  with `{ggplot2}`, `{lattice}`, and `{base}`.
+- See the [fonts
+  article](https://rstudio.github.io/thematic/articles/fonts.html) for
+  more on using Google Fonts with `{thematic}`.
+- See the [scoping
+  article](https://rstudio.github.io/thematic/articles/scope.html) for
+  more about scoping `{thematic}` to individual plots.
 
 ## Run some examples
 
