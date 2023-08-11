@@ -1,6 +1,6 @@
 Package: thematic
 Title: Unified and Automatic 'Theming' of 'ggplot2', 'lattice', and 'base' R Graphics
-Version: 0.1.3
+Version: 0.1.3.9000
 Authors@R: c(
   person("Carson", "Sievert", role = c("aut", "cre"), email = "carson@posit.co", comment = c(ORCID = "0000-0002-4958-2844")),
   person("Barret", "Schloerke", email = "barret@posit.co", role = "aut", comment = c(ORCID = "0000-0001-9986-114X")),

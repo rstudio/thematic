@@ -1,3 +1,5 @@
+# thematic (development version)
+
 # thematic 0.1.3
 
 * Closed #129: Fixed a bug with not being able override thematic inside geom_sf(). (#129)
