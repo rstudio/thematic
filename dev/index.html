@@ -5,7 +5,8 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unified and Automatic Theming of ggplot2, lattice, and base R Graphics • thematic</title>
+<title>Unified and Automatic Theming of ggplot2, lattice, and base
+    R Graphics • thematic</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -21,11 +22,14 @@
 <link href="rmd.css" rel="stylesheet">
 <!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Unified and Automatic Theming of ggplot2, lattice, and base R Graphics">
-<meta property="og:description" content="
-  Theme ggplot2, lattice, and base graphics based on a few choices, including foreground color, background color, accent color,
-  and font family. Fonts that arent available on the system, but are available via download on Google Fonts,
-  can be automatically downloaded, cached, and registered for use with the showtext and ragg' packages.">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Unified and Automatic Theming of ggplot2, lattice, and base
+    R Graphics">
+<meta property="og:description" content="Theme ggplot2, lattice, and base graphics based on a
+    few choices, including foreground color, background color, accent
+    color, and font family. Fonts that arent available on the system, but
+    are available via download on Google Fonts, can be automatically
+    downloaded, cached, and registered for use with the showtext and
+    ragg' packages.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 <meta name="robots" content="noindex">
@@ -60,14 +64,14 @@
 
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">thematic</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.3.9000</span>
       </span>
 
       <!--<div class="navbar-brand-container">
         <a class="navbar-brand" href="index.html">thematic</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of  <a href=""></a></span>
-          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.3.9000</span>
         </div>
       </div>-->
     </div>
@@ -89,7 +93,12 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
-        
+        <li>
+  <a href="https://github.com/rstudio/thematic/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
 <form class="navbar-form navbar-right" role="search">
         <div class="form-group">
@@ -113,14 +122,15 @@
 <a class="anchor" aria-label="anchor" href="#thematic-"></a>
 </h1></div>
 <!-- badges: start -->
-<p>Simplified theming of <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a>, <a href="http://lattice.r-forge.r-project.org/" class="external-link">lattice</a>, and <code>{base}</code> R graphics. In addition to providing a <a href="https://rstudio.github.io/thematic/articles/custom.html" class="external-link">centralized approach</a> to styling R graphics, <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a> also enables <a href="https://rstudio.github.io/thematic/articles/auto.html" class="external-link">automatic styling</a> of R plots in Shiny, R Markdown, and RStudio.</p>
+
+<p>Simplified theming of <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a>, <a href="https://lattice.r-forge.r-project.org/" class="external-link">lattice</a>, and <code>{base}</code> R graphics. In addition to providing a <a href="https://rstudio.github.io/thematic/articles/custom.html" class="external-link">centralized approach</a> to styling R graphics, <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a> also enables <a href="https://rstudio.github.io/thematic/articles/auto.html" class="external-link">automatic styling</a> of R plots in Shiny, R Markdown, and RStudio.</p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
 <p>Install the stable release of <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a> on <a href="https://CRAN.R-project.org" class="external-link">CRAN</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"thematic"</span><span class="op">)</span></span></code></pre></div>
-<p><a href="https://rstudio.github.io/thematic/articles/auto.html#shiny" class="external-link">Auto theming in Shiny</a> requires <a href="https://shiny.rstudio.com/" class="external-link">shiny</a> 1.5.0 or higher:</p>
+<p><a href="https://rstudio.github.io/thematic/articles/auto.html#shiny" class="external-link">Auto theming in Shiny</a> requires <a href="https://shiny.posit.co/" class="external-link">shiny</a> 1.5.0 or higher:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"shiny"</span><span class="op">)</span></span></code></pre></div>
 <p><a href="https://rstudio.github.io/thematic/articles/auto.html#rmd" class="external-link">Auto theming in R Markdown</a> requires <a href="https://github.com/rstudio/rmarkdown" class="external-link">rmarkdown</a> 2.7 or higher:</p>
@@ -134,13 +144,13 @@
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
-<p><a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a>’s <a href="https://rstudio.github.io/thematic/articles/auto.html" class="external-link">auto theming</a> gives R plots the ability to style themselves inside <a href="#shiny">Shiny</a> (via CSS), <a href="#rstudio">RStudio</a> (via <a href="https://support.rstudio.com/hc/en-us/articles/115011846747-Using-RStudio-Themes" class="external-link">RStudio themes</a>), and <a href="#rmarkdown">R Markdown</a> (via <a href="https://rstudio.github.io/bslib/" class="external-link"><code>{bslib}</code></a>).</p>
+<p><a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a>’s <a href="https://rstudio.github.io/thematic/articles/auto.html" class="external-link">auto theming</a> gives R plots the ability to style themselves inside <a href="#shiny">Shiny</a> (via CSS), <a href="#rstudio">RStudio</a> (via <a href="https://support.posit.co/hc/en-us/articles/115011846747-Using-RStudio-Themes" class="external-link">RStudio themes</a>), and <a href="#rmarkdown">R Markdown</a> (via <a href="https://rstudio.github.io/bslib/" class="external-link"><code>{bslib}</code></a>).</p>
 <div class="section level3">
 <h3 id="shiny">Shiny<a class="anchor" aria-label="anchor" href="#shiny"></a>
 </h3>
-<p>Call <code><a href="reference/thematic_on.html">thematic_shiny()</a></code> before launching a Shiny app to enable <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a> for every <code><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html" class="external-link">plotOutput()</a></code> inside the app. If no values are provided to <code><a href="reference/thematic_on.html">thematic_shiny()</a></code>, each <code><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html" class="external-link">plotOutput()</a></code> uses the app’s CSS colors to inform new R plotting defaults. If the app uses <a href="https://fonts.google.com/" class="external-link">Google Fonts</a> (and you have <a href="https://github.com/yixuan/showtext" class="external-link">showtext</a> and/or <a href="https://ragg.r-lib.org" class="external-link">ragg</a> installed), you may safely provide <code>font = "auto"</code> to <code><a href="reference/thematic_on.html">thematic_shiny()</a></code>, which also translates CSS fonts to R. Here’s an example with the <a href="https://fonts.google.com/specimen/Pacifico" class="external-link">Pacifico</a> font:</p>
+<p>Call <code><a href="reference/thematic_on.html">thematic_shiny()</a></code> before launching a Shiny app to enable <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a> for every <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html" class="external-link">plotOutput()</a></code> inside the app. If no values are provided to <code><a href="reference/thematic_on.html">thematic_shiny()</a></code>, each <code><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html" class="external-link">plotOutput()</a></code> uses the app’s CSS colors to inform new R plotting defaults. If the app uses <a href="https://fonts.google.com/" class="external-link">Google Fonts</a> (and you have <a href="https://github.com/yixuan/showtext" class="external-link">showtext</a> and/or <a href="https://ragg.r-lib.org" class="external-link">ragg</a> installed), you may safely provide <code>font = "auto"</code> to <code><a href="reference/thematic_on.html">thematic_shiny()</a></code>, which also translates CSS fonts to R. Here’s an example with the <a href="https://fonts.google.com/specimen/Pacifico" class="external-link">Pacifico</a> font:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.rstudio.com/" class="external-link">shiny</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://shiny.posit.co/" class="external-link">shiny</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a></span><span class="op">)</span></span>
 <span><span class="co"># In order for auto/custom fonts to work properly, you'll want</span></span>
@@ -154,38 +164,38 @@
 <span><span class="co"># R plot theming defaults for all the plots generated in the app</span></span>
 <span><span class="fu"><a href="reference/thematic_on.html">thematic_shiny</a></span><span class="op">(</span>font <span class="op">=</span> <span class="st">"auto"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
+<span><span class="va">ui</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/fluidPage.html" class="external-link">fluidPage</a></span><span class="op">(</span></span>
 <span>  <span class="co"># bslib makes it easy to customize CSS styles for things</span></span>
 <span>  <span class="co"># rendered by the browser, like tabsetPanel()</span></span>
 <span>  <span class="co"># https://rstudio.github.io/bslib</span></span>
-<span>  theme <span class="op">=</span> <span class="fu">bslib</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/bslib/reference/bs_theme.html" class="external-link">bs_theme</a></span><span class="op">(</span></span>
+<span>  theme <span class="op">=</span> <span class="fu">bslib</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bslib/man/bs_theme.html" class="external-link">bs_theme</a></span><span class="op">(</span></span>
 <span>    bg <span class="op">=</span> <span class="st">"#002B36"</span>, fg <span class="op">=</span> <span class="st">"#EEE8D5"</span>, primary <span class="op">=</span> <span class="st">"#2AA198"</span>,</span>
 <span>    <span class="co"># bslib also makes it easy to import CSS fonts</span></span>
 <span>    base_font <span class="op">=</span> <span class="fu">bslib</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/sass/reference/font_face.html" class="external-link">font_google</a></span><span class="op">(</span><span class="st">"Pacifico"</span><span class="op">)</span></span>
 <span>  <span class="op">)</span>,</span>
-<span>  <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabsetPanel.html" class="external-link">tabsetPanel</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tabsetPanel.html" class="external-link">tabsetPanel</a></span><span class="op">(</span></span>
 <span>    type <span class="op">=</span> <span class="st">"pills"</span>,</span>
-<span>    <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html" class="external-link">tabPanel</a></span><span class="op">(</span><span class="st">"ggplot"</span>, <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html" class="external-link">plotOutput</a></span><span class="op">(</span><span class="st">"ggplot"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html" class="external-link">tabPanel</a></span><span class="op">(</span><span class="st">"lattice"</span>, <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html" class="external-link">plotOutput</a></span><span class="op">(</span><span class="st">"lattice"</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>    <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/tabPanel.html" class="external-link">tabPanel</a></span><span class="op">(</span><span class="st">"base"</span>, <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/plotOutput.html" class="external-link">plotOutput</a></span><span class="op">(</span><span class="st">"base"</span><span class="op">)</span><span class="op">)</span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tabPanel.html" class="external-link">tabPanel</a></span><span class="op">(</span><span class="st">"ggplot"</span>, <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html" class="external-link">plotOutput</a></span><span class="op">(</span><span class="st">"ggplot"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tabPanel.html" class="external-link">tabPanel</a></span><span class="op">(</span><span class="st">"lattice"</span>, <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html" class="external-link">plotOutput</a></span><span class="op">(</span><span class="st">"lattice"</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/tabPanel.html" class="external-link">tabPanel</a></span><span class="op">(</span><span class="st">"base"</span>, <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/plotOutput.html" class="external-link">plotOutput</a></span><span class="op">(</span><span class="st">"base"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">server</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">input</span>, <span class="va">output</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">output</span><span class="op">$</span><span class="va">ggplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html" class="external-link">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">ggplot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html" class="external-link">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">wt</span>, <span class="va">mpg</span>, label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">)</span>, color <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">cyl</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fu">ggrepel</span><span class="fu">::</span><span class="fu">geom_text_repel</span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
-<span>  <span class="va">output</span><span class="op">$</span><span class="va">lattice</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html" class="external-link">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">lattice</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html" class="external-link">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="fu">lattice</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/lattice/man/trellis.par.get.html" class="external-link">show.settings</a></span><span class="op">(</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
-<span>  <span class="va">output</span><span class="op">$</span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/renderPlot.html" class="external-link">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
+<span>  <span class="va">output</span><span class="op">$</span><span class="va">base</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/shiny/man/renderPlot.html" class="external-link">renderPlot</a></span><span class="op">(</span><span class="op">{</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/graphics/image.html" class="external-link">image</a></span><span class="op">(</span><span class="va">volcano</span>, col <span class="op">=</span> <span class="fu"><a href="reference/thematic_with_theme.html">thematic_get_option</a></span><span class="op">(</span><span class="st">"sequential"</span><span class="op">)</span><span class="op">)</span></span>
 <span>  <span class="op">}</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/shinyApp.html" class="external-link">shinyApp</a></span><span class="op">(</span><span class="va">ui</span>, <span class="va">server</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/auto-before.png" width="90%" style="display: block; margin: auto;"></p>
 <p><img src="reference/figures/auto-after.png" width="90%" style="display: block; margin: auto;"></p>
 </div>
@@ -231,7 +241,7 @@
 </h2>
 <ul>
 <li>See the <a href="https://rstudio.github.io/thematic/articles/auto.html" class="external-link">auto theming article</a> to gain a more detailed understanding of how auto theming make styling R plots easier in Shiny, R Markdown, and RStudio.</li>
-<li>See the <a href="https://rstudio.github.io/thematic/articles/custom.html" class="external-link">custom themes article</a> for more on <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a>’s theming options as well as how they interact with <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a>, <a href="http://lattice.r-forge.r-project.org/" class="external-link">lattice</a>, and <code>{base}</code>.</li>
+<li>See the <a href="https://rstudio.github.io/thematic/articles/custom.html" class="external-link">custom themes article</a> for more on <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a>’s theming options as well as how they interact with <a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a>, <a href="https://lattice.r-forge.r-project.org/" class="external-link">lattice</a>, and <code>{base}</code>.</li>
 <li>See the <a href="https://rstudio.github.io/thematic/articles/fonts.html" class="external-link">fonts article</a> for more on using Google Fonts with <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a>.</li>
 <li>See the <a href="https://rstudio.github.io/thematic/articles/scope.html" class="external-link">scoping article</a> for more about scoping <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a> to individual plots.</li>
 </ul>
@@ -240,7 +250,9 @@
 <h2 id="run-some-examples">Run some examples<a class="anchor" aria-label="anchor" href="#run-some-examples"></a>
 </h2>
 <p>Below is a link to an <strong>RStudio Cloud</strong> instance with some ready to run <a href="https://rstudio.github.io/thematic/" class="external-link">thematic</a> examples:</p>
-<div><p><a href="https://rstudio.cloud/project/1208127" target="_blank" class="external-link"> <img src="reference/figures/thematic-test-drive.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;"></a></p></div>
+<div>
+<p><a href="https://rstudio.cloud/project/1208127" target="_blank" class="external-link"> <img src="reference/figures/thematic-test-drive.svg" alt="RStudio Cloud Example" height="80px" style="display: block; margin: 0 auto;"></a></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="code-of-conduct">Code of Conduct<a class="anchor" aria-label="anchor" href="#code-of-conduct"></a>
@@ -255,7 +267,8 @@
 <h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
 <li><a href="https://cloud.r-project.org/package=thematic" class="external-link">View on CRAN</a></li>
-<li><a href="NA/NA/NA/">Browse source code</a></li>
+<li><a href="https://github.com/rstudio/thematic/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/rstudio/thematic/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
@@ -288,7 +301,7 @@
 <li>Carson Sievert <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-4958-2844" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Barret Schloerke <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0001-9986-114X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 <li>Joe Cheng <br><small class="roles"> Author </small>  </li>
-<li><a href="authors.html">More about authors...</a></li>
+<li>Posit Software, PBC <br><small class="roles"> Copyright holder, funder </small>  </li>
 </ul>
 </div>
 
@@ -311,7 +324,7 @@
 
 <div class="author">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer>

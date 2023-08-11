@@ -27,14 +27,14 @@ section below).'><meta property="og:image" content="/logo.png"><meta name="twitt
 
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">thematic</a>
-        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+        <span class="version label label-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.3.9000</span>
       </span>
 
       <!--<div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">thematic</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of  <a href=""></a></span>
-          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.2.9000</span>
+          <span class="version version-danger" data-toggle="tooltip" data-placement="bottom" title="In-development version">0.1.3.9000</span>
         </div>
       </div>-->
     </div>
@@ -55,7 +55,12 @@ section below).'><meta property="og:image" content="/logo.png"><meta name="twitt
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
-        
+        <li>
+  <a href="https://github.com/rstudio/thematic/" class="external-link">
+    <span class="fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul><form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
@@ -71,7 +76,7 @@ section below).'><meta property="og:image" content="/logo.png"><meta name="twitt
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Enable (or disable) simplified theming of R graphics.</h1>
-    <small class="dont-index">Source: <a href="NA/NA/NA/blob/HEAD/R/thematic.R"><code>R/thematic.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/HEAD/R/thematic.R" class="external-link"><code>R/thematic.R</code></a></small>
     <div class="hidden name"><code>thematic_on.Rd</code></div>
     </div>
 
@@ -113,7 +118,7 @@ section below).</p>
 <span>  sequential <span class="op">=</span> <span class="fu"><a href="sequential_gradient.html">sequential_gradient</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  qualitative <span class="op">=</span> <span class="fu"><a href="okabe_ito.html">okabe_ito</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  inherit <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  session <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://shiny.rstudio.com/reference/shiny/latest/domains.html" class="external-link">getDefaultReactiveDomain</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  session <span class="op">=</span> <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/domains.html" class="external-link">getDefaultReactiveDomain</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">thematic_rmd</span><span class="op">(</span></span>
@@ -164,7 +169,7 @@ levels exceeds the max allowed colors). Defaults to <code><a href="okabe_ito.htm
 
 
 <dt>session</dt>
-<dd><p>see <code><a href="https://shiny.rstudio.com/reference/shiny/latest/onStop.html" class="external-link">shiny::onStop()</a></code>.</p></dd>
+<dd><p>see <code><a href="https://rdrr.io/pkg/shiny/man/onStop.html" class="external-link">shiny::onStop()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
@@ -199,7 +204,7 @@ future plots, up until <code>thematic_off()</code> is called). To use thematic i
 first create a theme with <code>thematic_theme()</code>, then provide it to <code><a href="thematic_with_theme.html">thematic_with_theme()</a></code>
 (or similar). To use thematic in a global fashion up until a <strong>shiny</strong>
 app exits, use <code>thematic_shiny()</code> (which cleans up after itself once the next shiny
-app that exits using <code><a href="https://shiny.rstudio.com/reference/shiny/latest/onStop.html" class="external-link">shiny::onStop()</a></code>). To use thematic in a global fashion up until
+app that exits using <code><a href="https://rdrr.io/pkg/shiny/man/onStop.html" class="external-link">shiny::onStop()</a></code>). To use thematic in a global fashion up until
 a <strong>rmarkdown</strong> document finishes rendering, use <code>thematic_rmd()</code>.</p>
     </div>
     <div id="color-values">
@@ -265,7 +270,7 @@ or <code><a href="https://rstudio.github.io/htmltools/reference/parseCssColors.h
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
 </div>
 
       </footer></div>
