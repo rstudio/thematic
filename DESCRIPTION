@@ -40,6 +40,7 @@ Suggests:
     gganimate,
     ggiraph,
     htmltools,
+    httpgd,
     jsonlite,
     knitr,
     lattice,
