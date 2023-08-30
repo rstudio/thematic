@@ -1,5 +1,7 @@
 # thematic (development version)
 
+* The `{httpgd}` graphics device (and thus, Github codespaces) is now supported. (#143)
+
 # thematic 0.1.3
 
 * Closed #129: Fixed a bug with not being able override thematic inside geom_sf(). (#129)
