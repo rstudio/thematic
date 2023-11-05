@@ -1,4 +1,4 @@
-# thematic (development version)
+# thematic 0.1.4
 
 * The `{httpgd}` graphics device (and thus, Github codespaces) is now supported. (#143)
 
