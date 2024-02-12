@@ -27,12 +27,12 @@
 </defs>
 <g clip-path='url(#cpMjYuMTN8NjYzLjA5fDIyLjc4fDU0Ny45Ng==)'>
 <rect x='26.13' y='22.78' width='636.96' height='525.18' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<polygon points='484.01,524.08 269.55,461.26 291.00,335.62 526.91,398.44 ' style='stroke-width: 1.07; stroke: none; fill: #D1D7D4;' />
-<polygon points='269.55,461.26 55.09,398.44 119.43,272.80 291.00,335.62 ' style='stroke-width: 1.07; stroke: none; fill: #BFCAC4;' />
-<polygon points='526.91,398.44 291.00,335.62 312.44,197.42 591.24,247.68 ' style='stroke-width: 1.07; stroke: none; fill: #BFCAC4;' />
-<polygon points='291.00,335.62 119.43,272.80 162.32,184.86 312.44,197.42 ' style='stroke-width: 1.07; stroke: none; fill: #ABBEB4;' />
-<polygon points='591.24,247.68 312.44,197.42 333.89,59.22 634.14,109.47 ' style='stroke-width: 1.07; stroke: none; fill: #B5C4BC;' />
-<polygon points='312.44,197.42 162.32,184.86 183.76,46.65 333.89,59.22 ' style='stroke-width: 1.07; stroke: none; fill: #749886;' />
+<polygon points='484.01,524.08 269.55,461.26 291.00,335.62 526.91,398.44 ' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #D1D7D4;' />
+<polygon points='269.55,461.26 55.09,398.44 119.43,272.80 291.00,335.62 ' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #BFCAC4;' />
+<polygon points='526.91,398.44 291.00,335.62 312.44,197.42 591.24,247.68 ' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #BFCAC4;' />
+<polygon points='291.00,335.62 119.43,272.80 162.32,184.86 312.44,197.42 ' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #ABBEB4;' />
+<polygon points='591.24,247.68 312.44,197.42 333.89,59.22 634.14,109.47 ' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #B5C4BC;' />
+<polygon points='312.44,197.42 162.32,184.86 183.76,46.65 333.89,59.22 ' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #749886;' />
 <rect x='26.13' y='22.78' width='636.96' height='525.18' style='stroke-width: 1.07; stroke: #333333;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>

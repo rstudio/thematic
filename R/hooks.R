@@ -246,6 +246,7 @@ get_device_function <- function(name = infer_device()) {
     agg_jpeg = ragg::agg_jpeg,
     Cairo = Cairo::Cairo,
     devSVG = svglite::svglite,
+    devSVG_vdiffr = svglite::svglite,
     dsvg_device = ggiraph::dsvg,
     httpgd = httpgd::hgd,
     # TODO: support cairoDevices? tikz?
