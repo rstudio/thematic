@@ -329,12 +329,11 @@ resolve_theme_inheritance <- function(p_theme) {
 # TODO: could consider memoising if this proves to be a bottleneck
 theme_relationships <- function() {
   inherits <- lapply(ggplot2::get_element_tree(), function(x) x$inherit)
-  relations <- data.frame(
+  data.frame(
     child  = rep(names(inherits), lengths(inherits)),
     parent = unlist(inherits),
     stringsAsFactors = FALSE
   )
-  relations[relations$parent != "", ]
 }
 
 # It's not safe to calc all elements (e.g., plot.margin)
