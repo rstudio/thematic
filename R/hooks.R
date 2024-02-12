@@ -246,8 +246,9 @@ get_device_function <- function(name = infer_device()) {
     agg_jpeg = ragg::agg_jpeg,
     Cairo = Cairo::Cairo,
     devSVG = svglite::svglite,
+    devSVG_vdiffr = svglite::svglite,
     dsvg_device = ggiraph::dsvg,
-    httpgd = httpgd::hgd,
+    httpgd = getFromNamespace("hgd", "httpgd"),
     # TODO: support cairoDevices? tikz?
     stop(
       "thematic doesn't (yet) support the '", name, "' graphics device. ",
