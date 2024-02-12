@@ -9,8 +9,6 @@
 status](https://github.com/rstudio/thematic/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/rstudio/thematic)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/thematic)](https://CRAN.R-project.org/package=thematic)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 <!-- badges: end -->
 
 Simplified theming of `{ggplot2}`, `{lattice}`, and `{base}` R graphics.
