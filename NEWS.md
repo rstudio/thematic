@@ -3,6 +3,7 @@
 # thematic 0.1.4
 
 * The `{httpgd}` graphics device (and thus, Github codespaces) is now supported. (#143)
+* `{thematic}` now works with recent versions of the `{vdiffr}` package. (#149)
 
 # thematic 0.1.3
 
