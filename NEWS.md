@@ -1,10 +1,11 @@
-# thematic (development version)
+# thematic 0.1.5
+
+* Accommodate for breaking changes in ggplot2 v3.5.0. (#148)
+* `{thematic}` now works with recent versions of the `{vdiffr}` package. (#149)
 
 # thematic 0.1.4
 
-* Accommodate for breaking changes in ggplot2 v3.5.0. (#148)
 * The `{httpgd}` graphics device (and thus, Github codespaces) is now supported. (#143)
-* `{thematic}` now works with recent versions of the `{vdiffr}` package. (#149)
 
 # thematic 0.1.3
 
