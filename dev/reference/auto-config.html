@@ -13,7 +13,7 @@ as well as the priority that certain information should receive."><meta property
 
   gtag('config', 'UA-115082821-1');
 </script><!-- javascript assets for rmarkdown --><script src="../ace-1.2.3/ace.js" type="text/javascript" charset="utf-8"></script><script src="../holder-2.9.0/holder.min.js" type="text/javascript" charset="utf-8"></script><script src="../snippets/snippets.js" type="text/javascript" charset="utf-8"></script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -59,25 +59,25 @@ as well as the priority that certain information should receive."><meta property
         <li>
   <a href="https://github.com/rstudio/thematic/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Configure auto theming behavior</h1>
-    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/HEAD/R/auto.R" class="external-link"><code>R/auto.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/main/R/auto.R" class="external-link"><code>R/auto.R</code></a></small>
     <div class="hidden name"><code>auto-config.Rd</code></div>
     </div>
 
@@ -105,25 +105,27 @@ as well as the <code>priority</code> that certain information should receive.</p
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>bg</dt>
+
+
+<dl><dt id="arg-bg">bg<a class="anchor" aria-label="anchor" href="#arg-bg"></a></dt>
 <dd><p>a background color.</p></dd>
 
 
-<dt>fg</dt>
+<dt id="arg-fg">fg<a class="anchor" aria-label="anchor" href="#arg-fg"></a></dt>
 <dd><p>a foreground color.</p></dd>
 
 
-<dt>accent</dt>
+<dt id="arg-accent">accent<a class="anchor" aria-label="anchor" href="#arg-accent"></a></dt>
 <dd><p>a color for making certain graphical markers 'stand out'
 (e.g., the fitted line color for <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">ggplot2::geom_smooth()</a></code>).
 Can be 2 colors for lattice (stroke vs fill accent).</p></dd>
 
 
-<dt>font</dt>
+<dt id="arg-font">font<a class="anchor" aria-label="anchor" href="#arg-font"></a></dt>
 <dd><p>a <code><a href="font_spec.html">font_spec()</a></code> object. If missing, font defaults are not altered.</p></dd>
 
 
-<dt>priority</dt>
+<dt id="arg-priority">priority<a class="anchor" aria-label="anchor" href="#arg-priority"></a></dt>
 <dd><p>the order of priority to use when resolving auto values.
 Possible values include:</p><ul><li><p><code>"shiny"</code>: use <code><a href="https://rdrr.io/pkg/shiny/man/getCurrentOutputInfo.html" class="external-link">shiny::getCurrentOutputInfo()</a></code> values (if any) to resolve auto values.</p></li>
 <li><p><code>"config"</code>: use the values provided to this function (if any) to resolve auto values.</p></li>
@@ -133,15 +135,13 @@ to resolve auto values (only relevant when knitr is in progress).</p></li>
 </ul></dd>
 
 
-<dt>config</dt>
+<dt id="arg-config">config<a class="anchor" aria-label="anchor" href="#arg-config"></a></dt>
 <dd><p>a <code>auto_config()</code> object.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>a config (list-like) object.</p>
+    <p>a config (list-like) object.</p>
     </div>
     <div id="details">
     <h2>Details</h2>
@@ -179,16 +179,16 @@ call <code><a href="thematic_on.html">thematic_on()</a></code> within their docu
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: 'ab54f4a00f5beb99b9bf488e3b58d1dd',
     indexName: 'rstudio_thematic',
     inputSelector: 'input#search-input.form-control',

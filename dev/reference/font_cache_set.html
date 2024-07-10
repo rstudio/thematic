@@ -13,7 +13,7 @@ so that, when the app is deployed, the cache deploys with it."><meta property="o
 
   gtag('config', 'UA-115082821-1');
 </script><!-- javascript assets for rmarkdown --><script src="../ace-1.2.3/ace.js" type="text/javascript" charset="utf-8"></script><script src="../holder-2.9.0/holder.min.js" type="text/javascript" charset="utf-8"></script><script src="../snippets/snippets.js" type="text/javascript" charset="utf-8"></script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -59,25 +59,25 @@ so that, when the app is deployed, the cache deploys with it."><meta property="o
         <li>
   <a href="https://github.com/rstudio/thematic/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Control the directory used for font caching</h1>
-    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/HEAD/R/cache.R" class="external-link"><code>R/cache.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/main/R/cache.R" class="external-link"><code>R/cache.R</code></a></small>
     <div class="hidden name"><code>font_cache_set.Rd</code></div>
     </div>
 
@@ -95,20 +95,20 @@ so that, when the app is deployed, the cache deploys with it.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>path</dt>
+
+
+<dl><dt id="arg-path">path<a class="anchor" aria-label="anchor" href="#arg-path"></a></dt>
 <dd><p>a filepath for the new cachine directory.</p></dd>
 
 
-<dt>cleanup</dt>
+<dt id="arg-cleanup">cleanup<a class="anchor" aria-label="anchor" href="#arg-cleanup"></a></dt>
 <dd><p>whether or not to remove font files from the
 previously used caching directory (after copying to the new location).</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>Returns the previously used caching directory.</p>
+    <p>Returns the previously used caching directory.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -117,10 +117,10 @@ previously used caching directory (after copying to the new location).</p></dd>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span>  <span class="fu">font_cache_set</span><span class="op">(</span><span class="st">"my_app"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="fu">shiny</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/shiny/man/runApp.html" class="external-link">runApp</a></span><span class="op">(</span><span class="st">"my_app"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -135,16 +135,16 @@ previously used caching directory (after copying to the new location).</p></dd>
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: 'ab54f4a00f5beb99b9bf488e3b58d1dd',
     indexName: 'rstudio_thematic',
     inputSelector: 'input#search-input.form-control',

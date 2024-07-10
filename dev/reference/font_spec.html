@@ -14,7 +14,7 @@ for use the showtext and ragg packages."><meta property="og:image" content="/log
 
   gtag('config', 'UA-115082821-1');
 </script><!-- javascript assets for rmarkdown --><script src="../ace-1.2.3/ace.js" type="text/javascript" charset="utf-8"></script><script src="../holder-2.9.0/holder.min.js" type="text/javascript" charset="utf-8"></script><script src="../snippets/snippets.js" type="text/javascript" charset="utf-8"></script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -60,25 +60,25 @@ for use the showtext and ragg packages."><meta property="og:image" content="/log
         <li>
   <a href="https://github.com/rstudio/thematic/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Font specification</h1>
-    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/HEAD/R/thematic.R" class="external-link"><code>R/thematic.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/main/R/thematic.R" class="external-link"><code>R/thematic.R</code></a></small>
     <div class="hidden name"><code>font_spec.Rd</code></div>
     </div>
 
@@ -103,15 +103,17 @@ for use the <strong>showtext</strong> and <strong>ragg</strong> packages.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>families</dt>
+
+
+<dl><dt id="arg-families">families<a class="anchor" aria-label="anchor" href="#arg-families"></a></dt>
 <dd><p>a character vector of font families.</p></dd>
 
 
-<dt>scale</dt>
+<dt id="arg-scale">scale<a class="anchor" aria-label="anchor" href="#arg-scale"></a></dt>
 <dd><p>numerical constant applied to font sizes.</p></dd>
 
 
-<dt>install</dt>
+<dt id="arg-install">install<a class="anchor" aria-label="anchor" href="#arg-install"></a></dt>
 <dd><p>whether to download and register font <code>families</code>
 available via <a href="https://fonts.google.com/" class="external-link">Google Fonts</a> (but unavailable to R).
 After a successful download, fonts are cached (in a directory which
@@ -121,22 +123,20 @@ a valid internet connection, you may need to fetch the latest Google
 Font information prior to installation (i.e., set <code>update = TRUE</code>).</p></dd>
 
 
-<dt>update</dt>
+<dt id="arg-update">update<a class="anchor" aria-label="anchor" href="#arg-update"></a></dt>
 <dd><p>if <code>TRUE</code>, the latest Google Fonts are fetched and
 any out-dated font cache is updated. Fetching the latest fonts requires
 a Google Font API key (one is bundled with the package, but you can
 set your own via an environment variable, <code>GFONT_KEY</code>).</p></dd>
 
 
-<dt>quiet</dt>
+<dt id="arg-quiet">quiet<a class="anchor" aria-label="anchor" href="#arg-quiet"></a></dt>
 <dd><p>whether to suppress download messages.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p>the input arguments as a list.</p>
+    <p>the input arguments as a list.</p>
     </div>
     <div id="see-also">
     <h2>See also</h2>
@@ -155,16 +155,16 @@ set your own via an environment variable, <code>GFONT_KEY</code>).</p></dd>
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: 'ab54f4a00f5beb99b9bf488e3b58d1dd',
     indexName: 'rstudio_thematic',
     inputSelector: 'input#search-input.form-control',
