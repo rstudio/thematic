@@ -1,5 +1,8 @@
 # thematic (development version)
 
+* Add basic positron IDE support. (#152)
+* Update for now deprecated `systemfonts::match_font()`. (#153)
+
 # thematic 0.1.5
 
 * Accommodate for breaking changes in ggplot2 v3.5.0. (#148)
