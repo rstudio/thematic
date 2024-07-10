@@ -156,11 +156,11 @@ can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
   # if the match resolves to something other than a generic font family
   if (is_ragg_device(dev_name)) {
     if (family %in% c("sans", "serif", "mono", "emoji")) return(TRUE)
-    f <- systemfonts::match_font(family)
-    is_available <- !identical(f, systemfonts::match_font("sans")) &&
-      !identical(f, systemfonts::match_font("serif")) &&
-      !identical(f, systemfonts::match_font("mono")) &&
-      !identical(f, systemfonts::match_font("emoji"))
+    f <- systemfonts::match_fonts(family)
+    is_available <- !identical(f, systemfonts::match_fonts("sans")) &&
+      !identical(f, systemfonts::match_fonts("serif")) &&
+      !identical(f, systemfonts::match_fonts("mono")) &&
+      !identical(f, systemfonts::match_fonts("emoji"))
     return(is_available)
   }
 
