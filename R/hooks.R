@@ -249,6 +249,8 @@ get_device_function <- function(name = infer_device()) {
     devSVG_vdiffr = svglite::svglite,
     dsvg_device = ggiraph::dsvg,
     httpgd = getFromNamespace("hgd", "httpgd"),
+    # https://github.com/posit-dev/positron/issues/2919#issuecomment-2219653110
+    "Positron Graphics Device" = grDevices::png,
     # TODO: support cairoDevices? tikz?
     stop(
       "thematic doesn't (yet) support the '", name, "' graphics device. ",
