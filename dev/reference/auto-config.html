@@ -77,7 +77,7 @@ as well as the priority that certain information should receive."><meta property
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Configure auto theming behavior</h1>
-    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/main/R/auto.R" class="external-link"><code>R/auto.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/rc-v0.1.6/R/auto.R" class="external-link"><code>R/auto.R</code></a></small>
     <div class="hidden name"><code>auto-config.Rd</code></div>
     </div>
 
@@ -129,7 +129,7 @@ Can be 2 colors for lattice (stroke vs fill accent).</p></dd>
 <dd><p>the order of priority to use when resolving auto values.
 Possible values include:</p><ul><li><p><code>"shiny"</code>: use <code><a href="https://rdrr.io/pkg/shiny/man/getCurrentOutputInfo.html" class="external-link">shiny::getCurrentOutputInfo()</a></code> values (if any) to resolve auto values.</p></li>
 <li><p><code>"config"</code>: use the values provided to this function (if any) to resolve auto values.</p></li>
-<li><p><code>"bslib"</code>: use <code><a href="https://rdrr.io/pkg/bslib/man/bs_get_variables.html" class="external-link">bslib::bs_get_variables()</a></code> values (if any)
+<li><p><code>"bslib"</code>: use <code><a href="https://rstudio.github.io/bslib/reference/bs_get_variables.html" class="external-link">bslib::bs_get_variables()</a></code> values (if any)
 to resolve auto values (only relevant when knitr is in progress).</p></li>
 <li><p><code>"rstudio"</code>: use <code><a href="https://rstudio.github.io/rstudioapi/reference/getThemeInfo.html" class="external-link">rstudioapi::getThemeInfo()</a></code> values (if any) to resolve auto values.</p></li>
 </ul></dd>
