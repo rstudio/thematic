@@ -5,8 +5,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Unified and Automatic Theming of ggplot2, lattice, and base
-    R Graphics • thematic</title>
+<title>Unified and Automatic Theming of ggplot2, lattice, and base R Graphics • thematic</title>
 <!-- favicons --><link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="apple-touch-icon" type="image/png" sizes="180x180" href="apple-touch-icon.png">
@@ -22,14 +21,8 @@
 <link href="rmd.css" rel="stylesheet">
 <!-- docsearch --><script src="docsearch.js"></script><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.css" integrity="sha256-QOSRU/ra9ActyXkIBbiIB144aDBdtvXBcNc3OTNuX/Q=" crossorigin="anonymous">
 <link href="docsearch.css" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Unified and Automatic Theming of ggplot2, lattice, and base
-    R Graphics">
-<meta property="og:description" content="Theme ggplot2, lattice, and base graphics based on a
-    few choices, including foreground color, background color, accent
-    color, and font family. Fonts that arent available on the system, but
-    are available via download on Google Fonts, can be automatically
-    downloaded, cached, and registered for use with the showtext and
-    ragg' packages.">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js" integrity="sha256-4HLtjeVgH0eIB3aZ9mLYF6E8oU5chNdjU6p6rrXpl9U=" crossorigin="anonymous"></script><meta property="og:title" content="Unified and Automatic Theming of ggplot2, lattice, and base R Graphics">
+<meta property="og:description" content="Theme ggplot2, lattice, and base graphics based on a few choices, including foreground color, background color, accent color, and font family. Fonts that arent available on the system, but are available via download on Google Fonts, can be automatically downloaded, cached, and registered for use with the showtext and ragg' packages.">
 <meta property="og:image" content="/logo.png">
 <meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
@@ -42,13 +35,15 @@
 
   gtag('config', 'UA-115082821-1');
 </script><!-- javascript assets for rmarkdown --><script src="ace-1.2.3/ace.js" type="text/javascript" charset="utf-8"></script><script src="holder-2.9.0/holder.min.js" type="text/javascript" charset="utf-8"></script><script src="snippets/snippets.js" type="text/javascript" charset="utf-8"></script><!-- from quillt: JS redirect for homepage --><script>
-  if (!/(\/|html?)$/.test(window.location.href)){
-    window.location.replace(window.location.href + '/');
+  if (!/(\/|html?)$/.test(window.location.pathname)) {
+    const newHome = new URL(window.location.href);
+    newHome.pathname = newHome.pathname + '/';
+    window.location.replace(newHome.toString())
   }
 </script>
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -63,14 +58,14 @@
 
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">thematic</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
 
       <!--<div class="navbar-brand-container">
         <a class="navbar-brand" href="index.html">thematic</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of  <a href=""></a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
         </div>
       </div>-->
     </div>
@@ -95,7 +90,7 @@
         <li>
   <a href="https://github.com/rstudio/thematic/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul>
@@ -104,7 +99,7 @@
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off">
 </div>
       </form>
-      
+
     </div>
 <!--/.nav-collapse -->
   </div>
@@ -112,7 +107,7 @@
 </div>
 <!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="contents col-md-9">
@@ -167,7 +162,7 @@
 <span>  <span class="co"># bslib makes it easy to customize CSS styles for things</span></span>
 <span>  <span class="co"># rendered by the browser, like tabsetPanel()</span></span>
 <span>  <span class="co"># https://rstudio.github.io/bslib</span></span>
-<span>  theme <span class="op">=</span> <span class="fu">bslib</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/bslib/man/bs_theme.html" class="external-link">bs_theme</a></span><span class="op">(</span></span>
+<span>  theme <span class="op">=</span> <span class="fu">bslib</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/bslib/reference/bs_theme.html" class="external-link">bs_theme</a></span><span class="op">(</span></span>
 <span>    bg <span class="op">=</span> <span class="st">"#002B36"</span>, fg <span class="op">=</span> <span class="st">"#EEE8D5"</span>, primary <span class="op">=</span> <span class="st">"#2AA198"</span>,</span>
 <span>    <span class="co"># bslib also makes it easy to import CSS fonts</span></span>
 <span>    base_font <span class="op">=</span> <span class="fu">bslib</span><span class="fu">::</span><span class="fu"><a href="https://rstudio.github.io/sass/reference/font_face.html" class="external-link">font_google</a></span><span class="op">(</span><span class="st">"Pacifico"</span><span class="op">)</span></span>
@@ -316,17 +311,17 @@
 
 <div class="author">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer>
 </div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: 'ab54f4a00f5beb99b9bf488e3b58d1dd',
     indexName: 'rstudio_thematic',
     inputSelector: 'input#search-input.form-control',

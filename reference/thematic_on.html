@@ -12,7 +12,7 @@ section below).'><meta property="og:image" content="/logo.png"><meta name="twitt
 
   gtag('config', 'UA-115082821-1');
 </script><!-- javascript assets for rmarkdown --><script src="../ace-1.2.3/ace.js" type="text/javascript" charset="utf-8"></script><script src="../holder-2.9.0/holder.min.js" type="text/javascript" charset="utf-8"></script><script src="../snippets/snippets.js" type="text/javascript" charset="utf-8"></script></head><body data-spy="scroll" data-target="#toc">
-    
+
 
     <div class="container template-reference-topic">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -27,14 +27,14 @@ section below).'><meta property="og:image" content="/logo.png"><meta name="twitt
 
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">thematic</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
       </span>
 
       <!--<div class="navbar-brand-container">
         <a class="navbar-brand" href="../index.html">thematic</a>
         <div class="info hidden-xs hidden-sm">
           <span class="partof">part of  <a href=""></a></span>
-          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.5</span>
+          <span class="version version-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.6</span>
         </div>
       </div>-->
     </div>
@@ -58,25 +58,25 @@ section below).'><meta property="og:image" content="/logo.png"><meta name="twitt
         <li>
   <a href="https://github.com/rstudio/thematic/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
-     
+
   </a>
 </li>
       </ul><form class="navbar-form navbar-right" role="search">
         <div class="form-group">
           <input type="search" class="form-control" name="search-input" id="search-input" placeholder="Search..." aria-label="Search for..." autocomplete="off"></div>
       </form>
-      
+
     </div><!--/.nav-collapse -->
   </div><!--/.container -->
 </div><!--/.navbar -->
 
-      
+
 
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Enable (or disable) simplified theming of R graphics.</h1>
-    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/HEAD/R/thematic.R" class="external-link"><code>R/thematic.R</code></a></small>
+    <small class="dont-index">Source: <a href="https://github.com/rstudio/thematic/blob/rc-v0.1.6/R/thematic.R" class="external-link"><code>R/thematic.R</code></a></small>
     <div class="hidden name"><code>thematic_on.Rd</code></div>
     </div>
 
@@ -134,58 +134,56 @@ section below).</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>bg</dt>
+
+
+<dl><dt id="arg-bg">bg<a class="anchor" aria-label="anchor" href="#arg-bg"></a></dt>
 <dd><p>a background color.</p></dd>
 
 
-<dt>fg</dt>
+<dt id="arg-fg">fg<a class="anchor" aria-label="anchor" href="#arg-fg"></a></dt>
 <dd><p>a foreground color.</p></dd>
 
 
-<dt>accent</dt>
+<dt id="arg-accent">accent<a class="anchor" aria-label="anchor" href="#arg-accent"></a></dt>
 <dd><p>a color for making certain graphical markers 'stand out'
 (e.g., the fitted line color for <code><a href="https://ggplot2.tidyverse.org/reference/geom_smooth.html" class="external-link">ggplot2::geom_smooth()</a></code>).
 Can be 2 colors for lattice (stroke vs fill accent).</p></dd>
 
 
-<dt>font</dt>
+<dt id="arg-font">font<a class="anchor" aria-label="anchor" href="#arg-font"></a></dt>
 <dd><p>a <code><a href="font_spec.html">font_spec()</a></code> object. If missing, font defaults are not altered.</p></dd>
 
 
-<dt>sequential</dt>
+<dt id="arg-sequential">sequential<a class="anchor" aria-label="anchor" href="#arg-sequential"></a></dt>
 <dd><p>a color palette for graphical markers that encode
 numeric values. Can be a vector of color codes or a
 <code><a href="sequential_gradient.html">sequential_gradient()</a></code> object.</p></dd>
 
 
-<dt>qualitative</dt>
+<dt id="arg-qualitative">qualitative<a class="anchor" aria-label="anchor" href="#arg-qualitative"></a></dt>
 <dd><p>a color palette for graphical markers that encode
 qualitative values (won't be used in ggplot2 when the number of data
 levels exceeds the max allowed colors). Defaults to <code><a href="okabe_ito.html">okabe_ito()</a></code>.</p></dd>
 
 
-<dt>inherit</dt>
+<dt id="arg-inherit">inherit<a class="anchor" aria-label="anchor" href="#arg-inherit"></a></dt>
 <dd><p>should non-specified values inherit from the previous theme?</p></dd>
 
 
-<dt>session</dt>
+<dt id="arg-session">session<a class="anchor" aria-label="anchor" href="#arg-session"></a></dt>
 <dd><p>see <code><a href="https://rdrr.io/pkg/shiny/man/onStop.html" class="external-link">shiny::onStop()</a></code>.</p></dd>
 
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    
-
-<p><code>thematic_theme()</code> returns a theme object as a list (which can be
+    <p><code>thematic_theme()</code> returns a theme object as a list (which can be
 activated with <code><a href="thematic_with_theme.html">thematic_with_theme()</a></code> or <code><a href="thematic_with_theme.html">thematic_set_theme()</a></code>).</p>
-
-
 <p><code>thematic_on()</code>, <code>thematic_off()</code>, and <code>thematic_shiny()</code> all return
 the previous global theme.</p>
     </div>
     <div id="auto-theming">
     <h2>Auto theming</h2>
-    
+
 
 
 <p>The <code>bg</code>, <code>fg</code>, <code>accent</code>, and <code>font</code> arguments all support a value of <code>'auto'</code>,
@@ -196,7 +194,7 @@ case, auto resolution logic can be customized (see <code><a href="auto-config.ht
     </div>
     <div id="global-vs-local-theming">
     <h2>Global vs. local theming</h2>
-    
+
 
 
 <p><code>thematic_on()</code> enables thematic in a global fashion (that is, it impacts all
@@ -209,7 +207,7 @@ a <strong>rmarkdown</strong> document finishes rendering, use <code>thematic_rmd
     </div>
     <div id="color-values">
     <h2>Color values</h2>
-    
+
 
 
 <p>Colors (e.g., <code>bg</code>, <code>fg</code>, <code>accent</code>) may be any value understood by <code><a href="https://rdrr.io/r/grDevices/col2rgb.html" class="external-link">col2rgb()</a></code>
@@ -270,16 +268,16 @@ or <code><a href="https://rstudio.github.io/htmltools/reference/parseCssColors.h
 </div>
 
 <div class="author">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.7.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
 </div>
 
       </footer></div>
 
-  
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/docsearch.js/2.6.1/docsearch.min.js" integrity="sha256-GKvGqXDznoRYHCwKXGnuchvKSwmx9SRMrZOTh2g4Sb0=" crossorigin="anonymous"></script><script>
   docsearch({
-    
-    
+
+
     apiKey: 'ab54f4a00f5beb99b9bf488e3b58d1dd',
     indexName: 'rstudio_thematic',
     inputSelector: 'input#search-input.form-control',
