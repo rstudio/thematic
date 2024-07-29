@@ -1,3 +1,5 @@
+# thematic (development version)
+
 # thematic 0.1.6
 
 * Add basic positron IDE support. (#152)
