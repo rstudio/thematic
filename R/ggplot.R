@@ -84,7 +84,12 @@ ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
   )
 
   # Remember defaults
-  user_defaults <- lapply(geoms, function(geom) geom$default_aes)
+  if ("get_geom_defaults" %in% getNamespaceExports("ggplot2")) {
+    get_geom_defaults <- get("get_geom_defaults", asNamespace("ggplot2"))
+  } else {
+    get_geom_defaults <- function(geom, ...) geom$default_aes
+  }
+  user_defaults <- lapply(geoms, get_geom_defaults, theme = theme)
 
   # Modify defaults
   Map(function(geom, user_default) {
