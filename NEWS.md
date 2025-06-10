@@ -1,4 +1,20 @@
-# thematic 0.1.2.9000
+# thematic (development version)
+
+# thematic 0.1.6
+
+* Add basic positron IDE support. (#152)
+* Update for now deprecated `systemfonts::match_font()`. (#153)
+
+# thematic 0.1.5
+
+* Accommodate for breaking changes in ggplot2 v3.5.0. (#148)
+* `{thematic}` now works with recent versions of the `{vdiffr}` package. (#149)
+
+# thematic 0.1.4
+
+* The `{httpgd}` graphics device (and thus, Github codespaces) is now supported. (#143)
+
+# thematic 0.1.3
 
 * Closed #129: Fixed a bug with not being able override thematic inside geom_sf(). (#129)
 * Closed #120: A warning about a `length-one vector` is no longer thrown on R 4.2. (#121)

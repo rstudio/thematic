@@ -156,11 +156,11 @@ can_render <- function(family, type = c("base", "grid"), dev_fun, dev_name) {
   # if the match resolves to something other than a generic font family
   if (is_ragg_device(dev_name)) {
     if (family %in% c("sans", "serif", "mono", "emoji")) return(TRUE)
-    f <- systemfonts::match_font(family)
-    is_available <- !identical(f, systemfonts::match_font("sans")) &&
-      !identical(f, systemfonts::match_font("serif")) &&
-      !identical(f, systemfonts::match_font("mono")) &&
-      !identical(f, systemfonts::match_font("emoji"))
+    f <- systemfonts::match_fonts(family)
+    is_available <- !identical(f, systemfonts::match_fonts("sans")) &&
+      !identical(f, systemfonts::match_fonts("serif")) &&
+      !identical(f, systemfonts::match_fonts("mono")) &&
+      !identical(f, systemfonts::match_fonts("emoji"))
     return(is_available)
   }
 
@@ -246,7 +246,11 @@ get_device_function <- function(name = infer_device()) {
     agg_jpeg = ragg::agg_jpeg,
     Cairo = Cairo::Cairo,
     devSVG = svglite::svglite,
+    devSVG_vdiffr = svglite::svglite,
     dsvg_device = ggiraph::dsvg,
+    httpgd = getFromNamespace("hgd", "httpgd"),
+    # https://github.com/posit-dev/positron/issues/2919#issuecomment-2219653110
+    "Positron Graphics Device" = grDevices::png,
     # TODO: support cairoDevices? tikz?
     stop(
       "thematic doesn't (yet) support the '", name, "' graphics device. ",

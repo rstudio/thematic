@@ -194,6 +194,14 @@ ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
       new = theme_user[[name]], old = theme_final[[name]]
     )
   }
+
+  # There are some theme settings that are best not filled in yet.
+  # These gain different internal defaults based on the text position and
+  # setting them here would disrupt that mechanism.
+  restore <- c("hjust", "vjust", "margin")
+  for (name in c("title", "legend.title", "legend.text")) {
+    theme_final[[name]][restore] <- p$theme[[name]][restore] %||% list(NULL)
+  }
   p$theme <- theme_final
 
   ggplot_build(p)
@@ -320,9 +328,12 @@ resolve_theme_inheritance <- function(p_theme) {
 
 # TODO: could consider memoising if this proves to be a bottleneck
 theme_relationships <- function() {
-  inherits <- vapply(ggplot2::get_element_tree(), function(x) { x$inherit %||% "" }, character(1))
-  relations <- data.frame(child = names(inherits), parent = inherits, stringsAsFactors = FALSE)
-  relations[relations$parent != "", ]
+  inherits <- lapply(ggplot2::get_element_tree(), function(x) x$inherit)
+  data.frame(
+    child  = rep(names(inherits), lengths(inherits)),
+    parent = unlist(inherits),
+    stringsAsFactors = FALSE
+  )
 }
 
 # It's not safe to calc all elements (e.g., plot.margin)
