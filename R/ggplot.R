@@ -16,10 +16,10 @@ ggplot_build_set <- function() {
   # so this line here is prevent that from failing if ggplot2 hasn't been attached
   # https://github.com/wch/r-source/blob/d0ede8/src/library/utils/R/objects.R#L472
   ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
-  .globals$ggplot_build <- getFromNamespace("ggplot_build.ggplot", "ggplot2")
+  .globals$ggplot_build <- getFromNamespace(build_method_name(), "ggplot2")
   assign_in_namespace <- assignInNamespace
   ensure_s3_methods_matrix()
-  assign_in_namespace("ggplot_build.ggplot", ggthematic_build, "ggplot2")
+  assign_in_namespace(build_method_name(), ggthematic_build, "ggplot2")
   if (is_installed("gganimate")) {
     .globals$gganim_build <- getFromNamespace("ggplot_build.gganim", "gganimate")
     formals(ggthematic_build)$ggplot_build <- .globals$gganim_build
@@ -32,12 +32,22 @@ ggplot_build_restore <- function() {
     ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
     assign_in_namespace <- assignInNamespace
     ensure_s3_methods_matrix()
-    assign_in_namespace("ggplot_build.ggplot", .globals$ggplot_build, "ggplot2")
+    assign_in_namespace(build_method_name(), .globals$ggplot_build, "ggplot2")
     rm("ggplot_build", envir = .globals)
     if (is.function(.globals$gganim_build)) {
       assign_in_namespace("ggplot_build.gganim", .globals$gganim_build, "gganimate")
       rm("gganim_build", envir = .globals)
     }
+  }
+}
+
+build_method_name <- function() {
+  # When ggplot2 transitioned from S3 to S7 (v4), it removed the
+  # ggplot method in favor of a default method
+  if (is_available("ggplot2", "3.5.2.9000")) {
+    "ggplot_build.default"
+  } else {
+    "ggplot_build.ggplot"
   }
 }
 
@@ -84,7 +94,9 @@ ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
   )
 
   # Remember defaults
-  user_defaults <- lapply(geoms, function(geom) geom$default_aes)
+  get_geom_defaults <- getNamespace("ggplot2")$get_geom_defaults %||%
+    function(geom, ...) geom$default_aes
+  user_defaults <- lapply(geoms, get_geom_defaults, theme = theme)
 
   # Modify defaults
   Map(function(geom, user_default) {
