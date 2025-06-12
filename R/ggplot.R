@@ -10,6 +10,12 @@
 
 ggplot_build_set <- function() {
   if (!is_installed("ggplot2")) return(NULL)
+  # Alternative update method if we're dealing with S7
+  if ("class_ggplot" %in% getNamespaceExports("ggplot2")) {
+    .globals$ggplot_build <- getFromNamespace("build_ggplot", "ggplot2")
+    registerS3method("ggplot_build", "ggplot", ggthematic_build, asNamespace("ggplot2"))
+    return(NULL)
+  }
   ggplot_build_restore()
   # Note that assignInNamespace() does S3 method registration, but to
   # find the relevant generic, it looks in the parent.frame()...
@@ -28,6 +34,12 @@ ggplot_build_set <- function() {
 }
 
 ggplot_build_restore <- function() {
+  # Alternative update method if we're dealing with S7
+  if ("class_ggplot" %in% getNamespaceExports("ggplot2")) {
+    dummy_method <- function(plot, ...) NextMethod()
+    registerS3method("ggplot_build", "ggplot", dummy_method, asNamespace("ggplot2"))
+    return(NULL)
+  }
   if (is.function(.globals$ggplot_build)) {
     ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
     assign_in_namespace <- assignInNamespace
@@ -84,7 +96,12 @@ ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
   )
 
   # Remember defaults
-  user_defaults <- lapply(geoms, function(geom) geom$default_aes)
+  if ("get_geom_defaults" %in% getNamespaceExports("ggplot2")) {
+    get_geom_defaults <- get("get_geom_defaults", asNamespace("ggplot2"))
+  } else {
+    get_geom_defaults <- function(geom, ...) geom$default_aes
+  }
+  user_defaults <- lapply(geoms, get_geom_defaults, theme = theme)
 
   # Modify defaults
   Map(function(geom, user_default) {
@@ -200,7 +217,15 @@ ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
   # setting them here would disrupt that mechanism.
   restore <- c("hjust", "vjust", "margin")
   for (name in c("title", "legend.title", "legend.text")) {
-    theme_final[[name]][restore] <- p$theme[[name]][restore] %||% list(NULL)
+    if (ggplot2::is_theme_element(theme_final[[name]], "blank")) {
+      next
+    }
+    if (ggplot2::is_theme_element(p$theme[[name]], "blank")) {
+      value <- list(NULL)
+    } else {
+      value <-  p$theme[[name]][restore] %||% list(NULL)
+    }
+    theme_final[[name]][restore] <- value
   }
   p$theme <- theme_final
 

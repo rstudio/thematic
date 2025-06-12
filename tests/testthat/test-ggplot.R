@@ -228,6 +228,8 @@ test_that("element_blank() inherits properly", {
 
 
 test_that("Relevant ggplot_build() method(s) are owned by thematic", {
+  ggplot_uses_S7 <- "class_ggplot" %in% getNamespaceExports("ggplot2")
+  skip_if(ggplot_uses_S7)
   thematic_local_theme(theme2)
   expect_equal(
     body(getFromNamespace("ggplot_build.ggplot", "ggplot2")),
