@@ -12,6 +12,7 @@ ggplot_build_set <- function() {
   if (!is_installed("ggplot2")) return(NULL)
   # Alternative update method if we're dealing with S7
   if ("class_ggplot" %in% getNamespaceExports("ggplot2")) {
+    .globals$ggplot_build <- getFromNamespace("build_ggplot", "ggplot2")
     registerS3method("ggplot_build", "ggplot", ggthematic_build, asNamespace("ggplot2"))
     return(NULL)
   }
