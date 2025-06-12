@@ -8,3 +8,7 @@ tests/testthat/**/Rplots.pdf
 tests/testthat/testthat-problems.rds
 docs/
 cranwhales/
+tests/testthat/auto_theme_rmd/darkly_rmd/*.png
+tests/testthat/auto_theme_rmd/darkly_rmd/*.Rmd
+tests/testthat/auto_theme_rmd/darkly_rmd/*.html
+tests/testthat/auto_theme_rmd/darkly_rmd/darkly_files/
