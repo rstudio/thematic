@@ -54,6 +54,7 @@ Suggests:
     testthat,
     vdiffr (>= 1.0.0),
     withr
+Config/testthat/edition: 3
 Config/Needs/check: shinytest2, callr, sf, ggthemes, patchwork, gridExtra,
     tinytex, devtools, rversions
 Config/Needs/routine: ggrepel, r-lib/evaluate

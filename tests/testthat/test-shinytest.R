@@ -1,5 +1,3 @@
-context("shinytest")
-
 skip_on_cran()
 skip_if_not_installed("shinytest2")
 skip_if_not_installed("callr")
@@ -17,7 +15,7 @@ platform <- getFromNamespace("platform_variant", "shinytest2")(
 
 
 # Default to running tests on macOS
-do_tests <- platform == "mac"
+do_tests <- identical(platform, "mac")
 skip_if_not(as.logical(Sys.getenv("SHINYTEST_RUN_TESTS", do_tests)))
 
 

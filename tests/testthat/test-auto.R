@@ -1,5 +1,3 @@
-context("auto-config")
-
 test_that("Can influence auto resolution with config", {
   # TODO: add test(s) with different priority settings
   old_config <- auto_config_set(auto_config("black", "white", NA, font = "Pacifico"))
