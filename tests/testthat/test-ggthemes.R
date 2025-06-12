@@ -1,5 +1,3 @@
-context("ggthemes")
-
 skip_if_not_installed("ggplot2")
 
 library(ggplot2)

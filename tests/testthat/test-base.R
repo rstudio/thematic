@@ -1,6 +1,3 @@
-context("base")
-
-
 test_that("base baselines", {
   thematic_local_theme(
     thematic_theme("black", "white", "violet", font_spec("Amatic SC", 1.5, update = TRUE))
@@ -67,4 +64,3 @@ test_that("base baselines", {
   )
 
 })
-
