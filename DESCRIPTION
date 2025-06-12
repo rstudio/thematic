@@ -24,7 +24,7 @@ Depends:
     R (>= 3.0.0)
 Imports:
     farver,
-    ggplot2 (>= 3.5.2),
+    ggplot2 (>= 3.3.0),
     graphics,
     grDevices,
     grid,
