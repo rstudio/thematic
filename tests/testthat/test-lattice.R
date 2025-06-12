@@ -1,5 +1,3 @@
-context("lattice")
-
 skip_if_not_installed("lattice")
 library(lattice)
 library(stats)
@@ -81,4 +79,3 @@ test_that("lattice baselines", {
   thematic_local_theme(thematic_theme("black", "white", c("orange", "blue")))
   expect_doppelganger("settings2", show.settings())
 })
-
