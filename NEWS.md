@@ -1,5 +1,7 @@
 # thematic (development version)
 
+* Updates to accomodate new ggplot2 v4.0.0 release. (#156)
+
 # thematic 0.1.6
 
 * Add basic positron IDE support. (#152)
