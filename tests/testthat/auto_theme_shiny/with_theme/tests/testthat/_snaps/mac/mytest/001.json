@@ -1,0 +1,115 @@
+{
+  "input": {
+
+  },
+  "output": {
+    "base": {
+      "src": "[image data hash: 54f81319181b7c107af086a1aa39a6f9]",
+      "width": 962,
+      "height": 400,
+      "alt": "Plot object",
+      "coordmap": {
+        "panels": [
+          {
+            "domain": {
+              "left": 0.64,
+              "right": 10.36,
+              "bottom": 0.64,
+              "top": 10.36
+            },
+            "range": {
+              "left": 118.08,
+              "right": 1863.52,
+              "bottom": 652.12,
+              "top": 117.08
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "mapping": {
+
+            }
+          }
+        ],
+        "dims": {
+          "width": 1924,
+          "height": 800
+        }
+      }
+    },
+    "ggplot": {
+      "src": "[image data hash: 01332a5180f2fc1cb10587774eb88d0f]",
+      "width": 962,
+      "height": 400,
+      "alt": "Plot object",
+      "coordmap": {
+        "panels": [
+          {
+            "domain": {
+              "left": -0.04,
+              "right": 1.04,
+              "bottom": -0.04,
+              "top": 1.04
+            },
+            "range": {
+              "left": 0,
+              "right": 1924,
+              "bottom": 799,
+              "top": -1
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "mapping": {
+
+            }
+          }
+        ],
+        "dims": {
+          "width": 1924,
+          "height": 800
+        }
+      }
+    },
+    "lattice": {
+      "src": "[image data hash: 466eb962053fa21247b5f108eba3f81e]",
+      "width": 962,
+      "height": 400,
+      "alt": "Plot object",
+      "coordmap": {
+        "panels": [
+          {
+            "domain": {
+              "left": -0.04,
+              "right": 1.04,
+              "bottom": -0.04,
+              "top": 1.04
+            },
+            "range": {
+              "left": 0,
+              "right": 1924,
+              "bottom": 799,
+              "top": -1
+            },
+            "log": {
+              "x": null,
+              "y": null
+            },
+            "mapping": {
+
+            }
+          }
+        ],
+        "dims": {
+          "width": 1924,
+          "height": 800
+        }
+      }
+    }
+  },
+  "export": {
+
+  }
+}
