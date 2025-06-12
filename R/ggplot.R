@@ -217,7 +217,15 @@ ggthematic_build <- function(p, ggplot_build = NULL, theme = NULL) {
   # setting them here would disrupt that mechanism.
   restore <- c("hjust", "vjust", "margin")
   for (name in c("title", "legend.title", "legend.text")) {
-    theme_final[[name]][restore] <- p$theme[[name]][restore] %||% list(NULL)
+    if (is_theme_element(theme_final[[name]], "blank")) {
+      next
+    }
+    if (is_theme_element(p$theme[[name]], "blank")) {
+      value <- list(NULL)
+    } else {
+      value <-  p$theme[[name]][restore] %||% list(NULL)
+    }
+    theme_final[[name]][restore] <- value
   }
   p$theme <- theme_final
 
