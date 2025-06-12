@@ -56,10 +56,8 @@ Suggests:
     withr
 Config/Needs/check: shinytest, callr, sf, ggthemes, patchwork, gridExtra,
     tinytex, devtools, rversions
-Config/Needs/routine: ggrepel, evaluate
-Config/Needs/website: GGally, RColorBrewer, patchwork, apreshill/quillt, evaluate
-Remotes:
-    r-lib/evaluate
+Config/Needs/routine: ggrepel, r-lib/evaluate
+Config/Needs/website: GGally, RColorBrewer, patchwork, apreshill/quillt, r-lib/evaluate
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
