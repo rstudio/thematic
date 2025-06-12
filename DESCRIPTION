@@ -57,8 +57,8 @@ Suggests:
 Config/testthat/edition: 3
 Config/Needs/check: shinytest, callr, sf, ggthemes, patchwork, gridExtra,
     tinytex, devtools, rversions
-Config/Needs/routine: ggrepel
-Config/Needs/website: GGally, RColorBrewer, patchwork, apreshill/quillt
+Config/Needs/routine: ggrepel, evaluate
+Config/Needs/website: GGally, RColorBrewer, patchwork, apreshill/quillt, evaluate
 Remotes:
     r-lib/evaluate#244
 Encoding: UTF-8
