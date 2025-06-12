@@ -30,18 +30,20 @@ rmd_txt <- knitr::knit_expand("../../template_theme.Rmd", theme = "darkly")
 writeLines(rmd_txt, infile)
 outfile <- rmarkdown::render(infile)
 
-onStop(function() {unlink(infile)})
+onStop(function() {
+  unlink(infile)
+  unlink(dir(pattern = paste0("\\.", ext)))
+  unlink(
+    c(infile, outfile, paste0(tools::file_path_sans_ext(infile), "_files")),
+    recursive = TRUE
+  )
+})
 
 server <- function(input, output, session) {
 
   output$ggplot <- render_image(image_info("ggplot", ext))
   output$lattice <- render_image(image_info("lattice", ext))
   output$base <- render_image(image_info("base", ext))
-
-  onFlush(function() {
-    unlink(dir(pattern = paste0("\\.", ext)))
-    unlink(c(infile, outfile, paste0(tools::file_path_sans_ext(infile), "_files")), recursive = TRUE)
-  })
 }
 
 shinyApp(ui, server)

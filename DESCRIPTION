@@ -54,7 +54,7 @@ Suggests:
     testthat,
     vdiffr (>= 1.0.0),
     withr
-Config/Needs/check: shinytest, callr, sf, ggthemes, patchwork, gridExtra,
+Config/Needs/check: shinytest2, callr, sf, ggthemes, patchwork, gridExtra,
     tinytex, devtools, rversions
 Config/Needs/routine: ggrepel, r-lib/evaluate
 Config/Needs/website: GGally, RColorBrewer, patchwork, apreshill/quillt, r-lib/evaluate
@@ -76,4 +76,3 @@ Collate:
     'thematic-save-plot.R'
     'thematic.R'
     'utils.R'
-    'view-shinytest.R'

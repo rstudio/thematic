@@ -1,3 +1,0 @@
-library(shinytest)
-shinytest::testApp("../")
-
