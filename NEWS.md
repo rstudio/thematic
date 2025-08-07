@@ -1,5 +1,7 @@
 # thematic (development version)
 
+# Fix compability with ggplot2. (#161)
+
 # thematic 0.1.7
 
 * Updates to accomodate new ggplot2 v4.0.0 release. (#156)
