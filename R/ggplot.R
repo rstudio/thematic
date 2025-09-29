@@ -12,8 +12,9 @@ ggplot_build_set <- function() {
   if (!is_installed("ggplot2")) return(NULL)
   # Alternative update method if we're dealing with S7
   if ("class_ggplot" %in% getNamespaceExports("ggplot2")) {
-    .globals$ggplot_build <- getFromNamespace("build_ggplot", "ggplot2")
-    registerS3method("ggplot_build", "ggplot", ggthematic_build, asNamespace("ggplot2"))
+    .globals$ggplot_build <- .globals$ggplot_build %||%
+      getS3method("ggplot_build", "ggplot2::ggplot", envir = asNamespace("ggplot2"))
+    registerS3method("ggplot_build", "ggplot2::ggplot", ggthematic_build, asNamespace("ggplot2"))
     return(NULL)
   }
   ggplot_build_restore()
@@ -35,12 +36,12 @@ ggplot_build_set <- function() {
 
 ggplot_build_restore <- function() {
   # Alternative update method if we're dealing with S7
-  if ("class_ggplot" %in% getNamespaceExports("ggplot2")) {
-    dummy_method <- function(plot, ...) NextMethod()
-    registerS3method("ggplot_build", "ggplot", dummy_method, asNamespace("ggplot2"))
-    return(NULL)
-  }
   if (is.function(.globals$ggplot_build)) {
+    if ("class_ggplot" %in% getNamespaceExports("ggplot2")) {
+      registerS3method("ggplot_build", "ggplot2::ggplot", .globals$ggplot_build, asNamespace("ggplot2"))
+      rm("ggplot_build", envir = .globals)
+      return(NULL)
+    }
     ggplot_build <- getFromNamespace("ggplot_build", "ggplot2")
     assign_in_namespace <- assignInNamespace
     ensure_s3_methods_matrix()

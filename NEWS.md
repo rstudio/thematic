@@ -1,5 +1,6 @@
 # thematic (development version)
 
+* Fixed an compatibility issue with the new ggplot2 v4.0.0 release. (#164, thanks @teunbrand)
 * Added requirement of ggplot2 >= 3.5.2. (#161, thanks @antivirak)
 
 # thematic 0.1.7
